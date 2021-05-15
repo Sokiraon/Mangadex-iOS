@@ -8,6 +8,7 @@
 import UIKit
 import Tabman
 import Pageboy
+import SnapKit
 
 class DashboardViewController: TabmanViewController {
     private var viewControllers = [UIViewController(), UIViewController()]
@@ -20,7 +21,7 @@ class DashboardViewController: TabmanViewController {
         let bar = TMBar.ButtonBar()
         bar.layout.transitionStyle = .snap
         
-        addBar(bar, dataSource: self, at: .top)
+        addBar(bar.systemBar(), dataSource: self, at: .top)
     }
 }
 

@@ -38,6 +38,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         button.addTarget(self, action: #selector(didTapLogin(sender:)), for: .touchUpInside)
         return button
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(false, animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +82,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if (result) {
             let dashboardStoryboard = UIStoryboard(name: "Dashboard", bundle: nil)
             if let controller = dashboardStoryboard.instantiateViewController(withIdentifier: "Dashboard") as? DashboardViewController {
-                self.navigationController?.pushViewController(controller, animated: true)
+                controller.modalPresentationStyle = .fullScreen
+                controller.modalTransitionStyle = .crossDissolve
+                self.present(controller, animated: true, completion: nil)
             }
         }
     }
