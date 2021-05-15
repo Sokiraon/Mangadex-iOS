@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00170964264FA3E6005BEE67 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* Core.swift */; };
+		00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* DashboardViewController.swift */; };
+		00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00170967264FD1A7005BEE67 /* Dashboard.storyboard */; };
 		004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F7189264BF8EB00D61AEB /* AppDelegate.swift */; };
 		004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718B264BF8EB00D61AEB /* SceneDelegate.swift */; };
 		004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718D264BF8EB00D61AEB /* ViewController.swift */; };
@@ -16,6 +19,7 @@
 		004F7199264BF8ED00D61AEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004F7197264BF8ED00D61AEB /* LaunchScreen.storyboard */; };
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
+		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00170963264FA3E6005BEE67 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
+		00170965264FC9CB005BEE67 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		00170967264FD1A7005BEE67 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		004F7186264BF8EB00D61AEB /* Mangadex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mangadex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F7189264BF8EB00D61AEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		004F718B264BF8EB00D61AEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +58,9 @@
 		004F71AA264BF8ED00D61AEB /* MangadexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MangadexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
+		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
+		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +89,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00170962264FA3A9005BEE67 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				00170963264FA3E6005BEE67 /* Core.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		004F717D264BF8EB00D61AEB = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +104,8 @@
 				004F71A2264BF8ED00D61AEB /* MangadexTests */,
 				004F71AD264BF8ED00D61AEB /* MangadexUITests */,
 				004F7187264BF8EB00D61AEB /* Products */,
+				C7DFFD547A9BED2B8A6310A8 /* Pods */,
+				EB589BE1F4EAD33A4B56DDFA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,14 +122,17 @@
 		004F7188264BF8EB00D61AEB /* Mangadex */ = {
 			isa = PBXGroup;
 			children = (
+				00170962264FA3A9005BEE67 /* Auth */,
 				004F7189264BF8EB00D61AEB /* AppDelegate.swift */,
 				004F718B264BF8EB00D61AEB /* SceneDelegate.swift */,
 				004F718D264BF8EB00D61AEB /* ViewController.swift */,
 				004F718F264BF8EB00D61AEB /* Main.storyboard */,
+				00170967264FD1A7005BEE67 /* Dashboard.storyboard */,
 				004F7195264BF8ED00D61AEB /* Assets.xcassets */,
 				004F7197264BF8ED00D61AEB /* LaunchScreen.storyboard */,
 				004F719A264BF8ED00D61AEB /* Info.plist */,
 				004F7192264BF8EB00D61AEB /* Mangadex.xcdatamodeld */,
+				00170965264FC9CB005BEE67 /* DashboardViewController.swift */,
 			);
 			path = Mangadex;
 			sourceTree = "<group>";
@@ -131,6 +155,23 @@
 			path = MangadexUITests;
 			sourceTree = "<group>";
 		};
+		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */,
+				91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EB589BE1F4EAD33A4B56DDFA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -138,9 +179,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 004F71B3264BF8ED00D61AEB /* Build configuration list for PBXNativeTarget "Mangadex" */;
 			buildPhases = (
+				7FE46D768BFCEE6482983852 /* [CP] Check Pods Manifest.lock */,
 				004F7182264BF8EB00D61AEB /* Sources */,
 				004F7183264BF8EB00D61AEB /* Frameworks */,
 				004F7184264BF8EB00D61AEB /* Resources */,
+				C15475762ABE5217AAFA3DE3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -237,6 +280,7 @@
 				004F7199264BF8ED00D61AEB /* LaunchScreen.storyboard in Resources */,
 				004F7196264BF8ED00D61AEB /* Assets.xcassets in Resources */,
 				004F7191264BF8EB00D61AEB /* Main.storyboard in Resources */,
+				00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,11 +300,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7FE46D768BFCEE6482983852 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Mangadex-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C15475762ABE5217AAFA3DE3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mangadex/Pods-Mangadex-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mangadex/Pods-Mangadex-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mangadex/Pods-Mangadex-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		004F7182264BF8EB00D61AEB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00170964264FA3E6005BEE67 /* Core.swift in Sources */,
+				00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
@@ -437,6 +525,7 @@
 		};
 		004F71B4264BF8ED00D61AEB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -456,6 +545,7 @@
 		};
 		004F71B5264BF8ED00D61AEB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
