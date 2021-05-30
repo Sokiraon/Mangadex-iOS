@@ -9,11 +9,6 @@ import Foundation
 import Just
 import SwiftyJSON
 
-struct Login: Encodable {
-    let username: String
-    let password: String
-}
-
 class MangadexAuth {
     private static let instance = MangadexAuth()
     

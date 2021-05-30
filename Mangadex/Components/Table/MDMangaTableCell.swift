@@ -7,11 +7,13 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 class MDMangaTableCell: UITableViewCell {
     var coverImageView: UIImageView!
     var titleLabel: UILabel!
-    var authorArtistLabel: UILabel!
+    var authorLabel: UILabel!
+    var artistLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,13 +40,12 @@ class MDMangaTableCell: UITableViewCell {
         self.coverImageView.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(contentView).offset(15)
             make.top.equalTo(contentView).offset(10)
-            make.bottom.equalTo(contentView).offset(-10)
             make.width.equalTo(60)
             make.height.equalTo(90)
         }
         
         self.titleLabel = UILabel.init()
-        self.titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        self.titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         self.titleLabel.text = "N/A"
         contentView.addSubview(self.titleLabel)
         self.titleLabel.snp.makeConstraints { (make) -> Void in
@@ -52,13 +53,22 @@ class MDMangaTableCell: UITableViewCell {
             make.top.equalTo(contentView).offset(15)
         }
         
-        self.authorArtistLabel = UILabel.init()
-        self.authorArtistLabel.font = UIFont.systemFont(ofSize: 14)
-        self.authorArtistLabel.text = "<author> / <artist>"
-        contentView.addSubview(self.authorArtistLabel)
-        self.authorArtistLabel.snp.makeConstraints { (make) -> Void in
+        self.authorLabel = UILabel.init()
+        self.authorLabel.font = UIFont.systemFont(ofSize: 15)
+        self.authorLabel.text = "Author: "
+        contentView.addSubview(self.authorLabel)
+        self.authorLabel.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(self.coverImageView.snp.right).offset(20)
-            make.bottom.equalTo(contentView).offset(-15)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(15)
+        }
+        
+        self.artistLabel = UILabel.init()
+        self.artistLabel.font = UIFont.systemFont(ofSize: 15)
+        self.artistLabel.text = "Artist: "
+        contentView.addSubview(self.artistLabel)
+        self.artistLabel.snp.makeConstraints { (make) -> Void in
+            make.left.equalTo(self.coverImageView.snp.right).offset(20)
+            make.top.equalTo(self.authorLabel.snp.bottom).offset(5)
         }
         
         contentView.snp.makeConstraints { (make) -> Void in
@@ -68,5 +78,9 @@ class MDMangaTableCell: UITableViewCell {
     
     func setContentWithItem(_ item: MangaItem) {
         self.titleLabel.text = item.title
+        self.coverImageView.kf.setImage(with: MDRemoteImage.getCoverUrlById(item.coverId, forManga: item.id),
+                                        placeholder: UIImage(named: "manga_cover_default"))
+        self.authorLabel.text = self.authorLabel.text?.appending(MDRemoteText.getAuthorNameById(item.authorId))
+        self.artistLabel.text = self.artistLabel.text?.appending(MDRemoteText.getAuthorNameById(item.artistId))
     }
 }

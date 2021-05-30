@@ -10,5 +10,6 @@ target "Mangadex" do
   pod 'Tabman', '~> 2.9'
   pod 'ProgressHUD'
   pod 'MJRefresh'
+  pod 'Kingfisher', '~> 6.3.0'
 
 end
