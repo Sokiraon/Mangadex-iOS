@@ -24,7 +24,7 @@ class DashboardViewController: TabmanViewController {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.viewControllers = [UIViewController(), MDStaredViewController(), UIViewController()]
+        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), UIViewController()]
     }
     
     override func viewDidLoad() {

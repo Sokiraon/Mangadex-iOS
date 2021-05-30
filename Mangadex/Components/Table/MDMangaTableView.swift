@@ -1,5 +1,5 @@
 //
-//  MDTableView.swift
+//  MDMangaTableView.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/29.
@@ -16,7 +16,7 @@ struct MangaItem {
     var coverId: String
 }
 
-class MDMangaListView: UITableView {
+class MDMangaTableView: UITableView {
     private var mangaList: [MangaItem]
     
     required init?(coder: NSCoder) {
