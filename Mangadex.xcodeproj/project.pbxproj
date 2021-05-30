@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0008100F2661F681009C1005 /* MDLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayoutHelper.swift */; };
+		0008101226621229009C1005 /* MDTrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDTrendViewController.swift */; };
+		000810172662125B009C1005 /* MDStaredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDStaredViewController.swift */; };
+		0008101A2662647D009C1005 /* MDMangaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810192662647D009C1005 /* MDMangaListView.swift */; };
 		00170964264FA3E6005BEE67 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* Core.swift */; };
 		00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* DashboardViewController.swift */; };
 		00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00170967264FD1A7005BEE67 /* Dashboard.storyboard */; };
@@ -19,6 +23,7 @@
 		004F7199264BF8ED00D61AEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004F7197264BF8ED00D61AEB /* LaunchScreen.storyboard */; };
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
+		00FC838E2663417D00AB0586 /* MDMangaListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FC838D2663417D00AB0586 /* MDMangaListCell.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0008100E2661F681009C1005 /* MDLayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayoutHelper.swift; sourceTree = "<group>"; };
+		0008101126621229009C1005 /* MDTrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDTrendViewController.swift; sourceTree = "<group>"; };
+		000810162662125B009C1005 /* MDStaredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDStaredViewController.swift; sourceTree = "<group>"; };
+		000810192662647D009C1005 /* MDMangaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListView.swift; sourceTree = "<group>"; };
 		00170963264FA3E6005BEE67 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		00170967264FD1A7005BEE67 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
@@ -58,6 +67,7 @@
 		004F71AA264BF8ED00D61AEB /* MangadexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MangadexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00FC838D2663417D00AB0586 /* MDMangaListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListCell.swift; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +99,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0008100D2661F669009C1005 /* Theming */ = {
+			isa = PBXGroup;
+			children = (
+				0008100E2661F681009C1005 /* MDLayoutHelper.swift */,
+			);
+			path = Theming;
+			sourceTree = "<group>";
+		};
+		000810102662120F009C1005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0008101526621249009C1005 /* Stared */,
+				0008101326621236009C1005 /* Trend */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0008101326621236009C1005 /* Trend */ = {
+			isa = PBXGroup;
+			children = (
+				0008101126621229009C1005 /* MDTrendViewController.swift */,
+			);
+			path = Trend;
+			sourceTree = "<group>";
+		};
+		0008101526621249009C1005 /* Stared */ = {
+			isa = PBXGroup;
+			children = (
+				000810162662125B009C1005 /* MDStaredViewController.swift */,
+			);
+			path = Stared;
+			sourceTree = "<group>";
+		};
+		000810182662646B009C1005 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				00FC838C2663414C00AB0586 /* Table */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		00170962264FA3A9005BEE67 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,6 +173,9 @@
 		004F7188264BF8EB00D61AEB /* Mangadex */ = {
 			isa = PBXGroup;
 			children = (
+				000810182662646B009C1005 /* Components */,
+				000810102662120F009C1005 /* Views */,
+				0008100D2661F669009C1005 /* Theming */,
 				00170962264FA3A9005BEE67 /* Auth */,
 				004F7189264BF8EB00D61AEB /* AppDelegate.swift */,
 				004F718B264BF8EB00D61AEB /* SceneDelegate.swift */,
@@ -153,6 +207,15 @@
 				004F71B0264BF8ED00D61AEB /* Info.plist */,
 			);
 			path = MangadexUITests;
+			sourceTree = "<group>";
+		};
+		00FC838C2663414C00AB0586 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				000810192662647D009C1005 /* MDMangaListView.swift */,
+				00FC838D2663417D00AB0586 /* MDMangaListCell.swift */,
+			);
+			path = Table;
 			sourceTree = "<group>";
 		};
 		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
@@ -347,8 +410,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0008101A2662647D009C1005 /* MDMangaListView.swift in Sources */,
 				00170964264FA3E6005BEE67 /* Core.swift in Sources */,
+				0008100F2661F681009C1005 /* MDLayoutHelper.swift in Sources */,
 				00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */,
+				000810172662125B009C1005 /* MDStaredViewController.swift in Sources */,
+				0008101226621229009C1005 /* MDTrendViewController.swift in Sources */,
+				00FC838E2663417D00AB0586 /* MDMangaListCell.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
@@ -458,7 +526,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -513,7 +581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -535,6 +603,41 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Just\"",
+					"-framework",
+					"\"MDFInternationalization\"",
+					"-framework",
+					"\"MDFTextAccessibility\"",
+					"-framework",
+					"\"MJRefresh\"",
+					"-framework",
+					"\"MaterialComponents\"",
+					"-framework",
+					"\"MotionAnimator\"",
+					"-framework",
+					"\"MotionInterchange\"",
+					"-framework",
+					"\"Pageboy\"",
+					"-framework",
+					"\"ProgressHUD\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SwiftyJSON\"",
+					"-framework",
+					"\"Tabman\"",
+					"-framework",
+					"\"WebKit\"",
+					"-Xlinker",
+					"-interposable",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sokiraon.Mangadex;
 				PRODUCT_NAME = "$(TARGET_NAME)";

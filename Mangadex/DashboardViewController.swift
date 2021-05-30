@@ -8,20 +8,34 @@
 import UIKit
 import Tabman
 import Pageboy
-import SnapKit
 
 class DashboardViewController: TabmanViewController {
-    private var viewControllers = [UIViewController(), UIViewController()]
+    private var viewControllers: [UIViewController]!
+    private var tabBarItems = [
+        TMBarItem(title: "Trend", image: UIImage(named: "baseline_trending_up_black_24pt")!),
+        TMBarItem(title: "Stared", image: UIImage(named: "baseline_star_black_24pt")!),
+        TMBarItem(title: "Account", image: UIImage(named: "baseline_person_black_24pt")!)
+    ]
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.viewControllers = [UIViewController(), MDStaredViewController(), UIViewController()]
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.viewControllers = [UIViewController(), MDStaredViewController(), UIViewController()]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.dataSource = self
         
-        let bar = TMBar.ButtonBar()
+        let bar = TMBar.TabBar()
         bar.layout.transitionStyle = .snap
         
-        addBar(bar.systemBar(), dataSource: self, at: .top)
+        addBar(bar.systemBar(), dataSource: self, at: .bottom)
     }
 }
 
@@ -39,7 +53,6 @@ extension DashboardViewController: PageboyViewControllerDataSource, TMBarDataSou
     }
     
     func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
-        let title = "Page \(index)"
-        return TMBarItem(title: title)
+        return tabBarItems[index]
     }
 }

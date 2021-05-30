@@ -8,11 +8,13 @@
 import UIKit
 import SnapKit
 import MaterialComponents
+import ProgressHUD
 
 class ViewController: UIViewController, UITextFieldDelegate {
     let usernameField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
         field.label.text = "Username"
+        field.text = "Sokiraon"
         field.textContentType = .username
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clearButtonMode = .whileEditing
@@ -23,6 +25,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let passwordField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
         field.label.text = "Password"
+        field.text = "EbfKkZX7LePz5R5"
         field.textContentType = .password
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clearButtonMode = .whileEditing
@@ -38,20 +41,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         button.addTarget(self, action: #selector(didTapLogin(sender:)), for: .touchUpInside)
         return button
     }()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(false, animated: true)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.isToolbarHidden = true
         
         view.backgroundColor = .white
         
         view.addSubview(usernameField)
         usernameField.snp.makeConstraints { (make) -> Void in
-            make.center.equalTo(view).offset(-100)
+            make.centerY.equalTo(view).offset(-100)
             make.left.equalTo(view).offset(20)
             make.right.equalTo(view).offset(-20)
         }
@@ -77,14 +77,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func didTapLogin(sender: Any) {
-        let result = MangadexAuth.getInstance().loginWithPassword(username: usernameField.text!,
-                                                                  password: passwordField.text!)
-        if (result) {
-            let dashboardStoryboard = UIStoryboard(name: "Dashboard", bundle: nil)
-            if let controller = dashboardStoryboard.instantiateViewController(withIdentifier: "Dashboard") as? DashboardViewController {
-                controller.modalPresentationStyle = .fullScreen
-                controller.modalTransitionStyle = .crossDissolve
-                self.present(controller, animated: true, completion: nil)
+        ProgressHUD.show()
+        let username = usernameField.text!
+        let password = passwordField.text!
+        let queue = DispatchQueue(label: "com.sokiraon.mangadex")
+        queue.async {
+            let result = MangadexAuth.getInstance().loginWithPassword(username: username,
+                                                                      password: password)
+            if (result) {
+                let dashboardStoryboard = UIStoryboard(name: "Dashboard", bundle: nil)
+                if let controller = dashboardStoryboard.instantiateViewController(withIdentifier: "Dashboard") as? DashboardViewController {
+                    DispatchQueue.main.async {
+                        ProgressHUD.dismiss()
+                        self.navigationController?.pushViewController(controller, animated: true)
+                    }
+                }
             }
         }
     }
