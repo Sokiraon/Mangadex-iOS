@@ -14,6 +14,8 @@
 		00170964264FA3E6005BEE67 /* MDAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDAuth.swift */; };
 		00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* DashboardViewController.swift */; };
 		00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00170967264FD1A7005BEE67 /* Dashboard.storyboard */; };
+		002208A12664904500B420DF /* MDThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002208A02664904500B420DF /* MDThemeManager.swift */; };
+		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
 		004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F7189264BF8EB00D61AEB /* AppDelegate.swift */; };
 		004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718B264BF8EB00D61AEB /* SceneDelegate.swift */; };
 		004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718D264BF8EB00D61AEB /* ViewController.swift */; };
@@ -54,6 +56,8 @@
 		00170963264FA3E6005BEE67 /* MDAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAuth.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		00170967264FD1A7005BEE67 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		002208A02664904500B420DF /* MDThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDThemeManager.swift; sourceTree = "<group>"; };
+		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
 		004F7186264BF8EB00D61AEB /* Mangadex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mangadex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F7189264BF8EB00D61AEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		004F718B264BF8EB00D61AEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				0008100E2661F681009C1005 /* MDLayoutHelper.swift */,
+				002208A02664904500B420DF /* MDThemeManager.swift */,
 			);
 			path = Theming;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 		000810102662120F009C1005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0025DADD2665D1F0006C6701 /* Detail */,
 				0008101526621249009C1005 /* Stared */,
 				0008101326621236009C1005 /* Trend */,
 			);
@@ -152,6 +158,14 @@
 				00CE072F2663C10000ABFDB3 /* MDRemoteText.swift */,
 			);
 			path = Net;
+			sourceTree = "<group>";
+		};
+		0025DADD2665D1F0006C6701 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		004F717D264BF8EB00D61AEB = {
@@ -421,9 +435,11 @@
 				0008100F2661F681009C1005 /* MDLayoutHelper.swift in Sources */,
 				00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */,
 				000810172662125B009C1005 /* MDStaredViewController.swift in Sources */,
+				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
 				0008101226621229009C1005 /* MDTrendViewController.swift in Sources */,
 				00CE072E2663B84E00ABFDB3 /* MDRemoteImage.swift in Sources */,
 				00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */,
+				002208A12664904500B420DF /* MDThemeManager.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
