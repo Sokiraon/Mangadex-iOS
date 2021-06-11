@@ -8,15 +8,15 @@
 import Foundation
 import UIKit
 
-class MDTrendViewController: UIViewController {
+class MDTrendViewController: MDViewController {
+    
     private var tableView: UITableView!
+    
     private var mangaList: [MangaItem] = [
         MangaItem(id: "32d76d19-8a05-4db0-9fc2-e0b0648fe9d0", title: "Solo Leveling", authorId: "820b13ef-dc7d-42b1-999a-65393b8b4040", artistId: "86f43f7f-7f32-4ecb-8dd9-7cd2ae16932b", coverId: "b6c7ce9c-e671-4f26-90b0-e592188e9cd6")
     ]
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    override func setupUI() {
         self.tableView = UITableView.init()
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -26,7 +26,9 @@ class MDTrendViewController: UIViewController {
         self.tableView.snp.makeConstraints { (make) -> Void in
             make.edges.equalTo(self.view)
         }
-        
+    }
+    
+    override func didSetupUI() {
         let queue = DispatchQueue(label: "manga")
         queue.async {
             self.mangaList = MDRemoteText.getMangaList(offset: 0)

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MDLayoutHelper {
+class MDLayout {
     static func safeAreaInsets() -> UIEdgeInsets {
         if #available(iOS 13.0, *) {
             let window = UIApplication.shared.windows[0]

@@ -10,7 +10,7 @@ import SnapKit
 import MaterialComponents
 import ProgressHUD
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class ViewController: MDViewController, UITextFieldDelegate {
     let usernameField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
         field.label.text = "Username"
@@ -42,8 +42,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func setupUI() {
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.isToolbarHidden = true
         

@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0008100F2661F681009C1005 /* MDLayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayoutHelper.swift */; };
+		0008100F2661F681009C1005 /* MDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayout.swift */; };
 		0008101226621229009C1005 /* MDTrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDTrendViewController.swift */; };
 		000810172662125B009C1005 /* MDStaredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDStaredViewController.swift */; };
 		0008101A2662647D009C1005 /* MDMangaTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810192662647D009C1005 /* MDMangaTableView.swift */; };
+		001597082670AD5500AE16CB /* MDLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001597072670AD5500AE16CB /* MDLabel.swift */; };
+		0015970A2670B06900AE16CB /* MDFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001597092670B06900AE16CB /* MDFonts.swift */; };
 		00170964264FA3E6005BEE67 /* MDAuth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDAuth.swift */; };
 		00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* DashboardViewController.swift */; };
 		00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00170967264FD1A7005BEE67 /* Dashboard.storyboard */; };
 		002208A12664904500B420DF /* MDThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002208A02664904500B420DF /* MDThemeManager.swift */; };
 		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
+		00363096266F5BD80058BE25 /* MDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363095266F5BD80058BE25 /* MDViewController.swift */; };
+		00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363098266F676A0058BE25 /* MDNavigationController.swift */; };
+		0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0036309A266F74AF0058BE25 /* MDAppBar.swift */; };
 		004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F7189264BF8EB00D61AEB /* AppDelegate.swift */; };
 		004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718B264BF8EB00D61AEB /* SceneDelegate.swift */; };
 		004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718D264BF8EB00D61AEB /* ViewController.swift */; };
@@ -49,15 +54,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0008100E2661F681009C1005 /* MDLayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayoutHelper.swift; sourceTree = "<group>"; };
+		0008100E2661F681009C1005 /* MDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayout.swift; sourceTree = "<group>"; };
 		0008101126621229009C1005 /* MDTrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDTrendViewController.swift; sourceTree = "<group>"; };
 		000810162662125B009C1005 /* MDStaredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDStaredViewController.swift; sourceTree = "<group>"; };
 		000810192662647D009C1005 /* MDMangaTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaTableView.swift; sourceTree = "<group>"; };
+		001597072670AD5500AE16CB /* MDLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLabel.swift; sourceTree = "<group>"; };
+		001597092670B06900AE16CB /* MDFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFonts.swift; sourceTree = "<group>"; };
 		00170963264FA3E6005BEE67 /* MDAuth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAuth.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		00170967264FD1A7005BEE67 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		002208A02664904500B420DF /* MDThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDThemeManager.swift; sourceTree = "<group>"; };
 		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
+		00363095266F5BD80058BE25 /* MDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDViewController.swift; sourceTree = "<group>"; };
+		00363098266F676A0058BE25 /* MDNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDNavigationController.swift; sourceTree = "<group>"; };
+		0036309A266F74AF0058BE25 /* MDAppBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAppBar.swift; sourceTree = "<group>"; };
 		004F7186264BF8EB00D61AEB /* Mangadex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mangadex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F7189264BF8EB00D61AEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		004F718B264BF8EB00D61AEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,8 +120,10 @@
 		0008100D2661F669009C1005 /* Theming */ = {
 			isa = PBXGroup;
 			children = (
-				0008100E2661F681009C1005 /* MDLayoutHelper.swift */,
+				0008100E2661F681009C1005 /* MDLayout.swift */,
 				002208A02664904500B420DF /* MDThemeManager.swift */,
+				001597072670AD5500AE16CB /* MDLabel.swift */,
+				001597092670B06900AE16CB /* MDFonts.swift */,
 			);
 			path = Theming;
 			sourceTree = "<group>";
@@ -145,6 +157,8 @@
 		000810182662646B009C1005 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				00363097266F67590058BE25 /* Navigation */,
+				00363094266F5BC40058BE25 /* ViewController */,
 				00FC838C2663414C00AB0586 /* Table */,
 			);
 			path = Components;
@@ -166,6 +180,31 @@
 				0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */,
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		00363094266F5BC40058BE25 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				00363095266F5BD80058BE25 /* MDViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		00363097266F67590058BE25 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				0036309C266F82D50058BE25 /* AppBar */,
+				00363098266F676A0058BE25 /* MDNavigationController.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		0036309C266F82D50058BE25 /* AppBar */ = {
+			isa = PBXGroup;
+			children = (
+				0036309A266F74AF0058BE25 /* MDAppBar.swift */,
+			);
+			path = AppBar;
 			sourceTree = "<group>";
 		};
 		004F717D264BF8EB00D61AEB = {
@@ -431,8 +470,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0008101A2662647D009C1005 /* MDMangaTableView.swift in Sources */,
+				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* MDAuth.swift in Sources */,
-				0008100F2661F681009C1005 /* MDLayoutHelper.swift in Sources */,
+				0008100F2661F681009C1005 /* MDLayout.swift in Sources */,
 				00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */,
 				000810172662125B009C1005 /* MDStaredViewController.swift in Sources */,
 				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
@@ -443,8 +483,12 @@
 				004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
+				001597082670AD5500AE16CB /* MDLabel.swift in Sources */,
 				004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */,
+				00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */,
+				0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */,
 				00CE07302663C10000ABFDB3 /* MDRemoteText.swift in Sources */,
+				0015970A2670B06900AE16CB /* MDFonts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -34,6 +34,11 @@ class MDMangaTableCell: UITableViewCell {
     }
     
     func initCell() {
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(MDLayout.safeAreaSize().width)
+            make.height.equalTo(110)
+        }
+        
         self.coverImageView = UIImageView.init(image: UIImage(named: "manga_cover_default"))
         self.coverImageView.layer.cornerRadius = 5
         self.coverImageView.layer.masksToBounds = true
@@ -54,7 +59,7 @@ class MDMangaTableCell: UITableViewCell {
         self.titleLabel.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(self.coverImageView.snp.right).offset(20)
             make.top.equalTo(contentView).offset(15)
-            make.right.equalToSuperview().inset(10)
+            make.right.lessThanOrEqualToSuperview().inset(10)
         }
         
         self.authorLabel = UILabel.init()
@@ -66,7 +71,7 @@ class MDMangaTableCell: UITableViewCell {
         self.authorLabel.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(self.coverImageView.snp.right).offset(20)
             make.top.equalTo(self.titleLabel.snp.bottom).offset(15)
-            make.right.equalToSuperview().inset(10)
+            make.right.lessThanOrEqualToSuperview().inset(10)
         }
         
         self.artistLabel = UILabel.init()
@@ -78,11 +83,7 @@ class MDMangaTableCell: UITableViewCell {
         self.artistLabel.snp.makeConstraints { (make) -> Void in
             make.left.equalTo(self.coverImageView.snp.right).offset(20)
             make.top.equalTo(self.authorLabel.snp.bottom).offset(5)
-            make.right.equalToSuperview().inset(10)
-        }
-        
-        contentView.snp.makeConstraints { (make) -> Void in
-            make.height.equalTo(110)
+            make.right.lessThanOrEqualToSuperview().inset(10)
         }
     }
     
