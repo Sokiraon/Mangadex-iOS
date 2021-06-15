@@ -8,13 +8,7 @@
 import Foundation
 import UIKit
 
-protocol MDViewControllerDelegate {
-    func willSetupUI() -> Void
-    func setupUI() -> Void
-    func didSetupUI() -> Void
-}
-
-class MDViewController: UIViewController, MDViewControllerDelegate {
+class MDViewController: UIViewController {
     var viewTitle: String!
     var appBar: MDAppBar?
     var contentView: UIView?
@@ -22,6 +16,7 @@ class MDViewController: UIViewController, MDViewControllerDelegate {
     func willSetupUI() {}
     func setupUI() {}
     func didSetupUI() {}
+    func initData() {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +24,11 @@ class MDViewController: UIViewController, MDViewControllerDelegate {
         willSetupUI()
         setupUI()
         didSetupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        initData()
     }
     
     @objc func didTapBack() {

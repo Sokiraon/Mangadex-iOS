@@ -27,7 +27,7 @@ class MDAppBar: UIView {
             button.contentMode = .center
             button.tintColor = .black
             button.snp.makeConstraints { make in
-                make.width.height.equalTo(36)
+                make.width.height.equalTo(30)
             }
             return button
         }()

@@ -10,7 +10,9 @@ import SnapKit
 import MaterialComponents
 import ProgressHUD
 
-class ViewController: MDViewController, UITextFieldDelegate {
+fileprivate let queue = DispatchQueue(label: "serial")
+
+class LoginViewController: MDViewController, UITextFieldDelegate {
     let usernameField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
         field.label.text = "Username"
@@ -39,6 +41,14 @@ class ViewController: MDViewController, UITextFieldDelegate {
         button.setTitle("login", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapLogin(sender:)), for: .touchUpInside)
+        return button
+    }()
+    
+    let guestButton: MDCButton = {
+        let button = MDCButton()
+        button.setTitle("Continue as guest", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(didTapGuest(sender:)), for: .touchUpInside)
         return button
     }()
 
@@ -73,24 +83,37 @@ class ViewController: MDViewController, UITextFieldDelegate {
             make.right.equalTo(view).offset(-20)
             make.height.equalTo(50)
         }
+        
+        view.addSubview(guestButton)
+        guestButton.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(10)
+            make.left.right.equalTo(view).inset(20)
+            make.height.equalTo(50)
+        }
     }
     
     @objc func didTapLogin(sender: Any) {
         ProgressHUD.show()
         let username = usernameField.text!
         let password = passwordField.text!
-        let queue = DispatchQueue(label: "com.sokiraon.mangadex")
         queue.async {
             let result = MangadexAuth.getInstance().loginWithPassword(username: username,
                                                                       password: password)
             if (result) {
-                let dashboardStoryboard = UIStoryboard(name: "Dashboard", bundle: nil)
-                if let controller = dashboardStoryboard.instantiateViewController(withIdentifier: "Dashboard") as? DashboardViewController {
-                    DispatchQueue.main.async {
-                        ProgressHUD.dismiss()
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }
+                DispatchQueue.main.async {
+                    let vc = DashboardViewController()
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
+            }
+        }
+    }
+    
+    @objc func didTapGuest(sender: Any) {
+        ProgressHUD.show()
+        queue.async {
+            DispatchQueue.main.async {
+                let vc = DashboardViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }

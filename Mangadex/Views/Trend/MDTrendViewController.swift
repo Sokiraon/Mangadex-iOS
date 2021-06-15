@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ProgressHUD
 
 class MDTrendViewController: MDViewController {
     
@@ -28,12 +29,16 @@ class MDTrendViewController: MDViewController {
         }
     }
     
-    override func didSetupUI() {
-        let queue = DispatchQueue(label: "manga")
-        queue.async {
-            self.mangaList = MDRemoteText.getMangaList(offset: 0)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+    override func initData() {
+        DispatchQueue.once {
+            ProgressHUD.show()
+            let queue = DispatchQueue(label: "serial")
+            queue.async {
+                self.mangaList = MDRemoteText.getMangaList(offset: 0)
+                DispatchQueue.main.async {
+                    ProgressHUD.dismiss()
+                    self.tableView.reloadData()
+                }
             }
         }
     }
@@ -57,6 +62,7 @@ extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
+        cell?.setSelected(false, animated: true)
         let vc = MDMangaDetailViewController.initWithMangaCell(cell as! MDMangaTableCell)
         self.navigationController?.pushViewController(vc, animated: true)
     }

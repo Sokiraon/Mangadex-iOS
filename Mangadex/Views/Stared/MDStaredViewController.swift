@@ -9,6 +9,6 @@ import Foundation
 import UIKit
 import MJRefresh
 
-class MDStaredViewController: UIViewController {
+class MDStaredViewController: MDViewController {
     
 }

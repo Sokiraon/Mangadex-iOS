@@ -11,5 +11,6 @@ target "Mangadex" do
   pod 'ProgressHUD'
   pod 'MJRefresh'
   pod 'Kingfisher', '~> 6.3.0'
+  pod 'FlexLayout'
 
 end

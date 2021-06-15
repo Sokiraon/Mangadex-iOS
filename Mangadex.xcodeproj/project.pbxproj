@@ -23,7 +23,7 @@
 		0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0036309A266F74AF0058BE25 /* MDAppBar.swift */; };
 		004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F7189264BF8EB00D61AEB /* AppDelegate.swift */; };
 		004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718B264BF8EB00D61AEB /* SceneDelegate.swift */; };
-		004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718D264BF8EB00D61AEB /* ViewController.swift */; };
+		004F718E264BF8EB00D61AEB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F718D264BF8EB00D61AEB /* LoginViewController.swift */; };
 		004F7191264BF8EB00D61AEB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004F718F264BF8EB00D61AEB /* Main.storyboard */; };
 		004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 004F7192264BF8EB00D61AEB /* Mangadex.xcdatamodeld */; };
 		004F7196264BF8ED00D61AEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 004F7195264BF8ED00D61AEB /* Assets.xcassets */; };
@@ -33,6 +33,8 @@
 		00CE072E2663B84E00ABFDB3 /* MDRemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CE072D2663B84E00ABFDB3 /* MDRemoteImage.swift */; };
 		00CE07302663C10000ABFDB3 /* MDRemoteText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CE072F2663C10000ABFDB3 /* MDRemoteText.swift */; };
 		00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */; };
+		7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */; };
+		7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +73,7 @@
 		004F7186264BF8EB00D61AEB /* Mangadex.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mangadex.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F7189264BF8EB00D61AEB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		004F718B264BF8EB00D61AEB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		004F718D264BF8EB00D61AEB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		004F718D264BF8EB00D61AEB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		004F7190264BF8EB00D61AEB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		004F7193264BF8EB00D61AEB /* Mangadex.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Mangadex.xcdatamodel; sourceTree = "<group>"; };
 		004F7195264BF8ED00D61AEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -86,6 +88,8 @@
 		00CE072D2663B84E00ABFDB3 /* MDRemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRemoteImage.swift; sourceTree = "<group>"; };
 		00CE072F2663C10000ABFDB3 /* MDRemoteText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRemoteText.swift; sourceTree = "<group>"; };
 		00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaTableCell.swift; sourceTree = "<group>"; };
+		7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+once.swift"; sourceTree = "<group>"; };
+		7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountViewController.swift; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +135,8 @@
 		000810102662120F009C1005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7ABB61B92678D76700BF2860 /* Account */,
+				7ABB61B52678CA7700BF2860 /* Login */,
 				0025DADD2665D1F0006C6701 /* Detail */,
 				0008101526621249009C1005 /* Stared */,
 				0008101326621236009C1005 /* Trend */,
@@ -157,6 +163,7 @@
 		000810182662646B009C1005 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				7ABB61B62678D42F00BF2860 /* Concurrency */,
 				00363097266F67590058BE25 /* Navigation */,
 				00363094266F5BC40058BE25 /* ViewController */,
 				00FC838C2663414C00AB0586 /* Table */,
@@ -238,7 +245,6 @@
 				00170962264FA3A9005BEE67 /* Net */,
 				004F7189264BF8EB00D61AEB /* AppDelegate.swift */,
 				004F718B264BF8EB00D61AEB /* SceneDelegate.swift */,
-				004F718D264BF8EB00D61AEB /* ViewController.swift */,
 				004F718F264BF8EB00D61AEB /* Main.storyboard */,
 				00170967264FD1A7005BEE67 /* Dashboard.storyboard */,
 				004F7195264BF8ED00D61AEB /* Assets.xcassets */,
@@ -275,6 +281,30 @@
 				00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */,
 			);
 			path = Table;
+			sourceTree = "<group>";
+		};
+		7ABB61B52678CA7700BF2860 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				004F718D264BF8EB00D61AEB /* LoginViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		7ABB61B62678D42F00BF2860 /* Concurrency */ = {
+			isa = PBXGroup;
+			children = (
+				7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */,
+			);
+			path = Concurrency;
+			sourceTree = "<group>";
+		};
+		7ABB61B92678D76700BF2860 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
@@ -472,6 +502,8 @@
 				0008101A2662647D009C1005 /* MDMangaTableView.swift in Sources */,
 				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* MDAuth.swift in Sources */,
+				7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */,
+				7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */,
 				0008100F2661F681009C1005 /* MDLayout.swift in Sources */,
 				00170966264FC9CB005BEE67 /* DashboardViewController.swift in Sources */,
 				000810172662125B009C1005 /* MDStaredViewController.swift in Sources */,
@@ -480,7 +512,7 @@
 				00CE072E2663B84E00ABFDB3 /* MDRemoteImage.swift in Sources */,
 				00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */,
 				002208A12664904500B420DF /* MDThemeManager.swift in Sources */,
-				004F718E264BF8EB00D61AEB /* ViewController.swift in Sources */,
+				004F718E264BF8EB00D61AEB /* LoginViewController.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
 				001597082670AD5500AE16CB /* MDLabel.swift in Sources */,

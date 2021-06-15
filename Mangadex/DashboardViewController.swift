@@ -19,12 +19,12 @@ class DashboardViewController: TabmanViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.viewControllers = [UIViewController(), MDStaredViewController(), UIViewController()]
+        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), MDAccountViewController()]
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), UIViewController()]
+        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), MDAccountViewController()]
     }
     
     override func viewDidLoad() {
