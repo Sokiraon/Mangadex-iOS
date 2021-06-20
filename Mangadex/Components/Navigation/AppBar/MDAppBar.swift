@@ -47,7 +47,7 @@ class MDAppBar: UIView {
             make.top.bottom.equalToSuperview().inset(10)
         }
         
-        let titleLabel = UILabel.initWithText(self.title, fontSize: 20, fontWeight: .regular, textColor: .black)
+        let titleLabel = UILabel.initWithText(self.title, ofFontWeight: .regular, andSize: 20)
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.left.equalTo(self.arrowBack.snp.right).inset(-10)

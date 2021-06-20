@@ -10,12 +10,9 @@
 		0008100F2661F681009C1005 /* MDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayout.swift */; };
 		0008101226621229009C1005 /* MDTrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDTrendViewController.swift */; };
 		000810172662125B009C1005 /* MDStaredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDStaredViewController.swift */; };
-		001597082670AD5500AE16CB /* MDLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001597072670AD5500AE16CB /* MDLabel.swift */; };
-		0015970A2670B06900AE16CB /* MDFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001597092670B06900AE16CB /* MDFonts.swift */; };
 		00170964264FA3E6005BEE67 /* MDUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDUser.swift */; };
 		00170966264FC9CB005BEE67 /* MDHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* MDHomeViewController.swift */; };
 		00170968264FD1A7005BEE67 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00170967264FD1A7005BEE67 /* Dashboard.storyboard */; };
-		002208A12664904500B420DF /* MDThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002208A02664904500B420DF /* MDThemeManager.swift */; };
 		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
 		00363096266F5BD80058BE25 /* MDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363095266F5BD80058BE25 /* MDViewController.swift */; };
 		00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363098266F676A0058BE25 /* MDNavigationController.swift */; };
@@ -42,6 +39,8 @@
 		7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */; };
 		7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */; };
 		7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */; };
+		7AFFAB0C267F56E5003D7C75 /* UILabel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB0B267F56E5003D7C75 /* UILabel+Ext.swift */; };
+		7AFFAB0E267F5CBC003D7C75 /* UIImageView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB0D267F5CBC003D7C75 /* UIImageView+Ext.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,12 +65,9 @@
 		0008100E2661F681009C1005 /* MDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayout.swift; sourceTree = "<group>"; };
 		0008101126621229009C1005 /* MDTrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDTrendViewController.swift; sourceTree = "<group>"; };
 		000810162662125B009C1005 /* MDStaredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDStaredViewController.swift; sourceTree = "<group>"; };
-		001597072670AD5500AE16CB /* MDLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLabel.swift; sourceTree = "<group>"; };
-		001597092670B06900AE16CB /* MDFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFonts.swift; sourceTree = "<group>"; };
 		00170963264FA3E6005BEE67 /* MDUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUser.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* MDHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDHomeViewController.swift; sourceTree = "<group>"; };
 		00170967264FD1A7005BEE67 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
-		002208A02664904500B420DF /* MDThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDThemeManager.swift; sourceTree = "<group>"; };
 		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
 		00363095266F5BD80058BE25 /* MDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDViewController.swift; sourceTree = "<group>"; };
 		00363098266F676A0058BE25 /* MDNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDNavigationController.swift; sourceTree = "<group>"; };
@@ -104,6 +100,8 @@
 		7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+once.swift"; sourceTree = "<group>"; };
 		7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountViewController.swift; sourceTree = "<group>"; };
 		7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideViewController.swift; sourceTree = "<group>"; };
+		7AFFAB0B267F56E5003D7C75 /* UILabel+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
+		7AFFAB0D267F5CBC003D7C75 /* UIImageView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,9 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				0008100E2661F681009C1005 /* MDLayout.swift */,
-				002208A02664904500B420DF /* MDThemeManager.swift */,
-				001597072670AD5500AE16CB /* MDLabel.swift */,
-				001597092670B06900AE16CB /* MDFonts.swift */,
 				7AACACAB267EE58300232166 /* MDColor.swift */,
 			);
 			path = Theming;
@@ -260,6 +255,7 @@
 		004F7188264BF8EB00D61AEB /* Mangadex */ = {
 			isa = PBXGroup;
 			children = (
+				7AFFAB09267F56CA003D7C75 /* Extension */,
 				000810182662646B009C1005 /* Components */,
 				000810102662120F009C1005 /* Module */,
 				0008100D2661F669009C1005 /* Theming */,
@@ -334,6 +330,23 @@
 				7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */,
 			);
 			path = Account;
+			sourceTree = "<group>";
+		};
+		7AFFAB09267F56CA003D7C75 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				7AFFAB0A267F56D1003D7C75 /* UIKit */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		7AFFAB0A267F56D1003D7C75 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				7AFFAB0B267F56E5003D7C75 /* UILabel+Ext.swift */,
+				7AFFAB0D267F5CBC003D7C75 /* UIImageView+Ext.swift */,
+			);
+			path = UIKit;
 			sourceTree = "<group>";
 		};
 		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
@@ -532,6 +545,7 @@
 				7AACACB0267F34D400232166 /* MDMangaChapterSectionHeader.swift in Sources */,
 				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* MDUser.swift in Sources */,
+				7AFFAB0C267F56E5003D7C75 /* UILabel+Ext.swift in Sources */,
 				7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */,
 				7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */,
 				0008100F2661F681009C1005 /* MDLayout.swift in Sources */,
@@ -541,19 +555,17 @@
 				0008101226621229009C1005 /* MDTrendViewController.swift in Sources */,
 				7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */,
 				00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */,
-				002208A12664904500B420DF /* MDThemeManager.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
-				001597082670AD5500AE16CB /* MDLabel.swift in Sources */,
 				7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */,
 				7A89D9BD267DAC9500E41147 /* MDHTTPManager.swift in Sources */,
+				7AFFAB0E267F5CBC003D7C75 /* UIImageView+Ext.swift in Sources */,
 				7A89D9C3267DCA0200E41147 /* MDHTTPManager+Author.swift in Sources */,
 				004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */,
 				00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */,
 				0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */,
-				0015970A2670B06900AE16CB /* MDFonts.swift in Sources */,
 				7AACACAC267EE58300232166 /* MDColor.swift in Sources */,
 				7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */,
 				7A89D9BF267DB8AF00E41147 /* MDHTTPManager+Manga.swift in Sources */,
