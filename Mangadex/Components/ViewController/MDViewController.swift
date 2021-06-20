@@ -11,12 +11,11 @@ import UIKit
 class MDViewController: UIViewController {
     var viewTitle: String!
     var appBar: MDAppBar?
-    var contentView: UIView?
     
     func willSetupUI() {}
     func setupUI() {}
     func didSetupUI() {}
-    func initData() {}
+    func initDataOnAppear() {}
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +27,7 @@ class MDViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        initData()
+        initDataOnAppear()
     }
     
     @objc func didTapBack() {

@@ -12,7 +12,7 @@ import ProgressHUD
 
 fileprivate let queue = DispatchQueue(label: "serial")
 
-class LoginViewController: MDViewController, UITextFieldDelegate {
+class MDLoginViewController: MDViewController, UITextFieldDelegate {
     let usernameField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
         field.label.text = "Username"
@@ -93,29 +93,20 @@ class LoginViewController: MDViewController, UITextFieldDelegate {
     }
     
     @objc func didTapLogin(sender: Any) {
-        ProgressHUD.show()
         let username = usernameField.text!
         let password = passwordField.text!
-        queue.async {
-            let result = MangadexAuth.getInstance().loginWithPassword(username: username,
-                                                                      password: password)
-            if (result) {
-                DispatchQueue.main.async {
-                    let vc = DashboardViewController()
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
+        MDUser.getInstance()
+            .loginWithUsername(username, andPassword: password) {
+                let vc = MDHomeViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
+            } onError: {
+                
             }
-        }
     }
     
     @objc func didTapGuest(sender: Any) {
-        ProgressHUD.show()
-        queue.async {
-            DispatchQueue.main.async {
-                let vc = DashboardViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
+        let vc = MDHomeViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

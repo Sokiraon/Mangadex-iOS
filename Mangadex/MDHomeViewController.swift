@@ -9,9 +9,13 @@ import UIKit
 import Tabman
 import Pageboy
 
-class DashboardViewController: TabmanViewController {
-    private var viewControllers: [UIViewController]!
-    private var tabBarItems = [
+class MDHomeViewController: TabmanViewController {
+    private lazy var viewControllers = [
+        MDTrendViewController(),
+        MDStaredViewController(),
+        MDAccountViewController()
+    ]
+    private lazy var tabBarItems = [
         TMBarItem(title: "Trend", image: UIImage(named: "baseline_trending_up_black_24pt")!),
         TMBarItem(title: "Stared", image: UIImage(named: "baseline_star_black_24pt")!),
         TMBarItem(title: "Account", image: UIImage(named: "baseline_person_black_24pt")!)
@@ -19,12 +23,10 @@ class DashboardViewController: TabmanViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), MDAccountViewController()]
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.viewControllers = [MDTrendViewController(), MDStaredViewController(), MDAccountViewController()]
     }
     
     override func viewDidLoad() {
@@ -39,7 +41,7 @@ class DashboardViewController: TabmanViewController {
     }
 }
 
-extension DashboardViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension MDHomeViewController: PageboyViewControllerDataSource, TMBarDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count
     }

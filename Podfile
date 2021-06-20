@@ -12,5 +12,7 @@ target "Mangadex" do
   pod 'MJRefresh'
   pod 'Kingfisher', '~> 6.3.0'
   pod 'FlexLayout'
+  pod 'YYModel'
+  pod 'HandyJSON', '~> 5.0.2'
 
 end
