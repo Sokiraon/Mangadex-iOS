@@ -1,5 +1,5 @@
 //
-//  MDTrendViewController.swift
+//  MDStaredViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/29.
@@ -7,26 +7,10 @@
 
 import Foundation
 import UIKit
-import ProgressHUD
 import MJRefresh
+import ProgressHUD
 
-class MDTrendViewController: MDViewController {
-    
-    override func setupUI() {
-        self.view.addSubview(self.vTable)
-        self.vTable.snp.makeConstraints { (make) -> Void in
-            make.edges.equalTo(self.view)
-        }
-    }
-    
-    override func didSetupUI() {
-        self.vTable.mj_header = refreshHeader
-        self.vTable.mj_footer = refreshFooter
-        self.vTable.mj_footer?.isHidden = true
-        
-        refreshHeader.beginRefreshing()
-    }
-    
+class MDStaredViewController: MDViewController {
     // MARK: - properties
     private lazy var vTable: UITableView = {
         let view = UITableView()
@@ -39,7 +23,7 @@ class MDTrendViewController: MDViewController {
     
     private lazy var refreshHeader = MJRefreshNormalHeader() {
         MDHTTPManager.getInstance()
-            .getMangaListWithParams([:]) { data in
+            .getUserFollowedMangas(params: [:]) { data in
                 self.mangaList = data
                 DispatchQueue.main.async {
                     self.refreshFooter.isHidden = false
@@ -55,7 +39,7 @@ class MDTrendViewController: MDViewController {
     }
     private lazy var refreshFooter = MJRefreshBackNormalFooter() {
         MDHTTPManager.getInstance()
-            .getMangaListWithParams(["offset": self.mangaList.count, "limit": 5]) { data in
+            .getUserFollowedMangas(params: ["offset": self.mangaList.count, "limit": 5]) { data in
                 self.mangaList.append(contentsOf: data)
                 DispatchQueue.main.async {
                     self.vTable.reloadData()
@@ -69,13 +53,26 @@ class MDTrendViewController: MDViewController {
             }
     }
     
-    private lazy var queue = DispatchQueue(label: "cellQueue")
+    // initialize
+    override func setupUI() {
+        self.view.addSubview(self.vTable)
+        self.vTable.snp.makeConstraints { make in
+            make.top.equalTo(MDLayout.safeAreaInsets(true).top)
+            make.left.right.bottom.equalToSuperview()
+        }
+    }
     
-    // MARK: - actions
+    override func didSetupUI() {
+        self.vTable.mj_header = refreshHeader
+        self.vTable.mj_footer = refreshFooter
+        self.vTable.mj_footer?.isHidden = true
+        
+        refreshHeader.beginRefreshing()
+    }
 }
 
 // MARK: - tableView delegate
-extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
+extension MDStaredViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mangaList.count
     }

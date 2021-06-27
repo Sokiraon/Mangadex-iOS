@@ -15,22 +15,30 @@ class MDLayout {
 
     static var safeAreaSize = { () -> CGSize in
         let size = UIApplication.shared.windows[0].bounds.size
-        let edgeInsets = safeAreaInsets()
+        let edgeInsets = safeAreaInsets(true)
         return CGSize(width: size.width - edgeInsets.left - edgeInsets.right,
                       height: size.height - edgeInsets.top - edgeInsets.bottom)
     }
     
-    static var safeAreaInsets = { () -> UIEdgeInsets in
+    static var safeAreaInsets = { (preserveInset: Bool) -> UIEdgeInsets in
         if #available(iOS 13.0, *) {
             let window = UIApplication.shared.windows[0]
-            return UIEdgeInsets(top: window.safeAreaInsets.top, left: window.safeAreaInsets.left,
-                                bottom: window.safeAreaInsets.bottom, right: window.safeAreaInsets.right)
+            if (preserveInset) {
+                // if is notch screen, return original safeArea
+                return window.safeAreaInsets
+            } else {
+                // else, return zero inset
+                return .zero
+            }
             
         } else {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            return .zero
         }
     }
     
+    static var isNotchScreen = safeAreaInsets(true).bottom > 0
+    
     static var screenSize = UIApplication.shared.windows[0].bounds.size
     static var screenWidth = screenSize.width
+    static var screenHeight = screenSize.height
 }

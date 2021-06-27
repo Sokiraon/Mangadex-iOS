@@ -15,7 +15,7 @@ fileprivate let queue = DispatchQueue(label: "serial")
 class MDLoginViewController: MDViewController, UITextFieldDelegate {
     let usernameField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
-        field.label.text = "Username"
+        field.label.text = "kLoginUsername".localized()
         field.text = "Sokiraon"
         field.textContentType = .username
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +26,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     
     let passwordField: MDCOutlinedTextField = {
         let field = MDCOutlinedTextField()
-        field.label.text = "Password"
+        field.label.text = "kLoginPassword".localized()
         field.text = "EbfKkZX7LePz5R5"
         field.textContentType = .password
         field.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +38,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     
     let loginButton: MDCButton = {
         let button = MDCButton()
-        button.setTitle("login", for: .normal)
+        button.setTitle("kLoginUser".localized(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapLogin(sender:)), for: .touchUpInside)
         return button
@@ -46,7 +46,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     
     let guestButton: MDCButton = {
         let button = MDCButton()
-        button.setTitle("Continue as guest", for: .normal)
+        button.setTitle("kLoginGuest".localized(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapGuest(sender:)), for: .touchUpInside)
         return button
@@ -97,10 +97,14 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         let password = passwordField.text!
         MDUser.getInstance()
             .loginWithUsername(username, andPassword: password) {
-                let vc = MDHomeViewController()
-                self.navigationController?.pushViewController(vc, animated: true)
+                DispatchQueue.main.async {
+                    let vc = MDHomeViewController()
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             } onError: {
-                
+                DispatchQueue.main.async {
+                    ProgressHUD.showError()
+                }
             }
     }
     

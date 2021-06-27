@@ -8,6 +8,7 @@
 import UIKit
 import Tabman
 import Pageboy
+import Localize_Swift
 
 class MDHomeViewController: TabmanViewController {
     private lazy var viewControllers = [
@@ -16,18 +17,13 @@ class MDHomeViewController: TabmanViewController {
         MDAccountViewController()
     ]
     private lazy var tabBarItems = [
-        TMBarItem(title: "Trend", image: UIImage(named: "baseline_trending_up_black_24pt")!),
-        TMBarItem(title: "Stared", image: UIImage(named: "baseline_star_black_24pt")!),
-        TMBarItem(title: "Account", image: UIImage(named: "baseline_person_black_24pt")!)
+        TMBarItem(title: "kDashboardTabTrend".localized(),
+                  image: UIImage(named: "baseline_trending_up_black_24pt")!),
+        TMBarItem(title: "kDashboardTabStared".localized(),
+                  image: UIImage(named: "baseline_star_black_24pt")!),
+        TMBarItem(title: "kDashboardTabAccount".localized(),
+                  image: UIImage(named: "baseline_person_black_24pt")!)
     ]
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

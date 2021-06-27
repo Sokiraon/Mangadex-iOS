@@ -1,6 +1,8 @@
 platform :ios, '10.0'
 
 target "Mangadex" do
+  platform :ios, '11.0'
+  
   use_frameworks!
   
   pod 'MaterialComponents'
@@ -14,5 +16,7 @@ target "Mangadex" do
   pod 'FlexLayout'
   pod 'YYModel'
   pod 'HandyJSON', '~> 5.0.2'
+  pod 'Localize-Swift', '~> 3.2'
+  pod 'SwiftJWT', '~> 3.6.1'
 
 end

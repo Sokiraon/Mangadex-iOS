@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  Mangadex
+
+  Created by John Rion on 2021/6/27.
+  
+*/
+
+"kLoginUsername" = "Username";
+"kLoginPassword" = "Password";
+"kLoginUser" = "Login";
+"kLoginGuest" = "Continue as guest";
+
+"kDashboardTabTrend" = "Trend";
+"kDashboardTabStared" = "Stared";
+"kDashboardTabAccount" = "Account";
+
+"kMangaDetailChapters" = "Chapters";
+"kMangaDetailInfo" = "Info";
+
+"kVolume" = "Volume";
+"kChapter" = "Chapter";
