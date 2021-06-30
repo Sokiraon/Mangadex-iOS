@@ -3,5 +3,7 @@ Podfile.lock
 Pods/
 # CocoaPods END
 
-Mangadex.xcworkspace/xcuserdata/ziye.xcuserdatad/
+Mangadex.xcworkspace/xcuserdata/
+Mangadex.xcodeproj/xcuserdata/
 *.DS_Store
+.idea/
