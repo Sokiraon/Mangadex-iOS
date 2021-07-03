@@ -35,8 +35,10 @@ class MDLayout {
             return .zero
         }
     }
-    
-    static var isNotchScreen = safeAreaInsets(true).bottom > 0
+
+    static var safeInsetTop = UIApplication.shared.windows[0].safeAreaInsets.top
+    static var safeInsetBottom = UIApplication.shared.windows[0].safeAreaInsets.bottom
+    static var isNotchScreen = safeInsetBottom > 0
     
     static var screenSize = UIApplication.shared.windows[0].bounds.size
     static var screenWidth = screenSize.width

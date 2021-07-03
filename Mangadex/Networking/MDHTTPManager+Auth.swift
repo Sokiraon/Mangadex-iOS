@@ -13,7 +13,7 @@ extension MDHTTPManager {
                            andPassword password: String,
                            onSuccess success: @escaping (_ session: String, _ refresh: String) -> Void,
                            onError error: @escaping () -> Void) {
-        self.post("/auth/login",
+        post("/auth/login",
                   ofType: .HostTypeApi,
                   withJson: ["username": username, "password": password]) { json in
             let json = JSON(json)
@@ -47,7 +47,7 @@ extension MDHTTPManager {
     func refreshToken(_ refresh: String,
                       onSuccess success: @escaping (_ session: String, _ token: String) -> Void,
                       onError error: @escaping () -> Void) {
-        self.post("/auth/refresh",
+        post("/auth/refresh",
                   ofType: .HostTypeApi,
                   withJson: ["token": refresh]) { json in
             let token = json["token"] as! [String: Any]

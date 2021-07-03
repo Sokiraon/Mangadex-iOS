@@ -20,3 +20,12 @@
 
 "kVolume" = "卷";
 "kChapter" = "话";
+
+"kKeychainSaveTitle" = "保存密码";
+"kKeychainSaveMessage" = "保存您的凭据到钥匙串，以使您下次可以快速登录。";
+"kOK" = "确定";
+"kNo" = "不要";
+"kSaveSuccess" = "保存成功！";
+"kKeychainSaveError" = "保存错误";
+"kSavedAccounts" = "已保存的账号";
+"kSavedAccountsDismiss" = "添加新账号";

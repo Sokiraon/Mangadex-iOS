@@ -18,7 +18,7 @@ class MDHTTPManager {
     // singleton
     private static let instance = MDHTTPManager()
     static func getInstance() -> MDHTTPManager {
-        return MDHTTPManager()
+        instance
     }
     
     func get(_ path: String,

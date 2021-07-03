@@ -11,14 +11,34 @@ import UIKit
 class MDViewController: UIViewController {
     var viewTitle: String!
     var appBar: MDAppBar?
-    
+
+    ///
+    /// Called at viewDidLoad, before setupUI().
+    /// Should be used for preparing data that is needed by UI components.
+    /// However, do notice that this will only be called once in the lifecycle (compared to initOnAppear).
     func willSetupUI() {}
+
+    ///
+    /// Called at viewDidLoad, after willSetupUI().
+    /// Should be used for adding subviews and configuring their layout.
     func setupUI() {}
+
+    ///
+    /// Called at viewDidLoad, after setupUI().
     func didSetupUI() {}
-    func initDataOnAppear() {}
-    
+
+    ///
+    /// Called at viewWillAppear, should be used for initializing data or organizing views for animation.
+    /// Do notice that this will be called every time the view comes into foreground, so you may want to avoid complex actions.
+    func doOnAppear() {}
+
+    ///
+    /// Used for setting up top navigation bar.
+    /// - Parameters:
+    ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
+    ///   - preserveStatus: **true** to reserve space for system status bar, **false** for hiding it
     func setupNavBar(backgroundColor: UIColor, preserveStatus: Bool) {
-        appBar = MDAppBar.initWithTitle(self.viewTitle, backgroundColor: backgroundColor)
+        appBar = MDAppBar.initWithTitle(viewTitle, backgroundColor: backgroundColor)
         appBar?.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         
         view.addSubview(appBar!)
@@ -35,7 +55,11 @@ class MDViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = .white
+        navigationController?.isNavigationBarHidden = true
+        navigationController?.isToolbarHidden = true
+
         willSetupUI()
         setupUI()
         didSetupUI()
@@ -43,10 +67,10 @@ class MDViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        initDataOnAppear()
+        doOnAppear()
     }
     
-    @objc func didTapBack() {
-        self.navigationController?.popViewController(animated: true)
+    @objc private func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
 }

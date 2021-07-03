@@ -15,6 +15,6 @@ class MDNavigationController: UINavigationController, UIGestureRecognizerDelegat
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        viewControllers.count > 1
     }
 }

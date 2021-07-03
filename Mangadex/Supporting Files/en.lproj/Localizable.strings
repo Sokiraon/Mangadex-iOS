@@ -6,6 +6,9 @@
   
 */
 
+"kOK" = "OK";
+"kNo" = "No Thanks";
+
 "kLoginUsername" = "Username";
 "kLoginPassword" = "Password";
 "kLoginUser" = "Login";
@@ -20,3 +23,10 @@
 
 "kVolume" = "Volume";
 "kChapter" = "Chapter";
+
+"kKeychainSaveTitle" = "Save Password";
+"kKeychainSaveMessage" = "Save your credential in Apple Keychain to enable quick login next time.";
+"kSaveSuccess" = "Save successful!";
+"kKeychainSaveError" = "Error, continue without saving";
+"kSavedAccounts" = "Saved Accounts";
+"kSavedAccountsDismiss" = "None of the above";

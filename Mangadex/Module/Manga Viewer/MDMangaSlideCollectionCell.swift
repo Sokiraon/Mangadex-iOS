@@ -23,7 +23,7 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupUI()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -31,9 +31,9 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        self.ivPage.contentMode = .scaleAspectFit
-        contentView.addSubview(self.ivPage)
-        self.ivPage.snp.makeConstraints { make in
+        ivPage.contentMode = .scaleAspectFit
+        contentView.addSubview(ivPage)
+        ivPage.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalTo(MDLayout.screenWidth)
             make.height.equalTo(MDLayout.screenHeight)

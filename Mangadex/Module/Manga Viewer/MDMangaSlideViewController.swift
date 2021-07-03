@@ -46,14 +46,14 @@ class MDMangaSlideViewController: MDViewController {
         
         view.backgroundColor = .black
         
-        view.addSubview(self.appBar!)
-        self.appBar!.snp.makeConstraints { make in
+        view.addSubview(appBar!)
+        appBar!.snp.makeConstraints { make in
             make.top.equalTo(MDLayout.safeAreaInsets(false).top)
             make.left.right.equalToSuperview()
         }
         
-        view.insertSubview(self.vSlider, belowSubview: self.appBar!)
-        self.vSlider.snp.makeConstraints { make in
+        view.insertSubview(vSlider, belowSubview: appBar!)
+        vSlider.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -61,7 +61,7 @@ class MDMangaSlideViewController: MDViewController {
     override func didSetupUI() {
         ProgressHUD.show()
         let client = MDHTTPManager()
-        client.getChapterIdByMangaId(self.mangaId, volume: self.volume, chapter: self.chapter)
+        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: self.chapter)
         { data in
             client.getChapterBaseUrlById(data.id) { url in
                 for name in data.attributes.data {
@@ -86,23 +86,23 @@ class MDMangaSlideViewController: MDViewController {
 extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath) as! MDMangaSlideCollectionCell
-        cell.ivPage.kf.setImage(with: URL(string: self.pages[indexPath.row]))
+        cell.ivPage.kf.setImage(with: URL(string: pages[indexPath.row]))
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.pages.count
+        pages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (self.appBar?.isHidden == true) {
-            self.appBar?.isHidden = false
-            let transform = self.appBar?.transform.translatedBy(x: 0, y: (self.appBar?.frame.height)!)
+        if (appBar?.isHidden == true) {
+            appBar?.isHidden = false
+            let transform = appBar?.transform.translatedBy(x: 0, y: (appBar?.frame.height)!)
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
                 self.appBar?.transform = transform!
             }
         } else {
-            let transform = self.appBar?.transform.translatedBy(x: 0, y: -(self.appBar?.frame.height)!)
+            let transform = appBar?.transform.translatedBy(x: 0, y: -(appBar?.frame.height)!)
             UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
                 self.appBar?.transform = transform!
             } completion: { status in
