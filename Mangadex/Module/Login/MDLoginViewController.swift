@@ -102,6 +102,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     }
 
     @objc func didTapLogin() {
+        view.isUserInteractionEnabled = false
         DispatchQueue.main.async { ProgressHUD.show() }
 
         let username = usernameField.text!
@@ -112,6 +113,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
                 DispatchQueue.main.async {
                     let vc = MDHomeViewController()
                     ProgressHUD.dismiss()
+                    self.view.isUserInteractionEnabled = true
                     if (!self.shouldAutoLogin) {
                         let saveAlert = UIAlertController.initWithTitle("kKeychainSaveTitle".localized(),
                                 message: "kKeychainSaveMessage".localized(), style: .actionSheet,

@@ -8,23 +8,22 @@
 import Foundation
 import UIKit
 import Kingfisher
+import SnapKit
 
-class MDMangaSlideCollectionCell: UICollectionViewCell, UIGestureRecognizerDelegate {
-    lazy var ivPage: UIImageView = {
+class MDMangaSlideCollectionCell: UICollectionViewCell {
+    private lazy var vScroll: UIScrollView = {
+        let view = UIScrollView()
+        view.delegate = self
+        view.minimumZoomScale = 1
+        view.maximumZoomScale = 3
+        view.showsVerticalScrollIndicator = false
+        view.showsHorizontalScrollIndicator = false
+        return view
+    }()
+    private lazy var vScrollContent = UIView()
+    private lazy var ivPage: UIImageView = {
         let iv = UIImageView()
-        iv.isUserInteractionEnabled = true
-
-        let doubleTapRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(doubleTapView(recognizer:)))
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        iv.addGestureRecognizer(doubleTapRecognizer)
-        
-        let pinchRecognizer = UIPinchGestureRecognizer.init(target: self, action: #selector(pinchView(recognizer:)))
-        pinchRecognizer.delegate = self
-        iv.addGestureRecognizer(pinchRecognizer)
-        
-        let panRecognizer = UIPanGestureRecognizer.init(target: self, action: #selector(panView(recognizer:)))
-        panRecognizer.delegate = self
-        iv.addGestureRecognizer(panRecognizer)
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     
@@ -38,8 +37,17 @@ class MDMangaSlideCollectionCell: UICollectionViewCell, UIGestureRecognizerDeleg
     }
     
     private func setupUI() {
-        ivPage.contentMode = .scaleAspectFit
-        contentView.addSubview(ivPage)
+        contentView.addSubview(vScroll)
+        vScroll.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+//        vScroll.addSubview(vScrollContent)
+//        vScrollContent.snp.makeConstraints { (make: ConstraintMaker) in
+//            make.edges.equalToSuperview()
+//        }
+
+        vScroll.addSubview(ivPage)
         ivPage.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalTo(MDLayout.screenWidth)
@@ -47,61 +55,13 @@ class MDMangaSlideCollectionCell: UICollectionViewCell, UIGestureRecognizerDeleg
         }
     }
 
-    @objc func doubleTapView(recognizer: UITapGestureRecognizer) {
-        let view = recognizer.view
-        if ((view?.frame.width)! > MDLayout.screenWidth) {
-            UIView.animate(withDuration: 0.3) {
-                view?.transform = .identity
-                view?.frame.origin = .zero
-            }
-        } else {
-            UIView.animate(withDuration: 0.3) {
-                view?.transform = (view?.transform.scaledBy(x: 2, y: 2))!
-            }
-        }
+    func setImageUrl(_ url: String) {
+        ivPage.kf.setImage(with: URL(string: url))
     }
-    
-    @objc func pinchView(recognizer: UIPinchGestureRecognizer) {
-        let view = recognizer.view
-        if (recognizer.state == .began || recognizer.state == .changed) {
-            view?.transform = (view?.transform.scaledBy(x: recognizer.scale, y: recognizer.scale))!
-            recognizer.scale = 1
-        } else if (recognizer.state == .ended) {
-            if (ivPage.frame.width <= MDLayout.screenWidth) {
-                UIView.animate(withDuration: 0.3) {
-                    view?.transform = .identity
-                }
-            }
-        }
-    }
+}
 
-    var scrollBack: (() -> Void)!
-    var scrollForward: (() -> Void)!
-
-    @objc func panView(recognizer: UIPanGestureRecognizer) {
-        let view = recognizer.view
-        if (recognizer.state == .began || recognizer.state == .changed) {
-            let translation = recognizer.translation(in: view)
-            view?.center = CGPoint(x: (view?.center.x)! + translation.x, y: (view?.center.y)! + translation.y)
-            recognizer.setTranslation(.zero, in: view?.superview)
-        } else if (recognizer.state == .ended) {
-            guard (ivPage.frame.width > MDLayout.screenWidth) else {
-                if (ivPage.frame.origin.x > 0) {
-                    scrollBack()
-                } else {
-                    scrollForward()
-                }
-                return
-            }
-            if (ivPage.frame.origin.x > 0) {
-                UIView.animate(withDuration: 0.3) {
-                    self.ivPage.frame.origin.x = 0
-                }
-            } else if (ivPage.frame.origin.y > 0) {
-                UIView.animate(withDuration: 0.3) {
-                    self.ivPage.frame.origin.y = 0
-                }
-            }
-        }
+extension MDMangaSlideCollectionCell: UIScrollViewDelegate {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        ivPage
     }
 }

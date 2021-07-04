@@ -8,24 +8,28 @@
 import Foundation
 import UIKit
 import ProgressHUD
+import Kingfisher
+import SnapKit
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
     var mangaId: String!
     var volume: String!
     var chapter: String!
-    
     var pages: [String] = []
+
     lazy var vSlider: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: MDLayout.screenWidth, height: MDLayout.screenHeight)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
+        layout.itemSize = MDLayout.screenSize
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.dataSource = self
+        view.isPagingEnabled = true
+        view.contentInsetAdjustmentBehavior = .never
         view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
 
         let tapRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(showHideAppBar(recognizer: )))
@@ -56,7 +60,8 @@ class MDMangaSlideViewController: MDViewController {
         
         view.insertSubview(vSlider, belowSubview: appBar!)
         vSlider.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.left.right.centerY.equalToSuperview()
+            make.height.equalTo(MDLayout.screenHeight)
         }
     }
     
@@ -105,19 +110,7 @@ extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionView
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath)
                 as! MDMangaSlideCollectionCell
-        cell.ivPage.kf.setImage(with: URL(string: pages[indexPath.row]))
-        cell.scrollBack = {
-            if (indexPath.row > 0) {
-                let newIndex = IndexPath(row: indexPath.row - 1, section: 1)
-                collectionView.scrollToItem(at: newIndex, at: .centeredHorizontally, animated: true)
-            }
-        }
-        cell.scrollForward = {
-            if (indexPath.row < self.pages.count) {
-                let newIndex = IndexPath(row: indexPath.row + 1, section: 1)
-                collectionView.scrollToItem(at: newIndex, at: .centeredHorizontally, animated: true)
-            }
-        }
+        cell.setImageUrl(pages[indexPath.row])
         return cell
     }
     

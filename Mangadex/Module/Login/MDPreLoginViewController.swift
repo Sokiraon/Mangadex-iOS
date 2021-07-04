@@ -25,6 +25,12 @@ class MDPreLoginAccountView: UICollectionViewCell {
     }
 
     private func setupUI() {
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.snp.makeConstraints { (make: ConstraintMaker) in
+            make.edges.equalTo(0)
+            make.width.equalTo(100)
+        }
+
         contentView.addSubview(ivAvatar)
         ivAvatar.snp.makeConstraints { (make: ConstraintMaker) in
             make.width.height.equalTo(100)
