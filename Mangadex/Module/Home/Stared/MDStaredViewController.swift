@@ -31,10 +31,10 @@ class MDStaredViewController: MDViewController {
                     self.vTable.mj_header?.endRefreshing()
                 }
             } onError: {
-                DispatchQueue.main.async {
-                    ProgressHUD.showError()
-                }
                 self.vTable.mj_header?.endRefreshing()
+                DispatchQueue.main.async {
+                    self.alertForLogin()
+                }
             }
     }
     private lazy var refreshFooter = MJRefreshBackNormalFooter() {
@@ -46,26 +46,38 @@ class MDStaredViewController: MDViewController {
                     self.vTable.mj_footer?.endRefreshing()
                 }
             } onError: {
-                DispatchQueue.main.async {
-                    ProgressHUD.showError()
-                }
                 self.vTable.mj_footer?.endRefreshing()
+                DispatchQueue.main.async {
+                    self.alertForLogin()
+                }
             }
+    }
+
+    private func alertForLogin() {
+        let alert = UIAlertController.initWithTitle("kWarning".localized(),
+                message: "kLoginRequired".localized(), style: .alert,
+                actions:
+                AlertViewAction(title: "kOk".localized(), style: .default) { action in
+                    let vc = MDPreLoginViewController()
+                    self.navigationController?.pushViewController(vc, animated: true)
+                },
+                AlertViewAction(title: "kNo".localized(), style: .default, handler: nil))
+        present(alert, animated: true)
     }
     
     // initialize
     override func setupUI() {
-        self.view.addSubview(self.vTable)
-        self.vTable.snp.makeConstraints { make in
+        view.addSubview(vTable)
+        vTable.snp.makeConstraints { make in
             make.top.equalTo(MDLayout.safeAreaInsets(true).top)
             make.left.right.bottom.equalToSuperview()
         }
     }
     
     override func didSetupUI() {
-        self.vTable.mj_header = refreshHeader
-        self.vTable.mj_footer = refreshFooter
-        self.vTable.mj_footer?.isHidden = true
+        vTable.mj_header = refreshHeader
+        vTable.mj_footer = refreshFooter
+        vTable.mj_footer?.isHidden = true
         
         refreshHeader.beginRefreshing()
     }
@@ -74,7 +86,7 @@ class MDStaredViewController: MDViewController {
 // MARK: - tableView delegate
 extension MDStaredViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mangaList.count
+        mangaList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -91,7 +103,7 @@ extension MDStaredViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0
+        110.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -100,6 +112,6 @@ extension MDStaredViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = MDMangaDetailViewController
             .initWithMangaItem(mangaList[indexPath.row],
                                title: (cell as! MDMangaTableCell).titleLabel.text!)
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

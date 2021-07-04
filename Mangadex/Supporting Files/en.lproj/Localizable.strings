@@ -6,8 +6,9 @@
   
 */
 
-"kOK" = "OK";
+"kOk" = "OK";
 "kNo" = "No Thanks";
+"kWarning" = "Warning";
 
 "kLoginUsername" = "Username";
 "kLoginPassword" = "Password";
@@ -30,3 +31,4 @@
 "kKeychainSaveError" = "Error, continue without saving";
 "kSavedAccounts" = "Saved Accounts";
 "kSavedAccountsDismiss" = "None of the above";
+"kLoginRequired" = "Oops, seems that you aren't logged in. Please log in first.";

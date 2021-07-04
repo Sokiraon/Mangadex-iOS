@@ -26,8 +26,10 @@ class MDMangaSlideViewController: MDViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.dataSource = self
-        view.isPagingEnabled = true
         view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
+
+        let tapRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(showHideAppBar(recognizer: )))
+        view.addGestureRecognizer(tapRecognizer)
         return view
     }()
     
@@ -61,8 +63,7 @@ class MDMangaSlideViewController: MDViewController {
     override func didSetupUI() {
         ProgressHUD.show()
         let client = MDHTTPManager()
-        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: self.chapter)
-        { data in
+        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: self.chapter) { data in
             client.getChapterBaseUrlById(data.id) { url in
                 for name in data.attributes.data {
                     self.pages.append("\(url)/data/\(data.attributes.chapterHash!)/\(name)")
@@ -80,21 +81,8 @@ class MDMangaSlideViewController: MDViewController {
             }
         }
     }
-}
 
-// MARK: - collectionView
-extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath) as! MDMangaSlideCollectionCell
-        cell.ivPage.kf.setImage(with: URL(string: pages[indexPath.row]))
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pages.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    @objc private func showHideAppBar(recognizer: UITapGestureRecognizer) {
         if (appBar?.isHidden == true) {
             appBar?.isHidden = false
             let transform = appBar?.transform.translatedBy(x: 0, y: (appBar?.frame.height)!)
@@ -109,5 +97,31 @@ extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionView
                 self.appBar?.isHidden = true
             }
         }
+    }
+}
+
+// MARK: - collectionView
+extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath)
+                as! MDMangaSlideCollectionCell
+        cell.ivPage.kf.setImage(with: URL(string: pages[indexPath.row]))
+        cell.scrollBack = {
+            if (indexPath.row > 0) {
+                let newIndex = IndexPath(row: indexPath.row - 1, section: 1)
+                collectionView.scrollToItem(at: newIndex, at: .centeredHorizontally, animated: true)
+            }
+        }
+        cell.scrollForward = {
+            if (indexPath.row < self.pages.count) {
+                let newIndex = IndexPath(row: indexPath.row + 1, section: 1)
+                collectionView.scrollToItem(at: newIndex, at: .centeredHorizontally, animated: true)
+            }
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        pages.count
     }
 }

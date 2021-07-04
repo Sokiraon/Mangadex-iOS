@@ -116,7 +116,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
                         let saveAlert = UIAlertController.initWithTitle("kKeychainSaveTitle".localized(),
                                 message: "kKeychainSaveMessage".localized(), style: .actionSheet,
                                 actions:
-                                AlertViewAction(title: "kOK".localized(), style: .default) { action in
+                                AlertViewAction(title: "kOk".localized(), style: .default) { action in
                                     MDKeychain.add(username: username, password: password, onSuccess: {
                                         Loaf("kSaveSuccess".localized(), state: .success, sender: self).show(.short) { reason in
                                             self.navigationController?.pushViewController(vc, animated: true)

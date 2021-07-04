@@ -30,6 +30,7 @@ class MDPreLoginAccountView: UICollectionViewCell {
             make.width.height.equalTo(100)
             make.top.left.right.equalToSuperview()
         }
+        ivAvatar.layer.cornerRadius = 50
 
         contentView.addSubview(lblName)
         lblName.snp.makeConstraints { (make: ConstraintMaker) in
