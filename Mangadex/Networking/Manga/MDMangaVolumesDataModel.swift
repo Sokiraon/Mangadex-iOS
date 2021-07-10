@@ -19,7 +19,7 @@ class MDMangaVolumeItem: NSObject, YYModel {
     @objc var chapters: [String: MDMangaChapterItem]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        return ["chapters": MDMangaChapterItem.classForCoder()]
+        ["chapters": MDMangaChapterItem.classForCoder()]
     }
 }
 
@@ -27,6 +27,6 @@ class MDMangaVolumesDataModel: NSObject, YYModel {
     @objc var volumes: [String: MDMangaVolumeItem]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        return ["volumes": MDMangaVolumeItem.classForCoder()]
+        ["volumes": MDMangaVolumeItem.classForCoder()]
     }
 }

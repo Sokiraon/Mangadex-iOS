@@ -32,3 +32,6 @@
 "kSavedAccounts" = "Saved Accounts";
 "kSavedAccountsDismiss" = "None of the above";
 "kLoginRequired" = "Oops, seems that you aren't logged in. Please log in first.";
+
+"kDescription" = "Description";
+"kTags" = "Tags";

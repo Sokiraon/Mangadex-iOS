@@ -43,4 +43,12 @@ class MDLayout {
     static var screenSize = UIApplication.shared.windows[0].bounds.size
     static var screenWidth = screenSize.width
     static var screenHeight = screenSize.height
+    
+    static func vh(_ value: CGFloat) -> CGFloat {
+        screenHeight * value / 100
+    }
+    
+    static func vw(_ value: CGFloat) -> CGFloat {
+        screenWidth * value / 100
+    }
 }

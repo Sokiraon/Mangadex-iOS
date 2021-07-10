@@ -26,10 +26,12 @@
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
 		00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */; };
+		390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */; };
 		390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */; };
 		390E78E9EFC498B08F7969EF /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D12F5757BFCDD41DB4E /* UIButton+Ext.swift */; };
 		390E7A55E702F87DC4EAB257 /* MDKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E756BDFB0EA839C22FD01 /* MDKeychain.swift */; };
 		390E7B771296880C6F0374AC /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E751213E73CC4F062251F /* UIAlertController+Ext.swift */; };
+		390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */; };
 		7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */; };
 		7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */; };
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
@@ -99,8 +101,10 @@
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaTableCell.swift; sourceTree = "<group>"; };
+		390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDShortTapGestureRecognizer.swift; sourceTree = "<group>"; };
 		390E751213E73CC4F062251F /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		390E756BDFB0EA839C22FD01 /* MDKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDKeychain.swift; sourceTree = "<group>"; };
+		390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMangaTagDataModel.swift; sourceTree = "<group>"; };
 		390E7D12F5757BFCDD41DB4E /* UIButton+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPreLoginViewController.swift; sourceTree = "<group>"; };
 		7A53407826886258003CE4C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				00363097266F67590058BE25 /* Navigation */,
 				00363094266F5BC40058BE25 /* ViewController */,
 				00FC838C2663414C00AB0586 /* Table */,
+				390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -386,6 +391,7 @@
 				7A89D9BE267DB8AF00E41147 /* MDHTTPManager+Manga.swift */,
 				7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */,
 				7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */,
+				390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */,
 			);
 			path = Manga;
 			sourceTree = "<group>";
@@ -669,6 +675,8 @@
 				390E7B771296880C6F0374AC /* UIAlertController+Ext.swift in Sources */,
 				390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */,
 				390E78E9EFC498B08F7969EF /* UIButton+Ext.swift in Sources */,
+				390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */,
+				390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

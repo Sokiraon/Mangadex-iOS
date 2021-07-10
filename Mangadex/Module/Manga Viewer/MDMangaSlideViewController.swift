@@ -10,6 +10,7 @@ import UIKit
 import ProgressHUD
 import Kingfisher
 import SnapKit
+import Darwin
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
@@ -17,8 +18,8 @@ class MDMangaSlideViewController: MDViewController {
     var volume: String!
     var chapter: String!
     var pages: [String] = []
-
-    lazy var vSlider: UICollectionView = {
+    
+    lazy var vPages: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 0
@@ -31,11 +32,28 @@ class MDMangaSlideViewController: MDViewController {
         view.isPagingEnabled = true
         view.contentInsetAdjustmentBehavior = .never
         view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
-
-        let tapRecognizer = UITapGestureRecognizer.init(target: self, action: #selector(showHideAppBar(recognizer: )))
+    
+        let tapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleSingleTap(_ :)))
+        tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.delegate = self
         view.addGestureRecognizer(tapRecognizer)
+        
+        let doubleTapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleDoubleTap( _ :)))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapRecognizer)
+        
+        tapRecognizer.require(toFail: doubleTapRecognizer)
+        
         return view
     }()
+    
+    lazy var vSlider: UISlider = {
+        let slider = UISlider()
+        slider.addTarget(self, action: #selector(handleSliderChange), for: .valueChanged)
+        return slider
+    }()
+    
+    let vBottomControl = UIView()
     
     // MARK: - initialize
     static func initWithMangaId(_ id: String, volume: String, chapter: String) -> MDMangaSlideViewController {
@@ -58,63 +76,130 @@ class MDMangaSlideViewController: MDViewController {
             make.left.right.equalToSuperview()
         }
         
-        view.insertSubview(vSlider, belowSubview: appBar!)
-        vSlider.snp.makeConstraints { make in
+        view.insertSubview(vPages, belowSubview: appBar!)
+        vPages.snp.makeConstraints { make in
             make.left.right.centerY.equalToSuperview()
             make.height.equalTo(MDLayout.screenHeight)
+        }
+        
+        view.insertSubview(vBottomControl, aboveSubview: vPages)
+        vBottomControl.snp.makeConstraints { (make: ConstraintMaker) in
+            make.left.right.bottom.equalToSuperview()
+        }
+        
+        vBottomControl.addSubview(vSlider)
+        vSlider.snp.makeConstraints { (make: ConstraintMaker) in
+            make.top.equalToSuperview().inset(15)
+            make.left.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(MDLayout.safeInsetBottom)
         }
     }
     
     override func didSetupUI() {
         ProgressHUD.show()
         let client = MDHTTPManager()
-        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: self.chapter) { data in
+        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: chapter) { data in
             client.getChapterBaseUrlById(data.id) { url in
                 for name in data.attributes.data {
                     self.pages.append("\(url)/data/\(data.attributes.chapterHash!)/\(name)")
                 }
                 DispatchQueue.main.async {
-                    self.vSlider.reloadData()
-                    let transform = self.appBar?.transform.translatedBy(x: 0, y: -(self.appBar?.frame.height)!)
-                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
-                        self.appBar?.transform = transform!
-                    } completion: { status in
-                        self.appBar?.isHidden = true
-                    }
+                    self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
+                    self.vPages.reloadData()
+                    self.showHideControlArea()
                     ProgressHUD.dismiss()
                 }
             }
         }
     }
-
-    @objc private func showHideAppBar(recognizer: UITapGestureRecognizer) {
+    
+    @objc private func handleSingleTap(_ recognizer: MDShortTapGestureRecognizer) {
+        let touchPointX = recognizer.location(in: view).x
+        let screenWidth = MDLayout.screenWidth
+        let leftEdge = screenWidth / 2 - MDLayout.vw(15)
+        let rightEdge = screenWidth / 2 + MDLayout.vw(15)
+        if (touchPointX >= leftEdge && touchPointX <= rightEdge) {
+            showHideControlArea()
+        } else {
+            let contentOffset = vPages.contentOffset
+            if (touchPointX < leftEdge && contentOffset.x >= screenWidth) {
+                vPages.contentOffset = CGPoint(x: contentOffset.x - screenWidth, y: contentOffset.y)
+            } else if (touchPointX > rightEdge && contentOffset.x < vPages.contentSize.width - screenWidth) {
+                vPages.contentOffset = CGPoint(x: contentOffset.x + screenWidth, y: contentOffset.y)
+            }
+        }
+    }
+    
+    @objc private func handleDoubleTap(_ recognizer: MDShortTapGestureRecognizer) {
+        let cells = vPages.visibleCells
+        (cells[0] as! MDMangaSlideCollectionCell).handleTapGesture(recognizer)
+    }
+    
+    private func showHideControlArea() {
         if (appBar?.isHidden == true) {
             appBar?.isHidden = false
+            vBottomControl.isHidden = false
             let transform = appBar?.transform.translatedBy(x: 0, y: (appBar?.frame.height)!)
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.appBar?.transform = transform!
+                self.vBottomControl.transform = self.vBottomControl.transform
+                        .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
             }
         } else {
             let transform = appBar?.transform.translatedBy(x: 0, y: -(appBar?.frame.height)!)
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.appBar?.transform = transform!
+                self.vBottomControl.transform = self.vBottomControl.transform
+                        .translatedBy(x: 0, y: self.vBottomControl.frame.height)
             } completion: { status in
                 self.appBar?.isHidden = true
+                self.vBottomControl.isHidden = true
+            }
+        }
+    }
+    
+    @objc private func handleSliderChange() {
+        let newValue = vSlider.value
+        if (newValue < 1) {
+            let newIndex = floor(newValue * Float(pages.count))
+            let targetOffsetX = MDLayout.screenWidth * CGFloat(newIndex)
+            let currentOffsetX = vPages.contentOffset.x
+            if (targetOffsetX != currentOffsetX) {
+                vPages.contentOffset = CGPoint(x: targetOffsetX, y: 0)
             }
         }
     }
 }
 
 // MARK: - collectionView
-extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath)
-                as! MDMangaSlideCollectionCell
+                   as! MDMangaSlideCollectionCell
         cell.setImageUrl(pages[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         pages.count
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        (cell as! MDMangaSlideCollectionCell).resetScale()
+        if (vSlider.state != .highlighted) {
+            vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth) / CGFloat(pages.count))
+        }
+        if (vBottomControl.isHidden == false) {
+            showHideControlArea()
+        }
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if (otherGestureRecognizer is UIPanGestureRecognizer ||
+            otherGestureRecognizer is MDShortTapGestureRecognizer) {
+            return true
+        } else {
+            return false
+        }
     }
 }

@@ -37,13 +37,19 @@ extension MDHTTPManager {
                                 break
                             }
                         }
+                        var tags: [String] = []
+                        for tag in manga.data.attributes.tags {
+                            tags.append(tag.attributes.name.en)
+                        }
                         result.append(
                             MangaItem(
                                 id: manga.data.id,
                                 title: manga.data.attributes.title.en,
                                 authorId: authorId,
                                 artistId: artistId,
-                                coverId: coverId
+                                coverId: coverId,
+                                description: manga.data.attributes.descript.en,
+                                tags: tags
                             )
                         )
                     }

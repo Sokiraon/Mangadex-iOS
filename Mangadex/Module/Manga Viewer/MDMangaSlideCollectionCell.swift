@@ -20,7 +20,6 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
         view.showsHorizontalScrollIndicator = false
         return view
     }()
-    private lazy var vScrollContent = UIView()
     private lazy var ivPage: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -41,12 +40,7 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
         vScroll.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
-//        vScroll.addSubview(vScrollContent)
-//        vScrollContent.snp.makeConstraints { (make: ConstraintMaker) in
-//            make.edges.equalToSuperview()
-//        }
-
+        
         vScroll.addSubview(ivPage)
         ivPage.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -54,9 +48,29 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
             make.height.equalTo(MDLayout.screenHeight)
         }
     }
-
+    
     func setImageUrl(_ url: String) {
         ivPage.kf.setImage(with: URL(string: url))
+    }
+    
+    @objc func handleTapGesture(_ gesture: MDShortTapGestureRecognizer) {
+        if vScroll.zoomScale > 1 {
+            vScroll.setZoomScale(1, animated: true)
+        } else {
+            let touchPoint = gesture.location(in: ivPage)
+            let newScale: CGFloat = 2.0
+            let width = contentView.frame.width / newScale
+            let height = contentView.frame.height / newScale
+            vScroll.zoom(
+                    to: CGRect(x: touchPoint.x - width / 2, y: touchPoint.y - height / 2,
+                               width: width, height: height),
+                    animated: true
+            )
+        }
+    }
+    
+    func resetScale() {
+        vScroll.setZoomScale(1, animated: false)
     }
 }
 

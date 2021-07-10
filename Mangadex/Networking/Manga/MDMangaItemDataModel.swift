@@ -8,15 +8,25 @@
 import Foundation
 import YYModel
 
-class MDMangaLanguageString: NSObject {
+class MDMangaMultiLanguageObject: NSObject {
     @objc var en: String!
 }
 
-class MDMangaItemAttributes: NSObject {
-    @objc var title: MDMangaLanguageString!
-    @objc var descript: MDMangaLanguageString!
+class MDMangaItemAttributes: NSObject, YYModel {
+    @objc var title: MDMangaMultiLanguageObject!
+    @objc var descript: MDMangaMultiLanguageObject!
+    @objc var status: String!
+    @objc var tags: [MDMangaTagDataModel]!
     @objc var lastVolume: String?
     @objc var lastChapter: String?
+
+    class func modelCustomPropertyMapper() -> [String: Any]? {
+        ["descript": "description"]
+    }
+
+    class func modelContainerPropertyGenericClass() -> [String: Any]? {
+        ["tags": MDMangaTagDataModel.classForCoder()]
+    }
 }
 
 class MDMangaItemRelationship: NSObject {
@@ -34,6 +44,6 @@ class MDMangaItemDataModel: NSObject, YYModel {
     @objc var relationships: [MDMangaItemRelationship]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        return ["relationships": MDMangaItemRelationship.classForCoder()]
+        ["relationships": MDMangaItemRelationship.classForCoder()]
     }
 }

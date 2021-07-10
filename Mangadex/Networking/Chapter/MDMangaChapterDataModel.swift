@@ -14,11 +14,11 @@ class MDMangaChapterAttributes: NSObject, YYModel {
     @objc var dataSaver: [String]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        return ["data": String.self, "dataSaver": String.self]
+        ["data": String.self, "dataSaver": String.self]
     }
     
     static func modelCustomPropertyMapper() -> [String : Any]? {
-        return ["chapterHash": "hash"]
+        ["chapterHash": "hash"]
     }
 }
 

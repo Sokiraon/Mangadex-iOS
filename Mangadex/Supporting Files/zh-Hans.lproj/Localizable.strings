@@ -31,3 +31,6 @@
 "kSavedAccounts" = "已保存的账号";
 "kSavedAccountsDismiss" = "跳过";
 "kLoginRequired" = "您还没有登录，请先登录后再继续操作";
+
+"kDescription" = "简介";
+"kTags" = "标签";

@@ -15,6 +15,8 @@ struct MangaItem {
     var authorId: String
     var artistId: String
     var coverId: String
+    var description: String
+    var tags: [String]
 }
 
 class MDMangaTableCell: UITableViewCell {
@@ -32,7 +34,7 @@ class MDMangaTableCell: UITableViewCell {
     // MARK: - initialize
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.initCell()
+        initCell()
     }
     
     required init?(coder: NSCoder) {
@@ -72,7 +74,7 @@ class MDMangaTableCell: UITableViewCell {
     
     // MARK: - methods
     func setContentWithItem(_ item: MangaItem) {
-        self.titleLabel.text = item.title
+        titleLabel.text = item.title
         MDHTTPManager()
             .getMangaCoverUrlById(item.coverId, forManga: item.id) { url in
                 DispatchQueue.main.async {

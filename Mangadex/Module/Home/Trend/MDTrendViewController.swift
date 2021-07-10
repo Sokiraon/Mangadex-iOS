@@ -13,17 +13,17 @@ import MJRefresh
 class MDTrendViewController: MDViewController {
     // initialize
     override func setupUI() {
-        self.view.addSubview(self.vTable)
-        self.vTable.snp.makeConstraints { make in
+        view.addSubview(vTable)
+        vTable.snp.makeConstraints { make in
             make.top.equalTo(MDLayout.safeAreaInsets(true).top)
             make.left.right.bottom.equalToSuperview()
         }
     }
     
     override func didSetupUI() {
-        self.vTable.mj_header = refreshHeader
-        self.vTable.mj_footer = refreshFooter
-        self.vTable.mj_footer?.isHidden = true
+        vTable.mj_header = refreshHeader
+        vTable.mj_footer = refreshFooter
+        vTable.mj_footer?.isHidden = true
         
         refreshHeader.beginRefreshing()
     }
@@ -38,7 +38,7 @@ class MDTrendViewController: MDViewController {
     
     private lazy var mangaList: [MangaItem] = []
     
-    private lazy var refreshHeader = MJRefreshNormalHeader() {
+    private lazy var refreshHeader = MJRefreshNormalHeader {
         MDHTTPManager.getInstance()
             .getMangaListWithParams([:]) { data in
                 self.mangaList = data
@@ -54,7 +54,7 @@ class MDTrendViewController: MDViewController {
                 self.vTable.mj_header?.endRefreshing()
             }
     }
-    private lazy var refreshFooter = MJRefreshBackNormalFooter() {
+    private lazy var refreshFooter = MJRefreshBackNormalFooter {
         MDHTTPManager.getInstance()
             .getMangaListWithParams(["offset": self.mangaList.count, "limit": 5]) { data in
                 self.mangaList.append(contentsOf: data)
@@ -74,7 +74,7 @@ class MDTrendViewController: MDViewController {
 // MARK: - tableView delegate
 extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return mangaList.count
+        mangaList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -85,13 +85,13 @@ extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         if (!tableView.isDragging) {
-            (cell as! MDMangaTableCell).setContentWithItem(self.mangaList[indexPath.row])
+            (cell as! MDMangaTableCell).setContentWithItem(mangaList[indexPath.row])
         }
         return cell!
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110.0
+        110.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -100,6 +100,6 @@ extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = MDMangaDetailViewController
             .initWithMangaItem(mangaList[indexPath.row],
                                title: (cell as! MDMangaTableCell).titleLabel.text!)
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
