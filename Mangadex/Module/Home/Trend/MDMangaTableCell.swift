@@ -28,8 +28,8 @@ class MDMangaTableCell: UITableViewCell {
     }()
     
     var titleLabel = UILabel.initWithText("N/A", ofFontWeight: .medium, andSize: 18)
-    var authorLabel = UILabel.initWithText("Author: Unknown", ofFontWeight: .regular, andSize: 15)
-    var artistLabel = UILabel.initWithText("Artist: Unknown", ofFontWeight: .regular, andSize: 15)
+    var authorLabel = UILabel.initWithText("kAuthorUnknown".localized(), ofFontWeight: .regular, andSize: 15)
+    var artistLabel = UILabel.initWithText("kArtistUnknown".localized(), ofFontWeight: .regular, andSize: 15)
     
     // MARK: - initialize
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -84,13 +84,13 @@ class MDMangaTableCell: UITableViewCell {
         MDHTTPManager()
             .getAuthorNameById(item.authorId) { author in
                 DispatchQueue.main.async {
-                    self.authorLabel.text = "Author: \(author)"
+                    self.authorLabel.text = "\("kAuthor".localized()) \(author)"
                 }
             }
         MDHTTPManager()
             .getAuthorNameById(item.artistId) { artist in
                 DispatchQueue.main.async {
-                    self.artistLabel.text = "Artist: \(artist)"
+                    self.artistLabel.text = "\("kArtist".localized()) \(artist)"
                 }
             }
     }

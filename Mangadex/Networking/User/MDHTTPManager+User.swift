@@ -48,7 +48,7 @@ extension MDHTTPManager {
                                 authorId: authorId,
                                 artistId: artistId,
                                 coverId: coverId,
-                                description: manga.data.attributes.descript.en,
+                                description: manga.data.attributes.descript.getLocaledStr(),
                                 tags: tags
                             )
                         )

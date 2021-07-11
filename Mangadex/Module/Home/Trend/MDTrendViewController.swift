@@ -40,34 +40,34 @@ class MDTrendViewController: MDViewController {
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         MDHTTPManager.getInstance()
-            .getMangaListWithParams([:]) { data in
-                self.mangaList = data
-                DispatchQueue.main.async {
-                    self.refreshFooter.isHidden = false
-                    self.vTable.reloadData()
+                .getMangaListWithParams([:]) { data in
+                    self.mangaList = data
+                    DispatchQueue.main.async {
+                        self.refreshFooter.isHidden = false
+                        self.vTable.reloadData()
+                        self.vTable.mj_header?.endRefreshing()
+                    }
+                } onError: {
+                    DispatchQueue.main.async {
+                        ProgressHUD.showError()
+                    }
                     self.vTable.mj_header?.endRefreshing()
                 }
-            } onError: {
-                DispatchQueue.main.async {
-                    ProgressHUD.showError()
-                }
-                self.vTable.mj_header?.endRefreshing()
-            }
     }
     private lazy var refreshFooter = MJRefreshBackNormalFooter {
         MDHTTPManager.getInstance()
-            .getMangaListWithParams(["offset": self.mangaList.count, "limit": 5]) { data in
-                self.mangaList.append(contentsOf: data)
-                DispatchQueue.main.async {
-                    self.vTable.reloadData()
+                .getMangaListWithParams(["offset": self.mangaList.count, "limit": 5]) { data in
+                    self.mangaList.append(contentsOf: data)
+                    DispatchQueue.main.async {
+                        self.vTable.reloadData()
+                        self.vTable.mj_footer?.endRefreshing()
+                    }
+                } onError: {
+                    DispatchQueue.main.async {
+                        ProgressHUD.showError()
+                    }
                     self.vTable.mj_footer?.endRefreshing()
                 }
-            } onError: {
-                DispatchQueue.main.async {
-                    ProgressHUD.showError()
-                }
-                self.vTable.mj_footer?.endRefreshing()
-            }
     }
 }
 
@@ -98,8 +98,8 @@ extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.cellForRow(at: indexPath)
         cell?.setSelected(false, animated: true)
         let vc = MDMangaDetailViewController
-            .initWithMangaItem(mangaList[indexPath.row],
-                               title: (cell as! MDMangaTableCell).titleLabel.text!)
+                .initWithMangaItem(mangaList[indexPath.row],
+                                   title: (cell as! MDMangaTableCell).titleLabel.text!)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

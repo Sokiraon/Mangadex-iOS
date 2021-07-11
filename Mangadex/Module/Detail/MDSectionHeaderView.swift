@@ -8,21 +8,19 @@
 import Foundation
 import UIKit
 
-class MDMangaChapterSectionHeader: UICollectionReusableView {
+class MDSectionHeaderView: UIView {
     
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.setupUI()
+    static func initWithTitle(_ title: String) -> MDSectionHeaderView {
+        let view = self.init()
+        view.lblSection.text = title
+        view.setupUI()
+        return view
     }
     
     func setupUI() {
         addSubview(lblSection)
         lblSection.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(10)
+            make.top.equalToSuperview()
             make.left.equalToSuperview().inset(10)
         }
         

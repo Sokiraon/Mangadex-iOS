@@ -8,8 +8,19 @@
 import Foundation
 import YYModel
 
-class MDMangaMultiLanguageObject: NSObject {
+class MDMangaMultiLanguageObject: NSObject, YYModel {
     @objc var en: String!
+    @objc var jp: String?
+    @objc var zh: String?
+    @objc var zhHk: String?
+    
+    func getLocaledStr() -> String {
+        value(forKey: MDLocale.propertySafeLocale()) as? String ?? en
+    }
+    
+    class func modelCustomPropertyMapper() -> [String: Any]? {
+        ["zhHk": "zh-hk"]
+    }
 }
 
 class MDMangaItemAttributes: NSObject, YYModel {

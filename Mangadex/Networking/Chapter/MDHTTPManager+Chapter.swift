@@ -7,20 +7,31 @@
 
 import Foundation
 import SwiftyJSON
+import YYModel
+
+enum Order: String {
+    case ASC = "asc"
+    case DESC = "desc"
+}
 
 extension MDHTTPManager {
-    func getChapterIdByMangaId(_ mangaId: String,
-                               volume: String,
-                               chapter: String,
-                               onSuccess success: @escaping (_ model: MDMangaChapterDataModel) -> Void,
-                               onError error: (() -> Void)? = nil) {
-        self.get("/chapter",
+    func getChaptersByMangaId(_ mangaId: String,
+                              offset: Int,
+                              locale: String,
+                              order: Order,
+                              onSuccess success: @escaping (_ models: [MDMangaChapterDataModel], _ total: Int) -> Void,
+                              onError error: (() -> Void)? = nil) {
+        self.get("/manga/\(mangaId)/feed",
                  ofType: .HostTypeApi,
-                 withParams: ["manga": mangaId, "volume": volume, "chapter": chapter]) { json in
+                 withParams: [
+                     "offset": offset,
+                     "translatedLanguage[]": locale,
+                     "order[chapter]": order.rawValue
+                 ]) { json in
+            let total = json["total"] as! Int
             let results = json["results"] as! Array<[String: Any]>
-            let data = results[0]["data"] as! [String: Any]
-            let model = MDMangaChapterDataModel.yy_model(with: data)
-            success(model!)
+            let models = NSArray.yy_modelArray(with: MDMangaChapterDataModel.classForCoder(), json: results)
+            success(models as! [MDMangaChapterDataModel], total)
         } onError: {
             if (error != nil) {
                 error!()
@@ -43,6 +54,5 @@ extension MDHTTPManager {
                 error!()
             }
         }
-
     }
 }

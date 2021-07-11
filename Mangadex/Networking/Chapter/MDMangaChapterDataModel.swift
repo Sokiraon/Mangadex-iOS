@@ -9,6 +9,9 @@ import Foundation
 import YYModel
 
 class MDMangaChapterAttributes: NSObject, YYModel {
+    @objc var volume: String?
+    @objc var chapter: String!
+    @objc var title: String?
     @objc var chapterHash: String!
     @objc var data: [String]!
     @objc var dataSaver: [String]!
@@ -22,7 +25,11 @@ class MDMangaChapterAttributes: NSObject, YYModel {
     }
 }
 
-class MDMangaChapterDataModel: NSObject {
+class MDMangaChapterData: NSObject {
     @objc var id: String!
     @objc var attributes: MDMangaChapterAttributes!
+}
+
+class MDMangaChapterDataModel: NSObject {
+    @objc var data: MDMangaChapterData!
 }

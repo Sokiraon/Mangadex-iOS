@@ -14,10 +14,8 @@ import Darwin
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
-    var mangaId: String!
-    var volume: String!
-    var chapter: String!
     var pages: [String] = []
+    var dataModel: MDMangaChapterDataModel!
     
     lazy var vPages: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -32,13 +30,13 @@ class MDMangaSlideViewController: MDViewController {
         view.isPagingEnabled = true
         view.contentInsetAdjustmentBehavior = .never
         view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
-    
-        let tapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleSingleTap(_ :)))
+        
+        let tapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleSingleTap(_:)))
         tapRecognizer.numberOfTapsRequired = 1
         tapRecognizer.delegate = self
         view.addGestureRecognizer(tapRecognizer)
         
-        let doubleTapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleDoubleTap( _ :)))
+        let doubleTapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         view.addGestureRecognizer(doubleTapRecognizer)
         
@@ -56,12 +54,14 @@ class MDMangaSlideViewController: MDViewController {
     let vBottomControl = UIView()
     
     // MARK: - initialize
-    static func initWithMangaId(_ id: String, volume: String, chapter: String) -> MDMangaSlideViewController {
+    static func initWithChapterData(_ dataModel: MDMangaChapterDataModel) -> MDMangaSlideViewController {
         let vc = MDMangaSlideViewController()
-        vc.viewTitle = "\("kVolume".localized()) \(volume) - \(chapter) \("kChapter".localized())"
-        vc.mangaId = id
-        vc.volume = volume
-        vc.chapter = chapter
+        if (dataModel.data.attributes.title == nil || dataModel.data.attributes.title == "") {
+            vc.viewTitle = "\(dataModel.data.attributes.chapter!) \("kChapter".localized())"
+        } else {
+            vc.viewTitle = dataModel.data.attributes.title!
+        }
+        vc.dataModel = dataModel
         return vc
     }
     
@@ -97,20 +97,20 @@ class MDMangaSlideViewController: MDViewController {
     
     override func didSetupUI() {
         ProgressHUD.show()
-        let client = MDHTTPManager()
-        client.getChapterIdByMangaId(mangaId, volume: volume, chapter: chapter) { data in
-            client.getChapterBaseUrlById(data.id) { url in
-                for name in data.attributes.data {
-                    self.pages.append("\(url)/data/\(data.attributes.chapterHash!)/\(name)")
+        MDHTTPManager.getInstance()
+                .getChapterBaseUrlById(dataModel.data.id) { url in
+                    for fileName in self.dataModel.data.attributes.data {
+                        self.pages.append(
+                                "\(url)/data/\(self.dataModel.data.attributes.chapterHash!)/\(fileName)"
+                        )
+                    }
+                    DispatchQueue.main.async {
+                        self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
+                        self.vPages.reloadData()
+                        self.showHideControlArea()
+                        ProgressHUD.dismiss()
+                    }
                 }
-                DispatchQueue.main.async {
-                    self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
-                    self.vPages.reloadData()
-                    self.showHideControlArea()
-                    ProgressHUD.dismiss()
-                }
-            }
-        }
     }
     
     @objc private func handleSingleTap(_ recognizer: MDShortTapGestureRecognizer) {

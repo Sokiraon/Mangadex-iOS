@@ -33,5 +33,9 @@
 "kSavedAccountsDismiss" = "None of the above";
 "kLoginRequired" = "Oops, seems that you aren't logged in. Please log in first.";
 
+"kAuthor" = "Author:";
+"kAuthorUnknown" = "Author: Unknown";
+"kArtist" = "Artist:";
+"kArtistUnknown" = "Artist: Unknown";
 "kDescription" = "Description";
 "kTags" = "Tags";

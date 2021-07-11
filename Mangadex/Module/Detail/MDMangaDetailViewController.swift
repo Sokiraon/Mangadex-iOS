@@ -23,17 +23,17 @@ class MDMangaDetailViewController: MDViewController {
     override func setupUI() {
         setupNavBar(backgroundColor: .white, preserveStatus: true)
         
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
-        self.view.addSubview(self.appBar!)
-        self.appBar!.snp.makeConstraints { make in
+        view.addSubview(appBar!)
+        appBar!.snp.makeConstraints { make in
             make.top.equalTo(MDLayout.safeAreaInsets(true).top)
             make.left.right.equalToSuperview()
         }
         
-        self.addChild(self.tabVC)
-        self.view.addSubview(self.tabVC.view)
-        self.tabVC.view.snp.makeConstraints { make in
+        addChild(tabVC)
+        view.addSubview(tabVC.view)
+        tabVC.view.snp.makeConstraints { make in
             make.top.equalTo(self.appBar!.snp.bottom)
             make.left.right.bottom.equalTo(self.view)
         }

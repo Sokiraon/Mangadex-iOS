@@ -18,13 +18,14 @@ class MDMangaDetailTabViewController: TabmanViewController {
     
     static func initWithMangaItem(_ item: MangaItem) -> MDMangaDetailTabViewController {
         let vc = MDMangaDetailTabViewController()
-        (vc.controllers[0] as! MDMangaDetailChapterViewController).updateWithMangaItem(item)
+        (vc.controllers[0] as? MDMangaDetailChapterViewController)?.updateWithMangaItem(item)
+        (vc.controllers[1] as? MDMangaDetailInfoViewController)?.updateWithMangaItem(item)
         return vc
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.dataSource = self
+        dataSource = self
         
         let bar = TMBar.ButtonBar()
         bar.layout.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
@@ -35,11 +36,11 @@ class MDMangaDetailTabViewController: TabmanViewController {
 
 extension MDMangaDetailTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
-        self.controllers.count
+        controllers.count
     }
     
     func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController? {
-        self.controllers[index]
+        controllers[index]
     }
     
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {

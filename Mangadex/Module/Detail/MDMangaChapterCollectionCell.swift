@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 class MDMangaChapterCollectionCell: UICollectionViewCell {
-    var volumeName: String!
+    var volumeName: String?
     var chapterName: String!
 
     override init(frame: CGRect) {
@@ -32,7 +32,7 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
         }
     }
 
-    func updateWithVolume(_ volume: String, andChapter chapter: String) {
+    func updateWithVolume(_ volume: String?, andChapter chapter: String) {
         volumeName = volume
         chapterName = chapter
         lblTitle.text = chapter
