@@ -20,8 +20,6 @@ class MDMangaDetailChapterViewController: MDViewController {
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2*15 - 3*10) / 4, height: 45)
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 10
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)

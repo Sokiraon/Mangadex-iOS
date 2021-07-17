@@ -141,6 +141,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
                 self.shouldAutoLogin = false
                 DispatchQueue.main.async {
                     ProgressHUD.showError()
+                    self.view.isUserInteractionEnabled = true
                 }
             }
     }

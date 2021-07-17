@@ -9,7 +9,14 @@ import Foundation
 import UIKit
 
 enum Colors: String {
+    case grayDFDFDF = "dfdfdf"
     case lightGrayE5E5E5 = "e5e5e5"
+    case lighterGrayF5F5F5 = "f5f5f5"
+    
+    // for text
+    case black2D2E2F = "2d2e2f"
+    case darkerGray565656 = "565656"
+    case darkGray808080 = "808080"
 }
 
 class MDColor {
@@ -31,6 +38,6 @@ class MDColor {
     }
     
     static func get(_ color: Colors) -> UIColor {
-        return colorFromHex(color.rawValue)
+        colorFromHex(color.rawValue)
     }
 }

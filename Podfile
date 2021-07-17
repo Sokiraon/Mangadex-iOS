@@ -19,6 +19,7 @@ target "Mangadex" do
   pod 'Localize-Swift', '~> 3.2'
   pod 'SwiftJWT', '~> 3.6.1'
   pod 'Loaf'
+  pod "AlignedCollectionViewFlowLayout"
 
 end
 

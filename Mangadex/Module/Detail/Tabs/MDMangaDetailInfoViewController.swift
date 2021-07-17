@@ -8,23 +8,63 @@
 import Foundation
 import UIKit
 import SnapKit
+import MaterialComponents
+import AlignedCollectionViewFlowLayout
+
+class MDMangaTagItem: UICollectionViewCell {
+    private var lblTag = UILabel(color: .darkerGray565656)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    private func setupUI() {
+        contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.snp.makeConstraints { (make: ConstraintMaker) in
+            make.edges.equalTo(0)
+            make.height.equalTo(40)
+        }
+        contentView.layer.cornerRadius = 20
+    
+        contentView.addSubview(lblTag)
+        lblTag.snp.makeConstraints { (make: ConstraintMaker) in
+            make.left.right.equalToSuperview().inset(15)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    func updateWithTag(_ tag: String) {
+        lblTag.text = tag
+    }
+}
 
 class MDMangaDetailInfoViewController: MDViewController {
-    private var mangaItem: MangaItem!
+    private var mangaItem: MangaItem?
     
     private lazy var vScroll = UIScrollView()
     private lazy var vScrollContent = UIView()
-    private lazy var headerDescription = MDSectionHeaderView.initWithTitle("kDescription".localized())
-    private lazy var lblDescription: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        return label
-    }()
-    private lazy var headerTags = MDSectionHeaderView.initWithTitle("kTags".localized())
     
-    func updateWithMangaItem(_ item: MangaItem) {
-        lblDescription.text = item.description
-    }
+    private lazy var descrCard = MDCTextCard(title: "kDescription".localized(), message: "")
+    private lazy var tagsCard = MDCCustomCard(title: "kTags".localized())
+    
+    private lazy var tagsCollection: UICollectionView = {
+        let layout = AlignedCollectionViewFlowLayout(horizontalAlignment: .left)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        view.isScrollEnabled = false
+        view.delegate = self
+        view.dataSource = self
+        view.backgroundColor = .clear
+        view.register(MDMangaTagItem.self, forCellWithReuseIdentifier: "tag")
+        return view
+    }()
     
     override func setupUI() {
         view.addSubview(vScroll)
@@ -40,23 +80,41 @@ class MDMangaDetailInfoViewController: MDViewController {
             make.width.equalTo(MDLayout.screenWidth)
         }
     
-        vScrollContent.addSubview(headerDescription)
-        headerDescription.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalToSuperview().inset(10)
-            make.left.right.equalToSuperview().inset(5)
-        }
-        
-        vScrollContent.addSubview(lblDescription)
-        lblDescription.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalTo(headerDescription.snp.bottom).offset(10)
+        vScrollContent.addSubview(descrCard)
+        descrCard.snp.makeConstraints { (make: ConstraintMaker) in
+            make.top.equalTo(15)
             make.left.right.equalToSuperview().inset(10)
         }
         
-        vScrollContent.addSubview(headerTags)
-        headerTags.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalTo(lblDescription.snp.bottom).offset(20)
-            make.left.right.equalToSuperview().inset(5)
-            make.bottom.equalToSuperview().inset(20)
+        vScrollContent.addSubview(tagsCard)
+        tagsCard.snp.makeConstraints { (make: ConstraintMaker) in
+            make.top.equalTo(descrCard.snp.bottom).offset(10)
+            make.left.right.equalToSuperview().inset(10)
+            make.bottom.equalTo(-MDLayout.safeInsetBottom)
         }
+        
+        tagsCard.contentView.addSubview(tagsCollection)
+        tagsCollection.snp.makeConstraints { (make: ConstraintMaker) in
+            make.edges.equalToSuperview()
+            make.height.equalTo(200)
+        }
+    }
+    
+    func updateWithMangaItem(_ item: MangaItem) {
+        mangaItem = item
+        descrCard.updateContent(message: item.description)
+    }
+}
+
+extension MDMangaDetailInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        mangaItem?.tags.count ?? 0
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tag", for: indexPath)
+                   as! MDMangaTagItem
+        cell.updateWithTag(mangaItem?.tags[indexPath.row] ?? "N/A")
+        return cell
     }
 }
