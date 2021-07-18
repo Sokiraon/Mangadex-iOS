@@ -40,6 +40,8 @@
 "kDescription" = "Description";
 "kTags" = "Tags";
 
+"kSlidePrevChapter" = "Slide right to show previous chapter";
 "kSlideNextChapter" = "Slide left to show next chapter";
+"kReleasePrevChapter" = "Release to show previous chapter";
 "kReleaseNextChapter" = "Release to show next chapter";
 "kLoading" = "Loading ...";

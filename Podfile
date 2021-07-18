@@ -20,6 +20,7 @@ target "Mangadex" do
   pod 'SwiftJWT', '~> 3.6.1'
   pod 'Loaf'
   pod "AlignedCollectionViewFlowLayout"
+  pod 'HTPullToRefresh'
 
 end
 

@@ -39,6 +39,8 @@
 "kDescription" = "简介";
 "kTags" = "标签";
 
+"kSlidePrevChapter" = "滑动来加载上一话";
 "kSlideNextChapter" = "滑动来加载下一话";
+"kReleasePrevChapter" = "释放来加载上一话";
 "kReleaseNextChapter" = "释放来加载下一话";
 "kLoading" = "加载中...";

@@ -12,6 +12,7 @@ import Kingfisher
 import SnapKit
 import Darwin
 import MJRefresh
+import HTPullToRefresh
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
@@ -32,8 +33,9 @@ class MDMangaSlideViewController: MDViewController {
             } else {
                 let vc = MDMangaSlideViewController.initWithChapterData(
                         dataModel!,
-                        currentIndex: self.index+1,
-                        requireNext: self.requireNext
+                        currentIndex: self.index + 1,
+                        requirePrevAction: self.requirePrev,
+                        requireNextAction: self.requireNext
                 )
                 self.refreshTrailer.endRefreshing()
                 self.navigationController?.replaceTopViewController(with: vc)
@@ -52,6 +54,25 @@ class MDMangaSlideViewController: MDViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.dataSource = self
+        
+//        view.addPullToRefresh(actionHandler: {
+//            let dataModel = self.requirePrev(self.index)
+//            if (dataModel == nil) {
+//                self.vPages.contentOffset = CGPoint(x: 60, y: 0)
+//            } else {
+//                let vc = MDMangaSlideViewController.initWithChapterData(
+//                        dataModel!,
+//                        currentIndex: self.index - 1,
+//                        requirePrevAction: self.requirePrev,
+//                        requireNextAction: self.requireNext
+//                )
+//                self.navigationController?.replaceTopViewController(with: vc)
+//            }
+//        }, position: .left)
+//        view.pullToRefreshView(at: .left).setTitle("kSlidePrevChapter".localized(), for: .all)
+//        view.pullToRefreshView(at: .left).setTitle("kReleasePrevChapter".localized(), for: .triggered)
+//        view.pullToRefreshView(at: .left).setTitle("kLoading".localized(), for: .loading)
+        
         view.mj_trailer = refreshTrailer
         
         view.isPagingEnabled = true
@@ -80,12 +101,14 @@ class MDMangaSlideViewController: MDViewController {
     
     let vBottomControl = UIView(backgroundColor: .black)
     
+    var requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!
     var requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
     
     // MARK: - initialize
     static func initWithChapterData(_ dataModel: MDMangaChapterDataModel,
                                     currentIndex index: Int,
-                                    requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
+                                    requirePrevAction requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!,
+                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
     ) -> MDMangaSlideViewController {
         let vc = MDMangaSlideViewController()
         if (dataModel.data.attributes.title == nil || dataModel.data.attributes.title == "") {
@@ -95,7 +118,10 @@ class MDMangaSlideViewController: MDViewController {
         }
         vc.dataModel = dataModel
         vc.index = index
+        
+        vc.requirePrev = requirePrev
         vc.requireNext = requireNext
+        
         return vc
     }
     
