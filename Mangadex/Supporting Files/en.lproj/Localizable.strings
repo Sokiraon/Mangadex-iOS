@@ -39,3 +39,7 @@
 "kArtistUnknown" = "Artist: Unknown";
 "kDescription" = "Description";
 "kTags" = "Tags";
+
+"kSlideNextChapter" = "Slide left to show next chapter";
+"kReleaseNextChapter" = "Release to show next chapter";
+"kLoading" = "Loading ...";

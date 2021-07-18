@@ -47,7 +47,7 @@ class MDMangaTagItem: UICollectionViewCell {
 class MDMangaDetailInfoViewController: MDViewController {
     private var mangaItem: MangaItem?
     
-    private lazy var vScroll = UIScrollView()
+    private lazy var vScroll = UIScrollView(bounce: .vertical, showIndicator: false)
     private lazy var vScrollContent = UIView()
     
     private lazy var descrCard = MDCTextCard(title: "kDescription".localized(), message: "")
@@ -68,7 +68,6 @@ class MDMangaDetailInfoViewController: MDViewController {
     
     override func setupUI() {
         view.addSubview(vScroll)
-        vScroll.alwaysBounceVertical = true
         vScroll.snp.makeConstraints { (make: ConstraintMaker) in
             make.top.equalTo(50)
             make.left.right.bottom.equalToSuperview()
@@ -80,12 +79,16 @@ class MDMangaDetailInfoViewController: MDViewController {
             make.width.equalTo(MDLayout.screenWidth)
         }
     
+        descrCard.setShadowElevation(.none, for: .normal)
+        descrCard.applyBorder()
         vScrollContent.addSubview(descrCard)
         descrCard.snp.makeConstraints { (make: ConstraintMaker) in
             make.top.equalTo(15)
             make.left.right.equalToSuperview().inset(10)
         }
         
+        tagsCard.setShadowElevation(.none, for: .normal)
+        tagsCard.applyBorder()
         vScrollContent.addSubview(tagsCard)
         tagsCard.snp.makeConstraints { (make: ConstraintMaker) in
             make.top.equalTo(descrCard.snp.bottom).offset(10)

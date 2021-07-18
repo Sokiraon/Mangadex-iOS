@@ -82,7 +82,15 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MDMangaSlideViewController.initWithChapterData(chapterModels![indexPath.row])
+        let vc = MDMangaSlideViewController
+                .initWithChapterData(chapterModels![indexPath.row], currentIndex: indexPath.row)
+        { [self] index -> MDMangaChapterDataModel? in
+            if (index < chapterModels!.count) {
+                return chapterModels![index + 1]
+            } else {
+                return nil
+            }
+        }
         navigationController?.pushViewController(vc, animated: true)
     }
     

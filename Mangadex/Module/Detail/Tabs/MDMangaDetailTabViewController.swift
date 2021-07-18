@@ -28,7 +28,7 @@ class MDMangaDetailTabViewController: TabmanViewController {
         dataSource = self
         
         let bar = TMBar.ButtonBar()
-        bar.backgroundView.style = .clear
+        bar.backgroundView.style = .flat(color: .white)
         bar.layout.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
         bar.layout.contentMode = .fit
         addBar(bar, dataSource: self, at: .top)

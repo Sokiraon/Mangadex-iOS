@@ -38,3 +38,7 @@
 "kArtistUnknown" = "原画：佚名";
 "kDescription" = "简介";
 "kTags" = "标签";
+
+"kSlideNextChapter" = "滑动来加载下一话";
+"kReleaseNextChapter" = "释放来加载下一话";
+"kLoading" = "加载中...";
