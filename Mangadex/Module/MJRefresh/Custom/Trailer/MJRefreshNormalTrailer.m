@@ -24,6 +24,10 @@
     return _arrowView;
 }
 
+- (void)setArrowImage:(UIImage *)image {
+    self.arrowView.image = image;
+}
+
 - (void)placeSubviews {
     [super placeSubviews];
 

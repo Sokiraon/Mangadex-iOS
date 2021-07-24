@@ -24,6 +24,7 @@ class MDMangaSlideViewController: MDViewController {
         leader.setTitle("kSlidePrevChapter".localized(), for: .idle)
         leader.setTitle("kReleasePrevChapter".localized(), for: .pulling)
         leader.setTitle("kLoading".localized(), for: .refreshing)
+        leader.setArrowImage(UIImage(named: "baseline_arrow_forward_black_18pt")!)
         
         leader.refreshingBlock = {
             let dataModel = self.requirePrev(self.currentIndex)
@@ -48,6 +49,7 @@ class MDMangaSlideViewController: MDViewController {
         trailer.setTitle("kSlideNextChapter".localized(), for: .idle)
         trailer.setTitle("kReleaseNextChapter".localized(), for: .pulling)
         trailer.setTitle("kLoading".localized(), for: .refreshing)
+        trailer.setArrowImage(UIImage(named: "baseline_arrow_back_black_18pt")!)
         
         trailer.refreshingBlock = {
             let dataModel = self.requireNext(self.currentIndex)

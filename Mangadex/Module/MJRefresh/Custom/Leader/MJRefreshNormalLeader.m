@@ -23,18 +23,23 @@
     return _arrowView;
 }
 
+- (void)setArrowImage:(UIImage *)image {
+    self.arrowView.image = image;
+}
+
 - (void)placeSubviews {
     [super placeSubviews];
 
     CGSize arrowSize = self.arrowView.image.size;
     // 箭头的中心点
     CGPoint selfCenter = CGPointMake(self.mj_w * 0.5, self.mj_h * 0.5);
-    CGPoint arrowCenter = CGPointMake(arrowSize.width * 0.5 + 5, self.mj_h * 0.5);
+    CGPoint arrowCenter = CGPointMake(self.mj_w - arrowSize.width * 0.5 - 5, self.mj_h * 0.5);
     BOOL stateHidden = self.stateLabel.isHidden;
     
     if (self.arrowView.constraints.count == 0) {
         self.arrowView.mj_size = self.arrowView.image.size;
         self.arrowView.center = stateHidden ?  selfCenter : arrowCenter ;
+        
     }
     self.arrowView.tintColor = self.stateLabel.textColor;
     
@@ -45,7 +50,7 @@
     // 状态
     if (noConstrainsOnStatusLabel) {
         BOOL arrowHidden = self.arrowView.isHidden;
-        CGFloat stateCenterX = (self.mj_w + arrowSize.width) * 0.5;
+        CGFloat stateCenterX = (self.mj_w - arrowSize.width) * 0.5;
         self.stateLabel.center = arrowHidden ? selfCenter : CGPointMake(stateCenterX, self.mj_h * 0.5);
         self.stateLabel.mj_size = CGSizeMake(stateLabelW, self.mj_h) ;
     }
