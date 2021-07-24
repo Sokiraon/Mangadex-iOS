@@ -87,22 +87,13 @@
             }];
         }
         
-        CGFloat deltaW = [self widthForContentBreakView];
-        if (oldState == MJRefreshStateRefreshing && deltaW > 0 && self.scrollView.mj_totalDataCount != self.lastRefreshCount) {
+        if (oldState == MJRefreshStateRefreshing && self.scrollView.mj_totalDataCount != self.lastRefreshCount) {
             self.scrollView.mj_offsetX = self.scrollView.mj_offsetX;
         }
     } else if (state == MJRefreshStateRefreshing) {
         self.lastRefreshCount = self.scrollView.mj_totalDataCount;
         
         [UIView animateWithDuration:self.fastAnimationDuration animations:^{
-            CGFloat right = self.mj_w + self.scrollViewOriginalInset.right;
-            CGFloat deltaW = [self widthForContentBreakView];
-            if (deltaW < 0) { // 如果内容宽度小于view的宽度
-                right -= deltaW;
-            }
-            self.lastLeftDelta = right - self.scrollView.mj_insetR;
-            self.scrollView.mj_insetL = right;
-            
             // 设置滚动位置
             [self.scrollView setContentOffset:CGPointZero animated:NO];
         } completion:^(BOOL finished) {
@@ -140,12 +131,6 @@
 /** 刚好看到刷新控件时的contentOffset.x */
 - (CGFloat)happenOffsetX {
     return 0;
-}
-
-#pragma mark 获得scrollView的内容 超出 view 的宽度
-- (CGFloat)widthForContentBreakView {
-    CGFloat w = self.scrollView.frame.size.width - self.scrollViewOriginalInset.right - self.scrollViewOriginalInset.left;
-    return self.scrollView.contentSize.width - w;
 }
 
 @end
