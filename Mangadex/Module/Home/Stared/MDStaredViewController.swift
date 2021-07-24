@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import MJRefresh
 import ProgressHUD
 
 class MDStaredViewController: MDViewController {

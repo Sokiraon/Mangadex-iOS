@@ -11,7 +11,6 @@ target "Mangadex" do
   pod 'SwiftyJSON', '~> 5.0.1'
   pod 'Tabman', '~> 2.9'
   pod 'ProgressHUD'
-  pod 'MJRefresh'
   pod 'Kingfisher', '~> 6.3.0'
   pod 'FlexLayout'
   pod 'YYModel'
@@ -21,6 +20,7 @@ target "Mangadex" do
   pod 'Loaf'
   pod "AlignedCollectionViewFlowLayout"
   pod 'HTPullToRefresh'
+  pod 'SkeletonView'
 
 end
 

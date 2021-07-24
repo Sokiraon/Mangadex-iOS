@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import ProgressHUD
-import MJRefresh
+import SkeletonView
 
 class MDTrendViewController: MDViewController {
     // initialize

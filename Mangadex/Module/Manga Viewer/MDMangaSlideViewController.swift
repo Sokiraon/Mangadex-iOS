@@ -11,14 +11,37 @@ import ProgressHUD
 import Kingfisher
 import SnapKit
 import Darwin
-import MJRefresh
 import HTPullToRefresh
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
     var pages: [String] = []
     var dataModel: MDMangaChapterDataModel!
-    var index: Int!
+    var currentIndex: Int!
+    
+    private lazy var refreshLeader: MJRefreshNormalLeader = {
+        let leader = MJRefreshNormalLeader()
+        leader.setTitle("kSlidePrevChapter".localized(), for: .idle)
+        leader.setTitle("kReleasePrevChapter".localized(), for: .pulling)
+        leader.setTitle("kLoading".localized(), for: .refreshing)
+        
+        leader.refreshingBlock = {
+            let dataModel = self.requirePrev(self.currentIndex)
+            if (dataModel == nil) {
+                self.refreshLeader.endRefreshing()
+            } else {
+                let vc = MDMangaSlideViewController.initWithChapterData(
+                    dataModel!,
+                    currentIndex: self.currentIndex - 1,
+                    requirePrevAction: self.requirePrev,
+                    requireNextAction: self.requireNext
+                )
+                self.refreshLeader.endRefreshing()
+                self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
+            }
+        }
+        return leader
+    }()
     
     private lazy var refreshTrailer: MJRefreshNormalTrailer = {
         let trailer = MJRefreshNormalTrailer()
@@ -27,18 +50,18 @@ class MDMangaSlideViewController: MDViewController {
         trailer.setTitle("kLoading".localized(), for: .refreshing)
         
         trailer.refreshingBlock = {
-            let dataModel = self.requireNext(self.index)
+            let dataModel = self.requireNext(self.currentIndex)
             if (dataModel == nil) {
                 self.refreshTrailer.endRefreshing()
             } else {
                 let vc = MDMangaSlideViewController.initWithChapterData(
                         dataModel!,
-                        currentIndex: self.index + 1,
+                        currentIndex: self.currentIndex + 1,
                         requirePrevAction: self.requirePrev,
                         requireNextAction: self.requireNext
                 )
                 self.refreshTrailer.endRefreshing()
-                self.navigationController?.replaceTopViewController(with: vc)
+                self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
             }
         }
         return trailer
@@ -73,6 +96,7 @@ class MDMangaSlideViewController: MDViewController {
 //        view.pullToRefreshView(at: .left).setTitle("kReleasePrevChapter".localized(), for: .triggered)
 //        view.pullToRefreshView(at: .left).setTitle("kLoading".localized(), for: .loading)
         
+        view.mj_leader = refreshLeader
         view.mj_trailer = refreshTrailer
         
         view.isPagingEnabled = true
@@ -117,7 +141,7 @@ class MDMangaSlideViewController: MDViewController {
             vc.viewTitle = dataModel.data.attributes.title!
         }
         vc.dataModel = dataModel
-        vc.index = index
+        vc.currentIndex = index
         
         vc.requirePrev = requirePrev
         vc.requireNext = requireNext
