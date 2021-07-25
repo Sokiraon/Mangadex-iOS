@@ -9,11 +9,17 @@ import Foundation
 import Pageboy
 import Tabman
 
-class MDMangaDetailTabViewController: TabmanViewController {
+class MDMangaDetailTabViewController: PageboyViewController {
+    
+    var endPageScrollAction: ((Int) -> Void)?
+    
+    lazy var shouldScrollPageAction: (Int) -> Void = { index in
+        self.scrollToPage(.at(index: index), animated: true)
+    }
     
     private lazy var controllers = [
         MDMangaDetailChapterViewController(),
-        MDMangaDetailInfoViewController()
+        MDMangaDetailInfoViewController(),
     ]
     
     static func initWithMangaItem(_ item: MangaItem) -> MDMangaDetailTabViewController {
@@ -26,16 +32,12 @@ class MDMangaDetailTabViewController: TabmanViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
-        
-        let bar = TMBar.ButtonBar()
-        bar.backgroundView.style = .flat(color: .white)
-        bar.layout.contentInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        bar.layout.contentMode = .fit
-        addBar(bar, dataSource: self, at: .top)
+        delegate = self
     }
 }
 
-extension MDMangaDetailTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension MDMangaDetailTabViewController: PageboyViewControllerDataSource, PageboyViewControllerDelegate {
+    
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         controllers.count
     }
@@ -45,15 +47,24 @@ extension MDMangaDetailTabViewController: PageboyViewControllerDataSource, TMBar
     }
     
     func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
-        nil
+        .first
     }
     
-    func barItem(for bar: TMBar, at index: Int) -> TMBarItemable {
-        switch index {
-        case 0:
-            return TMBarItem(title: "kMangaDetailChapters".localized())
-        default:
-            return TMBarItem(title: "kMangaDetailInfo".localized())
+    func pageboyViewController(_ pageboyViewController: PageboyViewController, didScrollToPageAt index: PageboyViewController.PageIndex, direction: PageboyViewController.NavigationDirection, animated: Bool) {
+        if (endPageScrollAction != nil) {
+            endPageScrollAction!(index)
         }
+    }
+    
+    func pageboyViewController(_ pageboyViewController: PageboyViewController, willScrollToPageAt index: PageboyViewController.PageIndex, direction: PageboyViewController.NavigationDirection, animated: Bool) {
+        
+    }
+    
+    func pageboyViewController(_ pageboyViewController: PageboyViewController, didReloadWith currentViewController: UIViewController, currentPageIndex: PageboyViewController.PageIndex) {
+        
+    }
+    
+    func pageboyViewController(_ pageboyViewController: PageboyViewController, didScrollTo position: CGPoint, direction: PageboyViewController.NavigationDirection, animated: Bool) {
+        
     }
 }

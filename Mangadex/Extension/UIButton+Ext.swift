@@ -6,9 +6,13 @@ import Foundation
 import UIKit
 
 extension UIButton {
-    static func initWithTitle(_ title: String) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        return button
+    convenience init(handler: @escaping () -> Void, title: String = "", titleColor: UIColor, backgroundColor: UIColor? = nil) {
+        self.init()
+        addAction(UIAction(handler: { action in
+            handler()
+        }), for: .touchUpInside)
+        setTitle(title, for: .normal)
+        setTitleColor(titleColor, for: .normal)
+        self.backgroundColor = backgroundColor
     }
 }

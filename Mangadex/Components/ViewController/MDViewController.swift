@@ -31,6 +31,11 @@ class MDViewController: UIViewController {
     /// Called at viewWillAppear, should be used for initializing data or organizing views for animation.
     /// Do notice that this will be called every time the view comes into foreground, so you may want to avoid complex actions.
     func doOnAppear() {}
+    
+    ///
+    /// Called when vc is aboout to leave the page (i.e. user taps back button).
+    /// You may use this func to save progress.
+    func willLeavePage() {}
 
     ///
     /// Used for setting up top navigation bar.
@@ -71,6 +76,7 @@ class MDViewController: UIViewController {
     }
     
     @objc private func didTapBack() {
+        willLeavePage()
         navigationController?.popViewController(animated: true)
     }
 }

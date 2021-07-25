@@ -42,6 +42,8 @@
 		390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */; };
 		390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E79EFFFCD328DAEC9D3FE /* UIColor+Ext.swift */; };
 		390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E765B11ECA5FCB12E29D5 /* MDLocale.swift */; };
+		7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */; };
+		7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */; };
 		7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */; };
 		7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */; };
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
@@ -152,6 +154,8 @@
 		390E7EBF79AD8DB19C02F3E0 /* NSString+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Ext.swift"; sourceTree = "<group>"; };
 		390E7FB625ED52EC42C2BC05 /* UILabel+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
 		7A16E01D26A42D080012C786 /* Mangadex-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mangadex-Bridging-Header.h"; sourceTree = "<group>"; };
+		7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDPlistStoreManager.swift; sourceTree = "<group>"; };
+		7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaProgressManager.swift; sourceTree = "<group>"; };
 		7A53407826886258003CE4C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailTabViewController.swift; sourceTree = "<group>"; };
 		7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailChapterViewController.swift; sourceTree = "<group>"; };
@@ -409,6 +413,7 @@
 		004F7188264BF8EB00D61AEB /* Mangadex */ = {
 			isa = PBXGroup;
 			children = (
+				7A3319DA26AD33600015D9D1 /* Storage */,
 				7A75993F26901AC700A20E64 /* Mangadex.entitlements */,
 				7A75446926885FC300467EF1 /* Supporting Files */,
 				7AFFAB09267F56CA003D7C75 /* Extension */,
@@ -452,6 +457,23 @@
 				390E76B7FEA46F75BBD714C3 /* MDCCustomCard.swift */,
 			);
 			path = Card;
+			sourceTree = "<group>";
+		};
+		7A3319DA26AD33600015D9D1 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				7A3319DD26AD3BF50015D9D1 /* Base */,
+				7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
+		7A3319DD26AD3BF50015D9D1 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		7A53407B26886C2A003CE4C1 /* Home */ = {
@@ -920,6 +942,7 @@
 				7AD6BA2B26A8138C009FB2F5 /* MJRefreshStateTrailer.m in Sources */,
 				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* MDUser.swift in Sources */,
+				7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */,
 				7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */,
 				7AD6BA3526A8138C009FB2F5 /* MJRefreshTrailer.m in Sources */,
 				7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */,
@@ -968,6 +991,7 @@
 				390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */,
 				390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */,
 				7AD6BA3326A8138C009FB2F5 /* MJRefreshAutoFooter.m in Sources */,
+				7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */,
 				390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */,
 				7AD6BA2326A8138C009FB2F5 /* NSBundle+MJRefresh.m in Sources */,
 				390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */,

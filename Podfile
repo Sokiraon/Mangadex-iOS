@@ -21,6 +21,9 @@ target "Mangadex" do
   pod "AlignedCollectionViewFlowLayout"
   pod 'HTPullToRefresh'
   pod 'SkeletonView'
+  pod 'Segmentio'
+  pod 'Pageboy', '~> 3.6.2'
+  pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
 
 end
 

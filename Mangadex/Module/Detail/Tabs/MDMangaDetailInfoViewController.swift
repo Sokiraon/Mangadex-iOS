@@ -11,7 +11,7 @@ import SnapKit
 import MaterialComponents
 import AlignedCollectionViewFlowLayout
 
-class MDMangaTagItem: UICollectionViewCell {
+class MDMangaTagCell: UICollectionViewCell {
     private var lblTag = UILabel(color: .darkerGray565656)
     
     override init(frame: CGRect) {
@@ -62,15 +62,14 @@ class MDMangaDetailInfoViewController: MDViewController {
         view.delegate = self
         view.dataSource = self
         view.backgroundColor = .clear
-        view.register(MDMangaTagItem.self, forCellWithReuseIdentifier: "tag")
+        view.register(MDMangaTagCell.self, forCellWithReuseIdentifier: "tag")
         return view
     }()
     
     override func setupUI() {
         view.addSubview(vScroll)
         vScroll.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalTo(50)
-            make.left.right.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         
         vScroll.addSubview(vScrollContent)
@@ -103,6 +102,13 @@ class MDMangaDetailInfoViewController: MDViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tagsCollection.snp.updateConstraints { make in
+            make.height.equalTo(tagsCollection.contentSize.height)
+        }
+    }
+    
     func updateWithMangaItem(_ item: MangaItem) {
         mangaItem = item
         descrCard.updateContent(message: item.description)
@@ -116,7 +122,7 @@ extension MDMangaDetailInfoViewController: UICollectionViewDelegate, UICollectio
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tag", for: indexPath)
-                   as! MDMangaTagItem
+                   as! MDMangaTagCell
         cell.updateWithTag(mangaItem?.tags[indexPath.row] ?? "N/A")
         return cell
     }

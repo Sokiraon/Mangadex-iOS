@@ -32,10 +32,15 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
         }
     }
 
-    func updateWithVolume(_ volume: String?, andChapter chapter: String) {
+    func setWithVolume(_ volume: String?, andChapter chapter: String, withProgress progress: String?) {
         volumeName = volume
         chapterName = chapter
         lblTitle.text = chapter
+        if (chapter == progress) {
+            contentView.backgroundColor = MDColor.get(.lightOrange)
+        } else {
+            contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
+        }
     }
 
     lazy var lblTitle: UILabel = {

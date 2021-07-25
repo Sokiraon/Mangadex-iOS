@@ -39,8 +39,15 @@
 "kDescription" = "简介";
 "kTags" = "标签";
 
+"kSliderActionPrevChapter" = "上一话";
+"kSliderActionNextChapter" = "下一话";
 "kSlidePrevChapter" = "滑动来加载上一话";
 "kSlideNextChapter" = "滑动来加载下一话";
 "kReleasePrevChapter" = "释放来加载上一话";
 "kReleaseNextChapter" = "释放来加载下一话";
 "kLoading" = "加载中...";
+
+"kMangaActionStartOver" = "从头阅读";
+"kMangaActionContinue" = "续看第%@话";
+"kMangaActionToFollow" = "追漫";
+"kMangaActionFollowed" = "已追";

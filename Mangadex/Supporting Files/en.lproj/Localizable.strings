@@ -40,8 +40,15 @@
 "kDescription" = "Description";
 "kTags" = "Tags";
 
+"kSliderActionPrevChapter" = "Prev";
+"kSliderActionNextChapter" = "Next";
 "kSlidePrevChapter" = "Slide right to show previous chapter";
 "kSlideNextChapter" = "Slide left to show next chapter";
 "kReleasePrevChapter" = "Release to show previous chapter";
 "kReleaseNextChapter" = "Release to show next chapter";
 "kLoading" = "Loading ...";
+
+"kMangaActionStartOver" = "Start reading";
+"kMangaActionContinue" = "Continue from chap. %@";
+"kMangaActionToFollow" = "Follow";
+"kMangaActionFollowed" = "Followed";

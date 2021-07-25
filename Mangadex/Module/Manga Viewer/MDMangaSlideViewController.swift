@@ -80,24 +80,6 @@ class MDMangaSlideViewController: MDViewController {
         view.delegate = self
         view.dataSource = self
         
-//        view.addPullToRefresh(actionHandler: {
-//            let dataModel = self.requirePrev(self.index)
-//            if (dataModel == nil) {
-//                self.vPages.contentOffset = CGPoint(x: 60, y: 0)
-//            } else {
-//                let vc = MDMangaSlideViewController.initWithChapterData(
-//                        dataModel!,
-//                        currentIndex: self.index - 1,
-//                        requirePrevAction: self.requirePrev,
-//                        requireNextAction: self.requireNext
-//                )
-//                self.navigationController?.replaceTopViewController(with: vc)
-//            }
-//        }, position: .left)
-//        view.pullToRefreshView(at: .left).setTitle("kSlidePrevChapter".localized(), for: .all)
-//        view.pullToRefreshView(at: .left).setTitle("kReleasePrevChapter".localized(), for: .triggered)
-//        view.pullToRefreshView(at: .left).setTitle("kLoading".localized(), for: .loading)
-        
         view.mj_leader = refreshLeader
         view.mj_trailer = refreshTrailer
         
@@ -105,16 +87,15 @@ class MDMangaSlideViewController: MDViewController {
         view.contentInsetAdjustmentBehavior = .never
         view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
         
-        let tapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleSingleTap(_:)))
-        tapRecognizer.numberOfTapsRequired = 1
-        tapRecognizer.delegate = self
-        view.addGestureRecognizer(tapRecognizer)
-        
         let doubleTapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
         view.addGestureRecognizer(doubleTapRecognizer)
         
+        let tapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleSingleTap(_:)))
+        tapRecognizer.numberOfTapsRequired = 1
+        tapRecognizer.delegate = self
         tapRecognizer.require(toFail: doubleTapRecognizer)
+        view.addGestureRecognizer(tapRecognizer)
         
         return view
     }()
@@ -126,9 +107,39 @@ class MDMangaSlideViewController: MDViewController {
     }()
     
     let vBottomControl = UIView(backgroundColor: .black)
+    lazy var btnPrev = UIButton(
+        handler: {
+            let vc = MDMangaSlideViewController.initWithChapterData(
+                self.requirePrev(self.currentIndex)!,
+                currentIndex: self.currentIndex - 1,
+                requirePrevAction: self.requirePrev,
+                requireNextAction: self.requireNext
+            )
+            vc.leavePageAction = self.leavePageAction
+            self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
+        },
+        title: "kSliderActionPrevChapter".localized(),
+        titleColor: .white
+    )
+    lazy var btnNext = UIButton(
+        handler: {
+            let vc = MDMangaSlideViewController.initWithChapterData(
+                self.requireNext(self.currentIndex)!,
+                currentIndex: self.currentIndex + 1,
+                requirePrevAction: self.requirePrev,
+                requireNextAction: self.requireNext
+            )
+            vc.leavePageAction = self.leavePageAction
+            self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
+        },
+        title: "kSliderActionNextChapter".localized(),
+        titleColor: .white
+    )
     
     var requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!
     var requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
+    
+    var leavePageAction: ((_ chapter: String) -> Void)!
     
     // MARK: - initialize
     static func initWithChapterData(_ dataModel: MDMangaChapterDataModel,
@@ -156,12 +167,6 @@ class MDMangaSlideViewController: MDViewController {
         
         view.backgroundColor = .black
         
-        view.addSubview(appBar!)
-        appBar!.snp.makeConstraints { make in
-            make.top.equalTo(MDLayout.safeAreaInsets(false).top)
-            make.left.right.equalToSuperview()
-        }
-        
         view.insertSubview(vPages, belowSubview: appBar!)
         vPages.snp.makeConstraints { make in
             make.left.right.centerY.equalToSuperview()
@@ -173,11 +178,33 @@ class MDMangaSlideViewController: MDViewController {
             make.left.right.bottom.equalToSuperview()
         }
         
+        vBottomControl.addSubview(btnPrev)
+        btnPrev.snp.makeConstraints { make in
+            make.top.equalTo(15)
+            make.left.equalTo(15)
+            make.bottom.equalTo(-MDLayout.safeInsetBottom)
+        }
+        
+        vBottomControl.addSubview(btnNext)
+        btnNext.snp.makeConstraints { make in
+            make.centerY.equalTo(btnPrev)
+            make.right.equalTo(-15)
+        }
+        
         vBottomControl.addSubview(vSlider)
         vSlider.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalToSuperview().inset(15)
-            make.left.right.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(MDLayout.safeInsetBottom)
+            make.left.equalTo(btnPrev.snp.right).offset(15)
+            make.right.equalTo(btnNext.snp.left).offset(-15)
+            make.centerY.equalTo(btnPrev)
+        }
+        
+        if (requirePrev(currentIndex) == nil) {
+            btnPrev.isEnabled = false
+            btnPrev.setTitleColor(MDColor.get(.darkGray808080), for: .normal)
+        }
+        if (requireNext(currentIndex) == nil) {
+            btnNext.isEnabled = false
+            btnNext.setTitleColor(MDColor.get(.darkGray808080), for: .normal)
         }
     }
     
@@ -205,13 +232,15 @@ class MDMangaSlideViewController: MDViewController {
         let leftEdge = screenWidth / 2 - MDLayout.vw(15)
         let rightEdge = screenWidth / 2 + MDLayout.vw(15)
         
-        showHideControlArea()
-        
         let contentOffset = vPages.contentOffset
         if (touchPointX < leftEdge && contentOffset.x >= screenWidth) {
+            hideControlArea()
             vPages.contentOffset = CGPoint(x: contentOffset.x - screenWidth, y: contentOffset.y)
         } else if (touchPointX > rightEdge && contentOffset.x < vPages.contentSize.width - screenWidth) {
+            hideControlArea()
             vPages.contentOffset = CGPoint(x: contentOffset.x + screenWidth, y: contentOffset.y)
+        } else if (touchPointX >= leftEdge && touchPointX <= rightEdge) {
+            showHideControlArea()
         }
     }
     
@@ -231,6 +260,12 @@ class MDMangaSlideViewController: MDViewController {
                         .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
             }
         } else {
+            hideControlArea()
+        }
+    }
+    
+    private func hideControlArea() {
+        if (appBar?.isHidden == false) {
             let transform = appBar?.transform.translatedBy(x: 0, y: -(appBar?.frame.height)!)
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
                 self.appBar?.transform = transform!
@@ -254,6 +289,10 @@ class MDMangaSlideViewController: MDViewController {
             }
         }
     }
+    
+    override func willLeavePage() {
+        leavePageAction(dataModel.data.attributes.chapter)
+    }
 }
 
 // MARK: - collectionView
@@ -271,12 +310,7 @@ extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionView
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as! MDMangaSlideCollectionCell).resetScale()
-        if (vSlider.state != .highlighted) {
-            if (!vBottomControl.isHidden) {
-                showHideControlArea()
-            }
-            vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth) / CGFloat(pages.count))
-        }
+        vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth) / CGFloat(pages.count))
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {

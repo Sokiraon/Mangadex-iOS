@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftEventBus
 
 class MDMangaDetailChapterViewController: MDViewController {
     // MARK: - properties
@@ -60,31 +61,28 @@ class MDMangaDetailChapterViewController: MDViewController {
                     self.chapterModels = models
                     self.totalChapters = total
                     self.vChapters.reloadData()
+                    
+                    SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                        if (self.lastReadIndex == nil) {
+                            self.lastReadIndex = IndexPath(row: 0, section: 0)
+                        }
+                        self.openSliderForIndexPath(self.lastReadIndex!)
+                    }
                 }
             }
     }
-}
-
-// MARK: - collectionView
-extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        chapterModels?.count ?? 0
+    
+    private var progress: String?
+    private var lastReadIndex: IndexPath?
+    
+    override func doOnAppear() {
+        progress = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chapter", for: indexPath)
-            as! MDMangaChapterCollectionCell
-        if (chapterModels != nil) {
-            let attrs = chapterModels![indexPath.row].data.attributes!
-            cell.updateWithVolume(attrs.volume, andChapter: attrs.chapter)
-        }
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    private func openSliderForIndexPath(_ path: IndexPath) {
         let vc = MDMangaSlideViewController.initWithChapterData(
-                chapterModels![indexPath.row],
-                currentIndex: indexPath.row,
+                chapterModels![path.row],
+                currentIndex: path.row,
                 requirePrevAction: { index -> MDMangaChapterDataModel? in
                     if (index > 0) {
                         return self.chapterModels![index - 1]
@@ -99,7 +97,35 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollec
                         return nil
                     }
                 })
+        vc.leavePageAction = { chapter in
+            MDMangaProgressManager.saveProgress(chapter, forMangaId: self.mangaItem.id)
+            self.vChapters.reloadData()
+        }
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - collectionView
+extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        chapterModels?.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chapter", for: indexPath)
+            as! MDMangaChapterCollectionCell
+        if (chapterModels != nil) {
+            let attrs = chapterModels![indexPath.row].data.attributes!
+            cell.setWithVolume(attrs.volume, andChapter: attrs.chapter, withProgress: progress)
+            if (attrs.chapter == progress) {
+                lastReadIndex = indexPath
+            }
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        openSliderForIndexPath(indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {

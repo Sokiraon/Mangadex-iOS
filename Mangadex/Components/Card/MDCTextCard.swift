@@ -7,7 +7,7 @@ import MaterialComponents
 import SnapKit
 
 class MDCTextCard : MDCCustomCard {
-    private lazy var lblMessage = UILabel(color: .darkGray808080, numberOfLines: 0)
+    private lazy var lblMessage = UILabel(color: .darkerGray565656, numberOfLines: 0)
     
     convenience init(title: String, message: String) {
         self.init(title: title)

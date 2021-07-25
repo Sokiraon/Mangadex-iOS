@@ -13,10 +13,15 @@ enum Colors: String {
     case lightGrayE5E5E5 = "e5e5e5"
     case lighterGrayF5F5F5 = "f5f5f5"
     
-    // for text
+    // for text use only
     case black2D2E2F = "2d2e2f"
     case darkerGray565656 = "565656"
     case darkGray808080 = "808080"
+    
+    // theme colors
+    case mainBlue = "30A9DE"
+    case mainGreen = "3D7979"
+    case lightOrange = "fdc23e"
 }
 
 class MDColor {
