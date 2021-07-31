@@ -1,5 +1,5 @@
 //
-//  MDUser.swift
+//  MDUserManager.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/15.
@@ -9,15 +9,40 @@ import Foundation
 import Just
 import SwiftyJSON
 
-class MDUser {
-    private static let instance = MDUser()
+class MDUserManager {
+    private static let instance = MDUserManager()
     
-    static func getInstance() -> MDUser {
+    static func getInstance() -> MDUserManager {
         return instance
     }
     
-    private lazy var session = ""
-    private lazy var refresh = ""
+    private init() {}
+    
+    private lazy var _session = MDUserDefaultsManager.retrieveStr(forKey: .kUserSessionToken) ?? ""
+    private lazy var _refresh = MDUserDefaultsManager.retrieveStr(forKey: .kUserRefreshToken) ?? ""
+    
+    private var session: String {
+        get {
+            self._session
+        }
+        set {
+            self._session = newValue
+            MDUserDefaultsManager.storeStr(newValue, forKey: .kUserSessionToken)
+        }
+    }
+    private var refresh: String {
+        get {
+            self._refresh
+        }
+        set {
+            self._refresh = newValue
+            MDUserDefaultsManager.storeStr(newValue, forKey: .kUserRefreshToken)
+        }
+    }
+    
+    func isLoggedIn() -> Bool {
+        !(_session.isEmpty || _refresh.isEmpty)
+    }
     
     func loginWithUsername(_ username: String,
                            andPassword password: String,

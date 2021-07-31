@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Segmentio
 import SwiftEventBus
+import SwiftTheme
 
 class MDMangaDetailViewController: MDViewController {
     
@@ -19,7 +20,7 @@ class MDMangaDetailViewController: MDViewController {
         backgroundColor: .white,
         segmentPosition: .dynamic,
         scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: .orange),
+        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: MDColor.get(.cerulean)),
         horizontalSeparatorOptions: nil,
         verticalSeparatorOptions: nil,
         imageContentMode: .center,
@@ -32,7 +33,7 @@ class MDMangaDetailViewController: MDViewController {
             ),
             selectedState: SegmentioState(
                 titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: .orange
+                titleTextColor: MDColor.get(.cerulean)
             ),
             highlightedState: SegmentioState(
                 titleFont: UIFont.boldSystemFont(ofSize: 17),
@@ -60,13 +61,29 @@ class MDMangaDetailViewController: MDViewController {
     // MARK: - actions
     private var lastReadChapter: String?
     
-    private lazy var btnContinue = UIButton(handler: {
-        SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
-    }, titleColor: .black, backgroundColor: MDColor.get(.lightOrange))
-    
-    private lazy var btnFollow = UIButton(handler: {
+    private lazy var btnContinue: UIButton = {
+        let button = UIButton(handler: {
+            SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
+        }, titleColor: .white)
         
-    }, title: "kMangaActionToFollow".localized(), titleColor: .black, backgroundColor: MDColor.get(.lightOrange))
+        button.theme_backgroundColor = MDColor.themeColors[.tint]
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
+        
+        return button
+    }()
+    
+    private lazy var btnFollow: UIButton = {
+        let button = UIButton(handler: {
+            
+        }, title: "kMangaActionToFollow".localized(), titleColor: .white)
+        
+        button.theme_backgroundColor = MDColor.themeColors[.tint]
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
+        
+        return button
+    }()
     
     private var mangaItem: MangaItem!
     

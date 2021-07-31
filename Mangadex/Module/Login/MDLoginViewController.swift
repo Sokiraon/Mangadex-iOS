@@ -108,7 +108,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         let username = usernameField.text!
         let password = passwordField.text!
 
-        MDUser.getInstance()
+        MDUserManager.getInstance()
             .loginWithUsername(username, andPassword: password) {
                 DispatchQueue.main.async {
                     let vc = MDHomeViewController()

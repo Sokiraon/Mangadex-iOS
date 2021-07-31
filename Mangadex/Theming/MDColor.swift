@@ -7,8 +7,10 @@
 
 import Foundation
 import UIKit
+import SwiftTheme
 
 enum Colors: String {
+    // for background
     case grayDFDFDF = "dfdfdf"
     case lightGrayE5E5E5 = "e5e5e5"
     case lighterGrayF5F5F5 = "f5f5f5"
@@ -18,10 +20,16 @@ enum Colors: String {
     case darkerGray565656 = "565656"
     case darkGray808080 = "808080"
     
-    // theme colors
-    case mainBlue = "30A9DE"
-    case mainGreen = "3D7979"
-    case lightOrange = "fdc23e"
+    /** 蔚蓝 */
+    case cerulean = "#32B0DF"
+    /** 青绿 */
+    case teal = "#4FB3B0"
+    /** 珊瑚红 */
+    case coral = "#FF7F50"
+}
+
+enum ColorTarget {
+    case tint
 }
 
 class MDColor {
@@ -45,4 +53,12 @@ class MDColor {
     static func get(_ color: Colors) -> UIColor {
         colorFromHex(color.rawValue)
     }
+    
+    static var themeColors: [ColorTarget: ThemeColorPicker] = [
+        .tint: [
+            Colors.cerulean.rawValue,
+            Colors.teal.rawValue,
+            Colors.coral.rawValue,
+        ],
+    ]
 }

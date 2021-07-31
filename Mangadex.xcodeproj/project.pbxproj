@@ -10,7 +10,7 @@
 		0008100F2661F681009C1005 /* MDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayout.swift */; };
 		0008101226621229009C1005 /* MDTrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDTrendViewController.swift */; };
 		000810172662125B009C1005 /* MDStaredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDStaredViewController.swift */; };
-		00170964264FA3E6005BEE67 /* MDUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDUser.swift */; };
+		00170964264FA3E6005BEE67 /* MDUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDUserManager.swift */; };
 		00170966264FC9CB005BEE67 /* MDHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* MDHomeViewController.swift */; };
 		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
 		00363096266F5BD80058BE25 /* MDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363095266F5BD80058BE25 /* MDViewController.swift */; };
@@ -44,6 +44,7 @@
 		390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E765B11ECA5FCB12E29D5 /* MDLocale.swift */; };
 		7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */; };
 		7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */; };
+		7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */; };
 		7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */; };
 		7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */; };
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
@@ -115,7 +116,7 @@
 		0008100E2661F681009C1005 /* MDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayout.swift; sourceTree = "<group>"; };
 		0008101126621229009C1005 /* MDTrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDTrendViewController.swift; sourceTree = "<group>"; };
 		000810162662125B009C1005 /* MDStaredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDStaredViewController.swift; sourceTree = "<group>"; };
-		00170963264FA3E6005BEE67 /* MDUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUser.swift; sourceTree = "<group>"; };
+		00170963264FA3E6005BEE67 /* MDUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUserManager.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* MDHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDHomeViewController.swift; sourceTree = "<group>"; };
 		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
 		00363095266F5BD80058BE25 /* MDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 		7A16E01D26A42D080012C786 /* Mangadex-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mangadex-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDPlistStoreManager.swift; sourceTree = "<group>"; };
 		7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaProgressManager.swift; sourceTree = "<group>"; };
+		7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUserDefaultsManager.swift; sourceTree = "<group>"; };
 		7A53407826886258003CE4C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailTabViewController.swift; sourceTree = "<group>"; };
 		7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailChapterViewController.swift; sourceTree = "<group>"; };
@@ -344,7 +346,6 @@
 				7A53408126887D51003CE4C1 /* User */,
 				7A7544602686F88900467EF1 /* Chapter */,
 				7AACACA8267EE29C00232166 /* Manga */,
-				00170963264FA3E6005BEE67 /* MDUser.swift */,
 				7A89D9BC267DAC9500E41147 /* MDHTTPManager.swift */,
 				7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */,
 				7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */,
@@ -464,6 +465,7 @@
 			children = (
 				7A3319DD26AD3BF50015D9D1 /* Base */,
 				7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */,
+				00170963264FA3E6005BEE67 /* MDUserManager.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -472,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */,
+				7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -941,7 +944,7 @@
 				7AACACB0267F34D400232166 /* MDSectionHeaderView.swift in Sources */,
 				7AD6BA2B26A8138C009FB2F5 /* MJRefreshStateTrailer.m in Sources */,
 				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
-				00170964264FA3E6005BEE67 /* MDUser.swift in Sources */,
+				00170964264FA3E6005BEE67 /* MDUserManager.swift in Sources */,
 				7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */,
 				7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */,
 				7AD6BA3526A8138C009FB2F5 /* MJRefreshTrailer.m in Sources */,
@@ -964,6 +967,7 @@
 				00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				7AD6BA2726A8138C009FB2F5 /* MJRefreshBackNormalFooter.m in Sources */,
+				7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */,
 				7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */,
 				7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,

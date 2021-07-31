@@ -37,7 +37,7 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
         chapterName = chapter
         lblTitle.text = chapter
         if (chapter == progress) {
-            contentView.backgroundColor = MDColor.get(.lightOrange)
+            contentView.theme_backgroundColor = MDColor.themeColors[.tint]
         } else {
             contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
         }

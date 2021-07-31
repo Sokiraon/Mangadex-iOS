@@ -11,7 +11,7 @@ extension MDHTTPManager {
     func getUserFollowedMangas(params: [String: Any],
                                onSuccess success: @escaping (_ data: Array<MangaItem>) -> Void,
                                onError error: @escaping () -> Void) {
-        MDUser.getInstance()
+        MDUserManager.getInstance()
             .getValidatedToken { token in
                 self.get("/user/follows/manga",
                          ofType: .HostTypeApi,

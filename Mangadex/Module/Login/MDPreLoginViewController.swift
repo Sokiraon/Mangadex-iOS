@@ -58,6 +58,7 @@ class MDPreLoginViewController: MDViewController {
     private lazy var btnDismiss: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("kSavedAccountsDismiss".localized(), for: .normal)
+        button.theme_setTitleColor(MDColor.themeColors[.tint], forState: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
         return button
@@ -79,12 +80,17 @@ class MDPreLoginViewController: MDViewController {
     }()
 
     override func willSetupUI() {
-        let credentials = MDKeychain.read()
-        if (credentials.isEmpty) {
-            let vc = MDLoginViewController()
+        if MDUserManager.getInstance().isLoggedIn() {
+            let vc = MDHomeViewController()
             navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.credentials = credentials
+            let credentials = MDKeychain.read()
+            if credentials.isEmpty {
+                let vc = MDLoginViewController()
+                navigationController?.pushViewController(vc, animated: true)
+            } else {
+                self.credentials = credentials
+            }
         }
     }
 
