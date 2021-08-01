@@ -8,7 +8,7 @@
 import Foundation
 
 enum UserDefaultsKey: String {
-    case kUserSessionToken, kUserRefreshToken
+    case kUserSessionToken, kUserRefreshToken, kUsernameToken
 }
 
 class MDUserDefaultsManager {

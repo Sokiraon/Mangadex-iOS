@@ -11,7 +11,6 @@ import ProgressHUD
 import Kingfisher
 import SnapKit
 import Darwin
-import HTPullToRefresh
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
@@ -163,7 +162,7 @@ class MDMangaSlideViewController: MDViewController {
     }
     
     override func setupUI() {
-        setupNavBar(backgroundColor: .black, preserveStatus: false)
+        setupNavBar(preserveStatus: false, backgroundColor: .black)
         
         view.backgroundColor = .black
         

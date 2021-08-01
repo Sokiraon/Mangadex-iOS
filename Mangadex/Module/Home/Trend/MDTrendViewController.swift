@@ -15,7 +15,7 @@ class MDTrendViewController: MDViewController {
     override func setupUI() {
         view.addSubview(vTable)
         vTable.snp.makeConstraints { make in
-            make.top.equalTo(MDLayout.safeAreaInsets(true).top)
+            make.top.equalTo(MDLayout.safeInsetTop)
             make.left.right.bottom.equalToSuperview()
         }
     }

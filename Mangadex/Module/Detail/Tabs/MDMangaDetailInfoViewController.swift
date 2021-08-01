@@ -102,8 +102,7 @@ class MDMangaDetailInfoViewController: MDViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func doOnAppear() {
         tagsCollection.snp.updateConstraints { make in
             make.height.equalTo(tagsCollection.contentSize.height)
         }

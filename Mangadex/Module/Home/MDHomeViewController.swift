@@ -33,6 +33,7 @@ class MDHomeViewController: TabmanViewController {
         let bar = TMBar.TabBar()
         bar.layout.transitionStyle = .snap
         bar.buttons.customize { button in
+            button.selectedTintColor = MDColor.currentTintColor
         }
         
         addBar(bar.systemBar(), dataSource: self, at: .bottom)

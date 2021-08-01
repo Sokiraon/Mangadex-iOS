@@ -36,25 +36,21 @@ class MDViewController: UIViewController {
     /// Called when vc is aboout to leave the page (i.e. user taps back button).
     /// You may use this func to save progress.
     func willLeavePage() {}
-
+    
     ///
     /// Used for setting up top navigation bar.
     /// - Parameters:
-    ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
     ///   - preserveStatus: **true** to reserve space for system status bar, **false** for hiding it
-    func setupNavBar(backgroundColor: UIColor, preserveStatus: Bool) {
-        appBar = MDAppBar.initWithTitle(viewTitle, backgroundColor: backgroundColor)
+    ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
+    func setupNavBar(preserveStatus: Bool, backgroundColor: UIColor? = nil) {
+        appBar = MDAppBar(title: viewTitle, backgroundColor: backgroundColor)
         appBar?.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         
         view.addSubview(appBar!)
         appBar!.snp.makeConstraints { make in
+            make.top.equalTo(view)
             make.width.equalTo(MDLayout.screenWidth)
-            make.top.equalTo(MDLayout.safeAreaInsets(preserveStatus).top)
-            if (MDLayout.isNotchScreen) {
-                make.height.equalTo(MDLayout.safeAreaInsets(!preserveStatus).top + 50)
-            } else {
-                make.height.equalTo(50)
-            }
+            make.height.equalTo(MDLayout.safeInsetTop + 44)
         }
     }
     

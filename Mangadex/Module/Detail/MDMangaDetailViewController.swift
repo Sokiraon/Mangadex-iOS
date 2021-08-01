@@ -20,7 +20,7 @@ class MDMangaDetailViewController: MDViewController {
         backgroundColor: .white,
         segmentPosition: .dynamic,
         scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: MDColor.get(.cerulean)),
+        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: MDColor.currentTintColor),
         horizontalSeparatorOptions: nil,
         verticalSeparatorOptions: nil,
         imageContentMode: .center,
@@ -33,7 +33,7 @@ class MDMangaDetailViewController: MDViewController {
             ),
             selectedState: SegmentioState(
                 titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: MDColor.get(.cerulean)
+                titleTextColor: MDColor.currentTintColor
             ),
             highlightedState: SegmentioState(
                 titleFont: UIFont.boldSystemFont(ofSize: 17),
@@ -103,7 +103,7 @@ class MDMangaDetailViewController: MDViewController {
     }
     
     override func setupUI() {
-        setupNavBar(backgroundColor: .white, preserveStatus: true)
+        setupNavBar(preserveStatus: true)
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
@@ -147,5 +147,9 @@ class MDMangaDetailViewController: MDViewController {
         } else {
             btnContinue.setTitle(String(format: "kMangaActionContinue".localized(), lastReadChapter!), for: .normal)
         }
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
     }
 }

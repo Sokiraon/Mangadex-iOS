@@ -20,6 +20,7 @@ class MDUserManager {
     
     private lazy var _session = MDUserDefaultsManager.retrieveStr(forKey: .kUserSessionToken) ?? ""
     private lazy var _refresh = MDUserDefaultsManager.retrieveStr(forKey: .kUserRefreshToken) ?? ""
+    private lazy var _username = MDUserDefaultsManager.retrieveStr(forKey: .kUsernameToken) ?? ""
     
     private var session: String {
         get {
@@ -39,9 +40,18 @@ class MDUserManager {
             MDUserDefaultsManager.storeStr(newValue, forKey: .kUserRefreshToken)
         }
     }
+    var username: String {
+        get {
+            self._username.isEmpty ? "kDefaultUsername".localized() : self._username
+        }
+        set {
+            self._username = newValue
+            MDUserDefaultsManager.storeStr(newValue, forKey: .kUsernameToken)
+        }
+    }
     
     func isLoggedIn() -> Bool {
-        !(_session.isEmpty || _refresh.isEmpty)
+        !(_session.isEmpty || _refresh.isEmpty || _username.isEmpty)
     }
     
     func loginWithUsername(_ username: String,
@@ -52,6 +62,7 @@ class MDUserManager {
             .loginWithUsername(username, andPassword: password) { session, refresh in
                 self.session = session
                 self.refresh = refresh
+                self.username = username
                 success()
             } onError: {
                 error()
@@ -73,5 +84,12 @@ class MDUserManager {
                         error()
                     }
             }
+    }
+    
+    static func logOut(completion: () -> Void) {
+        instance.session = ""
+        instance.refresh = ""
+        instance.username = ""
+        completion()
     }
 }

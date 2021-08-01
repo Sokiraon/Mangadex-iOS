@@ -10,8 +10,11 @@ import UIKit
 
 extension UIImageView {
     
-    convenience init(imageNamed: String) {
+    convenience init(imageNamed: String, color: UIColor? = nil) {
         self.init()
         image = UIImage.init(named: imageNamed)
+        if (color != nil) {
+            tintColor = color
+        }
     }
 }

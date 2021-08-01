@@ -80,17 +80,12 @@ class MDPreLoginViewController: MDViewController {
     }()
 
     override func willSetupUI() {
-        if MDUserManager.getInstance().isLoggedIn() {
-            let vc = MDHomeViewController()
+        let credentials = MDKeychain.read()
+        if credentials.isEmpty {
+            let vc = MDLoginViewController()
             navigationController?.pushViewController(vc, animated: true)
         } else {
-            let credentials = MDKeychain.read()
-            if credentials.isEmpty {
-                let vc = MDLoginViewController()
-                navigationController?.pushViewController(vc, animated: true)
-            } else {
-                self.credentials = credentials
-            }
+            self.credentials = credentials
         }
     }
 

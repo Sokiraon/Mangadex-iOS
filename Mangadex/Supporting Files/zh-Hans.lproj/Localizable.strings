@@ -51,3 +51,10 @@
 "kMangaActionContinue" = "续看第%@话";
 "kMangaActionToFollow" = "追漫";
 "kMangaActionFollowed" = "已追";
+
+"kThemeColor" = "主题色";
+"kColorCerulean" = "蔚蓝";
+"kColorTeal" = "青绿";
+"kColorCoral" = "珊瑚红";
+
+"kDefaultUsername" = "未登录";

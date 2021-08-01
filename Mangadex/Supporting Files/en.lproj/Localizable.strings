@@ -52,3 +52,10 @@
 "kMangaActionContinue" = "Continue from chap. %@";
 "kMangaActionToFollow" = "Follow";
 "kMangaActionFollowed" = "Followed";
+
+"kThemeColor" = "Theme Color";
+"kColorCerulean" = "Cerulean";
+"kColorTeal" = "Teal";
+"kColorCoral" = "Coral";
+
+"kDefaultUsername" = "Not Logged In";

@@ -20,6 +20,17 @@ enum Colors: String {
     case darkerGray565656 = "565656"
     case darkGray808080 = "808080"
     
+    case white = "ffffff"
+    
+    /** 蔚蓝 */
+    case cerulean = "#32B0DF"
+    /** 青绿 */
+    case teal = "#4FB3B0"
+    /** 珊瑚红 */
+    case coral = "#FF7F50"
+}
+
+enum MDThemeColors: String, CaseIterable {
     /** 蔚蓝 */
     case cerulean = "#32B0DF"
     /** 青绿 */
@@ -56,9 +67,15 @@ class MDColor {
     
     static var themeColors: [ColorTarget: ThemeColorPicker] = [
         .tint: [
-            Colors.cerulean.rawValue,
-            Colors.teal.rawValue,
-            Colors.coral.rawValue,
+            MDThemeColors.cerulean.rawValue,
+            MDThemeColors.teal.rawValue,
+            MDThemeColors.coral.rawValue,
         ],
     ]
+    
+    static var currentTintColor = get([
+        Colors.cerulean,
+        Colors.teal,
+        Colors.coral,
+    ][ThemeManager.currentThemeIndex])
 }

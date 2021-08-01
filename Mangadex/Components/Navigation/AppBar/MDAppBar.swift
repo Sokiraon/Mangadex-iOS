@@ -11,39 +11,41 @@ import UIKit
 class MDAppBar: UIView {
     lazy var btnBack: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "baseline_arrow_back_black_36pt"), for: .normal)
+        button.setImage(UIImage(named: "icon_arrow_back_white"), for: .normal)
         button.contentMode = .scaleToFill
         return button
     }()
     
-    lazy var lblTitle: UILabel = UILabel.initWithText("", ofFontWeight: .regular, andSize: 20)
+    lazy var lblTitle: UILabel = UILabel.initWithText("", ofFontWeight: .regular, andSize: 17)
     
-    static func initWithTitle(_ title: String, backgroundColor: UIColor) -> MDAppBar {
-        let appBar = self.init()
-        appBar.backgroundColor = backgroundColor
-
-        appBar.lblTitle.text = title
-        appBar.lblTitle.textColor = backgroundColor.inverseColor()
+    convenience init(title: String, backgroundColor: UIColor? = nil) {
+        self.init()
         
-        appBar.btnBack.tintColor = backgroundColor.inverseColor()
+        if (backgroundColor != nil) {
+            self.backgroundColor = backgroundColor!
+        } else {
+            theme_backgroundColor = MDColor.themeColors[.tint]
+        }
+        lblTitle.text = title
+        lblTitle.textColor = backgroundColor?.inverseColor() ?? .white
         
-        appBar.setupUI()
-        return appBar
+        setupUI()
     }
     
     func setupUI() {
         self.addSubview(self.btnBack)
         self.btnBack.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(15)
+            make.width.height.equalTo(24)
+            make.left.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(10)
-            make.width.height.equalTo(30)
         }
         
         self.addSubview(lblTitle)
+        lblTitle.textAlignment = .center
         lblTitle.snp.makeConstraints { make in
-            make.left.equalTo(self.btnBack.snp.right).inset(-10)
+            make.left.equalTo(self.btnBack.snp.right).offset(15)
             make.centerY.equalTo(self.btnBack)
-            make.right.lessThanOrEqualToSuperview().inset(50)
+            make.centerX.equalTo(self)
         }
     }
 }
