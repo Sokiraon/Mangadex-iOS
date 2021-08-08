@@ -24,7 +24,7 @@ class MDAppBar: UIView {
         if (backgroundColor != nil) {
             self.backgroundColor = backgroundColor!
         } else {
-            theme_backgroundColor = MDColor.themeColors[.tint]
+            theme_backgroundColor = MDColor.ThemeColors.tint
         }
         lblTitle.text = title
         lblTitle.textColor = backgroundColor?.inverseColor() ?? .white

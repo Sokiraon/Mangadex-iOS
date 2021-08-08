@@ -53,7 +53,7 @@ class MDAccountViewController: MDViewController {
         vTopArea.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
         }
-        vTopArea.theme_backgroundColor = MDColor.themeColors[.tint]
+        vTopArea.theme_backgroundColor = MDColor.ThemeColors.tint
         
         vTopArea.addSubview(ivAvatar)
         ivAvatar.snp.makeConstraints { make in

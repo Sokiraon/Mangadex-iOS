@@ -23,7 +23,7 @@ class MDMangaSlideViewController: MDViewController {
         leader.setTitle("kSlidePrevChapter".localized(), for: .idle)
         leader.setTitle("kReleasePrevChapter".localized(), for: .pulling)
         leader.setTitle("kLoading".localized(), for: .refreshing)
-        leader.setArrowImage(UIImage(named: "baseline_arrow_forward_black_18pt")!)
+        leader.setArrowImage(UIImage(named: "icon_arrow_forward_18pt")!)
         
         leader.refreshingBlock = {
             let dataModel = self.requirePrev(self.currentIndex)
@@ -34,7 +34,8 @@ class MDMangaSlideViewController: MDViewController {
                     dataModel!,
                     currentIndex: self.currentIndex - 1,
                     requirePrevAction: self.requirePrev,
-                    requireNextAction: self.requireNext
+                    requireNextAction: self.requireNext,
+                    leavePageAction: self.leavePageAction
                 )
                 self.refreshLeader.endRefreshing()
                 self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
@@ -48,7 +49,7 @@ class MDMangaSlideViewController: MDViewController {
         trailer.setTitle("kSlideNextChapter".localized(), for: .idle)
         trailer.setTitle("kReleaseNextChapter".localized(), for: .pulling)
         trailer.setTitle("kLoading".localized(), for: .refreshing)
-        trailer.setArrowImage(UIImage(named: "baseline_arrow_back_black_18pt")!)
+        trailer.setArrowImage(UIImage(named: "icon_arrow_back_18pt")!)
         
         trailer.refreshingBlock = {
             let dataModel = self.requireNext(self.currentIndex)
@@ -56,10 +57,11 @@ class MDMangaSlideViewController: MDViewController {
                 self.refreshTrailer.endRefreshing()
             } else {
                 let vc = MDMangaSlideViewController.initWithChapterData(
-                        dataModel!,
-                        currentIndex: self.currentIndex + 1,
-                        requirePrevAction: self.requirePrev,
-                        requireNextAction: self.requireNext
+                    dataModel!,
+                    currentIndex: self.currentIndex + 1,
+                    requirePrevAction: self.requirePrev,
+                    requireNextAction: self.requireNext,
+                    leavePageAction: self.leavePageAction
                 )
                 self.refreshTrailer.endRefreshing()
                 self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
@@ -112,9 +114,9 @@ class MDMangaSlideViewController: MDViewController {
                 self.requirePrev(self.currentIndex)!,
                 currentIndex: self.currentIndex - 1,
                 requirePrevAction: self.requirePrev,
-                requireNextAction: self.requireNext
+                requireNextAction: self.requireNext,
+                leavePageAction: self.leavePageAction
             )
-            vc.leavePageAction = self.leavePageAction
             self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
         },
         title: "kSliderActionPrevChapter".localized(),
@@ -126,9 +128,9 @@ class MDMangaSlideViewController: MDViewController {
                 self.requireNext(self.currentIndex)!,
                 currentIndex: self.currentIndex + 1,
                 requirePrevAction: self.requirePrev,
-                requireNextAction: self.requireNext
+                requireNextAction: self.requireNext,
+                leavePageAction: self.leavePageAction
             )
-            vc.leavePageAction = self.leavePageAction
             self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
         },
         title: "kSliderActionNextChapter".localized(),
@@ -144,7 +146,8 @@ class MDMangaSlideViewController: MDViewController {
     static func initWithChapterData(_ dataModel: MDMangaChapterDataModel,
                                     currentIndex index: Int,
                                     requirePrevAction requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!,
-                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
+                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!,
+                                    leavePageAction leaveAction: ((_ chapter: String) -> Void)!
     ) -> MDMangaSlideViewController {
         let vc = MDMangaSlideViewController()
         if (dataModel.data.attributes.title == nil || dataModel.data.attributes.title == "") {
@@ -157,6 +160,7 @@ class MDMangaSlideViewController: MDViewController {
         
         vc.requirePrev = requirePrev
         vc.requireNext = requireNext
+        vc.leavePageAction = leaveAction
         
         return vc
     }

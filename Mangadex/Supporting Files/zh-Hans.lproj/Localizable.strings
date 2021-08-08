@@ -12,7 +12,7 @@
 "kLoginGuest" = "以游客继续";
 
 "kDashboardTabTrend" = "趋势";
-"kDashboardTabStared" = "收藏夹";
+"kDashboardTabFollowed" = "追漫";
 "kDashboardTabAccount" = "个人中心";
 
 "kMangaDetailChapters" = "章节";
@@ -58,3 +58,26 @@
 "kColorCoral" = "珊瑚红";
 
 "kDefaultUsername" = "未登录";
+
+"kTagReincarnation" = "转生";
+"kTagAction" = "动作";
+"kTagComedy" = "搞笑";
+"kTagMagic" = "魔法";
+"kTagHarem" = "后宫";
+"kTagIsekai" = "异世界";
+"kTagSchool" = "校园";
+"kTagFantasy" = "奇幻";
+"kTagRomance" = "恋爱";
+"kTagLife" = "日常";
+"kTagAward" = "获奖作品";
+"kTagDemons" = "恶魔";
+"kTagMartial" = "武术";
+"kTagAdaptation" = "改编";
+"kTagDrama" = "情感";
+"kTagLongStrip" = "条漫";
+"kTagMonsters" = "魔物";
+"kTagSamurai" = "武士";
+"kTagSciFi" = "科幻";
+"kTagSuperhero" = "超英";
+"kTagGore" = "血腥";
+"kTagSupernatural" = "灵异";

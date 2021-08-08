@@ -18,11 +18,11 @@ class MDHomeViewController: TabmanViewController {
     ]
     private lazy var tabBarItems = [
         TMBarItem(title: "kDashboardTabTrend".localized(),
-                  image: UIImage(named: "baseline_trending_up_black_24pt")!),
-        TMBarItem(title: "kDashboardTabStared".localized(),
-                  image: UIImage(named: "baseline_star_black_24pt")!),
+                  image: UIImage(named: "icon_trending_up")!),
+        TMBarItem(title: "kDashboardTabFollowed".localized(),
+                  image: UIImage(named: "icon_bookmark")!),
         TMBarItem(title: "kDashboardTabAccount".localized(),
-                  image: UIImage(named: "baseline_person_black_24pt")!)
+                  image: UIImage(named: "icon_person")!)
     ]
     
     override func viewDidLoad() {

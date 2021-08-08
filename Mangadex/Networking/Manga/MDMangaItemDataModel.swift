@@ -9,13 +9,26 @@ import Foundation
 import YYModel
 
 class MDMangaMultiLanguageObject: NSObject, YYModel {
-    @objc var en: String!
+    @objc var en: String?
     @objc var jp: String?
     @objc var zh: String?
     @objc var zhHk: String?
     
-    func getLocaledStr() -> String {
-        value(forKey: MDLocale.propertySafeLocale()) as? String ?? en
+    func localizedString() -> String {
+        let localed = value(forKey: MDLocale.propertySafeLocale()) as? String
+        if localed == nil {
+            if en != nil {
+                return en!
+            }
+            for name in propertyNames() {
+                if let property = value(forKey: name) as? String {
+                    return property
+                }
+            }
+        } else {
+            return localed!
+        }
+        return "N/A"
     }
     
     class func modelCustomPropertyMapper() -> [String: Any]? {

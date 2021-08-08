@@ -35,16 +35,16 @@ extension MDHTTPManager {
                 }
                 var tags: [String] = []
                 for tag in manga.data.attributes.tags {
-                    tags.append(tag.attributes.name.en)
+                    tags.append(tag.attributes.localizedName())
                 }
                 result.append(
                     MangaItem(
                         id: manga.data.id,
-                        title: manga.data.attributes.title.en,
+                        title: manga.data.attributes.title.localizedString(),
                         authorId: authorId,
                         artistId: artistId,
                         coverId: coverId,
-                        description: manga.data.attributes.descript.getLocaledStr(),
+                        description: manga.data.attributes.descript.localizedString(),
                         tags: tags
                     )
                 )

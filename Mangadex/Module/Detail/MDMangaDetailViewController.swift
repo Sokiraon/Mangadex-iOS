@@ -66,7 +66,7 @@ class MDMangaDetailViewController: MDViewController {
             SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
         }, titleColor: .white)
         
-        button.theme_backgroundColor = MDColor.themeColors[.tint]
+        button.theme_backgroundColor = MDColor.ThemeColors.tint
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         
@@ -78,7 +78,7 @@ class MDMangaDetailViewController: MDViewController {
             
         }, title: "kMangaActionToFollow".localized(), titleColor: .white)
         
-        button.theme_backgroundColor = MDColor.themeColors[.tint]
+        button.theme_backgroundColor = MDColor.ThemeColors.tint
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         
@@ -109,7 +109,7 @@ class MDMangaDetailViewController: MDViewController {
         
         view.addSubview(btnContinue)
         btnContinue.snp.makeConstraints { make in
-            make.top.equalTo(appBar!.snp.bottom).offset(10)
+            make.top.equalTo(appBar!.snp.bottom).offset(15)
             make.left.equalToSuperview().inset(15)
             make.height.equalTo(48)
         }

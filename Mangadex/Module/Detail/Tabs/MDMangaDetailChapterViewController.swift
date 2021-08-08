@@ -81,26 +81,27 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     private func openSliderForIndexPath(_ path: IndexPath) {
         let vc = MDMangaSlideViewController.initWithChapterData(
-                chapterModels![path.row],
-                currentIndex: path.row,
-                requirePrevAction: { index -> MDMangaChapterDataModel? in
-                    if (index > 0) {
-                        return self.chapterModels![index - 1]
-                    } else {
-                        return nil
-                    }
-                },
-                requireNextAction: { index -> MDMangaChapterDataModel? in
-                    if (index < self.chapterModels!.count - 1) {
-                        return self.chapterModels![index + 1]
-                    } else {
-                        return nil
-                    }
-                })
-        vc.leavePageAction = { chapter in
-            MDMangaProgressManager.saveProgress(chapter, forMangaId: self.mangaItem.id)
-            self.vChapters.reloadData()
-        }
+            chapterModels![path.row],
+            currentIndex: path.row,
+            requirePrevAction: { index -> MDMangaChapterDataModel? in
+                if (index > 0) {
+                    return self.chapterModels![index - 1]
+                } else {
+                    return nil
+                }
+            },
+            requireNextAction: { index -> MDMangaChapterDataModel? in
+                if (index < self.chapterModels!.count - 1) {
+                    return self.chapterModels![index + 1]
+                } else {
+                    return nil
+                }
+            },
+            leavePageAction: { chapter in
+                MDMangaProgressManager.saveProgress(chapter, forMangaId: self.mangaItem.id)
+                self.vChapters.reloadData()
+            }
+        )
         navigationController?.pushViewController(vc, animated: true)
     }
 }

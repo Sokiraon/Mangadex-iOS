@@ -64,6 +64,7 @@
 		7AACACAC267EE58300232166 /* MDColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAB267EE58300232166 /* MDColor.swift */; };
 		7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */; };
 		7AACACB0267F34D400232166 /* MDSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAF267F34D400232166 /* MDSectionHeaderView.swift */; };
+		7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB4219326BF7907003A38BB /* NSObject+Ext.swift */; };
 		7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */; };
 		7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */; };
 		7AD6BA1E26A8138C009FB2F5 /* UIScrollView+MJRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6B9CE26A8138C009FB2F5 /* UIScrollView+MJRefresh.m */; };
@@ -181,6 +182,7 @@
 		7AACACAB267EE58300232166 /* MDColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColor.swift; sourceTree = "<group>"; };
 		7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterCollectionCell.swift; sourceTree = "<group>"; };
 		7AACACAF267F34D400232166 /* MDSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSectionHeaderView.swift; sourceTree = "<group>"; };
+		7AB4219326BF7907003A38BB /* NSObject+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Ext.swift"; sourceTree = "<group>"; };
 		7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+once.swift"; sourceTree = "<group>"; };
 		7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountViewController.swift; sourceTree = "<group>"; };
 		7AD6B9CE26A8138C009FB2F5 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
@@ -747,6 +749,7 @@
 				390E79A2381EB022968AF13C /* UIScrollView+Ext.swift */,
 				390E77D76060F0B415020713 /* UIView+Ext.swift */,
 				390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */,
+				7AB4219326BF7907003A38BB /* NSObject+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -972,6 +975,7 @@
 				7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */,
 				00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
+				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,
 				7AD6BA2726A8138C009FB2F5 /* MJRefreshBackNormalFooter.m in Sources */,
 				7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */,
 				7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */,

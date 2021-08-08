@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum MDButtonStyle {
-    case themed, custom
+    case main, secondary, custom
 }
 
 class MDButton: UIButton {
@@ -17,11 +17,18 @@ class MDButton: UIButton {
     convenience init(style: MDButtonStyle, handler: @escaping () -> Void) {
         self.init()
         
-        if (style == .themed) {
-            theme_backgroundColor = MDColor.themeColors[.tint]
+        switch style {
+        case .main:
+            theme_backgroundColor = MDColor.ThemeColors.tint
             setTitleColor(.white, for: .normal)
             setTitleColor(MDColor.get(.darkGray808080), for: .disabled)
+            break
+        case .secondary:
+            break
+        default:
+            break
         }
+        
         addAction(UIAction(handler: { action in
             handler()
         }), for: .touchUpInside)

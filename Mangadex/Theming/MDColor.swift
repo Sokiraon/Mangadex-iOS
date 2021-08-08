@@ -39,8 +39,8 @@ enum MDThemeColors: String, CaseIterable {
     case coral = "#FF7F50"
 }
 
-enum ColorTarget {
-    case tint
+struct ThemeColorPickers {
+    let tint: ThemeColorPicker
 }
 
 class MDColor {
@@ -65,13 +65,13 @@ class MDColor {
         colorFromHex(color.rawValue)
     }
     
-    static var themeColors: [ColorTarget: ThemeColorPicker] = [
-        .tint: [
+    static var ThemeColors: ThemeColorPickers = ThemeColorPickers(
+        tint: [
             MDThemeColors.cerulean.rawValue,
             MDThemeColors.teal.rawValue,
             MDThemeColors.coral.rawValue,
-        ],
-    ]
+        ]
+    )
     
     static var currentTintColor = get([
         Colors.cerulean,
