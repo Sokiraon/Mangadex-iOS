@@ -45,6 +45,7 @@ class MDAccountViewController: MDViewController {
         return view
     }()
     
+    private lazy var languageCard = MDCCustomCard(title: "kLanguagePref".localized())
     
     override func setupUI() {
         view.backgroundColor = MDColor.get(.lighterGrayF5F5F5)

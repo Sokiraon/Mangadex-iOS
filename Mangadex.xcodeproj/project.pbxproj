@@ -94,6 +94,7 @@
 		7AD6BA3826A8142C009FB2F5 /* MJRefreshLeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6BA3726A8142C009FB2F5 /* MJRefreshLeader.m */; };
 		7AD6BA3C26A82593009FB2F5 /* MJRefreshNormalLeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6BA3B26A82593009FB2F5 /* MJRefreshNormalLeader.m */; };
 		7AD6BA3F26A825D7009FB2F5 /* MJRefreshStateLeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6BA3E26A825D7009FB2F5 /* MJRefreshStateLeader.m */; };
+		7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE229BD26C1170D00DA9C83 /* String+Ext.swift */; };
 		7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
@@ -263,6 +264,7 @@
 		7AD6BA3B26A82593009FB2F5 /* MJRefreshNormalLeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MJRefreshNormalLeader.m; sourceTree = "<group>"; };
 		7AD6BA3D26A825C9009FB2F5 /* MJRefreshStateLeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MJRefreshStateLeader.h; sourceTree = "<group>"; };
 		7AD6BA3E26A825D7009FB2F5 /* MJRefreshStateLeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MJRefreshStateLeader.m; sourceTree = "<group>"; };
+		7AE229BD26C1170D00DA9C83 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideViewController.swift; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
@@ -750,6 +752,7 @@
 				390E77D76060F0B415020713 /* UIView+Ext.swift */,
 				390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */,
 				7AB4219326BF7907003A38BB /* NSObject+Ext.swift */,
+				7AE229BD26C1170D00DA9C83 /* String+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1015,6 +1018,7 @@
 				7AD6BA1E26A8138C009FB2F5 /* UIScrollView+MJRefresh.m in Sources */,
 				7AD6BA3426A8138C009FB2F5 /* MJRefreshComponent.m in Sources */,
 				390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */,
+				7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */,
 				390E743C931911C7A8789480 /* UIAlertController+Ext.swift in Sources */,
 				7AD6BA2F26A8138C009FB2F5 /* MJRefreshGifHeader.m in Sources */,
 				390E78B738C1AC7F9AE9B4B4 /* UILabel+Ext.swift in Sources */,

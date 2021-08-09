@@ -21,6 +21,7 @@ target "Mangadex" do
   pod 'Pageboy', '~> 3.6.2'
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
   pod 'SwiftTheme'
+  pod 'Eureka'
 
 end
 

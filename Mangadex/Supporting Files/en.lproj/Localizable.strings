@@ -59,3 +59,7 @@
 "kColorCoral" = "Coral";
 
 "kDefaultUsername" = "Not Logged In";
+
+"kLanguagePref" = "Language Preference";
+"kLanguagePrefSystem" = "Use my system language";
+"kLanguagePrefCustom" = "Manually select language:";

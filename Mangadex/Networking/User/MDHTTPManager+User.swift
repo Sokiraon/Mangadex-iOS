@@ -44,7 +44,7 @@ extension MDHTTPManager {
                         result.append(
                             MangaItem(
                                 id: manga.data.id,
-                                title: manga.data.attributes.title.localizedString(),
+                                title: manga.data.attributes.getLocalizedTitle(),
                                 authorId: authorId,
                                 artistId: artistId,
                                 coverId: coverId,

@@ -15,8 +15,8 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
     @objc var zhHk: String?
     
     func localizedString() -> String {
-        let localed = value(forKey: MDLocale.propertySafeLocale()) as? String
-        if localed == nil {
+        let localized = value(forKey: MDLocale.propertySafeLocale()) as? String
+        if localized == nil {
             if en != nil {
                 return en!
             }
@@ -26,7 +26,7 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
                 }
             }
         } else {
-            return localed!
+            return localized!
         }
         return "N/A"
     }
@@ -38,6 +38,7 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
 
 class MDMangaItemAttributes: NSObject, YYModel {
     @objc var title: MDMangaMultiLanguageObject!
+    @objc var altTitles: [MDMangaMultiLanguageObject]!
     @objc var descript: MDMangaMultiLanguageObject!
     @objc var status: String!
     @objc var tags: [MDMangaTagDataModel]!
@@ -49,7 +50,29 @@ class MDMangaItemAttributes: NSObject, YYModel {
     }
 
     class func modelContainerPropertyGenericClass() -> [String: Any]? {
-        ["tags": MDMangaTagDataModel.classForCoder()]
+        [
+            "tags": MDMangaTagDataModel.classForCoder(),
+            "altTitles": MDMangaMultiLanguageObject.classForCoder()
+        ]
+    }
+    
+    func getLocalizedTitle() -> String {
+        let locale = MDLocale.propertySafeLocale()
+        let titleValue = title.value(forKey: locale)
+        if (titleValue != nil) {
+            return titleValue as! String
+        }
+        for altTitleObj in altTitles {
+            let value = altTitleObj.value(forKey: locale)
+            if (value != nil) {
+                return value as! String
+            }
+            let str = altTitleObj.en
+            if (str != nil && str?.guessedLocale() == locale) {
+                return str!
+            }
+        }
+        return title.localizedString()
     }
 }
 
