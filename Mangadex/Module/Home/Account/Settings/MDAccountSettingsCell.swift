@@ -70,31 +70,23 @@ class MDAccountSettingsCell: UIView {
             break
             
         default:
-            contentView +++ [lblTitle]
+            contentView +++ lblTitle
             lblTitle.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.left.equalTo(ivIcon.snp.right).offset(10)
                 make.right.equalTo(ivNext.snp.left).offset(-15)
             }
-            ivIcon.snp.updateConstraints { make in
+            ivIcon.snp.makeConstraints { make in
                 make.top.bottom.equalToSuperview()
             }
             break
         }
+        
+        addGestureRecognizer(tapGesture)
     }
     
     private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCell))
     var delegate: MDAccountSettingsCellDelegate?
-    
-    private lazy var bottomSheetAttrs: EKAttributes = {
-        var attrs = EKAttributes()
-        attrs.name = "settings_sheet"
-        attrs.position = .bottom
-        attrs.displayDuration = .infinity
-        attrs.screenInteraction = .dismiss
-        attrs.roundCorners = .top(radius: 10)
-        return attrs
-    }()
     
     @objc private func didTapCell() {
         switch actionType {

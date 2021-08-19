@@ -5,10 +5,30 @@
 import Foundation
 import UIKit
 
+enum ViewStyle {
+    case line
+}
+
 extension UIView {
     convenience init(backgroundColor: UIColor) {
         self.init()
         self.backgroundColor = backgroundColor
+    }
+    
+    convenience init(style: ViewStyle) {
+        self.init()
+        
+        switch style {
+        case .line:
+            backgroundColor = MDColor.get(.grayDFDFDF)
+            self.snp.makeConstraints { make in
+                make.height.equalTo(0.5)
+            }
+            break
+            
+        default:
+            break
+        }
     }
     
     static func +++ (superview: UIView, subview: UIView) {

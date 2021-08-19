@@ -7,6 +7,6 @@
 
 import Foundation
 
-infix operator +++: MultiplicationPrecedence
+infix operator +++: AdditionPrecedence
 
-infix operator <<<: AdditionPrecedence
+infix operator <<<: MultiplicationPrecedence

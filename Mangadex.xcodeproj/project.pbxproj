@@ -60,7 +60,7 @@
 		7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */; };
 		7A89D9C3267DCA0200E41147 /* MDHTTPManager+Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */; };
 		7A89D9C5267DD28A00E41147 /* MDMangaItemDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */; };
-		7A9A5FF126C76F9B00196953 /* MDAccountSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF026C76F9B00196953 /* MDAccountSettingsModel.swift */; };
+		7A9A5FF126C76F9B00196953 /* MDAccountSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */; };
 		7A9A5FF426C76FD400196953 /* MDAccountSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */; };
 		7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF526C7743A00196953 /* CustomOperator.swift */; };
 		7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF726C8CF7700196953 /* MDRouter.swift */; };
@@ -185,7 +185,7 @@
 		7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Auth.swift"; sourceTree = "<group>"; };
 		7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Author.swift"; sourceTree = "<group>"; };
 		7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaItemDataModel.swift; sourceTree = "<group>"; };
-		7A9A5FF026C76F9B00196953 /* MDAccountSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsModel.swift; sourceTree = "<group>"; };
+		7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsSection.swift; sourceTree = "<group>"; };
 		7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsCell.swift; sourceTree = "<group>"; };
 		7A9A5FF526C7743A00196953 /* CustomOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperator.swift; sourceTree = "<group>"; };
 		7A9A5FF726C8CF7700196953 /* MDRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRouter.swift; sourceTree = "<group>"; };
@@ -562,7 +562,7 @@
 		7A9A5FF226C76FC400196953 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				7A9A5FF026C76F9B00196953 /* MDAccountSettingsModel.swift */,
+				7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */,
 				7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */,
 			);
 			path = Settings;
@@ -1032,7 +1032,7 @@
 				7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */,
 				004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */,
 				00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */,
-				7A9A5FF126C76F9B00196953 /* MDAccountSettingsModel.swift in Sources */,
+				7A9A5FF126C76F9B00196953 /* MDAccountSettingsSection.swift in Sources */,
 				7AD6BA2A26A8138C009FB2F5 /* MJRefreshAutoNormalFooter.m in Sources */,
 				0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */,
 				7AD6BA2C26A8138C009FB2F5 /* MJRefreshNormalTrailer.m in Sources */,

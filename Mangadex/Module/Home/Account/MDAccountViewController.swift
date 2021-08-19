@@ -45,7 +45,17 @@ class MDAccountViewController: MDViewController {
         return view
     }()
     
-    private lazy var languageCard = MDCCustomCard(title: "kLanguagePref".localized())
+    private lazy var colorCell: MDAccountSettingsCell = {
+        let cell = MDAccountSettingsCell(textStyle: .oneLine, actionType: .selector)
+        cell.delegate = self
+        return cell
+    }()
+    private lazy var langCell: MDAccountSettingsCell = {
+        let cell = MDAccountSettingsCell(textStyle: .twoLine, actionType: .selector)
+        cell.delegate = self
+        return cell
+    }()
+    private lazy var configSection = MDAccountSettingsSection(cells: colorCell, langCell)
     
     override func setupUI() {
         view.backgroundColor = MDColor.get(.lighterGrayF5F5F5)
@@ -60,7 +70,7 @@ class MDAccountViewController: MDViewController {
         ivAvatar.snp.makeConstraints { make in
             make.width.height.equalTo(72)
             make.top.equalToSuperview().inset(MDLayout.safeInsetTop + 30)
-            make.left.equalToSuperview().inset(25)
+            make.left.equalToSuperview().inset(30)
             make.bottom.equalToSuperview().inset(35)
         }
         
@@ -80,17 +90,10 @@ class MDAccountViewController: MDViewController {
         lblUsername.isUserInteractionEnabled = !MDUserManager.getInstance().isLoggedIn()
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
-        view.addSubview(colorCard)
-        colorCard.snp.makeConstraints { make in
-            make.top.equalTo(vTopArea.snp.bottom).offset(15)
-            make.left.right.equalToSuperview().inset(10)
-        }
-        
-        colorCard.contentView.addSubview(colorCollection)
-        colorCollection.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+        view +++ configSection
+        configSection.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(15)
-            make.height.equalTo(ceil(Double(MDThemeColors.allCases.count) / 3.0) * 105)
+            make.top.equalTo(vTopArea.snp.bottom).offset(15)
         }
     }
     
@@ -106,7 +109,15 @@ class MDAccountViewController: MDViewController {
     }
 }
 
-extension MDAccountViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MDAccountViewController: UICollectionViewDelegate, UICollectionViewDataSource, MDAccountSettingsCellDelegate {
+    func viewControllerToDisplay(forCell: MDAccountSettingsCell) -> UIViewController? {
+        UIViewController()
+    }
+    
+    func viewToDisplay(forCell: MDAccountSettingsCell) -> UIView? {
+        nil
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         MDThemeColors.allCases.count
     }

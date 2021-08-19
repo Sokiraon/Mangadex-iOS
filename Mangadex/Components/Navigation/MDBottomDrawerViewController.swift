@@ -22,6 +22,23 @@ class MDBottomDrawerViewController: MDViewController {
         self.style = style
     }
     
+    private var contentView: MDRoundedView!
+    
     override func setupUI() {
+        switch style {
+        case .float:
+            contentView = MDRoundedView(roundedCorners: .allCorners)
+            break
+            
+        default:
+            contentView = MDRoundedView(roundedCorners: [.topLeft, .topRight])
+            break
+        }
+        
+        contentView.backgroundColor = .white
+        view +++ contentView
+        contentView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.bottom)
+        }
     }
 }

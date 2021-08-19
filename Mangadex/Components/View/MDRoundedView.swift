@@ -11,16 +11,22 @@ import UIKit
 class MDRoundedView: UIView {
     
     private var roundedCorners: UIRectCorner!
+    private var cornerRadius: CGFloat!
     
-    convenience init(roundedCorners: UIRectCorner) {
+    convenience init(roundedCorners: UIRectCorner, cornerRadius: CGFloat = 10) {
         self.init()
         self.roundedCorners = roundedCorners
+        self.cornerRadius = cornerRadius
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let maskPath = UIBezierPath.init(roundedRect: bounds, byRoundingCorners: roundedCorners, cornerRadii: CGSize(width: 10, height: 10))
+        let maskPath = UIBezierPath.init(
+            roundedRect: bounds,
+            byRoundingCorners: roundedCorners,
+            cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
+        )
         let maskLayer = CAShapeLayer()
         maskLayer.frame = bounds
         maskLayer.path = maskPath.cgPath
