@@ -22,7 +22,7 @@ class MDAccountSettingsSection: MDCCard {
     
     private func setupUI() {
         isInteractable = false
-        setShadowElevation(.cardResting, for: .normal)
+        setShadowElevation(.switch, for: .normal)
         backgroundColor = .white
         
         self +++ vStack
@@ -38,11 +38,12 @@ class MDAccountSettingsSection: MDCCard {
         return section
     }
     
+    /// Add a settings section to a view
     static func +++ (superview: UIView, section: MDAccountSettingsSection) {
         var i = section.vStack.arrangedSubviews.count - 1
         while i > 0 {
             let line = UIView(style: .line)
-            section.vStack.insertSubview(line, at: i)
+            section.vStack.insertArrangedSubview(line, at: i)
             line.snp.makeConstraints { make in
                 make.width.equalToSuperview()
             }

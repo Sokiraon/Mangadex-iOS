@@ -46,12 +46,17 @@ class MDAccountViewController: MDViewController {
     }()
     
     private lazy var colorCell: MDAccountSettingsCell = {
-        let cell = MDAccountSettingsCell(textStyle: .oneLine, actionType: .selector)
+        let cell = MDAccountSettingsCell(
+            textStyle: .oneLine, actionType: .selector, iconName: "icon_palette", title: "kThemeColor".localized()
+        )
         cell.delegate = self
         return cell
     }()
     private lazy var langCell: MDAccountSettingsCell = {
-        let cell = MDAccountSettingsCell(textStyle: .twoLine, actionType: .selector)
+        let cell = MDAccountSettingsCell(
+            textStyle: .twoLine, actionType: .selector, iconName: "icon_language",
+            title: "kLanguagePref".localized(), subtitle: "kLanguageCurrent".localized()
+        )
         cell.delegate = self
         return cell
     }()

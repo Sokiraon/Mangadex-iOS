@@ -32,8 +32,19 @@ class MDAccountSettingsCell: UIView {
     private var actionType: MDAccountSettingsCellActionType!
     
     convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
-                     actionType: MDAccountSettingsCellActionType = .selector) {
+                     actionType: MDAccountSettingsCellActionType = .selector,
+                     iconName: String,
+                     title: String,
+                     subtitle: String = "") {
         self.init()
+        ivIcon.image = UIImage(named: iconName)
+        ivIcon.tintColor = MDColor.get(.darkGray808080)
+        
+        lblTitle.text = title
+        if (!subtitle.isEmpty) {
+            lblSubtitle.text = subtitle
+        }
+        
         setupUI(textStyle: textStyle)
         self.actionType = actionType
     }
@@ -65,6 +76,7 @@ class MDAccountSettingsCell: UIView {
             }
             lblSubtitle.snp.makeConstraints { make in
                 make.bottom.equalToSuperview()
+                make.top.equalTo(lblTitle.snp.bottom).offset(3)
                 make.left.right.equalTo(lblTitle)
             }
             break

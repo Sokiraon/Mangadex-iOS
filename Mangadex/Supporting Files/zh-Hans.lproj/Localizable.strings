@@ -82,6 +82,5 @@
 "kTagGore" = "血腥";
 "kTagSupernatural" = "灵异";
 
-"kLanguagePref" = "语言偏好";
-"kLanguagePrefSystem" = "使用系统语言";
-"kLanguagePrefCustom" = "自定义：";
+"kLanguagePref" = "修改阅读语言";
+"kLanguageCurrent" = "当前：%@";
