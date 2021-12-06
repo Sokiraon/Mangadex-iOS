@@ -26,6 +26,7 @@
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
 		00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */; };
+		052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052D5785275E4CDF004256B3 /* MangaItem.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7967A88951D82F181FF4 /* MDCTextCard.swift */; };
 		390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */; };
@@ -148,6 +149,7 @@
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaTableCell.swift; sourceTree = "<group>"; };
+		052D5785275E4CDF004256B3 /* MangaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaItem.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* UIImageView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		390E71822C0B2EA3E7321523 /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 				7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */,
 				7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */,
 				390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */,
+				052D5785275E4CDF004256B3 /* MangaItem.swift */,
 			);
 			path = Manga;
 			sourceTree = "<group>";
@@ -1023,6 +1026,7 @@
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				7A67C65226B69C1300796BC8 /* MDColorSettingsCollectionCell.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
+				052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */,
 				7A9A5FFA26C8DB5F00196953 /* MDBottomDrawerViewController.swift in Sources */,
 				7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */,
 				7A89D9BD267DAC9500E41147 /* MDHTTPManager.swift in Sources */,

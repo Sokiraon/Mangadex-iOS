@@ -9,16 +9,6 @@ import Foundation
 import UIKit
 import Kingfisher
 
-struct MangaItem {
-    var id: String
-    var title: String
-    var authorId: String
-    var artistId: String
-    var coverId: String
-    var description: String
-    var tags: [String]
-}
-
 class MDMangaTableCell: UITableViewCell {
     // MARK: - properties
     var coverImageView: UIImageView = {

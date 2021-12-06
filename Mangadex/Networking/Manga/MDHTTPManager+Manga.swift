@@ -15,39 +15,9 @@ extension MDHTTPManager {
         self.get("/manga", ofType: .HostTypeApi, withParams: params) { json in
             var result: Array<MangaItem> = []
             let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(),
-                                                  json: json["results"] as! Array<[String : Any]>)
+                                                  json: json["data"] as! Array<[String : Any]>)
             for manga in mangaList as! Array<MDMangaItemDataModel> {
-                var authorId = "", artistId = "", coverId = ""
-                for relationship in manga.relationships {
-                    switch relationship.type {
-                    case "author":
-                        authorId = relationship.id
-                        break
-                    case "artist":
-                        artistId = relationship.id
-                        break
-                    case "cover_art":
-                        coverId = relationship.id
-                        break
-                    default:
-                        break
-                    }
-                }
-                var tags: [String] = []
-                for tag in manga.data.attributes.tags {
-                    tags.append(tag.attributes.localizedName())
-                }
-                result.append(
-                    MangaItem(
-                        id: manga.data.id,
-                        title: manga.data.attributes.getLocalizedTitle(),
-                        authorId: authorId,
-                        artistId: artistId,
-                        coverId: coverId,
-                        description: manga.data.attributes.descript.localizedString(),
-                        tags: tags
-                    )
-                )
+                result.append(MangaItem(model: manga))
             }
             success(result)
         } onError: {
