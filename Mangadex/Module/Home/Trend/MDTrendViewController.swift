@@ -84,9 +84,6 @@ extension MDTrendViewController: UITableViewDelegate, UITableViewDataSource {
             cell = MDMangaTableCell(style: .default, reuseIdentifier: identifier)
         }
         (cell as! MDMangaTableCell).setContentWithItem(mangaList[indexPath.row])
-//        if (!tableView.isDragging) {
-//            (cell as! MDMangaTableCell).setContentWithItem(mangaList[indexPath.row])
-//        }
         return cell!
     }
     

@@ -52,7 +52,6 @@
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
 		7A53408326887D62003CE4C1 /* MDHTTPManager+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53408226887D62003CE4C1 /* MDHTTPManager+User.swift */; };
 		7A67C65226B69C1300796BC8 /* MDColorSettingsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67C65126B69C1300796BC8 /* MDColorSettingsCollectionCell.swift */; };
-		7A67C65426B6AE2100796BC8 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67C65326B6AE2100796BC8 /* MDButton.swift */; };
 		7A7544622686F8B700467EF1 /* MDHTTPManager+Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544612686F8B700467EF1 /* MDHTTPManager+Chapter.swift */; };
 		7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */; };
 		7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */; };
@@ -178,7 +177,6 @@
 		7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailInfoViewController.swift; sourceTree = "<group>"; };
 		7A53408226887D62003CE4C1 /* MDHTTPManager+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+User.swift"; sourceTree = "<group>"; };
 		7A67C65126B69C1300796BC8 /* MDColorSettingsCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingsCollectionCell.swift; sourceTree = "<group>"; };
-		7A67C65326B6AE2100796BC8 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
 		7A7544612686F8B700467EF1 /* MDHTTPManager+Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Chapter.swift"; sourceTree = "<group>"; };
 		7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterDataModel.swift; sourceTree = "<group>"; };
 		7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideCollectionCell.swift; sourceTree = "<group>"; };
@@ -361,7 +359,6 @@
 				00363094266F5BC40058BE25 /* ViewController */,
 				390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */,
 				390E70A25AC522141FF885AB /* Card */,
-				7A67C65326B6AE2100796BC8 /* MDButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1072,7 +1069,6 @@
 				05FC8A2B2766F858009BB857 /* MDSettingsPopopView.swift in Sources */,
 				390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */,
 				7AD6BA2226A8138C009FB2F5 /* UIScrollView+MJExtension.m in Sources */,
-				7A67C65426B6AE2100796BC8 /* MDButton.swift in Sources */,
 				390E7B8FC16D467464DB04B6 /* UIImageView+Ext.swift in Sources */,
 				390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */,
 				390E77057AED63E9926A0B16 /* MDCCustomCard.swift in Sources */,
@@ -1276,6 +1272,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B4YJNS52DR;
 				INFOPLIST_FILE = Mangadex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1331,6 +1328,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = B4YJNS52DR;
 				INFOPLIST_FILE = Mangadex/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

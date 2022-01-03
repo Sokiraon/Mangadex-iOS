@@ -18,12 +18,7 @@ class MDAccountViewController: MDViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "icon_logout"), for: .normal)
         button.tintColor = .white
-        button.addAction(UIAction(handler: { action in
-            MDUserManager.logOut {
-                let vc = MDPreLoginViewController()
-                self.navigationController?.setViewControllers([vc], animated: true)
-            }
-        }), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
         button.isHidden = !MDUserManager.getInstance().isLoggedIn()
         return button
     }()
@@ -106,6 +101,15 @@ class MDAccountViewController: MDViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
+    }
+    
+    // MARK: - actions
+    
+    @objc private func didTapLogout() {
+        MDUserManager.logOut {
+            let vc = MDPreLoginViewController()
+            self.navigationController?.setViewControllers([vc], animated: true)
+        }
     }
     
     @objc private func didTapUsername() {
