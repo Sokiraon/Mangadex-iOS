@@ -116,7 +116,7 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollec
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chapter", for: indexPath)
             as! MDMangaChapterCollectionCell
         if (chapterModels != nil) {
-            let attrs = chapterModels![indexPath.row].data.attributes!
+            let attrs = chapterModels![indexPath.row].attributes!
             cell.setWithVolume(attrs.volume, andChapter: attrs.chapter, withProgress: progress)
             if (attrs.chapter == progress) {
                 lastReadIndex = indexPath

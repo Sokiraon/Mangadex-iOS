@@ -150,10 +150,10 @@ class MDMangaSlideViewController: MDViewController {
                                     leavePageAction leaveAction: ((_ chapter: String) -> Void)!
     ) -> MDMangaSlideViewController {
         let vc = MDMangaSlideViewController()
-        if (dataModel.data.attributes.title == nil || dataModel.data.attributes.title == "") {
-            vc.viewTitle = "\(dataModel.data.attributes.chapter!) \("kChapter".localized())"
+        if (dataModel.attributes.title == nil || dataModel.attributes.title == "") {
+            vc.viewTitle = "\(dataModel.attributes.chapter!) \("kChapter".localized())"
         } else {
-            vc.viewTitle = dataModel.data.attributes.title!
+            vc.viewTitle = dataModel.attributes.title!
         }
         vc.dataModel = dataModel
         vc.currentIndex = index
@@ -214,10 +214,10 @@ class MDMangaSlideViewController: MDViewController {
     override func didSetupUI() {
         ProgressHUD.show()
         MDHTTPManager.getInstance()
-                .getChapterBaseUrlById(dataModel.data.id) { url in
-                    for fileName in self.dataModel.data.attributes.data {
+                .getChapterBaseUrlById(dataModel.id) { url in
+                    for fileName in self.dataModel.attributes.data {
                         self.pages.append(
-                                "\(url)/data/\(self.dataModel.data.attributes.chapterHash!)/\(fileName)"
+                                "\(url)/data/\(self.dataModel.attributes.chapterHash!)/\(fileName)"
                         )
                     }
                     DispatchQueue.main.async {
@@ -294,7 +294,7 @@ class MDMangaSlideViewController: MDViewController {
     }
     
     override func willLeavePage() {
-        leavePageAction(dataModel.data.attributes.chapter)
+        leavePageAction(dataModel.attributes.chapter)
     }
 }
 

@@ -15,4 +15,10 @@ extension UIButton {
         setTitleColor(titleColor, for: .normal)
         self.backgroundColor = backgroundColor
     }
+    
+    convenience init(imgNormal: UIImage?, imgDisabled: UIImage? = nil) {
+        self.init()
+        setImage(imgNormal, for: .normal)
+        setImage(imgDisabled, for: .disabled)
+    }
 }

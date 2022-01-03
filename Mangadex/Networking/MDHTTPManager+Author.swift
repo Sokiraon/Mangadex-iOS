@@ -16,7 +16,11 @@ extension MDHTTPManager {
                  ofType: HostType.HostTypeApi,
                  withParams: [:]) { json in
             let data = JSON(json)
-            success(data["data"]["attributes"]["name"].string!)
+            if let name = data["data"][0]["attributes"]["name"].string {
+                success(name)
+            } else if let name = data["data"]["attributes"]["name"].string {
+                success(name)
+            }
         } onError: {
             if (error != nil) {
                 error!()

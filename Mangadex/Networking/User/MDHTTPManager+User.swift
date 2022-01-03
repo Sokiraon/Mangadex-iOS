@@ -19,7 +19,7 @@ extension MDHTTPManager {
                          token: token) { json in
                     var result: Array<MangaItem> = []
                     let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(),
-                                                          json: json["results"] as! Array<[String : Any]>)
+                                                          json: json["data"] as! Array<[String : Any]>)
                     for manga in mangaList as! Array<MDMangaItemDataModel> {
                         result.append(MangaItem(model: manga))
                     }

@@ -9,17 +9,19 @@ import Foundation
 import UIKit
 
 class MDViewController: UIViewController {
-    var viewTitle: String!
+    var viewTitle: String = ""
     var appBar: MDAppBar?
 
     ///
     /// Called at viewDidLoad, before setupUI().
+    ///
     /// Should be used for preparing data that is needed by UI components.
     /// However, do notice that this will only be called once in the lifecycle (compared to initOnAppear).
     func willSetupUI() {}
 
     ///
     /// Called at viewDidLoad, after willSetupUI().
+    ///
     /// Should be used for adding subviews and configuring their layout.
     func setupUI() {}
 
@@ -28,12 +30,15 @@ class MDViewController: UIViewController {
     func didSetupUI() {}
 
     ///
-    /// Called at viewWillAppear, should be used for initializing data or organizing views for animation.
+    /// Called at viewWillAppear.
+    ///
+    /// Should be used for initializing data or organizing views for animation.
     /// Do notice that this will be called every time the view comes into foreground, so you may want to avoid complex actions.
     func doOnAppear() {}
     
     ///
     /// Called when vc is aboout to leave the page (i.e. user taps back button).
+    ///
     /// You may use this func to save progress.
     func willLeavePage() {}
     
@@ -75,4 +80,11 @@ class MDViewController: UIViewController {
         willLeavePage()
         navigationController?.popViewController(animated: true)
     }
+    
+    #if DEBUG
+    // For injectionIII
+    @objc func injected() {
+        viewDidLoad()
+    }
+    #endif
 }

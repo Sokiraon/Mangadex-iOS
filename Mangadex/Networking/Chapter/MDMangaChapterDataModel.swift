@@ -25,11 +25,7 @@ class MDMangaChapterAttributes: NSObject, YYModel {
     }
 }
 
-class MDMangaChapterData: NSObject {
+class MDMangaChapterDataModel: NSObject {
     @objc var id: String!
     @objc var attributes: MDMangaChapterAttributes!
-}
-
-class MDMangaChapterDataModel: NSObject {
-    @objc var data: MDMangaChapterData!
 }

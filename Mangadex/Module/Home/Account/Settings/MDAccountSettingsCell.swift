@@ -17,8 +17,8 @@ enum MDAccountSettingsCellActionType {
 }
 
 protocol MDAccountSettingsCellDelegate {
-    func viewControllerToDisplay(forCell: MDAccountSettingsCell) -> UIViewController?
-    func viewToDisplay(forCell: MDAccountSettingsCell) -> UIView?
+    func viewControllerToDisplay(forCell: MDAccountSettingsCell, withId: String) -> UIViewController?
+    func viewToDisplay(forCell: MDAccountSettingsCell, withId: String) -> UIView?
 }
 
 class MDAccountSettingsCell: UIView {
@@ -29,10 +29,7 @@ class MDAccountSettingsCell: UIView {
     private lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
     private lazy var ivNext = UIImageView(imageNamed: "icon_arrow_forward", color: MDColor.get(.darkerGray565656))
     
-    private var actionType: MDAccountSettingsCellActionType!
-    
     convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
-                     actionType: MDAccountSettingsCellActionType = .selector,
                      iconName: String,
                      title: String,
                      subtitle: String = "") {
@@ -46,7 +43,6 @@ class MDAccountSettingsCell: UIView {
         }
         
         setupUI(textStyle: textStyle)
-        self.actionType = actionType
     }
     
     private func setupUI(textStyle: MDAccountSettingsCellTextStyle) {
@@ -100,20 +96,38 @@ class MDAccountSettingsCell: UIView {
     private lazy var tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapCell))
     var delegate: MDAccountSettingsCellDelegate?
     
+    // MARK: - Actions
+    
+    private var actionType: MDAccountSettingsCellActionType!
+    private var id: String!
+    
+    func setActionType(_ actionType: MDAccountSettingsCellActionType, withId id: String) {
+        self.actionType = actionType
+        self.id = id
+    }
+    
     @objc private func didTapCell() {
         switch actionType {
         case .push:
-            guard let vc = delegate?.viewControllerToDisplay(forCell: self) else {
+            guard let vc = delegate?.viewControllerToDisplay(forCell: self, withId: self.id) else {
                 fatalError("Cannot find a target viewcontroller to display")
             }
             MDRouter.showVC(vc, withType: .push)
             break
             
         default:
-            guard let vc = delegate?.viewControllerToDisplay(forCell: self) else {
-                fatalError("Cannot find a target viewcontroller to display")
+            guard let view = delegate?.viewToDisplay(forCell: self, withId: self.id) else {
+                fatalError("Cannot find a view to display")
             }
-            MDRouter.showVC(vc, withType: .present)
+            var attrs = EKAttributes.bottomFloat
+            attrs.name = "Settings Popup"
+            attrs.displayDuration = .infinity
+            attrs.screenInteraction = .dismiss
+            attrs.entryBackground = .color(color: .standardContent)
+            attrs.screenBackground = .color(color: EKColor(UIColor(white: 0.5, alpha: 0.5)))
+            
+            SwiftEntryKit.display(entry: view, using: attrs)
+            
             break
         }
     }

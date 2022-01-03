@@ -17,6 +17,7 @@ enum Colors: String {
     
     // for text use only
     case black2D2E2F = "2d2e2f"
+    case black323232 = "323232"
     case darkerGray565656 = "565656"
     case darkGray808080 = "808080"
     

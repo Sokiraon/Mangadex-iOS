@@ -27,6 +27,7 @@
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
 		00FC838E2663417D00AB0586 /* MDMangaTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */; };
 		052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052D5785275E4CDF004256B3 /* MangaItem.swift */; };
+		05FC8A2B2766F858009BB857 /* MDSettingsPopopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* MDSettingsPopopView.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7967A88951D82F181FF4 /* MDCTextCard.swift */; };
 		390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */; };
@@ -150,6 +151,7 @@
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00FC838D2663417D00AB0586 /* MDMangaTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaTableCell.swift; sourceTree = "<group>"; };
 		052D5785275E4CDF004256B3 /* MangaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaItem.swift; sourceTree = "<group>"; };
+		05FC8A2A2766F858009BB857 /* MDSettingsPopopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsPopopView.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* UIImageView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
 		390E71822C0B2EA3E7321523 /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 			children = (
 				7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */,
 				7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */,
+				05FC8A2A2766F858009BB857 /* MDSettingsPopopView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1066,6 +1069,7 @@
 				390E743C931911C7A8789480 /* UIAlertController+Ext.swift in Sources */,
 				7AD6BA2F26A8138C009FB2F5 /* MJRefreshGifHeader.m in Sources */,
 				390E78B738C1AC7F9AE9B4B4 /* UILabel+Ext.swift in Sources */,
+				05FC8A2B2766F858009BB857 /* MDSettingsPopopView.swift in Sources */,
 				390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */,
 				7AD6BA2226A8138C009FB2F5 /* UIScrollView+MJExtension.m in Sources */,
 				7A67C65426B6AE2100796BC8 /* MDButton.swift in Sources */,

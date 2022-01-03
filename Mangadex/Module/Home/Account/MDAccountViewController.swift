@@ -47,16 +47,18 @@ class MDAccountViewController: MDViewController {
     
     private lazy var colorCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
-            textStyle: .oneLine, actionType: .selector, iconName: "icon_palette", title: "kThemeColor".localized()
+            textStyle: .oneLine, iconName: "icon_palette", title: "kThemeColor".localized()
         )
+        cell.setActionType(.selector, withId: "colorSelector")
         cell.delegate = self
         return cell
     }()
     private lazy var langCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
-            textStyle: .twoLine, actionType: .selector, iconName: "icon_language",
+            textStyle: .twoLine, iconName: "icon_language",
             title: "kLanguagePref".localized(), subtitle: "kLanguageCurrent".localized()
         )
+        cell.setActionType(.selector, withId: "langSelector")
         cell.delegate = self
         return cell
     }()
@@ -115,12 +117,12 @@ class MDAccountViewController: MDViewController {
 }
 
 extension MDAccountViewController: UICollectionViewDelegate, UICollectionViewDataSource, MDAccountSettingsCellDelegate {
-    func viewControllerToDisplay(forCell: MDAccountSettingsCell) -> UIViewController? {
+    func viewControllerToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIViewController? {
         UIViewController()
     }
     
-    func viewToDisplay(forCell: MDAccountSettingsCell) -> UIView? {
-        nil
+    func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIView? {
+        MDSettingsPopopView()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

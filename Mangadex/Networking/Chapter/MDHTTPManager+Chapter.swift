@@ -29,7 +29,7 @@ extension MDHTTPManager {
                      "order[chapter]": order.rawValue
                  ]) { json in
             let total = json["total"] as! Int
-            let results = json["results"] as! Array<[String: Any]>
+            let results = json["data"] as! Array<[String: Any]>
             let models = NSArray.yy_modelArray(with: MDMangaChapterDataModel.classForCoder(), json: results)
             success(models as! [MDMangaChapterDataModel], total)
         } onError: {
