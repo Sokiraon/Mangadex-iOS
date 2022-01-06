@@ -47,7 +47,7 @@ extension MDHTTPManager {
         self.get("/cover/\(coverId)", ofType: .HostTypeApi, withParams: [:]) { json in
             let data = JSON(json)
             if let filename = data["data"]["attributes"]["fileName"].string {
-                let coverUrl = "\(HostType.HostTypeUploads.rawValue)/covers/\(mangaId)/\(filename)"
+                let coverUrl = "\(HostType.HostTypeUploads.rawValue)/covers/\(mangaId)/\(filename).256.jpg"
                 success(URL(string: coverUrl)!)
             }
         } onError: {

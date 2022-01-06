@@ -94,10 +94,7 @@ extension MDStaredViewController: UITableViewDelegate, UITableViewDataSource {
         if cell == nil {
             cell = MDMangaTableCell(style: .default, reuseIdentifier: identifier)
         }
-        
-        if (!tableView.isDragging) {
-            (cell as! MDMangaTableCell).setContentWithItem(self.mangaList[indexPath.row])
-        }
+        (cell as! MDMangaTableCell).setContentWithItem(self.mangaList[indexPath.row])
         return cell!
     }
     
