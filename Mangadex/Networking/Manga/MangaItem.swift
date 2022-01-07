@@ -15,11 +15,19 @@ struct MangaItem {
     var coverId: String
     var description: String
     var tags: [String]
+    var updatedAt: String
+    var lastVolume: String?
+    var lastChapter: String?
+    var status: String
     
     init(model: MDMangaItemDataModel) {
         self.id = model.id
         self.title = model.attributes.getLocalizedTitle()
         self.description = model.attributes.descript.localizedString()
+        self.status = model.attributes.status
+        self.lastVolume = model.attributes.lastVolume
+        self.lastChapter = model.attributes.lastChapter
+        self.updatedAt = model.attributes.updatedAt
         
         self.authorId = ""; self.artistId = ""; self.coverId = ""
         for relationship in model.relationships {

@@ -44,6 +44,7 @@ class MDMangaItemAttributes: NSObject, YYModel {
     @objc var tags: [MDMangaTagDataModel]!
     @objc var lastVolume: String?
     @objc var lastChapter: String?
+    @objc var updatedAt: String!
 
     class func modelCustomPropertyMapper() -> [String: Any]? {
         ["descript": "description"]

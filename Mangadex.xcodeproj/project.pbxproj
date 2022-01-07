@@ -103,6 +103,7 @@
 		7AD6BA3F26A825D7009FB2F5 /* MJRefreshStateLeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6BA3E26A825D7009FB2F5 /* MJRefreshStateLeader.m */; };
 		7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE229BD26C1170D00DA9C83 /* String+Ext.swift */; };
 		7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */; };
+		B83B5607278863D000453E26 /* MDFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B5606278863CF00453E26 /* MDFormatter.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -282,6 +283,7 @@
 		7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideViewController.swift; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
+		B83B5606278863CF00453E26 /* MDFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFormatter.swift; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -439,6 +441,7 @@
 		004F7188264BF8EB00D61AEB /* Mangadex */ = {
 			isa = PBXGroup;
 			children = (
+				B83B5605278863C000453E26 /* Utils */,
 				7A3319DA26AD33600015D9D1 /* Storage */,
 				7A75993F26901AC700A20E64 /* Mangadex.entitlements */,
 				7A75446926885FC300467EF1 /* Supporting Files */,
@@ -794,6 +797,14 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		B83B5605278863C000453E26 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B83B5606278863CF00453E26 /* MDFormatter.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1060,6 +1071,7 @@
 				7AD6BA3826A8142C009FB2F5 /* MJRefreshLeader.m in Sources */,
 				7AD6BA1F26A8138C009FB2F5 /* MJRefreshConst.m in Sources */,
 				7AD6BA1E26A8138C009FB2F5 /* UIScrollView+MJRefresh.m in Sources */,
+				B83B5607278863D000453E26 /* MDFormatter.swift in Sources */,
 				7AD6BA3426A8138C009FB2F5 /* MJRefreshComponent.m in Sources */,
 				390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */,
 				7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */,

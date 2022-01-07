@@ -10,20 +10,21 @@ import SwiftyJSON
 
 extension MDHTTPManager {
     func getMangaListWithParams(_ params: [String: Any],
-                                onSuccess success: @escaping (_ data: Array<MangaItem>) -> Void,
+                                onSuccess success: @escaping (_ data: [MangaItem]) -> Void,
                                 onError error: (() -> Void)? = nil) {
         self.get("/manga", ofType: .HostTypeApi, withParams: params) { json in
-            var result: Array<MangaItem> = []
-            let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(),
-                                                  json: json["data"] as! Array<[String : Any]>)
-            for manga in mangaList as! Array<MDMangaItemDataModel> {
-                result.append(MangaItem(model: manga))
+            guard let data = json["data"] as? Array<[String: Any]> else {
+                error?()
+                return
             }
-            success(result)
+            let mangaModels = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(), json: data)
+            if (mangaModels != nil) {
+                success((mangaModels as! [MDMangaItemDataModel]).map {
+                    MangaItem.init(model: $0)
+                })
+            }
         } onError: {
-            if (error != nil) {
-                error!()
-            }
+            error?()
         }
     }
     

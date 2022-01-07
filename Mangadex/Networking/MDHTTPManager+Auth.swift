@@ -35,10 +35,11 @@ extension MDHTTPManager {
         self.get("/auth/check",
                  ofType: .HostTypeApi,
                  withParams: ["Authorization": "Bearer \(token)"]) { json in
-            if (json["isAuthenticated"] as! Bool == true) {
+            if (json["isAuthenticated"] as? Bool == true) {
                 success()
+            } else {
+                error()
             }
-            error()
         } onError: {
             error()
         }

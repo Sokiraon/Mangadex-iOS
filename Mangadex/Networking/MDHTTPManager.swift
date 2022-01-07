@@ -27,8 +27,8 @@ class MDHTTPManager {
              onSuccess success: @escaping (_ r: [String: Any]) -> Void,
              onError error: @escaping () -> Void) {
         Just.get(type.rawValue + path, params: params, asyncCompletionHandler:  { r in
-            if r.ok, let json = r.json {
-                success(json as! [String: Any])
+            if r.ok, let json = r.json as? [String: Any] {
+                success(json)
             } else {
                 error()
             }
@@ -43,8 +43,8 @@ class MDHTTPManager {
              onError error: @escaping () -> Void) {
         Just.get(type.rawValue + path, params: params, headers: ["Authorization": "Bearer \(token)"],
                  asyncCompletionHandler:  { r in
-            if r.ok, let json = r.json {
-                success(json as! [String: Any])
+            if r.ok, let json = r.json as? [String: Any] {
+                success(json)
             } else {
                 error()
             }
@@ -57,8 +57,8 @@ class MDHTTPManager {
               onSuccess success: @escaping (_ r: [String: Any]) -> Void,
               onError error: @escaping () -> Void) {
         Just.post(type.rawValue + path, json: json, asyncCompletionHandler:  { r in
-            if r.ok, let json = r.json {
-                success(json as! [String: Any])
+            if r.ok, let json = r.json as? [String: Any] {
+                success(json)
             } else {
                 error()
             }

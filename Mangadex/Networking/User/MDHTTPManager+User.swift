@@ -17,9 +17,12 @@ extension MDHTTPManager {
                          ofType: .HostTypeApi,
                          withParams: params,
                          token: token) { json in
+                    guard let data = json["data"] as? Array<[String: Any]> else {
+                        error()
+                        return
+                    }
                     var result: Array<MangaItem> = []
-                    let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(),
-                                                          json: json["data"] as! Array<[String : Any]>)
+                    let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(), json: data)
                     for manga in mangaList as! Array<MDMangaItemDataModel> {
                         result.append(MangaItem(model: manga))
                     }

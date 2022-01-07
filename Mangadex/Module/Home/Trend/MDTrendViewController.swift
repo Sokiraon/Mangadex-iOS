@@ -36,7 +36,7 @@ class MDTrendViewController: MDViewController {
         return view
     }()
     
-    private lazy var mangaList: [MangaItem] = []
+    private lazy var mangaList = [MangaItem]()
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         MDHTTPManager.getInstance()
