@@ -9,6 +9,7 @@ import UIKit
 import Tabman
 import Pageboy
 import Localize_Swift
+import SwiftTheme
 
 class MDHomeViewController: TabmanViewController {
     private lazy var viewControllers = [
@@ -25,18 +26,32 @@ class MDHomeViewController: TabmanViewController {
                   image: UIImage(named: "icon_person")!)
     ]
     
+    private let bar = TMBar.TabBar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.dataSource = self
         
-        let bar = TMBar.TabBar()
         bar.layout.transitionStyle = .snap
         bar.buttons.customize { button in
             button.selectedTintColor = MDColor.currentTintColor
         }
         
         addBar(bar.systemBar(), dataSource: self, at: .bottom)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didChangeTheme),
+            name: NSNotification.Name(rawValue: ThemeUpdateNotification),
+            object: nil
+        )
+    }
+    
+    @objc func didChangeTheme() {
+        bar.buttons.customize { button in
+            button.selectedTintColor = MDColor.currentTintColor
+        }
     }
 }
 

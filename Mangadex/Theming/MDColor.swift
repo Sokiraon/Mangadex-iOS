@@ -74,9 +74,13 @@ class MDColor {
         ]
     )
     
-    static var currentTintColor = get([
-        Colors.cerulean,
-        Colors.teal,
-        Colors.coral,
-    ][ThemeManager.currentThemeIndex])
+    static var currentTintColor: UIColor {
+        get {
+            return self.get([
+                Colors.cerulean,
+                Colors.teal,
+                Colors.coral,
+            ][ThemeManager.currentThemeIndex])
+        }
+    }
 }

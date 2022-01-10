@@ -123,8 +123,11 @@ class MDAccountSettingsCell: UIView {
             attrs.name = "Settings Popup"
             attrs.displayDuration = .infinity
             attrs.screenInteraction = .dismiss
+            attrs.entryInteraction = .forward
             attrs.entryBackground = .color(color: .standardContent)
             attrs.screenBackground = .color(color: EKColor(UIColor(white: 0.5, alpha: 0.5)))
+            attrs.entranceAnimation = .init(translate: .init(duration: 0.2), scale: nil, fade: nil)
+            attrs.positionConstraints.size.width = .offset(value: 10)
             
             SwiftEntryKit.display(entry: view, using: attrs)
             

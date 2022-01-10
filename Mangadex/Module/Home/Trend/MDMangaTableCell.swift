@@ -21,7 +21,7 @@ class MDMangaCellTagItem: UIView {
         super.init(frame: .zero)
         
         self.layer.cornerRadius = 3
-        self.backgroundColor = MDColor.currentTintColor
+        self.theme_backgroundColor = MDColor.ThemeColors.tint
         
         addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
@@ -42,9 +42,6 @@ class MDMangaTableCell: UITableViewCell {
     var titleLabel = UILabel(fontSize: 18, fontWeight: .medium, color: .black2D2E2F, numberOfLines: 2, scalable: true)
     var statusTag = MDMangaCellTagItem()
     var updateTag = MDMangaCellTagItem()
-    var statusLabel = UILabel(fontSize: 15, fontWeight: .regular, color: .black2D2E2F, numberOfLines: 1, scalable: false)
-    var chapterLabel = UILabel(fontSize: 15, fontWeight: .regular, color: .black2D2E2F, numberOfLines: 1, scalable: false)
-    var dateLabel = UILabel(fontSize: 15, fontWeight: .regular, color: .black2D2E2F, numberOfLines: 1, scalable: false)
     
     // MARK: - initialize
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -88,8 +85,14 @@ class MDMangaTableCell: UITableViewCell {
     // MARK: - methods
     func setContentWithItem(_ item: MangaItem) {
         titleLabel.text = item.title
-        statusTag.contentLabel.text = item.status
-        updateTag.contentLabel.text = MDFormatter.formattedDateString(fromISODateString: item.updatedAt)
+        if (item.status == "ongoing") {
+            statusTag.contentLabel.text = "kMangaOngoing".localized()
+        } else {
+            statusTag.contentLabel.text = "kMangaCompleted".localized()
+        }
+        updateTag.contentLabel.text = "kMangaLastUpdate".localizedPlural(
+            MDFormatter.formattedDateString(fromISODateString: item.updatedAt)
+        )
         
         MDHTTPManager()
             .getMangaCoverUrlById(item.coverId, forManga: item.id) { url in

@@ -23,26 +23,9 @@ class MDAccountViewController: MDViewController {
         return button
     }()
     
-    private lazy var colorCard = MDCCustomCard(title: "kThemeColor".localized())
-    private lazy var colorCollection: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 80, height: 90)
-        layout.minimumInteritemSpacing = 25
-        layout.minimumLineSpacing = 15
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.isScrollEnabled = false
-        view.delegate = self
-        view.dataSource = self
-        view.backgroundColor = .clear
-        view.register(MDColorSettingsCollectionCell.self, forCellWithReuseIdentifier: "color")
-        
-        return view
-    }()
-    
     private lazy var colorCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
-            textStyle: .oneLine, iconName: "icon_palette", title: "kThemeColor".localized()
+            textStyle: .oneLine, iconName: "icon_palette", title: "kPrefThemeColor".localized()
         )
         cell.setActionType(.selector, withId: "colorSelector")
         cell.delegate = self
@@ -51,13 +34,13 @@ class MDAccountViewController: MDViewController {
     private lazy var langCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
             textStyle: .twoLine, iconName: "icon_language",
-            title: "kLanguagePref".localized(), subtitle: "kLanguageCurrent".localized()
+            title: "kPrefMangaLang".localized(), subtitle: "kPrefMangaLangCur".localized()
         )
         cell.setActionType(.selector, withId: "langSelector")
         cell.delegate = self
         return cell
     }()
-    private lazy var configSection = MDAccountSettingsSection(cells: colorCell, langCell)
+    private lazy var configSection = MDAccountSettingsSection(cells: [colorCell, langCell])
     
     override func setupUI() {
         view.backgroundColor = MDColor.get(.lighterGrayF5F5F5)
@@ -120,30 +103,17 @@ class MDAccountViewController: MDViewController {
     }
 }
 
-extension MDAccountViewController: UICollectionViewDelegate, UICollectionViewDataSource, MDAccountSettingsCellDelegate {
+extension MDAccountViewController: MDAccountSettingsCellDelegate {
     func viewControllerToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIViewController? {
         UIViewController()
     }
     
     func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIView? {
-        MDSettingsPopopView()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        MDThemeColors.allCases.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "color", for: indexPath) as! MDColorSettingsCollectionCell
-        cell.setWithIndex(indexPath.row)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        ThemeManager.setTheme(index: indexPath.row)
-        let cells = collectionView.visibleCells.enumerated()
-        for (_, cell) in cells {
-            (cell as! MDColorSettingsCollectionCell).updateUIIfNeeded()
+        switch id {
+        case "colorSelector":
+            return MDColorSettingsPopupView()
+        default:
+            return UIView()
         }
     }
 }

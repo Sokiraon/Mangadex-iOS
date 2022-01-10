@@ -10,7 +10,7 @@ import MaterialComponents
 
 class MDAccountSettingsSection: MDCCard {
     
-    convenience init(cells: MDAccountSettingsCell...) {
+    convenience init(cells: [MDAccountSettingsCell]) {
         self.init()
         setupUI()
         for cell in cells {

@@ -38,6 +38,9 @@
 "kArtistUnknown" = "原画：佚名";
 "kDescription" = "简介";
 "kTags" = "标签";
+"kMangaLastUpdate" = "%@ 更新";
+"kMangaOngoing" = "连载中";
+"kMangaCompleted" = "已完结";
 
 "kSliderActionPrevChapter" = "上一话";
 "kSliderActionNextChapter" = "下一话";
@@ -82,5 +85,8 @@
 "kTagGore" = "血腥";
 "kTagSupernatural" = "灵异";
 
-"kLanguagePref" = "修改阅读语言";
-"kLanguageCurrent" = "当前：%@";
+"kPrefThemeColor" = "设置主题色";
+"kPrefMangaLang" = "修改阅读语言";
+"kPrefMangaLangCur" = "当前：%@";
+
+"kPrefPopupSave" = "保存设置";

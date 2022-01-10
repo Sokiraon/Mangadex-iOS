@@ -39,6 +39,9 @@
 "kArtistUnknown" = "Artist: Unknown";
 "kDescription" = "Description";
 "kTags" = "Tags";
+"kMangaLastUpdate" = "UPDATED AT %@";
+"kMangaOngoing" = "ONGOING";
+"kMangaCompleted" = "COMPLETED";
 
 "kSliderActionPrevChapter" = "Prev";
 "kSliderActionNextChapter" = "Next";
@@ -60,5 +63,7 @@
 
 "kDefaultUsername" = "Not Logged In";
 
-"kLanguagePref" = "Change Manga Language";
-"kLanguageCurrent" = "Current: %@";
+"kPrefThemeColor" = "Set Theme Color";
+"kPrefMangaLang" = "Change Manga Language";
+"kPrefMangaLangCur" = "Current: %@";
+"kPrefPopupSave" = "Save";
