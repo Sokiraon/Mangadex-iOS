@@ -6,25 +6,19 @@
 //
 
 import Foundation
+import UIKit
 
 extension UICollectionView {
-    func scrollToNearestVisibleCell() {
+    func scrollToNearestVisibleCell() -> IndexPath? {
         self.decelerationRate = .fast
-        let visibleCenterPositionOfScrollView = Float(self.contentOffset.x + (self.bounds.size.width / 2))
-        var closestCellIndex = -1
-        var closestDistance: Float = .greatestFiniteMagnitude
-        for cell in self.visibleCells {
-            let cellWidth = cell.bounds.size.width
-            let cellCenter = Float(cell.frame.origin.x + cellWidth / 2)
-            
-            let distance = fabsf(visibleCenterPositionOfScrollView - cellCenter)
-            if distance < closestDistance {
-                closestDistance = distance
-                closestCellIndex = self.indexPath(for: cell)!.row
-            }
+        let collectionViewCenter = Float(self.contentOffset.x + (self.bounds.size.width / 2))
+        let closestCellIndex = self.indexPathForItem(
+            at: CGPoint(x: CGFloat(collectionViewCenter), y: self.bounds.size.height / 2)
+        )
+        
+        if closestCellIndex != nil {
+            self.scrollToItem(at: closestCellIndex!, at: .centeredHorizontally, animated: true)
         }
-        if closestCellIndex != -1 {
-            self.scrollToItem(at: IndexPath(row: closestCellIndex, section: 0), at: .centeredHorizontally, animated: true)
-        }
+        return closestCellIndex
     }
 }

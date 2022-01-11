@@ -116,6 +116,25 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         fatalError("Parent Method Not Implemented By Subclass")
     }
     
+    /**
+     CollectionView will not scroll if target item is already in position,
+     so we need to check for this situation here and manually invoke the callback function.
+     */
+    func scrollViewWillScrollToIndexPath(_ indexPath: IndexPath?) -> Bool {
+        if let indexPath = indexPath {
+            let itemWidth = itemSize().width
+            var targetCenterX = itemWidth / 2
+            if indexPath.row > 0 {
+                targetCenterX += itemWidth * CGFloat(indexPath.row)
+            }
+            let currentCenterX = vOptCollection.contentOffset.x + itemWidth / 2
+            if abs(targetCenterX - currentCenterX) < 1 {
+                return false
+            }
+        }
+        return true
+    }
+    
     // MARK: delegate methods
     
     func itemSize() -> CGSize {
@@ -135,7 +154,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        if scrollViewWillScrollToIndexPath(indexPath) {
+            vSelector.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.5).cgColor
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
@@ -145,7 +167,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        self.vOptCollection.scrollToNearestVisibleCell()
+        let indexPath = self.vOptCollection.scrollToNearestVisibleCell()
+        if !scrollViewWillScrollToIndexPath(indexPath) {
+            scrollViewDidEndScrollingAnimation(scrollView)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -154,7 +179,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
-            self.vOptCollection.scrollToNearestVisibleCell()
+            let indexPath = self.vOptCollection.scrollToNearestVisibleCell()
+            if !scrollViewWillScrollToIndexPath(indexPath) {
+                scrollViewDidEndScrollingAnimation(scrollView)
+            }
         }
     }
     
