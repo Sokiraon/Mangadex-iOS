@@ -17,7 +17,7 @@ protocol MDSettingsPopupViewDelegate {
 }
 
 class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
@@ -26,23 +26,23 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         fatalError()
     }
     
-    private lazy var btnDismiss: UIButton = {
+    internal lazy var btnDismiss: UIButton = {
         let btn = UIButton(imgNormal: UIImage(named: "icon_dismiss"))
         btn.tintColor = MDColor.get(.darkGray808080)
         btn.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
         return btn
     }()
     
-    private lazy var lblTitle = UILabel(fontSize: 24, fontWeight: .regular, color: .darkerGray565656, numberOfLines: 2, scalable: true)
+    internal lazy var lblTitle = UILabel(fontSize: 24, fontWeight: .regular, color: .darkerGray565656, numberOfLines: 2, scalable: true)
     
-    private lazy var btnSave: UIButton = {
+    internal lazy var btnSave: UIButton = {
         let button = MDButton(variant: .text)
         button.setTitle("kPrefPopupSave".localized(), for: .normal)
         button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
         return button
     }()
     
-    private lazy var vOptCollection: UICollectionView = {
+    internal lazy var vOptCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = self.itemSize()
         layout.minimumLineSpacing = 0
@@ -56,6 +56,14 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         view.showsHorizontalScrollIndicator = false
         view.decelerationRate = .fast
         view.register(MDColorSettingCollectionCell.classForCoder(), forCellWithReuseIdentifier: "colorCell")
+        return view
+    }()
+    
+    internal lazy var vSelector: UIView = {
+        let view = UIView()
+        view.layer.borderColor = UIColor.wetAsphalt.cgColor
+        view.layer.borderWidth = 2
+        view.isUserInteractionEnabled = false
         return view
     }()
     
@@ -82,6 +90,14 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
             make.top.equalTo(lblTitle.snp.bottom).offset(20)
             make.height.equalTo(itemSize().height)
             make.left.right.equalToSuperview()
+        }
+        
+        addSubview(vSelector)
+        vSelector.snp.makeConstraints { make in
+            make.width.equalTo(itemSize().width)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(vOptCollection.snp.top)
+            make.bottom.equalTo(vOptCollection.snp.bottom)
         }
         
         addSubview(btnSave)
@@ -132,6 +148,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         self.vOptCollection.scrollToNearestVisibleCell()
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        vSelector.layer.borderColor = UIColor.wetAsphalt.withAlphaComponent(0.5).cgColor
+    }
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             self.vOptCollection.scrollToNearestVisibleCell()
@@ -139,11 +159,6 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        let centerX = vOptCollection.contentOffset.x + (MDLayout.screenWidth - 20) / 2
-        guard let indexPath = vOptCollection
-                .indexPathForItem(at: CGPoint(x: centerX, y: itemSize().height / 2)) else {
-            return
-        }
-        ThemeManager.setTheme(index: indexPath.row)
+        vSelector.layer.borderColor = UIColor.wetAsphalt.cgColor
     }
 }

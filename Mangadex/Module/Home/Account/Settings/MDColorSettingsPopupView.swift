@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftTheme
 
 class MDColorSettingsPopupView: MDSettingsPopupView {
     override func itemSize() -> CGSize {
@@ -28,5 +29,16 @@ class MDColorSettingsPopupView: MDSettingsPopupView {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
         (cell as! MDColorSettingCollectionCell).setColor(MDThemeColors.allCases[indexPath.row])
         return cell
+    }
+    
+    override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        super.scrollViewDidEndScrollingAnimation(scrollView)
+        
+        let centerX = vOptCollection.contentOffset.x + (MDLayout.screenWidth - 20) / 2
+        guard let indexPath = vOptCollection
+                .indexPathForItem(at: CGPoint(x: centerX, y: itemSize().height / 2)) else {
+                    return
+                }
+        ThemeManager.setTheme(index: indexPath.row)
     }
 }

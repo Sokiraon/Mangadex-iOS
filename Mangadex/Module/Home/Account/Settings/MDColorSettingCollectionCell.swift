@@ -7,6 +7,7 @@
 
 import Foundation
 import SnapKit
+import UIKit
 
 class MDColorSettingCollectionCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
@@ -22,6 +23,9 @@ class MDColorSettingCollectionCell: UICollectionViewCell {
     private let vColor = UIView()
     
     func setupUI() {
+        layer.borderColor = UIColor.clouds.cgColor
+        layer.borderWidth = 2
+        
         addSubview(lblColor)
         lblColor.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(14)
