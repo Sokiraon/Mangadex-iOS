@@ -24,7 +24,7 @@ class MDMangaTagCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
+        contentView.backgroundColor = .lightGrayE5E5E5
         contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.snp.makeConstraints { (make: ConstraintMaker) in
             make.edges.equalTo(0)

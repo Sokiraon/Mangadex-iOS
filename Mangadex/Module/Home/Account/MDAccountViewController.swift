@@ -43,13 +43,13 @@ class MDAccountViewController: MDViewController {
     private lazy var configSection = MDAccountSettingsSection(cells: [colorCell, langCell])
     
     override func setupUI() {
-        view.backgroundColor = MDColor.get(.lighterGrayF5F5F5)
+        view.backgroundColor = .lightestGrayF5F5F5
         
         view.addSubview(vTopArea)
         vTopArea.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
         }
-        vTopArea.theme_backgroundColor = MDColor.ThemeColors.tint
+        vTopArea.theme_backgroundColor = UIColor.theme_tintColor
         
         vTopArea.addSubview(ivAvatar)
         ivAvatar.snp.makeConstraints { make in

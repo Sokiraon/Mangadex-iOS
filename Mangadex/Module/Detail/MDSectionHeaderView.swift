@@ -35,7 +35,7 @@ class MDSectionHeaderView: UIView {
     lazy var lblSection = UILabel()
     lazy var vDivider: UIView = {
         let view = UIView()
-        view.backgroundColor = MDColor.get(.grayDFDFDF)
+        view.backgroundColor = .grayDFDFDF
         return view
     }()
 }

@@ -66,8 +66,8 @@ class MDCCustomCard : MDCCard {
         }
     }
     
-    func applyBorder(color: Colors = .lightGrayE5E5E5) {
-        setBorderColor(MDColor.get(color), for: .normal)
+    func applyBorder() {
+        setBorderColor(.lightGrayE5E5E5, for: .normal)
         setBorderWidth(1, for: .normal)
     }
 }

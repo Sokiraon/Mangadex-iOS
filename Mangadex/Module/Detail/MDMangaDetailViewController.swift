@@ -20,7 +20,7 @@ class MDMangaDetailViewController: MDViewController {
         backgroundColor: .white,
         segmentPosition: .dynamic,
         scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: MDColor.currentTintColor),
+        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: .currentTintColor),
         horizontalSeparatorOptions: nil,
         verticalSeparatorOptions: nil,
         imageContentMode: .center,
@@ -33,7 +33,7 @@ class MDMangaDetailViewController: MDViewController {
             ),
             selectedState: SegmentioState(
                 titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: MDColor.currentTintColor
+                titleTextColor: .currentTintColor
             ),
             highlightedState: SegmentioState(
                 titleFont: UIFont.boldSystemFont(ofSize: 17),
@@ -66,7 +66,7 @@ class MDMangaDetailViewController: MDViewController {
             SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
         }, titleColor: .white)
         
-        button.theme_backgroundColor = MDColor.ThemeColors.tint
+        button.theme_backgroundColor = UIColor.theme_tintColor
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         
@@ -78,7 +78,7 @@ class MDMangaDetailViewController: MDViewController {
             
         }, title: "kMangaActionToFollow".localized(), titleColor: .white)
         
-        button.theme_backgroundColor = MDColor.ThemeColors.tint
+        button.theme_backgroundColor = UIColor.theme_tintColor
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         

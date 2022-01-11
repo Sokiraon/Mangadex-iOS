@@ -19,10 +19,10 @@ class MDButton: UIButton {
         self.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         switch variant {
         case .text:
-            self.theme_tintColor = MDColor.ThemeColors.tint
+            self.theme_tintColor = UIColor.theme_tintColor
         case .contained:
             self.setTitleColor(.white, for: .normal)
-            self.theme_backgroundColor = MDColor.ThemeColors.tint
+            self.theme_backgroundColor = UIColor.theme_tintColor
         }
     }
 }

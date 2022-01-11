@@ -27,7 +27,7 @@ class MDAccountSettingsCell: UIView {
     private lazy var ivIcon = UIImageView()
     private lazy var lblTitle = UILabel(fontSize: 15, fontWeight: .medium, color: .darkerGray565656)
     private lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
-    private lazy var ivNext = UIImageView(imageNamed: "icon_arrow_forward", color: MDColor.get(.darkerGray565656))
+    private lazy var ivNext = UIImageView(imageNamed: "icon_arrow_forward", color: .darkerGray565656)
     
     convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
                      iconName: String,
@@ -35,7 +35,7 @@ class MDAccountSettingsCell: UIView {
                      subtitle: String = "") {
         self.init()
         ivIcon.image = UIImage(named: iconName)
-        ivIcon.tintColor = MDColor.get(.darkGray808080)
+        ivIcon.tintColor = .darkGray808080
         
         lblTitle.text = title
         if (!subtitle.isEmpty) {

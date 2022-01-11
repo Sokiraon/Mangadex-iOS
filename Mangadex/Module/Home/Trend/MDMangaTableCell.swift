@@ -21,7 +21,7 @@ class MDMangaCellTagItem: UIView {
         super.init(frame: .zero)
         
         self.layer.cornerRadius = 3
-        self.theme_backgroundColor = MDColor.ThemeColors.tint
+        self.theme_backgroundColor = UIColor.theme_tintColor
         
         addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in

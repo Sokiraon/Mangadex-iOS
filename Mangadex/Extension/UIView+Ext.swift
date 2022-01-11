@@ -20,7 +20,7 @@ extension UIView {
         
         switch style {
         case .line:
-            backgroundColor = MDColor.get(.grayDFDFDF)
+            backgroundColor = .grayDFDFDF
             self.snp.makeConstraints { make in
                 make.height.equalTo(0.5)
             }

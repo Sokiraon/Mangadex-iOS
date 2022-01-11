@@ -203,11 +203,11 @@ class MDMangaSlideViewController: MDViewController {
         
         if (requirePrev(currentIndex) == nil) {
             btnPrev.isEnabled = false
-            btnPrev.setTitleColor(MDColor.get(.darkGray808080), for: .normal)
+            btnPrev.setTitleColor(.darkGray808080, for: .normal)
         }
         if (requireNext(currentIndex) == nil) {
             btnNext.isEnabled = false
-            btnNext.setTitleColor(MDColor.get(.darkGray808080), for: .normal)
+            btnNext.setTitleColor(.darkGray808080, for: .normal)
         }
     }
     

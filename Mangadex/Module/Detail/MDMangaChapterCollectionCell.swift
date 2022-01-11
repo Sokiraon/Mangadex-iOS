@@ -22,7 +22,7 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
     }
 
     private func setupUI() {
-        contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
+        contentView.backgroundColor = .lightGrayE5E5E5
         contentView.layer.cornerRadius = 5
 
         contentView.addSubview(lblTitle)
@@ -37,11 +37,11 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
         chapterName = chapter
         lblTitle.text = chapter
         if (chapter == progress) {
-            contentView.theme_backgroundColor = MDColor.ThemeColors.tint
+            contentView.theme_backgroundColor = UIColor.theme_tintColor
             lblTitle.textColor = .white
         } else {
-            contentView.backgroundColor = MDColor.get(.lightGrayE5E5E5)
-            lblTitle.textColor = MDColor.get(.black2D2E2F)
+            contentView.backgroundColor = .lightGrayE5E5E5
+            lblTitle.textColor = .black2D2E2F
         }
     }
 

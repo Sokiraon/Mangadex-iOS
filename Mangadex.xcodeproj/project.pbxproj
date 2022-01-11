@@ -65,7 +65,6 @@
 		7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF526C7743A00196953 /* CustomOperator.swift */; };
 		7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF726C8CF7700196953 /* MDRouter.swift */; };
 		7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */; };
-		7AACACAC267EE58300232166 /* MDColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAB267EE58300232166 /* MDColor.swift */; };
 		7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */; };
 		7AACACB0267F34D400232166 /* MDSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAF267F34D400232166 /* MDSectionHeaderView.swift */; };
 		7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB4219326BF7907003A38BB /* NSObject+Ext.swift */; };
@@ -100,6 +99,7 @@
 		7AD6BA3F26A825D7009FB2F5 /* MJRefreshStateLeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6BA3E26A825D7009FB2F5 /* MJRefreshStateLeader.m */; };
 		7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE229BD26C1170D00DA9C83 /* String+Ext.swift */; };
 		7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */; };
+		AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */; };
 		B83B5607278863D000453E26 /* MDFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B5606278863CF00453E26 /* MDFormatter.swift */; };
 		B86D2A7A278C31E00062F818 /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */; };
 		B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2461278BEA6500344EE3 /* MDButton.swift */; };
@@ -193,7 +193,6 @@
 		7A9A5FF526C7743A00196953 /* CustomOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperator.swift; sourceTree = "<group>"; };
 		7A9A5FF726C8CF7700196953 /* MDRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRouter.swift; sourceTree = "<group>"; };
 		7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaVolumesDataModel.swift; sourceTree = "<group>"; };
-		7AACACAB267EE58300232166 /* MDColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColor.swift; sourceTree = "<group>"; };
 		7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterCollectionCell.swift; sourceTree = "<group>"; };
 		7AACACAF267F34D400232166 /* MDSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSectionHeaderView.swift; sourceTree = "<group>"; };
 		7AB4219326BF7907003A38BB /* NSObject+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Ext.swift"; sourceTree = "<group>"; };
@@ -281,6 +280,7 @@
 		7AFFAB07267F41F3003D7C75 /* MDMangaSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideViewController.swift; sourceTree = "<group>"; };
 		91B3DEDE63E98E2543E7196D /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 		A112F1BBD00A38531B364725 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
+		AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDTriangleView.swift; sourceTree = "<group>"; };
 		B83B5606278863CF00453E26 /* MDFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFormatter.swift; sourceTree = "<group>"; };
 		B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		B89F2461278BEA6500344EE3 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
@@ -319,7 +319,6 @@
 			isa = PBXGroup;
 			children = (
 				0008100E2661F681009C1005 /* MDLayout.swift */,
-				7AACACAB267EE58300232166 /* MDColor.swift */,
 				390E765B11ECA5FCB12E29D5 /* MDLocale.swift */,
 			);
 			path = Theming;
@@ -580,6 +579,7 @@
 			isa = PBXGroup;
 			children = (
 				B89F2461278BEA6500344EE3 /* MDButton.swift */,
+				AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1054,7 +1054,6 @@
 				7AD6BA2A26A8138C009FB2F5 /* MJRefreshAutoNormalFooter.m in Sources */,
 				0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */,
 				7AD6BA2C26A8138C009FB2F5 /* MJRefreshNormalTrailer.m in Sources */,
-				7AACACAC267EE58300232166 /* MDColor.swift in Sources */,
 				7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */,
 				7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */,
 				7AD6BA3026A8138C009FB2F5 /* MJRefreshFooter.m in Sources */,
@@ -1094,6 +1093,7 @@
 				390E771BF2B5495044099B8F /* UIScrollView+Ext.swift in Sources */,
 				390E7AF4BBB6925DAE7FEC3A /* UIView+Ext.swift in Sources */,
 				390E74A989CA31FE56F6481C /* UINavigationController+Ext.swift in Sources */,
+				AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

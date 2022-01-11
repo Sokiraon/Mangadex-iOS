@@ -10,7 +10,7 @@ import SwiftTheme
 
 class MDColorSettingsPopupView: MDSettingsPopupView {
     override func itemSize() -> CGSize {
-        CGSize(width: 100, height: 80)
+        CGSize(width: 100, height: 88)
     }
     
     override func titleString() -> String {
@@ -22,12 +22,12 @@ class MDColorSettingsPopupView: MDSettingsPopupView {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        MDThemeColors.allCases.count
+        UIColor.themeColors.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
-        (cell as! MDColorSettingCollectionCell).setColor(MDThemeColors.allCases[indexPath.row])
+        (cell as! MDColorSettingCollectionCell).setColor(UIColor.themeColors[indexPath.row])
         return cell
     }
     

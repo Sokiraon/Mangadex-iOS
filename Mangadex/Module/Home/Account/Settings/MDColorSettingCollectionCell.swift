@@ -23,28 +23,42 @@ class MDColorSettingCollectionCell: UICollectionViewCell {
     private let vColor = UIView()
     
     func setupUI() {
-        layer.borderColor = UIColor.clouds.cgColor
+        backgroundColor = .white
+        
+        layer.borderColor = UIColor.lightestGrayF5F5F5.cgColor
         layer.borderWidth = 2
         
         addSubview(lblColor)
         lblColor.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(14)
+            make.top.equalToSuperview().inset(16)
             make.centerX.equalToSuperview()
         }
         
         addSubview(vColor)
         vColor.layer.cornerRadius = 10
         vColor.snp.makeConstraints { make in
-            make.top.equalTo(lblColor.snp.bottom).offset(13)
+            make.top.equalTo(lblColor.snp.bottom).offset(12)
             make.centerX.equalToSuperview()
             make.width.equalTo(40)
             make.height.equalTo(20)
         }
     }
     
-    func setColor(_ color: MDThemeColors) {
-        lblColor.textColor = MDColor.colorFromHex(color.rawValue)
-        lblColor.text = "\(color)".capitalized
-        vColor.backgroundColor = MDColor.colorFromHex(color.rawValue)
+    func setColor(_ color: UIColor) {
+        lblColor.textColor = color
+        vColor.backgroundColor = color
+        
+        lblColor.text = { () -> String in
+            switch color {
+            case .themeCerulean:
+                return "Cerulean".localized()
+            case .themeTeal:
+                return "Teal".localized()
+            case .themeCoral:
+                return "Coral".localized()
+            default:
+                return ""
+            }
+        }()
     }
 }
