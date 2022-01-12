@@ -45,7 +45,7 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     internal lazy var vOptCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = self.itemSize()
-        layout.minimumLineSpacing = 0
+        layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
         
@@ -65,12 +65,11 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     internal lazy var vSelector: UIView = {
         let view = UIView()
         view.layer.borderColor = selectorColor.cgColor
-        view.layer.borderWidth = 2
+        view.layer.borderWidth = 3
+        view.layer.cornerRadius = 10
         view.isUserInteractionEnabled = false
         return view
     }()
-
-    internal lazy var vSelectorPointer = MDTriangleView()
     
     func setupUI() {
         backgroundColor = .white
@@ -91,34 +90,18 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         }
         
         addSubview(vOptCollection)
+        vOptCollection.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
         vOptCollection.snp.makeConstraints { make in
             make.top.equalTo(lblTitle.snp.bottom).offset(30)
-            make.height.equalTo(itemSize().height)
-            make.left.right.equalToSuperview()
-        }
-        
-        insertSubview(vCollectionBackground, belowSubview: vOptCollection)
-        vCollectionBackground.snp.makeConstraints { make in
-            make.top.equalTo(vOptCollection.snp.top)
-            make.bottom.equalTo(vOptCollection.snp.bottom)
+            make.height.equalTo(itemSize().height + 10)
             make.left.right.equalToSuperview()
         }
         
         addSubview(vSelector)
         vSelector.snp.makeConstraints { make in
             make.width.equalTo(itemSize().width)
-            make.centerX.equalToSuperview()
-            make.top.equalTo(vOptCollection.snp.top)
-            make.bottom.equalTo(vOptCollection.snp.bottom)
-        }
-
-        addSubview(vSelectorPointer)
-        vSelectorPointer.color = selectorColor
-        vSelectorPointer.snp.makeConstraints { make in
-            make.bottom.equalTo(vSelector.snp.bottom).offset(-2)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(10)
-            make.height.equalTo(5)
+            make.height.equalTo(itemSize().height)
+            make.centerX.centerY.equalTo(vOptCollection)
         }
 
         addSubview(btnSave)
@@ -147,6 +130,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
             var targetCenterX = itemWidth / 2
             if indexPath.row > 0 {
                 targetCenterX += itemWidth * CGFloat(indexPath.row)
+                targetCenterX += (
+                    (vOptCollection.collectionViewLayout as? UICollectionViewFlowLayout)?
+                        .minimumLineSpacing ?? 0
+                ) * CGFloat(indexPath.row)
             }
             let currentCenterX = vOptCollection.contentOffset.x + itemWidth / 2
             if abs(targetCenterX - currentCenterX) < 1 {
@@ -177,7 +164,6 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if scrollViewWillScrollToIndexPath(indexPath) {
             vSelector.layer.borderColor = selectorColor.withAlphaComponent(0.5).cgColor
-            vSelectorPointer.color = selectorColor.withAlphaComponent(0.5)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
     }
@@ -197,7 +183,6 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         vSelector.layer.borderColor = selectorColor.withAlphaComponent(0.5).cgColor
-        vSelectorPointer.color = selectorColor.withAlphaComponent(0.5)
     }
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -211,6 +196,5 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         vSelector.layer.borderColor = selectorColor.cgColor
-        vSelectorPointer.color = selectorColor
     }
 }

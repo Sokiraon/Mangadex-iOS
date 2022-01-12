@@ -105,6 +105,7 @@
 		B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2461278BEA6500344EE3 /* MDButton.swift */; };
 		B89F2464278BF34C00344EE3 /* MDColorSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */; };
 		B89F2466278C17F000344EE3 /* MDColorSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */; };
+		B8E39736278E905700B42760 /* MDBaseSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -286,6 +287,7 @@
 		B89F2461278BEA6500344EE3 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
 		B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingCollectionCell.swift; sourceTree = "<group>"; };
 		B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingsPopupView.swift; sourceTree = "<group>"; };
+		B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBaseSettingCollectionCell.swift; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -571,6 +573,7 @@
 				05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */,
 				B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */,
 				B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */,
+				B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1053,6 +1056,7 @@
 				B89F2466278C17F000344EE3 /* MDColorSettingsPopupView.swift in Sources */,
 				7AD6BA2A26A8138C009FB2F5 /* MJRefreshAutoNormalFooter.m in Sources */,
 				0036309B266F74AF0058BE25 /* MDAppBar.swift in Sources */,
+				B8E39736278E905700B42760 /* MDBaseSettingCollectionCell.swift in Sources */,
 				7AD6BA2C26A8138C009FB2F5 /* MJRefreshNormalTrailer.m in Sources */,
 				7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */,
 				7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */,

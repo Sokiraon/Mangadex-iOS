@@ -9,32 +9,21 @@ import Foundation
 import SnapKit
 import UIKit
 
-class MDColorSettingCollectionCell: UICollectionViewCell {
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
+class MDColorSettingCollectionCell: MDBaseSettingCollectionCell {
     
     private let lblColor = UILabel(fontSize: 18)
     private let vColor = UIView()
     
-    func setupUI() {
-        backgroundColor = .white
+    override func setupUI() {
+        super.setupUI()
         
-        layer.borderColor = UIColor.lightestGrayF5F5F5.cgColor
-        layer.borderWidth = 2
-        
-        addSubview(lblColor)
+        contentView.addSubview(lblColor)
         lblColor.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(16)
             make.centerX.equalToSuperview()
         }
         
-        addSubview(vColor)
+        contentView.addSubview(vColor)
         vColor.layer.cornerRadius = 10
         vColor.snp.makeConstraints { make in
             make.top.equalTo(lblColor.snp.bottom).offset(12)
