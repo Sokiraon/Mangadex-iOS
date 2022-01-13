@@ -34,7 +34,10 @@ class MDAccountViewController: MDViewController {
     private lazy var langCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
             textStyle: .twoLine, iconName: "icon_language",
-            title: "kPrefMangaLang".localized(), subtitle: "kPrefMangaLangCur".localized()
+            title: "kPrefMangaLang".localized(),
+            subtitle: "kPrefMangaLangCur".localizedFormat(
+                MDLocale.languages[MDSettingsManager.mangaLangIndex]
+            )
         )
         cell.setActionType(.selector, withId: "langSelector")
         cell.delegate = self
@@ -108,12 +111,14 @@ extension MDAccountViewController: MDAccountSettingsCellDelegate {
         UIViewController()
     }
     
-    func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIView? {
+    func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> MDSettingsPopupView? {
         switch id {
         case "colorSelector":
             return MDColorSettingsPopupView()
+        case "langSelector":
+            return MDLangSettingsPopupView()
         default:
-            return UIView()
+            return nil
         }
     }
 }

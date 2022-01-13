@@ -18,7 +18,7 @@ enum MDAccountSettingsCellActionType {
 
 protocol MDAccountSettingsCellDelegate {
     func viewControllerToDisplay(forCell: MDAccountSettingsCell, withId: String) -> UIViewController?
-    func viewToDisplay(forCell: MDAccountSettingsCell, withId: String) -> UIView?
+    func viewToDisplay(forCell: MDAccountSettingsCell, withId: String) -> MDSettingsPopupView?
 }
 
 class MDAccountSettingsCell: UIView {
@@ -128,6 +128,19 @@ class MDAccountSettingsCell: UIView {
             attrs.screenBackground = .color(color: EKColor(UIColor(white: 0.5, alpha: 0.5)))
             attrs.entranceAnimation = .init(translate: .init(duration: 0.2), scale: nil, fade: nil)
             attrs.positionConstraints.size.width = .offset(value: 10)
+            
+            attrs.lifecycleEvents.willAppear = {
+                view.viewWillAppear()
+            }
+            attrs.lifecycleEvents.didAppear = {
+                view.viewDidAppear()
+            }
+            attrs.lifecycleEvents.willDisappear = {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name(rawValue: SettingsPopupViewWillDisAppear),
+                    object: nil
+                )
+            }
             
             SwiftEntryKit.display(entry: view, using: attrs)
             

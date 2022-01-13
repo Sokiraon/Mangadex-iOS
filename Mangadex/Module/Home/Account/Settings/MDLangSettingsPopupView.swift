@@ -1,46 +1,45 @@
 //
-//  MDColorSettingsPopupView.swift
+//  MDLangSettingsPopupView.swift
 //  Mangadex
 //
-//  Created by John Rion on 2022/1/10.
+//  Created by John Rion on 2022/1/12.
 //
 
 import Foundation
-import SwiftTheme
+import FlagKit
 
-class MDColorSettingsPopupView: MDSettingsPopupView {
-    
+class MDLangSettingsPopupView: MDSettingsPopupView {
     override func viewDidAppear() {
         super.viewDidAppear()
-
+        
         vOptCollection.scrollToItem(
-            at: IndexPath(row: ThemeManager.currentThemeIndex, section: 0),
+            at: IndexPath(row: MDSettingsManager.mangaLangIndex, section: 0),
             at: .centeredHorizontally,
             animated: true
         )
     }
     
     override func itemSize() -> CGSize {
-        CGSize(width: 100, height: 88)
+        CGSize(width: 120, height: 88)
     }
     
     override func titleString() -> String {
-        "kPrefThemeColor".localized()
+        "kPrefMangaLang".localized()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        UIColor.themeColors.count
+        MDLocale.availableRegions.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
-        (cell as? MDColorSettingCollectionCell)?
-            .setColor(UIColor.themeColors[indexPath.row])
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "langCell", for: indexPath)
+        let lang = MDLocale.languages[indexPath.row]
+        (cell as? MDLangSettingCollectionCell)?
+            .setFlags(lang: lang, regionCode: MDLocale.availableRegions[lang]!)
         return cell
     }
     
     override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {
-        MDSettingsManager.themeColorIndex = indexPath.row
-        ThemeManager.setTheme(index: MDSettingsManager.themeColorIndex)
+        MDSettingsManager.mangaLangIndex = indexPath.row
     }
 }

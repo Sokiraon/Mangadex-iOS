@@ -7,11 +7,22 @@ import Foundation
 class MDLocale {
     static let defaultLocale = "en"
     
+    static let languages = [
+        "English", "日本語", "简体中文", "正體中文"
+    ]
+    
     static let availableLanguages = [
-        "中文（简体）": "zh",
-        "中文（繁體）": "zh-hk", // For Mangadex, there are no zh-TW translations available.
+        "简体中文": "zh",
+        "正體中文": "zh-hk", // For Mangadex, there are no zh-tw translations available.
         "English": "en",
         "日本語": "jp"
+    ]
+    
+    static let availableRegions = [
+        "简体中文": "CN",
+        "正體中文": "HK/TW",
+        "English": "GB/US",
+        "日本語": "JP",
     ]
     
     static func mangadexLocale() -> String {

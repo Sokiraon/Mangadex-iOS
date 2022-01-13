@@ -23,6 +23,7 @@ target "Mangadex" do
   pod 'SwiftTheme'
   pod 'Eureka'
   pod 'SwiftEntryKit', '2.0.0'
+  pod 'FlagKit'
   
 end
 

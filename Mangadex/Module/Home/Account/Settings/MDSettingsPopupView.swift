@@ -16,6 +16,8 @@ protocol MDSettingsPopupViewDelegate {
     func titleString() -> String
 }
 
+public let SettingsPopupViewWillDisAppear = "SettingsPopupViewWillDisAppear"
+
 class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,13 +37,6 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     internal lazy var lblTitle = UILabel(fontSize: 24, fontWeight: .regular, color: .darkerGray565656, numberOfLines: 2, scalable: true)
     
-    internal lazy var btnSave: UIButton = {
-        let button = MDButton(variant: .text)
-        button.setTitle("kPrefPopupSave".localized(), for: .normal)
-        button.addTarget(self, action: #selector(didTapSave), for: .touchUpInside)
-        return button
-    }()
-    
     internal lazy var vOptCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = self.itemSize()
@@ -53,8 +48,11 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         view.delegate = self
         view.dataSource = self
         view.backgroundColor = .clear
+        view.bounces = false
+        view.decelerationRate = .fast
         view.showsHorizontalScrollIndicator = false
         view.register(MDColorSettingCollectionCell.self, forCellWithReuseIdentifier: "colorCell")
+        view.register(MDLangSettingCollectionCell.self, forCellWithReuseIdentifier: "langCell")
         return view
     }()
     
@@ -93,6 +91,7 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         vOptCollection.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
         vOptCollection.snp.makeConstraints { make in
             make.top.equalTo(lblTitle.snp.bottom).offset(30)
+            make.bottom.equalToSuperview().inset(30)
             make.height.equalTo(itemSize().height + 10)
             make.left.right.equalToSuperview()
         }
@@ -103,21 +102,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
             make.height.equalTo(itemSize().height)
             make.centerX.centerY.equalTo(vOptCollection)
         }
-
-        addSubview(btnSave)
-        btnSave.snp.makeConstraints { make in
-            make.top.equalTo(vOptCollection.snp.bottom).offset(30)
-            make.bottom.equalToSuperview().inset(15)
-            make.centerX.equalToSuperview()
-        }
     }
     
     @objc func didTapDismiss() {
         SwiftEntryKit.dismiss()
-    }
-    
-    @objc func didTapSave() {
-        fatalError("Parent Method Not Implemented By Subclass")
     }
     
     /**
@@ -141,6 +129,16 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
             }
         }
         return true
+    }
+    
+    // MARK: lifecycle events
+    
+    func viewWillAppear() {
+        
+    }
+    
+    func viewDidAppear() {
+        
     }
     
     // MARK: delegate methods
@@ -196,5 +194,14 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         vSelector.layer.borderColor = selectorColor.cgColor
+        
+        let collectionCenter = vOptCollection.contentOffset.x + vOptCollection.bounds.width / 2
+        guard let indexPath = vOptCollection.indexPathForItem(
+            at: CGPoint(x: collectionCenter, y: vOptCollection.bounds.height / 2)
+        ) else { return }
+        
+        scrollViewDidEndScrollingAnimation(scrollView, atIndexPath: indexPath)
     }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {}
 }

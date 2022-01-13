@@ -32,7 +32,7 @@ extension UIColor {
     
     static let themeColors = [themeCerulean, themeTeal, themeCoral]
     
-    static var currentTintColor: UIColor { themeColors[ThemeManager.currentThemeIndex] }
+    static var currentTintColor: UIColor { themeColors[MDSettingsManager.themeColorIndex] }
     
     static func colorFromHex(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

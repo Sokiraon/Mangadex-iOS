@@ -9,6 +9,7 @@ import Foundation
 
 enum UserDefaultsKey: String {
     case kUserSessionToken, kUserRefreshToken, kUsernameToken
+    case kThemeColorIndex, kMangaPrefLang
 }
 
 class MDUserDefaultsManager {
@@ -20,5 +21,14 @@ class MDUserDefaultsManager {
     
     static func retrieveStr(forKey key: UserDefaultsKey) -> String? {
         return UserDefaults.standard.string(forKey: key.rawValue)
+    }
+    
+    static func storeInt(_ int: Int, forKey key: UserDefaultsKey) {
+        let prefs = UserDefaults.standard
+        prefs.set(int, forKey: key.rawValue)
+    }
+    
+    static func retrieveInt(forKey key: UserDefaultsKey) -> Int {
+        UserDefaults.standard.integer(forKey: key.rawValue)
     }
 }
