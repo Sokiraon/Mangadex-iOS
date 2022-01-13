@@ -16,7 +16,7 @@ protocol MDSettingsPopupViewDelegate {
     func titleString() -> String
 }
 
-public let SettingsPopupViewWillDisAppear = "SettingsPopupViewWillDisAppear"
+public let SettingsDidUpdateNotification = "SettingsDidUpdateNotification"
 
 class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     private override init(frame: CGRect) {
@@ -201,6 +201,10 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         ) else { return }
         
         scrollViewDidEndScrollingAnimation(scrollView, atIndexPath: indexPath)
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name(SettingsDidUpdateNotification), object: nil
+        )
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {}

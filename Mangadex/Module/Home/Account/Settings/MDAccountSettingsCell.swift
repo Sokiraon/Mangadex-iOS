@@ -26,7 +26,7 @@ class MDAccountSettingsCell: UIView {
     private lazy var contentView = UIView()
     private lazy var ivIcon = UIImageView()
     private lazy var lblTitle = UILabel(fontSize: 15, fontWeight: .medium, color: .darkerGray565656)
-    private lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
+    lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
     private lazy var ivNext = UIImageView(imageNamed: "icon_arrow_forward", color: .darkerGray565656)
     
     convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
@@ -134,12 +134,6 @@ class MDAccountSettingsCell: UIView {
             }
             attrs.lifecycleEvents.didAppear = {
                 view.viewDidAppear()
-            }
-            attrs.lifecycleEvents.willDisappear = {
-                NotificationCenter.default.post(
-                    name: NSNotification.Name(rawValue: SettingsPopupViewWillDisAppear),
-                    object: nil
-                )
             }
             
             SwiftEntryKit.display(entry: view, using: attrs)

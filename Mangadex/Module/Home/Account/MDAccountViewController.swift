@@ -85,6 +85,15 @@ class MDAccountViewController: MDViewController {
         }
     }
     
+    override func didSetupUI() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateSetting),
+            name: NSNotification.Name(SettingsDidUpdateNotification),
+            object: nil
+        )
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -103,6 +112,12 @@ class MDAccountViewController: MDViewController {
             let vc = MDPreLoginViewController()
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    @objc private func didUpdateSetting() {
+        langCell.lblSubtitle.text = "kPrefMangaLangCur".localizedFormat(
+            MDLocale.languages[MDSettingsManager.mangaLangIndex]
+        )
     }
 }
 
