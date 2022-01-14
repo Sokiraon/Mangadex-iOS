@@ -19,7 +19,7 @@ extension MDHTTPManager {
                               offset: Int,
                               locale: String,
                               order: Order,
-                              onSuccess success: @escaping (_ models: [MDMangaChapterDataModel], _ total: Int) -> Void,
+                              onSuccess success: @escaping (_ models: [MDMangaChapterInfoModel], _ total: Int) -> Void,
                               onError error: (() -> Void)? = nil) {
         self.get("/manga/\(mangaId)/feed",
                  ofType: .HostTypeApi,
@@ -30,8 +30,8 @@ extension MDHTTPManager {
                  ]) { json in
             let total = json["total"] as! Int
             let results = json["data"] as! Array<[String: Any]>
-            let models = NSArray.yy_modelArray(with: MDMangaChapterDataModel.classForCoder(), json: results)
-            success(models as! [MDMangaChapterDataModel], total)
+            let models = NSArray.yy_modelArray(with: MDMangaChapterInfoModel.classForCoder(), json: results)
+            success(models as! [MDMangaChapterInfoModel], total)
         } onError: {
             if (error != nil) {
                 error!()
@@ -39,15 +39,15 @@ extension MDHTTPManager {
         }
     }
     
-    func getChapterBaseUrlById(_ id: String,
-                               onSuccess success: @escaping (_ url: String) -> Void,
-                               onError error: (() -> Void)? = nil) {
+    func getChapterDataById(_ id: String,
+                            onSuccess success: @escaping (_ data: MDMangaChapterPagesModel) -> Void,
+                            onError error: (() -> Void)? = nil) {
         self.get("/at-home/server/\(id)",
                  ofType: .HostTypeApi,
                  withParams: [:]) { result in
             let json = JSON(result)
-            if let url = json["baseUrl"].string {
-                success(url)
+            if let data = MDMangaChapterPagesModel.yy_model(withJSON: json.rawValue) {
+                success(data)
             }
         } onError: {
             if (error != nil) {

@@ -25,6 +25,10 @@ class MDLocale {
         "日本語": "JP",
     ]
     
+    static var currentMangaLanguage: String {
+        availableLanguages[languages[MDSettingsManager.mangaLangIndex]]!
+    }
+    
     static func mangadexLocale() -> String {
         if (Locale.current.languageCode == "zh") {
             if (Locale.current.regionCode == "CN") {

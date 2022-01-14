@@ -8,10 +8,23 @@
 import Foundation
 import YYModel
 
-class MDMangaChapterAttributes: NSObject, YYModel {
+// MARK: Chapter Info
+
+class MDMangaChapterInfoAttrs: NSObject {
     @objc var volume: String?
     @objc var chapter: String!
     @objc var title: String?
+    var pages: Int = 0
+}
+
+class MDMangaChapterInfoModel: NSObject {
+    @objc var id: String!
+    @objc var attributes: MDMangaChapterInfoAttrs!
+}
+
+// MARK: Chapter Pages Data
+
+class MDMangaChapterPages: NSObject, YYModel {
     @objc var chapterHash: String!
     @objc var data: [String]!
     @objc var dataSaver: [String]!
@@ -25,7 +38,7 @@ class MDMangaChapterAttributes: NSObject, YYModel {
     }
 }
 
-class MDMangaChapterDataModel: NSObject {
-    @objc var id: String!
-    @objc var attributes: MDMangaChapterAttributes!
+class MDMangaChapterPagesModel: NSObject {
+    @objc var baseUrl: String!
+    @objc var chapter: MDMangaChapterPages!
 }

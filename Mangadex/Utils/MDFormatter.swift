@@ -24,7 +24,8 @@ class MDFormatter {
     static private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale.current
-        formatter.setLocalizedDateFormatFromTemplate("MM/dd")
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
         return formatter
     }()
     

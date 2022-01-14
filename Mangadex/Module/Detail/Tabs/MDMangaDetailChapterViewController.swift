@@ -12,7 +12,7 @@ import SwiftEventBus
 class MDMangaDetailChapterViewController: MDViewController {
     // MARK: - properties
     private var mangaItem: MangaItem!
-    private var chapterModels: [MDMangaChapterDataModel]?
+    private var chapterModels = [MDMangaChapterInfoModel]()
     private var totalChapters: Int!
     
     private lazy var vScroll = UIScrollView()
@@ -56,7 +56,7 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     override func didSetupUI() {
         MDHTTPManager.getInstance()
-            .getChaptersByMangaId(mangaItem.id, offset: 0, locale: "en", order: .ASC) { models, total in
+            .getChaptersByMangaId(mangaItem.id, offset: 0, locale: MDLocale.currentMangaLanguage, order: .ASC) { models, total in
                 DispatchQueue.main.async {
                     self.chapterModels = models
                     self.totalChapters = total
@@ -81,18 +81,18 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     private func openSliderForIndexPath(_ path: IndexPath) {
         let vc = MDMangaSlideViewController.initWithChapterData(
-            chapterModels![path.row],
+            chapterModels[path.row],
             currentIndex: path.row,
-            requirePrevAction: { index -> MDMangaChapterDataModel? in
+            requirePrevAction: { index -> MDMangaChapterInfoModel? in
                 if (index > 0) {
-                    return self.chapterModels![index - 1]
+                    return self.chapterModels[index - 1]
                 } else {
                     return nil
                 }
             },
-            requireNextAction: { index -> MDMangaChapterDataModel? in
-                if (index < self.chapterModels!.count - 1) {
-                    return self.chapterModels![index + 1]
+            requireNextAction: { index -> MDMangaChapterInfoModel? in
+                if (index < self.chapterModels.count - 1) {
+                    return self.chapterModels[index + 1]
                 } else {
                     return nil
                 }
@@ -109,19 +109,19 @@ class MDMangaDetailChapterViewController: MDViewController {
 // MARK: - collectionView
 extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        chapterModels?.count ?? 0
+        chapterModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chapter", for: indexPath)
             as! MDMangaChapterCollectionCell
-        if (chapterModels != nil) {
-            let attrs = chapterModels![indexPath.row].attributes!
-            cell.setWithVolume(attrs.volume, andChapter: attrs.chapter, withProgress: progress)
-            if (attrs.chapter == progress) {
-                lastReadIndex = indexPath
-            }
+        
+        let attrs = chapterModels[indexPath.row].attributes!
+        cell.setWithVolume(attrs.volume, andChapter: attrs.chapter, withProgress: progress)
+        if (attrs.chapter == progress) {
+            lastReadIndex = indexPath
         }
+        
         return cell
     }
     

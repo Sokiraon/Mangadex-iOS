@@ -15,7 +15,7 @@ import Darwin
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
     var pages: [String] = []
-    var dataModel: MDMangaChapterDataModel!
+    var dataModel: MDMangaChapterInfoModel!
     var currentIndex: Int!
     
     private lazy var refreshLeader: MJRefreshNormalLeader = {
@@ -137,16 +137,16 @@ class MDMangaSlideViewController: MDViewController {
         titleColor: .white
     )
     
-    var requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!
-    var requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!
+    var requirePrev: ((_ index: Int) -> MDMangaChapterInfoModel?)!
+    var requireNext: ((_ index: Int) -> MDMangaChapterInfoModel?)!
     
     var leavePageAction: ((_ chapter: String) -> Void)!
     
     // MARK: - initialize
-    static func initWithChapterData(_ dataModel: MDMangaChapterDataModel,
+    static func initWithChapterData(_ dataModel: MDMangaChapterInfoModel,
                                     currentIndex index: Int,
-                                    requirePrevAction requirePrev: ((_ index: Int) -> MDMangaChapterDataModel?)!,
-                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterDataModel?)!,
+                                    requirePrevAction requirePrev: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
+                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
                                     leavePageAction leaveAction: ((_ chapter: String) -> Void)!
     ) -> MDMangaSlideViewController {
         let vc = MDMangaSlideViewController()
@@ -214,11 +214,10 @@ class MDMangaSlideViewController: MDViewController {
     override func didSetupUI() {
         ProgressHUD.show()
         MDHTTPManager.getInstance()
-                .getChapterBaseUrlById(dataModel.id) { url in
-                    for fileName in self.dataModel.attributes.data {
-                        self.pages.append(
-                                "\(url)/data/\(self.dataModel.attributes.chapterHash!)/\(fileName)"
-                        )
+                .getChapterDataById(dataModel.id) { data in
+                    let hash = data.chapter.chapterHash
+                    for fileName in data.chapter.data {
+                        self.pages.append("\(data.baseUrl ?? "")/data/\(hash ?? "")/\(fileName)")
                     }
                     DispatchQueue.main.async {
                         self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
