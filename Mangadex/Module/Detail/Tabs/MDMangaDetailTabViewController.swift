@@ -22,11 +22,13 @@ class MDMangaDetailTabViewController: PageboyViewController {
         MDMangaDetailInfoViewController(),
     ]
     
-    static func initWithMangaItem(_ item: MangaItem) -> MDMangaDetailTabViewController {
-        let vc = MDMangaDetailTabViewController()
-        (vc.controllers[0] as? MDMangaDetailChapterViewController)?.updateWithMangaItem(item)
-        (vc.controllers[1] as? MDMangaDetailInfoViewController)?.updateWithMangaItem(item)
-        return vc
+    convenience init(mangaItem: MangaItem) {
+        self.init()
+        
+        (controllers[0] as? MDMangaDetailChapterViewController)?
+            .updateWithMangaItem(mangaItem)
+        (controllers[1] as? MDMangaDetailInfoViewController)?
+            .updateWithMangaItem(mangaItem)
     }
     
     override func viewDidLoad() {

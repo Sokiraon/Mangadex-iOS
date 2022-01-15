@@ -10,31 +10,40 @@ import UIKit
 import SwiftTheme
 
 extension UIColor {
-    static let darkerGray565656 = colorFromHex("565656")
-    static let darkGray808080 = colorFromHex("808080")
-    static let grayDFDFDF = colorFromHex("dfdfdf")
-    static let lightGrayE5E5E5 = colorFromHex("e5e5e5")
-    static let lighterGrayEFEFEF = colorFromHex("efefef")
-    static let lightestGrayF5F5F5 = colorFromHex("f5f5f5")
+    static let darkerGray565656 = fromHex("565656")
+    static let darkGray808080 = fromHex("808080")
+    static let grayDFDFDF = fromHex("dfdfdf")
+    static let lightGrayE5E5E5 = fromHex("e5e5e5")
+    static let lighterGrayEFEFEF = fromHex("efefef")
+    static let lightestGrayF5F5F5 = fromHex("f5f5f5")
     
-    static let black2D2E2F = colorFromHex("2d2e2f")
+    static let black2D2E2F = fromHex("2d2e2f")
     
     /** 蔚蓝 */
-    static let themeCerulean = colorFromHex("32b0df")
+    static let ceruleanPrimary = fromHex("32b0df")
+    static let ceruleanLight = fromHex("e1f4fa")
     /** 青绿 */
-    static let themeTeal = colorFromHex("4fb3b0")
+    static let tealPrimary = fromHex("4fb3b0")
+    static let tealLight = fromHex("e0f1f2")
     /** 珊瑚红 */
-    static let themeCoral = colorFromHex("ff7f50")
+    static let coralPrimary = fromHex("ff7f50")
+    static let coralLight = fromHex("faebe9")
     
-    static let theme_tintColor = ThemeColorPicker(
-        colors: themeCerulean, themeTeal, themeCoral
+    static let theme_primaryColor = ThemeColorPicker(
+        colors: ceruleanPrimary, tealPrimary, coralPrimary
     )
+    static let theme_primaryCgColor = ThemeCGColorPicker(
+        colors: ceruleanPrimary.cgColor, tealPrimary.cgColor, coralPrimary.cgColor
+    )
+    static let theme_lightColor = ThemeColorPicker(colors: ceruleanLight, tealLight, coralLight)
     
-    static let themeColors = [themeCerulean, themeTeal, themeCoral]
+    static let primaryColors = [ceruleanPrimary, tealPrimary, coralPrimary]
+    static let lightColors = [ceruleanLight, tealLight, ceruleanLight]
     
-    static var currentTintColor: UIColor { themeColors[MDSettingsManager.themeColorIndex] }
+    static var primaryColor: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
+    static var lightColor: UIColor { lightColors[MDSettingsManager.themeColorIndex] }
     
-    static func colorFromHex(_ hex: String) -> UIColor {
+    static func fromHex(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
         if (cString.hasPrefix("#")) {

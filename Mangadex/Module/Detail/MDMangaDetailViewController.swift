@@ -20,7 +20,7 @@ class MDMangaDetailViewController: MDViewController {
         backgroundColor: .white,
         segmentPosition: .dynamic,
         scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: .currentTintColor),
+        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: .primaryColor),
         horizontalSeparatorOptions: nil,
         verticalSeparatorOptions: nil,
         imageContentMode: .center,
@@ -33,7 +33,7 @@ class MDMangaDetailViewController: MDViewController {
             ),
             selectedState: SegmentioState(
                 titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: .currentTintColor
+                titleTextColor: .primaryColor
             ),
             highlightedState: SegmentioState(
                 titleFont: UIFont.boldSystemFont(ofSize: 17),
@@ -66,7 +66,7 @@ class MDMangaDetailViewController: MDViewController {
             SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
         }, titleColor: .white)
         
-        button.theme_backgroundColor = UIColor.theme_tintColor
+        button.theme_backgroundColor = UIColor.theme_primaryColor
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         
@@ -78,7 +78,7 @@ class MDMangaDetailViewController: MDViewController {
             
         }, title: "kMangaActionToFollow".localized(), titleColor: .white)
         
-        button.theme_backgroundColor = UIColor.theme_tintColor
+        button.theme_backgroundColor = UIColor.theme_primaryColor
         button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.titleLabel?.minimumScaleFactor = 15.0 / 17.0
         
@@ -88,18 +88,16 @@ class MDMangaDetailViewController: MDViewController {
     private var mangaItem: MangaItem!
     
     // MARK: - initialization
-    static func initWithMangaItem(_ item: MangaItem, title: String) -> MDMangaDetailViewController {
-        let vc = self.init()
+    convenience init(mangaItem: MangaItem, title: String) {
+        self.init()
         
-        vc.tabVC = MDMangaDetailTabViewController.initWithMangaItem(item)
-        vc.tabVC.endPageScrollAction = { index in
-            vc.vTabs.selectedSegmentioIndex = index
+        tabVC = MDMangaDetailTabViewController(mangaItem: mangaItem)
+        tabVC.endPageScrollAction = { index in
+            self.vTabs.selectedSegmentioIndex = index
         }
         
-        vc.mangaItem = item
-        vc.viewTitle = title
-        
-        return vc
+        self.mangaItem = mangaItem
+        viewTitle = title
     }
     
     override func setupUI() {

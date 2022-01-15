@@ -37,7 +37,7 @@ class MDMangaChapterCollectionCell: UICollectionViewCell {
         chapterName = chapter
         lblTitle.text = chapter
         if (chapter == progress) {
-            contentView.theme_backgroundColor = UIColor.theme_tintColor
+            contentView.theme_backgroundColor = UIColor.theme_primaryColor
             lblTitle.textColor = .white
         } else {
             contentView.backgroundColor = .lightGrayE5E5E5

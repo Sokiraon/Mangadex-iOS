@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1250"
    version = "1.3">
-   <BuildAction
-      parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+   <BuildAction>
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
+            buildForRunning = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "004F7185264BF8EB00D61AEB"
@@ -22,48 +15,13 @@
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
-   <TestAction
-      buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "004F719E264BF8ED00D61AEB"
-               BuildableName = "MangadexTests.xctest"
-               BlueprintName = "MangadexTests"
-               ReferencedContainer = "container:Mangadex.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "004F71A9264BF8ED00D61AEB"
-               BuildableName = "MangadexUITests.xctest"
-               BlueprintName = "MangadexUITests"
-               ReferencedContainer = "container:Mangadex.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
-   </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = "zh-Hans"
-      region = "CN"
-      launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      ignoresPersistentStateOnLaunch = "NO"
-      debugDocumentVersioning = "YES"
-      debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      buildConfiguration = "Debug"
+      allowLocationSimulation = "YES"
+      language = "zh-Hans"
+      region = "CN">
+      <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "004F7185264BF8EB00D61AEB"
@@ -73,28 +31,4 @@
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
-   <ProfileAction
-      buildConfiguration = "Release"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      savedToolIdentifier = ""
-      useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "004F7185264BF8EB00D61AEB"
-            BuildableName = "Mangadex.app"
-            BlueprintName = "Mangadex"
-            ReferencedContainer = "container:Mangadex.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-   </ProfileAction>
-   <AnalyzeAction
-      buildConfiguration = "Debug">
-   </AnalyzeAction>
-   <ArchiveAction
-      buildConfiguration = "Release"
-      revealArchiveInOrganizer = "YES">
-   </ArchiveAction>
 </Scheme>

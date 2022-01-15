@@ -35,7 +35,7 @@ class MDHomeViewController: TabmanViewController {
         
         bar.layout.transitionStyle = .snap
         bar.buttons.customize { button in
-            button.selectedTintColor = .currentTintColor
+            button.selectedTintColor = .primaryColor
         }
         
         addBar(bar.systemBar(), dataSource: self, at: .bottom)
@@ -50,7 +50,7 @@ class MDHomeViewController: TabmanViewController {
     
     @objc func didChangeTheme() {
         bar.buttons.customize { button in
-            button.selectedTintColor = .currentTintColor
+            button.selectedTintColor = .primaryColor
         }
     }
 }

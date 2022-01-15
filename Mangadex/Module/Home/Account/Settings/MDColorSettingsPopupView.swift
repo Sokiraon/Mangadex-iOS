@@ -29,13 +29,13 @@ class MDColorSettingsPopupView: MDSettingsPopupView {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        UIColor.themeColors.count
+        UIColor.primaryColors.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
         (cell as? MDColorSettingCollectionCell)?
-            .setColor(UIColor.themeColors[indexPath.row])
+            .setColor(UIColor.primaryColors[indexPath.row])
         return cell
     }
     
