@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import MaterialComponents
 import AlignedCollectionViewFlowLayout
+import XLPagerTabStrip
 
 class MDMangaTagCell: UICollectionViewCell {
     private var lblTag = UILabel(color: .darkerGray565656)
@@ -31,7 +32,7 @@ class MDMangaTagCell: UICollectionViewCell {
             make.height.equalTo(40)
         }
         contentView.layer.cornerRadius = 20
-    
+        
         contentView.addSubview(lblTag)
         lblTag.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(15)
@@ -77,7 +78,7 @@ class MDMangaDetailInfoViewController: MDViewController {
             make.edges.equalToSuperview()
             make.width.equalTo(MDLayout.screenWidth)
         }
-    
+        
         descrCard.setShadowElevation(.none, for: .normal)
         descrCard.applyBorder()
         vScrollContent.addSubview(descrCard)
@@ -114,15 +115,29 @@ class MDMangaDetailInfoViewController: MDViewController {
     }
 }
 
-extension MDMangaDetailInfoViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
+                                           UICollectionViewDataSource,
+                                           IndicatorInfoProvider {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         mangaItem?.tags.count ?? 0
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tag", for: indexPath)
-                   as! MDMangaTagCell
+            as! MDMangaTagCell
         cell.updateWithTag(mangaItem?.tags[indexPath.row] ?? "N/A")
         return cell
+    }
+    
+    public func indicatorInfo(
+        for pagerTabStripController: PagerTabStripViewController
+    ) -> IndicatorInfo {
+        IndicatorInfo(title: "kMangaDetailInfo".localized())
     }
 }

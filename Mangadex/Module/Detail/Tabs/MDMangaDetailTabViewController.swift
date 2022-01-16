@@ -8,16 +8,11 @@
 import Foundation
 import Pageboy
 import Tabman
+import XLPagerTabStrip
 
-class MDMangaDetailTabViewController: PageboyViewController {
+class MDMangaDetailTabViewController: ButtonBarPagerTabStripViewController {
     
-    var endPageScrollAction: ((Int) -> Void)?
-    
-    lazy var shouldScrollPageAction: (Int) -> Void = { index in
-        self.scrollToPage(.at(index: index), animated: true)
-    }
-    
-    private lazy var controllers = [
+    private let controllers = [
         MDMangaDetailChapterViewController(),
         MDMangaDetailInfoViewController(),
     ]
@@ -32,41 +27,46 @@ class MDMangaDetailTabViewController: PageboyViewController {
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        dataSource = self
-        delegate = self
-    }
-}
-
-extension MDMangaDetailTabViewController: PageboyViewControllerDataSource, PageboyViewControllerDelegate {
-    
-    func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
-        controllers.count
-    }
-    
-    func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController? {
-        controllers[index]
-    }
-    
-    func defaultPage(for pageboyViewController: PageboyViewController) -> PageboyViewController.Page? {
-        .first
-    }
-    
-    func pageboyViewController(_ pageboyViewController: PageboyViewController, didScrollToPageAt index: PageboyViewController.PageIndex, direction: PageboyViewController.NavigationDirection, animated: Bool) {
-        if (endPageScrollAction != nil) {
-            endPageScrollAction!(index)
+        settings.style.buttonBarBackgroundColor = .white
+        settings.style.buttonBarItemBackgroundColor = .white
+        settings.style.selectedBarBackgroundColor = .primaryColor
+        settings.style.selectedBarHeight = 3
+        settings.style.buttonBarItemTitleColor = .black2D2E2F
+        
+        settings.style.buttonBarLeftContentInset = 20
+        settings.style.buttonBarRightContentInset = 20
+        
+        changeCurrentIndexProgressive = { oldCell,
+                                          newCell,
+                                          progressPercentage,
+                                          changeCurrentIndex,
+                                          animated in
+            guard changeCurrentIndex == true else {
+                return
+            }
+            
+            if oldCell != nil {
+                UIView.transition(
+                    with: oldCell!.label, duration: 0.3, options: .transitionCrossDissolve
+                ) {
+                    oldCell?.label.textColor = .black2D2E2F
+                }
+            }
+            if newCell != nil {
+                UIView.transition(
+                    with: newCell!.label!, duration: 0.3, options: .transitionCrossDissolve
+                ) {
+                    newCell?.label.textColor = .primaryColor
+                }
+            }
         }
+        
+        super.viewDidLoad()
     }
     
-    func pageboyViewController(_ pageboyViewController: PageboyViewController, willScrollToPageAt index: PageboyViewController.PageIndex, direction: PageboyViewController.NavigationDirection, animated: Bool) {
-        
-    }
-    
-    func pageboyViewController(_ pageboyViewController: PageboyViewController, didReloadWith currentViewController: UIViewController, currentPageIndex: PageboyViewController.PageIndex) {
-        
-    }
-    
-    func pageboyViewController(_ pageboyViewController: PageboyViewController, didScrollTo position: CGPoint, direction: PageboyViewController.NavigationDirection, animated: Bool) {
-        
+    override func viewControllers(
+        for pagerTabStripController: PagerTabStripViewController
+    ) -> [UIViewController] {
+        controllers
     }
 }

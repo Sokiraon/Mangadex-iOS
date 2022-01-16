@@ -13,62 +13,13 @@ import SwiftTheme
 
 class MDMangaDetailViewController: MDViewController {
     
-    // MARK: - tabs related
     private var tabVC: MDMangaDetailTabViewController!
     
-    private lazy var tabOptions = SegmentioOptions(
-        backgroundColor: .white,
-        segmentPosition: .dynamic,
-        scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(
-            type: .bottom,
-            ratio: 0.8,
-            height: 2,
-            color: .primaryColor
-        ),
-        horizontalSeparatorOptions: nil,
-        verticalSeparatorOptions: nil,
-        imageContentMode: .center,
-        labelTextAlignment: .center,
-        labelTextNumberOfLines: 1,
-        segmentStates: SegmentioStates(
-            defaultState: SegmentioState(
-                titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: .black
-            ),
-            selectedState: SegmentioState(
-                titleFont: UIFont.systemFont(ofSize: 17),
-                titleTextColor: .primaryColor
-            ),
-            highlightedState: SegmentioState(
-                titleFont: UIFont.boldSystemFont(ofSize: 17),
-                titleTextColor: .black
-            )
-        ),
-        animationDuration: 0.2
-    )
-    
-    private lazy var vTabs: Segmentio = {
-        let view = Segmentio(frame: .zero)
-        view.setup(content: [
-            SegmentioItem(title: "kMangaDetailChapters".localized(), image: nil),
-            SegmentioItem(title: "kMangaDetailInfo".localized(), image: nil),
-        ], style: .onlyLabel, options: tabOptions)
-        
-        view.selectedSegmentioIndex = 0
-        view.valueDidChange = { view, index in
-            self.tabVC.shouldScrollPageAction(index)
-        }
-        
-        return view
-    }()
-    
-    // MARK: - actions
-    private var lastReadChapter: String?
+    private var lastViewedChapter: String?
     
     private lazy var btnContinue: UIButton = {
         let button = UIButton(handler: {
-            SwiftEventBus.post("openChapter", sender: self.lastReadChapter)
+            SwiftEventBus.post("openChapter", sender: self.lastViewedChapter)
         }, titleColor: .white)
         
         button.theme_backgroundColor = UIColor.theme_primaryColor
@@ -97,12 +48,9 @@ class MDMangaDetailViewController: MDViewController {
         self.init()
         
         tabVC = MDMangaDetailTabViewController(mangaItem: mangaItem)
-        tabVC.endPageScrollAction = { index in
-            self.vTabs.selectedSegmentioIndex = index
-        }
         
         self.mangaItem = mangaItem
-        viewTitle = title
+        self.viewTitle = title
     }
     
     override func setupUI() {
@@ -128,24 +76,17 @@ class MDMangaDetailViewController: MDViewController {
         btnFollow.layer.cornerRadius = 5
         btnFollow.isEnabled = false
         
-        view.addSubview(vTabs)
-        vTabs.snp.makeConstraints { make in
-            make.top.equalTo(btnContinue.snp.bottom).offset(15)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(50)
-        }
-        
         addChild(tabVC)
         view.addSubview(tabVC.view)
         tabVC.view.snp.makeConstraints { make in
-            make.top.equalTo(vTabs.snp.bottom)
+            make.top.equalTo(btnContinue.snp.bottom).offset(15)
             make.left.right.bottom.equalToSuperview()
         }
     }
     
     override func doOnAppear() {
-        lastReadChapter = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
-        if (lastReadChapter == nil) {
+        lastViewedChapter = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
+        if (lastViewedChapter == nil) {
             btnContinue.setTitle("kMangaActionStartOver".localized(), for: .normal)
         } else {
             btnContinue.setTitle("kMangaActionContinue".localized(), for: .normal)

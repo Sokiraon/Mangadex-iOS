@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftEventBus
+import XLPagerTabStrip
 
 class MDMangaDetailChapterViewController: MDViewController {
     // MARK: - properties
@@ -117,7 +118,8 @@ class MDMangaDetailChapterViewController: MDViewController {
 // MARK: - collectionView delegate
 extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
                                               UICollectionViewDataSource,
-                                              UICollectionViewDelegateFlowLayout {
+                                              UICollectionViewDelegateFlowLayout,
+                                              IndicatorInfoProvider {
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
@@ -159,5 +161,11 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 40)
+    }
+    
+    public func indicatorInfo(
+        for pagerTabStripController: PagerTabStripViewController
+    ) -> IndicatorInfo {
+        IndicatorInfo(title: "kMangaDetailChapters".localized())
     }
 }
