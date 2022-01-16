@@ -21,16 +21,22 @@ extension UIColor {
     
     /** 蔚蓝 */
     static let ceruleanPrimary = fromHex("32b0df")
+    static let ceruleanSecondary = fromHex("53bee3")
     static let ceruleanLight = fromHex("e1f4fa")
     /** 青绿 */
     static let tealPrimary = fromHex("4fb3b0")
+    static let tealSecondary = fromHex("81c9c7")
     static let tealLight = fromHex("e0f1f2")
     /** 珊瑚红 */
     static let coralPrimary = fromHex("ff7f50")
+    static let coralSecondary = fromHex("ff9570")
     static let coralLight = fromHex("faebe9")
     
     static let theme_primaryColor = ThemeColorPicker(
         colors: ceruleanPrimary, tealPrimary, coralPrimary
+    )
+    static let theme_secondaryColor = ThemeColorPicker(
+        colors: ceruleanSecondary, tealSecondary, coralSecondary
     )
     static let theme_primaryCgColor = ThemeCGColorPicker(
         colors: ceruleanPrimary.cgColor, tealPrimary.cgColor, coralPrimary.cgColor
@@ -56,7 +62,7 @@ extension UIColor {
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
+            alpha: 1
         )
     }
     

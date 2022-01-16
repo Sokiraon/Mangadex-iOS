@@ -52,14 +52,9 @@
 "kLoading" = "Loading ...";
 
 "kMangaActionStartOver" = "Start reading";
-"kMangaActionContinue" = "Continue from chap. %@";
+"kMangaActionContinue" = "Continue from last viewed";
 "kMangaActionToFollow" = "Follow";
 "kMangaActionFollowed" = "Followed";
-
-"kThemeColor" = "Theme Color";
-"kColorCerulean" = "Cerulean";
-"kColorTeal" = "Teal";
-"kColorCoral" = "Coral";
 
 "kDefaultUsername" = "Not Logged In";
 

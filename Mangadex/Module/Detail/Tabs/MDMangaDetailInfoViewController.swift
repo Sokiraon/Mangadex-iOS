@@ -26,14 +26,14 @@ class MDMangaTagCell: UICollectionViewCell {
     private func setupUI() {
         contentView.backgroundColor = .lightGrayE5E5E5
         contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.snp.makeConstraints { (make: ConstraintMaker) in
+        contentView.snp.makeConstraints { make in
             make.edges.equalTo(0)
             make.height.equalTo(40)
         }
         contentView.layer.cornerRadius = 20
     
         contentView.addSubview(lblTag)
-        lblTag.snp.makeConstraints { (make: ConstraintMaker) in
+        lblTag.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(15)
             make.centerY.equalToSuperview()
         }

@@ -15,10 +15,10 @@ import Foundation
 class MDMangaProgressManager {
     
     static func retrieveProgress(forMangaId id: String) -> String? {
-        return MDPlistStoreManager.get(forKey: id, fromFile: .mangaProgress)
+        MDPlistStoreManager.get(forKey: id, fromFile: .mangaProgress)
     }
     
-    static func saveProgress(_ progress: String, forMangaId id: String) {
-        _ = MDPlistStoreManager.save(withKey: id, value: progress, toFile: .mangaProgress)
+    static func saveProgress(forMangaId mangaId: String, chapterId: String) {
+        _ = MDPlistStoreManager.save(withKey: mangaId, value: chapterId, toFile: .mangaProgress)
     }
 }

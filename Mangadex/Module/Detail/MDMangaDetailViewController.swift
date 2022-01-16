@@ -20,7 +20,12 @@ class MDMangaDetailViewController: MDViewController {
         backgroundColor: .white,
         segmentPosition: .dynamic,
         scrollEnabled: false,
-        indicatorOptions: SegmentioIndicatorOptions(type: .bottom, ratio: 0.8, height: 2, color: .primaryColor),
+        indicatorOptions: SegmentioIndicatorOptions(
+            type: .bottom,
+            ratio: 0.8,
+            height: 2,
+            color: .primaryColor
+        ),
         horizontalSeparatorOptions: nil,
         verticalSeparatorOptions: nil,
         imageContentMode: .center,
@@ -143,7 +148,7 @@ class MDMangaDetailViewController: MDViewController {
         if (lastReadChapter == nil) {
             btnContinue.setTitle("kMangaActionStartOver".localized(), for: .normal)
         } else {
-            btnContinue.setTitle(String(format: "kMangaActionContinue".localized(), lastReadChapter!), for: .normal)
+            btnContinue.setTitle("kMangaActionContinue".localized(), for: .normal)
         }
     }
     

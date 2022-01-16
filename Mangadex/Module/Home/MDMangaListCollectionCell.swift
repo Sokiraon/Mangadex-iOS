@@ -18,8 +18,8 @@ class MDMangaCellTagItem: UIView {
     init() {
         super.init(frame: .zero)
         
-        self.layer.cornerRadius = 3
-        self.theme_backgroundColor = UIColor.theme_primaryColor
+        layer.cornerRadius = 4
+        theme_backgroundColor = UIColor.theme_primaryColor
         
         addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
@@ -53,12 +53,14 @@ class MDMangaListCollectionCell: UICollectionViewCell {
     public static let cellHeight = 105.0
     
     func setupUI() {
+        layer.theme_shadowColor = UIColor.theme_primaryCgColor
+        layer.shadowOffset = CGSize(width: 0, height: 1)
+        layer.shadowOpacity = 0.5
+        layer.shadowRadius = 1
+        
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
         contentView.theme_backgroundColor = UIColor.theme_lightColor
-        
-        contentView.layer.theme_borderColor = UIColor.theme_primaryCgColor
-        contentView.layer.borderWidth = 1
         
         contentView.addSubview(ivCover)
         ivCover.snp.makeConstraints { make in
@@ -101,8 +103,7 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         MDHTTPManager()
             .getMangaCoverUrlById(item.coverId, forManga: item.id) { url in
                 DispatchQueue.main.async {
-                    self.ivCover
-                        .kf
+                    self.ivCover.kf
                         .setImage(with: url, placeholder: UIImage(named: "manga_cover_default"))
                 }
             }

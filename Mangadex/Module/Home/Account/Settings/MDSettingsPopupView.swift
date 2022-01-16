@@ -18,7 +18,7 @@ protocol MDSettingsPopupViewDelegate {
 
 public let SettingsDidUpdateNotification = "SettingsDidUpdateNotification"
 
-class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MDSettingsPopupView: UIView, MDSettingsPopupViewDelegate {
     private override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -27,7 +27,7 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     required init?(coder: NSCoder) {
         fatalError()
     }
-
+    
     internal lazy var btnDismiss: UIButton = {
         let btn = UIButton(imgNormal: UIImage(named: "icon_dismiss"))
         btn.tintColor = .darkGray808080
@@ -35,7 +35,13 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         return btn
     }()
     
-    internal lazy var lblTitle = UILabel(fontSize: 24, fontWeight: .regular, color: .darkerGray565656, numberOfLines: 2, scalable: true)
+    internal lazy var lblTitle = UILabel(
+        fontSize: 24,
+        fontWeight: .regular,
+        color: .darkerGray565656,
+        numberOfLines: 2,
+        scalable: true
+    )
     
     internal lazy var vOptCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -57,7 +63,7 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     }()
     
     internal lazy var vCollectionBackground = UIView(backgroundColor: .lightestGrayF5F5F5)
-
+    
     let selectorColor = UIColor.amethyst
     
     internal lazy var vSelector: UIView = {
@@ -133,15 +139,11 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
     
     // MARK: lifecycle events
     
-    func viewWillAppear() {
-        
-    }
+    func viewWillAppear() {}
     
-    func viewDidAppear() {
-        
-    }
+    func viewDidAppear() {}
     
-    // MARK: delegate methods
+    // MARK: MDSettingsPopupViewDelegate
     
     func itemSize() -> CGSize {
         fatalError("Parent Method Not Implemented By Subclass")
@@ -151,11 +153,27 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         fatalError("Parent Method Not Implemented By Subclass")
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func scrollViewDidEndScrollingAnimation(
+        _ scrollView: UIScrollView,
+        atIndexPath indexPath: IndexPath
+    ) {}
+}
+
+extension MDSettingsPopupView: UIScrollViewDelegate,
+                               UICollectionViewDelegate,
+                               UICollectionViewDataSource,
+                               UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         fatalError("Parent Method Not Implemented By Subclass")
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         fatalError("Parent Method Not Implemented By Subclass")
     }
     
@@ -166,8 +184,11 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
         let insetHorizontal = (MDLayout.screenWidth - 20 - itemSize().width) / 2
         return UIEdgeInsets(top: 0, left: insetHorizontal, bottom: 0, right: insetHorizontal)
     }
@@ -198,7 +219,9 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
         let collectionCenter = vOptCollection.contentOffset.x + vOptCollection.bounds.width / 2
         guard let indexPath = vOptCollection.indexPathForItem(
             at: CGPoint(x: collectionCenter, y: vOptCollection.bounds.height / 2)
-        ) else { return }
+        ) else {
+            return
+        }
         
         scrollViewDidEndScrollingAnimation(scrollView, atIndexPath: indexPath)
         
@@ -206,6 +229,4 @@ class MDSettingsPopupView : UIView, MDSettingsPopupViewDelegate, UIScrollViewDel
             name: NSNotification.Name(SettingsDidUpdateNotification), object: nil
         )
     }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {}
 }

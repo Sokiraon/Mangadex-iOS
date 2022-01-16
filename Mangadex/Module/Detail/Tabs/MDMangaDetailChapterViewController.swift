@@ -20,7 +20,7 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2*15 - 3*10) / 4, height: 45)
+        layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -56,27 +56,32 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     override func didSetupUI() {
         MDHTTPManager.getInstance()
-            .getChaptersByMangaId(mangaItem.id, offset: 0, locale: MDLocale.currentMangaLanguage, order: .ASC) { models, total in
-                DispatchQueue.main.async {
-                    self.chapterModels = models
-                    self.totalChapters = total
-                    self.vChapters.reloadData()
-                    
-                    SwiftEventBus.onMainThread(self, name: "openChapter") { result in
-                        if (self.lastReadIndex == nil) {
-                            self.lastReadIndex = IndexPath(row: 0, section: 0)
-                        }
-                        self.openSliderForIndexPath(self.lastReadIndex!)
-                    }
-                }
-            }
+                     .getChaptersByMangaId(
+                         mangaItem.id,
+                         offset: 0,
+                         locale: MDLocale.currentMangaLanguage,
+                         order: .ASC
+                     ) { models, total in
+                         DispatchQueue.main.async {
+                             self.chapterModels = models
+                             self.totalChapters = total
+                             self.vChapters.reloadData()
+                
+                             SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                                 if (self.lastViewedChapterIndex == nil) {
+                                     self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
+                                 }
+                                 self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+                             }
+                         }
+                     }
     }
     
-    private var progress: String?
-    private var lastReadIndex: IndexPath?
+    private var lastViewedChapterId: String?
+    private var lastViewedChapterIndex: IndexPath?
     
     override func doOnAppear() {
-        progress = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
+        lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
     }
     
     private func openSliderForIndexPath(_ path: IndexPath) {
@@ -98,7 +103,10 @@ class MDMangaDetailChapterViewController: MDViewController {
                 }
             },
             leavePageAction: { chapter in
-                MDMangaProgressManager.saveProgress(chapter, forMangaId: self.mangaItem.id)
+                MDMangaProgressManager.saveProgress(
+                    forMangaId: self.mangaItem.id,
+                    chapterId: self.chapterModels[path.row].id
+                )
                 self.vChapters.reloadData()
             }
         )
@@ -106,20 +114,36 @@ class MDMangaDetailChapterViewController: MDViewController {
     }
 }
 
-// MARK: - collectionView
-extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - collectionView delegate
+extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
+                                              UICollectionViewDataSource,
+                                              UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
         chapterModels.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "chapter", for: indexPath)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "chapter",
+            for: indexPath
+        )
             as! MDMangaChapterCollectionCell
         
-        let attrs = chapterModels[indexPath.row].attributes!
-        cell.setWithVolume(attrs.volume, andChapter: attrs.chapter, withProgress: progress)
-        if (attrs.chapter == progress) {
-            lastReadIndex = indexPath
+        let model = chapterModels[indexPath.row]
+        let lastViewed = model.id == lastViewedChapterId
+        cell.set(
+            volume: model.attributes.volume,
+            chapter: model.attributes.chapter,
+            lastViewed: lastViewed
+        )
+        if lastViewed {
+            lastViewedChapterIndex = indexPath
         }
         
         return cell
@@ -129,7 +153,11 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate, UICollec
         openSliderForIndexPath(indexPath)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
         CGSize(width: collectionView.frame.width, height: 40)
     }
 }

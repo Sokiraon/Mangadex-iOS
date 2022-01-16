@@ -51,7 +51,7 @@
 "kLoading" = "加载中...";
 
 "kMangaActionStartOver" = "从头阅读";
-"kMangaActionContinue" = "续看第%@话";
+"kMangaActionContinue" = "继续上次阅读";
 "kMangaActionToFollow" = "追漫";
 "kMangaActionFollowed" = "已追";
 
