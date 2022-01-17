@@ -6,40 +6,46 @@
 //
 
 import Foundation
+import UIKit
 
 extension UIEdgeInsets {
 
-    init(value: String) {
+    /**
+     CSS-style initialization method for UIEdgeInsets.
+     
+     - Parameter value: Collection of inset values to use.
+     */
+    init(values: [CGFloat]) {
         self.init()
-        let values = value.split(separator: " ")
+        
         if values.count > 0 {
             switch values.count {
             case 1:
-                top = Double(values[0])!
-                right = Double(values[0])!
-                bottom = Double(values[0])!
-                left = Double(values[0])!
+                top = values[0]
+                right = values[0]
+                bottom = values[0]
+                left = values[0]
                 break
                 
             case 2:
-                top = Double(values[0])!
-                bottom = Double(values[0])!
-                left = Double(values[1])!
-                right = Double(values[1])!
+                top = values[0]
+                bottom = values[0]
+                left = values[1]
+                right = values[1]
                 break
                 
             case 3:
-                top = Double(values[0])!
-                left = Double(values[1])!
-                right = Double(values[1])!
-                bottom = Double(values[2])!
+                top = values[0]
+                left = values[1]
+                right = values[1]
+                bottom = values[2]
                 break
                 
             default:
-                top = Double(values[0])!
-                right = Double(values[1])!
-                bottom = Double(values[2])!
-                left = Double(values[3])!
+                top = values[0]
+                right = values[1]
+                bottom = values[2]
+                left = values[3]
                 break
             }
         }

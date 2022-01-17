@@ -24,7 +24,7 @@ class MDMangaDetailChapterViewController: MDViewController {
         view.backgroundColor = .white
         view.delegate = self
         view.dataSource = self
-        view.contentInset = UIEdgeInsets(value: "0 15 10")
+        view.contentInset = UIEdgeInsets(values: [0, 15, 10])
         view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
         return view
     }()
