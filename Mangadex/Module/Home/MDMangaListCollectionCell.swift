@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MDMangaCellTagItem: UIView {
+class MDMangaListCellTagItem: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -38,8 +38,8 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         numberOfLines: 2,
         scalable: true
     )
-    private let statusTag = MDMangaCellTagItem()
-    private let updateTag = MDMangaCellTagItem()
+//    private let statusTag = MDMangaListCellTagItem()
+    private let updateTag = MDMangaListCellTagItem()
     
     required init?(coder: NSCoder) {
         fatalError()
@@ -76,26 +76,26 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             make.right.equalToSuperview().inset(10)
         }
         
-        contentView.addSubview(statusTag)
-        statusTag.snp.makeConstraints { make in
-            make.left.equalTo(titleLabel)
-            make.bottom.equalToSuperview().inset(8)
-        }
+//        contentView.addSubview(statusTag)
+//        statusTag.snp.makeConstraints { make in
+//            make.left.equalTo(titleLabel)
+//            make.bottom.equalToSuperview().inset(8)
+//        }
         
         contentView.addSubview(updateTag)
         updateTag.snp.makeConstraints { make in
-            make.top.equalTo(statusTag)
             make.right.equalToSuperview().inset(10)
+            make.bottom.equalToSuperview().inset(8)
         }
     }
     
     func setContent(mangaItem item: MangaItem) {
         titleLabel.text = item.title
-        if (item.status == "ongoing") {
-            statusTag.contentLabel.text = "kMangaOngoing".localized()
-        } else {
-            statusTag.contentLabel.text = "kMangaCompleted".localized()
-        }
+//        if (item.status == "ongoing") {
+//            statusTag.contentLabel.text = "kMangaOngoing".localized()
+//        } else {
+//            statusTag.contentLabel.text = "kMangaCompleted".localized()
+//        }
         updateTag.contentLabel.text = "kMangaLastUpdate".localizedPlural(
             MDFormatter.formattedDateString(fromISODateString: item.updatedAt)
         )
