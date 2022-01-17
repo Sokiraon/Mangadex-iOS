@@ -15,7 +15,7 @@ import Darwin
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
     var pages: [String] = []
-    var dataModel: MDMangaChapterInfoModel!
+    var chapterInfo: MDMangaChapterInfoModel!
     var currentIndex: Int!
     
     private lazy var refreshLeader: MJRefreshNormalLeader = {
@@ -30,11 +30,12 @@ class MDMangaSlideViewController: MDViewController {
             if (dataModel == nil) {
                 self.refreshLeader.endRefreshing()
             } else {
-                let vc = MDMangaSlideViewController.initWithChapterData(
-                    dataModel!,
+                let vc = MDMangaSlideViewController(
+                    chapterInfo: dataModel!,
                     currentIndex: self.currentIndex - 1,
                     requirePrevAction: self.requirePrev,
                     requireNextAction: self.requireNext,
+                    enterPageAction: self.enterPageAction,
                     leavePageAction: self.leavePageAction
                 )
                 self.refreshLeader.endRefreshing()
@@ -56,11 +57,12 @@ class MDMangaSlideViewController: MDViewController {
             if (dataModel == nil) {
                 self.refreshTrailer.endRefreshing()
             } else {
-                let vc = MDMangaSlideViewController.initWithChapterData(
-                    dataModel!,
+                let vc = MDMangaSlideViewController(
+                    chapterInfo: self.chapterInfo!,
                     currentIndex: self.currentIndex + 1,
                     requirePrevAction: self.requirePrev,
                     requireNextAction: self.requireNext,
+                    enterPageAction: self.enterPageAction,
                     leavePageAction: self.leavePageAction
                 )
                 self.refreshTrailer.endRefreshing()
@@ -110,11 +112,12 @@ class MDMangaSlideViewController: MDViewController {
     let vBottomControl = UIView(backgroundColor: .black)
     lazy var btnPrev = UIButton(
         handler: {
-            let vc = MDMangaSlideViewController.initWithChapterData(
-                self.requirePrev(self.currentIndex)!,
+            let vc = MDMangaSlideViewController(
+                chapterInfo: self.requirePrev(self.currentIndex)!,
                 currentIndex: self.currentIndex - 1,
                 requirePrevAction: self.requirePrev,
                 requireNextAction: self.requireNext,
+                enterPageAction: self.enterPageAction,
                 leavePageAction: self.leavePageAction
             )
             self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
@@ -124,11 +127,12 @@ class MDMangaSlideViewController: MDViewController {
     )
     lazy var btnNext = UIButton(
         handler: {
-            let vc = MDMangaSlideViewController.initWithChapterData(
-                self.requireNext(self.currentIndex)!,
+            let vc = MDMangaSlideViewController(
+                chapterInfo: self.requireNext(self.currentIndex)!,
                 currentIndex: self.currentIndex + 1,
                 requirePrevAction: self.requirePrev,
                 requireNextAction: self.requireNext,
+                enterPageAction: self.enterPageAction,
                 leavePageAction: self.leavePageAction
             )
             self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
@@ -140,29 +144,30 @@ class MDMangaSlideViewController: MDViewController {
     var requirePrev: ((_ index: Int) -> MDMangaChapterInfoModel?)!
     var requireNext: ((_ index: Int) -> MDMangaChapterInfoModel?)!
     
-    var leavePageAction: ((_ chapter: String) -> Void)!
+    var enterPageAction: ((_ chapterId: String) -> Void)!
+    var leavePageAction: (() -> Void)!
     
-    // MARK: - initialize
-    static func initWithChapterData(_ dataModel: MDMangaChapterInfoModel,
-                                    currentIndex index: Int,
-                                    requirePrevAction requirePrev: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
-                                    requireNextAction requireNext: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
-                                    leavePageAction leaveAction: ((_ chapter: String) -> Void)!
-    ) -> MDMangaSlideViewController {
-        let vc = MDMangaSlideViewController()
-        if (dataModel.attributes.title == nil || dataModel.attributes.title == "") {
-            vc.viewTitle = "\(dataModel.attributes.chapter!) \("kChapter".localized())"
+    // MARK: - lifecycle methods
+    
+    convenience init(chapterInfo: MDMangaChapterInfoModel,
+                     currentIndex: Int,
+                     requirePrevAction: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
+                     requireNextAction: ((_ index: Int) -> MDMangaChapterInfoModel?)!,
+                     enterPageAction: ((_ chapterId: String) -> Void)!,
+                     leavePageAction: (() -> Void)!
+    ) {
+        self.init()
+        if chapterInfo.attributes.title.isBlank {
+            viewTitle = "\(chapterInfo.attributes.chapter!) \("kChapter".localized())"
         } else {
-            vc.viewTitle = dataModel.attributes.title!
+            viewTitle = chapterInfo.attributes.title!
         }
-        vc.dataModel = dataModel
-        vc.currentIndex = index
-        
-        vc.requirePrev = requirePrev
-        vc.requireNext = requireNext
-        vc.leavePageAction = leaveAction
-        
-        return vc
+        self.chapterInfo = chapterInfo
+        self.currentIndex = currentIndex
+        self.requirePrev = requirePrevAction
+        self.requireNext = requireNextAction
+        self.enterPageAction = enterPageAction
+        self.leavePageAction = leavePageAction
     }
     
     override func setupUI() {
@@ -214,19 +219,33 @@ class MDMangaSlideViewController: MDViewController {
     override func didSetupUI() {
         ProgressHUD.show()
         MDHTTPManager.getInstance()
-                .getChapterDataById(dataModel.id) { data in
+                .getChapterDataById(chapterInfo.id) { data in
                     let hash = data.chapter.chapterHash
                     for fileName in data.chapter.data {
                         self.pages.append("\(data.baseUrl ?? "")/data/\(hash ?? "")/\(fileName)")
                     }
                     DispatchQueue.main.async {
-                        self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
+                        if self.pages.count > 0 {
+                            self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
+                        } else {
+                            self.vSlider.maximumValue = 0
+                        }
                         self.vPages.reloadData()
                         self.showHideControlArea()
                         ProgressHUD.dismiss()
                     }
                 }
     }
+    
+    override func doOnAppear() {
+        enterPageAction(chapterInfo.id)
+    }
+    
+    override func willLeavePage() {
+        leavePageAction()
+    }
+    
+    // MARK: - Actions
     
     @objc private func handleSingleTap(_ recognizer: MDShortTapGestureRecognizer) {
         let touchPointX = recognizer.location(in: view).x
@@ -290,10 +309,6 @@ class MDMangaSlideViewController: MDViewController {
                 vPages.contentOffset = CGPoint(x: targetOffsetX, y: 0)
             }
         }
-    }
-    
-    override func willLeavePage() {
-        leavePageAction(dataModel.attributes.chapter)
     }
 }
 

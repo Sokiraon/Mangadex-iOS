@@ -14,3 +14,12 @@ extension String {
         return Locale(identifier: languageCode).languageCode ?? ""
     }
 }
+
+extension Optional where Wrapped == String {
+    /**
+     A Boolean value indicating whether an Optional string is nil or has no characters.
+     */
+    var isBlank: Bool {
+        self == nil || self!.isEmpty
+    }
+}

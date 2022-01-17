@@ -16,18 +16,15 @@ class MDMangaDetailChapterViewController: MDViewController {
     private var chapterModels = [MDMangaChapterInfoModel]()
     private var totalChapters: Int!
     
-    private lazy var vScroll = UIScrollView()
-    private lazy var vScrollContent = UIView()
-    
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .white
         view.delegate = self
         view.dataSource = self
+        view.contentInset = UIEdgeInsets(value: "0 15 10")
         view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
         return view
     }()
@@ -38,18 +35,7 @@ class MDMangaDetailChapterViewController: MDViewController {
     }
     
     override func setupUI() {
-        view.addSubview(vScroll)
-        vScroll.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        view.addSubview(vScrollContent)
-        vScrollContent.snp.makeConstraints { make in
-            make.edges.equalTo(self.vScroll)
-            make.width.equalTo(MDLayout.screenWidth)
-        }
-        
-        vScrollContent.addSubview(vChapters)
+        view.addSubview(vChapters)
         vChapters.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -86,28 +72,19 @@ class MDMangaDetailChapterViewController: MDViewController {
     }
     
     private func openSliderForIndexPath(_ path: IndexPath) {
-        let vc = MDMangaSlideViewController.initWithChapterData(
-            chapterModels[path.row],
+        let vc = MDMangaSlideViewController(
+            chapterInfo: chapterModels[path.row],
             currentIndex: path.row,
-            requirePrevAction: { index -> MDMangaChapterInfoModel? in
-                if (index > 0) {
-                    return self.chapterModels[index - 1]
-                } else {
-                    return nil
-                }
+            requirePrevAction: { index in
+                return index > 0 ? self.chapterModels[index - 1] : nil
             },
-            requireNextAction: { index -> MDMangaChapterInfoModel? in
-                if (index < self.chapterModels.count - 1) {
-                    return self.chapterModels[index + 1]
-                } else {
-                    return nil
-                }
+            requireNextAction: { index in
+                return index < self.chapterModels.count - 1 ? self.chapterModels[index + 1] : nil
             },
-            leavePageAction: { chapter in
-                MDMangaProgressManager.saveProgress(
-                    forMangaId: self.mangaItem.id,
-                    chapterId: self.chapterModels[path.row].id
-                )
+            enterPageAction: { chapterId in
+                MDMangaProgressManager.saveProgress(forMangaId: self.mangaItem.id, chapterId: chapterId)
+            },
+            leavePageAction: {
                 self.vChapters.reloadData()
             }
         )
