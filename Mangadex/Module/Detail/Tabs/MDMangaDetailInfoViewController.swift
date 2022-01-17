@@ -12,7 +12,7 @@ import MaterialComponents
 import AlignedCollectionViewFlowLayout
 import XLPagerTabStrip
 
-class MDMangaTagCell: UICollectionViewCell {
+class MDMangaDetailInfoTagCell: UICollectionViewCell {
     private var lblTag = UILabel(color: .darkerGray565656)
     
     override init(frame: CGRect) {
@@ -63,9 +63,15 @@ class MDMangaDetailInfoViewController: MDViewController {
         view.delegate = self
         view.dataSource = self
         view.backgroundColor = .clear
-        view.register(MDMangaTagCell.self, forCellWithReuseIdentifier: "tag")
+        view.register(MDMangaDetailInfoTagCell.self, forCellWithReuseIdentifier: "tag")
         return view
     }()
+    
+    convenience init(mangaItem item: MangaItem) {
+        self.init()
+        mangaItem = item
+        descrCard.updateContent(message: item.description)
+    }
     
     override func setupUI() {
         view.addSubview(vScroll)
@@ -93,25 +99,14 @@ class MDMangaDetailInfoViewController: MDViewController {
         tagsCard.snp.makeConstraints { (make: ConstraintMaker) in
             make.top.equalTo(descrCard.snp.bottom).offset(10)
             make.left.right.equalToSuperview().inset(10)
-            make.bottom.equalTo(-MDLayout.safeInsetBottom)
+            make.bottom.equalToSuperview().inset(MDLayout.adjustedSafeInsetBottom)
         }
         
         tagsCard.contentView.addSubview(tagsCollection)
         tagsCollection.snp.makeConstraints { (make: ConstraintMaker) in
             make.edges.equalToSuperview()
-            make.height.equalTo(200)
+            make.height.greaterThanOrEqualTo(140)
         }
-    }
-    
-    override func doOnAppear() {
-        tagsCollection.snp.updateConstraints { make in
-            make.height.equalTo(tagsCollection.contentSize.height)
-        }
-    }
-    
-    func updateWithMangaItem(_ item: MangaItem) {
-        mangaItem = item
-        descrCard.updateContent(message: item.description)
     }
 }
 
@@ -130,7 +125,7 @@ extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tag", for: indexPath)
-            as! MDMangaTagCell
+            as! MDMangaDetailInfoTagCell
         cell.updateWithTag(mangaItem?.tags[indexPath.row] ?? "N/A")
         return cell
     }

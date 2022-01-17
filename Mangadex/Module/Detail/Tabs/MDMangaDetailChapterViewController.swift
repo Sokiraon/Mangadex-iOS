@@ -16,6 +16,9 @@ class MDMangaDetailChapterViewController: MDViewController {
     private var chapterModels = [MDMangaChapterInfoModel]()
     private var totalChapters: Int!
     
+    private var lastViewedChapterId: String?
+    private var lastViewedChapterIndex: IndexPath?
+    
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         // four chapter cells per row
@@ -31,8 +34,16 @@ class MDMangaDetailChapterViewController: MDViewController {
         return view
     }()
     
+    private lazy var vProgress: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.theme_color = UIColor.theme_primaryColor
+        return view
+    }()
+    
     // MARK: - initialize
-    func updateWithMangaItem(_ item: MangaItem) {
+    convenience init(mangaItem item: MangaItem) {
+        self.init()
         mangaItem = item
     }
     
@@ -41,36 +52,39 @@ class MDMangaDetailChapterViewController: MDViewController {
         vChapters.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        view.insertSubview(vProgress, aboveSubview: vChapters)
+        vProgress.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalToSuperview().inset(48)
+        }
     }
     
     override func didSetupUI() {
-        MDHTTPManager.getInstance()
-                     .getChaptersByMangaId(
-                         mangaItem.id,
-                         offset: 0,
-                         locale: MDLocale.currentMangaLanguage,
-                         order: .ASC
-                     ) { models, total in
-                         DispatchQueue.main.async {
-                             self.chapterModels = models
-                             self.totalChapters = total
-                             self.vChapters.reloadData()
-                
-                             SwiftEventBus.onMainThread(self, name: "openChapter") { result in
-                                 if (self.lastViewedChapterIndex == nil) {
-                                     self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
-                                 }
-                                 self.openSliderForIndexPath(self.lastViewedChapterIndex!)
-                             }
-                         }
-                     }
-    }
-    
-    private var lastViewedChapterId: String?
-    private var lastViewedChapterIndex: IndexPath?
-    
-    override func doOnAppear() {
         lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
+        
+        vProgress.startAnimating()
+        MDHTTPManager.getInstance()
+            .getChaptersByMangaId(
+                mangaItem.id,
+                offset: 0,
+                locale: MDLocale.currentMangaLanguage,
+                order: .ASC
+            ) { models, total in
+                DispatchQueue.main.async {
+                    self.chapterModels = models
+                    self.totalChapters = total
+                    self.vChapters.reloadData()
+                    self.vProgress.stopAnimating()
+                    
+                    SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                        if (self.lastViewedChapterIndex == nil) {
+                            self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
+                        }
+                        self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+                    }
+                }
+            }
     }
     
     private func openSliderForIndexPath(_ path: IndexPath) {

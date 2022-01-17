@@ -12,18 +12,13 @@ import XLPagerTabStrip
 
 class MDMangaDetailTabViewController: ButtonBarPagerTabStripViewController {
     
-    private let controllers = [
-        MDMangaDetailChapterViewController(),
-        MDMangaDetailInfoViewController(),
-    ]
+    private var controllers = [MDViewController]()
     
     convenience init(mangaItem: MangaItem) {
         self.init()
         
-        (controllers[0] as? MDMangaDetailChapterViewController)?
-            .updateWithMangaItem(mangaItem)
-        (controllers[1] as? MDMangaDetailInfoViewController)?
-            .updateWithMangaItem(mangaItem)
+        controllers.append(MDMangaDetailChapterViewController(mangaItem: mangaItem))
+        controllers.append(MDMangaDetailInfoViewController(mangaItem: mangaItem))
     }
     
     override func viewDidLoad() {

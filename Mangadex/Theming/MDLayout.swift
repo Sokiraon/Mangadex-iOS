@@ -16,6 +16,7 @@ class MDLayout {
     static var safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
     static var safeInsetTop = safeAreaInsets.top
     static var safeInsetBottom = safeAreaInsets.bottom
+    static var adjustedSafeInsetBottom = safeInsetBottom > 0 ? safeInsetBottom : 15
     
     static var isNotchScreen = safeInsetBottom > 0
     
