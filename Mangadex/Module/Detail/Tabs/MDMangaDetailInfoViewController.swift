@@ -108,6 +108,16 @@ class MDMangaDetailInfoViewController: MDViewController {
             make.height.greaterThanOrEqualTo(140)
         }
     }
+    
+    override func doOnAppear() {
+        tagsCollection.layoutIfNeeded()
+        tagsCollection.snp.remakeConstraints { make in
+            make.edges.equalToSuperview()
+            make.height.equalTo(tagsCollection.contentSize.height)
+        }
+        tagsCollection.setNeedsLayout()
+        tagsCollection.layoutIfNeeded()
+    }
 }
 
 extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
