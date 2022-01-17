@@ -18,13 +18,15 @@ class MDMangaDetailChapterViewController: MDViewController {
     
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        // four chapter cells per row
         layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.backgroundColor = .white
         view.delegate = self
         view.dataSource = self
-        view.contentInset = UIEdgeInsets(values: [0, 15, 10])
+        view.contentInset = UIEdgeInsets(values: [-20, 15, 10])
+        view.showsVerticalScrollIndicator = false
         view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
         return view
     }()
