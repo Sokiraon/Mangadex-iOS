@@ -1,5 +1,5 @@
 //
-//  DashboardViewController.swift
+//  MDHomeTabViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/15.
@@ -11,18 +11,18 @@ import Pageboy
 import Localize_Swift
 import SwiftTheme
 
-class MDHomeViewController: TabmanViewController {
+class MDHomeTabViewController: TabmanViewController {
     private lazy var viewControllers = [
-        MDTrendViewController(),
-        MDStaredViewController(),
+        MDBrowseMangaViewController(),
+        MDFollowedMangaViewController(),
         MDAccountViewController()
     ]
     private lazy var tabBarItems = [
-        TMBarItem(title: "kDashboardTabTrend".localized(),
-                  image: UIImage(named: "icon_trending_up")!),
-        TMBarItem(title: "kDashboardTabFollowed".localized(),
+        TMBarItem(title: "kHomeTabBrowse".localized(),
+                  image: UIImage(named: "icon_home")!),
+        TMBarItem(title: "kHomeTabFollowed".localized(),
                   image: UIImage(named: "icon_bookmark")!),
-        TMBarItem(title: "kDashboardTabAccount".localized(),
+        TMBarItem(title: "kHomeTabAccount".localized(),
                   image: UIImage(named: "icon_person")!)
     ]
     
@@ -35,6 +35,7 @@ class MDHomeViewController: TabmanViewController {
         
         bar.layout.transitionStyle = .snap
         bar.buttons.customize { button in
+            button.font = .systemFont(ofSize: 14)
             button.selectedTintColor = .primaryColor
         }
         
@@ -55,7 +56,7 @@ class MDHomeViewController: TabmanViewController {
     }
 }
 
-extension MDHomeViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension MDHomeTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         return viewControllers.count
     }

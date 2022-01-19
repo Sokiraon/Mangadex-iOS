@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         var rootVC: UIViewController
         if MDUserManager.getInstance().isLoggedIn() {
-            rootVC = MDHomeViewController()
+            rootVC = MDHomeTabViewController()
         } else if MDKeychain.read().isEmpty {
             rootVC = MDLoginViewController()
         } else {

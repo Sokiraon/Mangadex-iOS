@@ -111,7 +111,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         MDUserManager.getInstance()
             .loginWithUsername(username, andPassword: password) {
                 DispatchQueue.main.async {
-                    let vc = MDHomeViewController()
+                    let vc = MDHomeTabViewController()
                     ProgressHUD.dismiss()
                     self.view.isUserInteractionEnabled = true
                     if (!self.shouldAutoLogin) {
@@ -147,7 +147,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     }
 
     @objc func didTapGuest() {
-        let vc = MDHomeViewController()
+        let vc = MDHomeTabViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 

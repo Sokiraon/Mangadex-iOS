@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import ProgressHUD
 
-class MDStaredViewController: MDMangaListViewController {
+class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func onHeaderRefresh() {
         MDHTTPManager.getInstance()

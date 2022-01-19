@@ -15,9 +15,9 @@
 "kLoginUser" = "Login";
 "kLoginGuest" = "Continue as guest";
 
-"kDashboardTabTrend" = "Trend";
-"kDashboardTabFollowed" = "Followed";
-"kDashboardTabAccount" = "Account";
+"kHomeTabBrowse" = "Browse";
+"kHomeTabFollowed" = "Followed";
+"kHomeTabAccount" = "Account";
 
 "kMangaDetailChapters" = "Chapters";
 "kMangaDetailInfo" = "Info";

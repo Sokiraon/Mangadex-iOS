@@ -10,7 +10,7 @@ import UIKit
 import ProgressHUD
 import SkeletonView
 
-class MDTrendViewController: MDMangaListViewController {
+class MDBrowseMangaViewController: MDMangaListViewController {
     
     override func onHeaderRefresh() {
         MDHTTPManager.getInstance()

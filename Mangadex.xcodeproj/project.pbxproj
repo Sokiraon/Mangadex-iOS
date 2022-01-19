@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0008100F2661F681009C1005 /* MDLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008100E2661F681009C1005 /* MDLayout.swift */; };
-		0008101226621229009C1005 /* MDTrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDTrendViewController.swift */; };
-		000810172662125B009C1005 /* MDStaredViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDStaredViewController.swift */; };
+		0008101226621229009C1005 /* MDBrowseMangaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0008101126621229009C1005 /* MDBrowseMangaViewController.swift */; };
+		000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* MDFollowedMangaViewController.swift */; };
 		00170964264FA3E6005BEE67 /* MDUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* MDUserManager.swift */; };
-		00170966264FC9CB005BEE67 /* MDHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* MDHomeViewController.swift */; };
+		00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* MDHomeTabViewController.swift */; };
 		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
 		00363096266F5BD80058BE25 /* MDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363095266F5BD80058BE25 /* MDViewController.swift */; };
 		00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363098266F676A0058BE25 /* MDNavigationController.swift */; };
@@ -133,10 +133,10 @@
 
 /* Begin PBXFileReference section */
 		0008100E2661F681009C1005 /* MDLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLayout.swift; sourceTree = "<group>"; };
-		0008101126621229009C1005 /* MDTrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDTrendViewController.swift; sourceTree = "<group>"; };
-		000810162662125B009C1005 /* MDStaredViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDStaredViewController.swift; sourceTree = "<group>"; };
+		0008101126621229009C1005 /* MDBrowseMangaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBrowseMangaViewController.swift; sourceTree = "<group>"; };
+		000810162662125B009C1005 /* MDFollowedMangaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFollowedMangaViewController.swift; sourceTree = "<group>"; };
 		00170963264FA3E6005BEE67 /* MDUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUserManager.swift; sourceTree = "<group>"; };
-		00170965264FC9CB005BEE67 /* MDHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDHomeViewController.swift; sourceTree = "<group>"; };
+		00170965264FC9CB005BEE67 /* MDHomeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDHomeTabViewController.swift; sourceTree = "<group>"; };
 		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
 		00363095266F5BD80058BE25 /* MDViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDViewController.swift; sourceTree = "<group>"; };
 		00363098266F676A0058BE25 /* MDNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDNavigationController.swift; sourceTree = "<group>"; };
@@ -351,7 +351,7 @@
 		0008101326621236009C1005 /* Trend */ = {
 			isa = PBXGroup;
 			children = (
-				0008101126621229009C1005 /* MDTrendViewController.swift */,
+				0008101126621229009C1005 /* MDBrowseMangaViewController.swift */,
 			);
 			path = Trend;
 			sourceTree = "<group>";
@@ -359,7 +359,7 @@
 		0008101526621249009C1005 /* Stared */ = {
 			isa = PBXGroup;
 			children = (
-				000810162662125B009C1005 /* MDStaredViewController.swift */,
+				000810162662125B009C1005 /* MDFollowedMangaViewController.swift */,
 			);
 			path = Stared;
 			sourceTree = "<group>";
@@ -522,7 +522,7 @@
 		7A53407B26886C2A003CE4C1 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				00170965264FC9CB005BEE67 /* MDHomeViewController.swift */,
+				00170965264FC9CB005BEE67 /* MDHomeTabViewController.swift */,
 				05179A17279280EE0019D656 /* MDMangaListViewController.swift */,
 				05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */,
 				0008101326621236009C1005 /* Trend */,
@@ -1041,12 +1041,12 @@
 				7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */,
 				B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */,
 				7AD6BA2826A8138C009FB2F5 /* MJRefreshAutoStateFooter.m in Sources */,
-				00170966264FC9CB005BEE67 /* MDHomeViewController.swift in Sources */,
+				00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */,
 				7AD6BA3F26A825D7009FB2F5 /* MJRefreshStateLeader.m in Sources */,
-				000810172662125B009C1005 /* MDStaredViewController.swift in Sources */,
+				000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */,
 				7AD6BA2626A8138C009FB2F5 /* MJRefreshBackStateFooter.m in Sources */,
 				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
-				0008101226621229009C1005 /* MDTrendViewController.swift in Sources */,
+				0008101226621229009C1005 /* MDBrowseMangaViewController.swift in Sources */,
 				7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */,
 				7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
