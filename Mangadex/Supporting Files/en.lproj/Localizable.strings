@@ -62,3 +62,8 @@
 "kPrefMangaLang" = "Change Manga Language";
 "kPrefMangaLangCur" = "Current: %@";
 "kPrefPopupSave" = "Save";
+
+"kMangaTagTypeFormat" = "Format";
+"kMangaTagTypeGenre" = "Genre";
+"kMangaTagTypeTheme" = "Theme";
+"kMangaTagTypeContent" = "Content";

@@ -7,13 +7,14 @@ import YYModel
 
 class MDMangaTagAttributes: NSObject {
     @objc var name: MDMangaMultiLanguageObject!
-    
-    func localizedName() -> String {
-        return name.en?.localized() ?? ""
-    }
+    @objc var group: String!
 }
 
 class MDMangaTagDataModel: NSObject {
     @objc var id: String!
     @objc var attributes: MDMangaTagAttributes!
+    
+    func localizedName() -> String? {
+        return attributes.name.en?.localized()
+    }
 }

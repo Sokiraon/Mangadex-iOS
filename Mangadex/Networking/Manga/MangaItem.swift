@@ -14,7 +14,16 @@ struct MangaItem {
     var artistId: String
     var coverId: String
     var description: String
-    var tags: [String]
+    
+    var formatTags = [String]()
+    var genreTags = [String]()
+    var themeTags = [String]()
+    var contentTags = [String]()
+    
+    var tags: [[String]] {
+        [formatTags, genreTags, themeTags, contentTags]
+    }
+    
     var updatedAt: String
     var lastVolume: String?
     var lastChapter: String?
@@ -46,10 +55,25 @@ struct MangaItem {
             }
         }
         
-        var tags: [String] = []
         for tag in model.attributes.tags {
-            tags.append(tag.attributes.localizedName())
+            if let tagName = tag.localizedName() {
+                switch tag.attributes.group {
+                case "format":
+                    formatTags.append(tagName)
+                    break
+                case "genre":
+                    genreTags.append(tagName)
+                    break
+                case "theme":
+                    themeTags.append(tagName)
+                    break
+                case "content":
+                    contentTags.append(tagName)
+                    break
+                default:
+                    break
+                }
+            }
         }
-        self.tags = tags
     }
 }

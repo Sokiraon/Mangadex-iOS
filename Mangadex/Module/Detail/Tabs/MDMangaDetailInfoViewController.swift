@@ -9,8 +9,38 @@ import Foundation
 import UIKit
 import SnapKit
 import MaterialComponents
-import AlignedCollectionViewFlowLayout
 import XLPagerTabStrip
+
+class MDMangaDetailInfoHeader: UICollectionReusableView {
+    let label = UILabel(fontSize: 18, fontWeight: .medium)
+    let divider = UIView()
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    private func setupUI() {
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.top.left.equalToSuperview()
+        }
+        
+        addSubview(divider)
+        divider.theme_backgroundColor = UIColor.theme_secondaryColor
+        divider.layer.cornerRadius = 1
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(2)
+            make.top.equalTo(label.snp.bottom).offset(4)
+            make.right.equalTo(label.snp.right).offset(12)
+            make.left.bottom.equalToSuperview()
+        }
+    }
+}
 
 class MDMangaDetailInfoTagCell: UICollectionViewCell {
     private var lblTag = UILabel(color: .darkerGray565656)
@@ -40,8 +70,8 @@ class MDMangaDetailInfoTagCell: UICollectionViewCell {
         }
     }
     
-    func updateWithTag(_ tag: String) {
-        lblTag.text = tag
+    func setContent(tagName: String) {
+        lblTag.text = tagName
     }
 }
 
@@ -55,17 +85,62 @@ class MDMangaDetailInfoViewController: MDViewController {
     private lazy var tagsCard = MDCCustomCard(title: "kTags".localized())
     
     private lazy var tagsCollection: UICollectionView = {
-        let layout = AlignedCollectionViewFlowLayout(horizontalAlignment: .left)
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let view = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         view.isScrollEnabled = false
         view.delegate = self
         view.dataSource = self
         view.backgroundColor = .clear
         view.register(MDMangaDetailInfoTagCell.self, forCellWithReuseIdentifier: "tag")
+        view.register(
+            MDMangaDetailInfoHeader.self,
+            forSupplementaryViewOfKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            withReuseIdentifier: "header"
+        )
         return view
     }()
+    
+    static let sectionHeaderElementKind = "section-header-element-kind"
+    
+    private func createLayout() -> UICollectionViewCompositionalLayout {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .estimated(80),
+                heightDimension: .absolute(40)
+            )
+        )
+        item.edgeSpacing = .init(leading: .fixed(0), top: .fixed(10), trailing: .fixed(5), bottom: .fixed(10))
+        
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: .init(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(100)
+            ),
+            subitems: [item]
+        )
+        group.interItemSpacing = .fixed(5)
+        group.contentInsets = .init(top: 0, leading: 0, bottom: 20, trailing: 0)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [sectionHeader]
+        section.contentInsets = .init(top: 0, leading: 0, bottom: 10, trailing: 0)
+        
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, environment) in
+            if self.mangaItem?.tags[sectionIndex].count ?? 0 > 0 {
+                return section
+            } else {
+                return nil
+            }
+        }
+        
+        return layout
+    }
     
     convenience init(mangaItem item: MangaItem) {
         self.init()
@@ -123,21 +198,55 @@ class MDMangaDetailInfoViewController: MDViewController {
 extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
                                            UICollectionViewDataSource,
                                            IndicatorInfoProvider {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        mangaItem?.tags.count ?? 0
+    }
+    
     public func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        mangaItem?.tags.count ?? 0
+        mangaItem?.tags[section].count ?? 0
     }
     
     public func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "tag", for: indexPath)
-            as! MDMangaDetailInfoTagCell
-        cell.updateWithTag(mangaItem?.tags[indexPath.row] ?? "N/A")
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "tag", for: indexPath
+        ) as! MDMangaDetailInfoTagCell
+        if let tagName = mangaItem?.tags[indexPath.section][indexPath.row] {
+            cell.setContent(tagName: tagName)
+        }
         return cell
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            withReuseIdentifier: "header",
+            for: indexPath
+        ) as! MDMangaDetailInfoHeader
+        switch indexPath.section {
+        case 0:
+            view.label.text = "kMangaTagTypeFormat".localized()
+            break
+        case 1:
+            view.label.text = "kMangaTagTypeGenre".localized()
+            break
+        case 2:
+            view.label.text = "kMangaTagTypeTheme".localized()
+            break
+        default:
+            view.label.text = "kMangaTagTypeContent".localized()
+            break
+        }
+        return view
     }
     
     public func indicatorInfo(

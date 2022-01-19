@@ -6,5 +6,7 @@ Pods/
 Mangadex.xcworkspace/xcuserdata/
 Mangadex.xcodeproj/xcuserdata/
 Mangadex.xcodeproj/project.xcworkspace/xcuserdata/
+Mangadex.xcodeproj/xcshareddata/xcschemes/Mangadex.xcscheme
+
 *.DS_Store
 .idea/

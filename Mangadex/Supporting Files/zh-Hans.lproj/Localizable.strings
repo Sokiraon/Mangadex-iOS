@@ -142,6 +142,10 @@
 "Sexual Violence" = "性虐";
 "Gore" = "血腥";
 
+"kMangaTagTypeFormat" = "性质";
+"kMangaTagTypeGenre" = "类别";
+"kMangaTagTypeTheme" = "主题";
+"kMangaTagTypeContent" = "内容警告";
 
 "kPrefThemeColor" = "设置主题色";
 "kPrefMangaLang" = "修改阅读语言";

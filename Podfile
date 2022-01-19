@@ -16,7 +16,6 @@ target "Mangadex" do
   pod 'YYModel'
   pod 'Localize-Swift', '~> 3.2'
   pod 'Loaf'
-  pod "AlignedCollectionViewFlowLayout"
   pod 'SkeletonView'
   pod 'Segmentio'
   pod 'Pageboy', '~> 3.6.2'
