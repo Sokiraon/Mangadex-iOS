@@ -28,7 +28,7 @@ class MDMangaDetailChapterViewController: MDViewController {
         view.backgroundColor = .white
         view.delegate = self
         view.dataSource = self
-        view.contentInset = UIEdgeInsets(values: [-20, 15, 10])
+        view.contentInset = .cssStyle(-20, 15, 10)
         view.showsVerticalScrollIndicator = false
         view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
         return view

@@ -25,7 +25,7 @@ class MDMangaListViewController: MDViewController {
         view.delegate = self
         view.dataSource = self
         view.register(MDMangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
-        view.contentInset = UIEdgeInsets(values: [5, cellMargin])
+        view.contentInset = .cssStyle(5, cellMargin)
         view.backgroundColor = .clear
         return view
     }()
