@@ -39,11 +39,11 @@ class MDColorSettingCollectionCell: MDBaseSettingCollectionCell {
         
         lblColor.text = { () -> String in
             switch color {
-            case .ceruleanPrimary:
+            case .cerulean400:
                 return "Cerulean".localized()
-            case .tealPrimary:
+            case .teal300:
                 return "Teal".localized()
-            case .coralPrimary:
+            case .coral400:
                 return "Coral".localized()
             default:
                 return ""

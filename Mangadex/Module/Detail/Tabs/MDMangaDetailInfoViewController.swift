@@ -31,7 +31,7 @@ class MDMangaDetailInfoHeader: UICollectionReusableView {
         }
         
         addSubview(divider)
-        divider.theme_backgroundColor = UIColor.theme_secondaryColor
+        divider.theme_backgroundColor = UIColor.theme_primaryColor
         divider.layer.cornerRadius = 1
         divider.snp.makeConstraints { make in
             make.height.equalTo(2)

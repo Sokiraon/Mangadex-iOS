@@ -20,31 +20,31 @@ extension UIColor {
     static let black2D2E2F = fromHex("2d2e2f")
     
     /** 蔚蓝 */
-    static let ceruleanPrimary = fromHex("32b0df")
-    static let ceruleanSecondary = fromHex("53bee3")
-    static let ceruleanLight = fromHex("e1f4fa")
+    static let cerulean400 = fromHex("32b0df")
+    static let cerulean700 = fromHex("0084ba")
+    static let cerulean50 = fromHex("e1f4fa")
     /** 青绿 */
-    static let tealPrimary = fromHex("4fb3b0")
-    static let tealSecondary = fromHex("81c9c7")
-    static let tealLight = fromHex("e0f1f2")
+    static let teal300 = fromHex("4fb3b0")
+    static let teal600 = fromHex("09867f")
+    static let teal50 = fromHex("e0f1f2")
     /** 珊瑚红 */
-    static let coralPrimary = fromHex("ff7f50")
-    static let coralSecondary = fromHex("ff9570")
-    static let coralLight = fromHex("faebe9")
+    static let coral400 = fromHex("ff7f50")
+    static let coral800 = fromHex("d85627")
+    static let coral50 = fromHex("faebe9")
     
     static let theme_primaryColor = ThemeColorPicker(
-        colors: ceruleanPrimary, tealPrimary, coralPrimary
+        colors: cerulean400, teal300, coral400
     )
-    static let theme_secondaryColor = ThemeColorPicker(
-        colors: ceruleanSecondary, tealSecondary, coralSecondary
+    static let theme_darkColor = ThemeColorPicker(
+        colors: cerulean700, teal600, coral800
     )
     static let theme_primaryCgColor = ThemeCGColorPicker(
-        colors: ceruleanPrimary.cgColor, tealPrimary.cgColor, coralPrimary.cgColor
+        colors: cerulean400.cgColor, teal300.cgColor, coral400.cgColor
     )
-    static let theme_lightColor = ThemeColorPicker(colors: ceruleanLight, tealLight, coralLight)
+    static let theme_lightColor = ThemeColorPicker(colors: cerulean50, teal50, coral50)
     
-    static let primaryColors = [ceruleanPrimary, tealPrimary, coralPrimary]
-    static let lightColors = [ceruleanLight, tealLight, ceruleanLight]
+    static let primaryColors = [cerulean400, teal300, coral400]
+    static let lightColors = [cerulean50, teal50, cerulean50]
     
     static var primaryColor: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
     static var lightColor: UIColor { lightColors[MDSettingsManager.themeColorIndex] }

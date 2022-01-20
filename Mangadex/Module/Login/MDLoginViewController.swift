@@ -34,19 +34,17 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         field.backgroundColor = .white
         return field
     }()
-
-    lazy var loginButton: MDCButton = {
-        let button = MDCButton()
+    
+    private lazy var btnLogin: MDButton = {
+        let button = MDButton(variant: .contained)
         button.setTitle("kLoginUser".localized(), for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
         return button
     }()
-
-    lazy var guestButton: MDCButton = {
-        let button = MDCButton()
+    
+    private lazy var btnGuest: MDButton = {
+        let button = MDButton(variant: .outlined)
         button.setTitle("kLoginGuest".localized(), for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapGuest), for: .touchUpInside)
         return button
     }()
@@ -78,20 +76,18 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         }
         passwordField.delegate = self
         passwordField.tag = 1
-
-        view.addSubview(loginButton)
-        loginButton.snp.makeConstraints { (make) -> Void in
+        
+        view.addSubview(btnLogin)
+        btnLogin.snp.makeConstraints { make in
             make.top.equalTo(passwordField.snp.bottom).offset(20)
-            make.left.equalTo(view).offset(20)
-            make.right.equalTo(view).offset(-20)
-            make.height.equalTo(50)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(52)
         }
-
-        view.addSubview(guestButton)
-        guestButton.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(10)
-            make.left.right.equalTo(view).inset(20)
-            make.height.equalTo(50)
+        
+        view.addSubview(btnGuest)
+        btnGuest.snp.makeConstraints { make in
+            make.top.equalTo(btnLogin.snp.bottom).offset(15)
+            make.left.right.height.equalTo(btnLogin)
         }
     }
 
