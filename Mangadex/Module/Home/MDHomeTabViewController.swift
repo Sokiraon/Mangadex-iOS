@@ -36,7 +36,7 @@ class MDHomeTabViewController: TabmanViewController {
         bar.layout.transitionStyle = .snap
         bar.layout.contentInset = .bottom(.rectScreenOnlyValue(5))
         bar.buttons.customize { button in
-            button.font = .systemFont(ofSize: 14)
+            button.font = .systemFont(ofSize: 13)
             button.selectedTintColor = .primaryColor
             button.imageViewSize = CGSize(width: 32, height: 32)
         }
