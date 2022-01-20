@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+extension String {
+    static let CollectionViewSectionHeaderKind = "collection-section-header-kind"
+}
+
 extension UICollectionView {
     func scrollToNearestVisibleCell() -> IndexPath? {
         self.decelerationRate = .fast

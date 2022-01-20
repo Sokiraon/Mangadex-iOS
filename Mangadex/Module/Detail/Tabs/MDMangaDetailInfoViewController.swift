@@ -93,13 +93,11 @@ class MDMangaDetailInfoViewController: MDViewController {
         view.register(MDMangaDetailInfoTagCell.self, forCellWithReuseIdentifier: "tag")
         view.register(
             MDMangaDetailInfoHeader.self,
-            forSupplementaryViewOfKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            forSupplementaryViewOfKind: .CollectionViewSectionHeaderKind,
             withReuseIdentifier: "header"
         )
         return view
     }()
-    
-    static let sectionHeaderElementKind = "section-header-element-kind"
     
     private func createLayout() -> UICollectionViewCompositionalLayout {
         let item = NSCollectionLayoutItem(
@@ -125,7 +123,7 @@ class MDMangaDetailInfoViewController: MDViewController {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
-            elementKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            elementKind: .CollectionViewSectionHeaderKind,
             alignment: .top
         )
         section.boundarySupplementaryItems = [sectionHeader]
@@ -228,7 +226,7 @@ extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: MDMangaDetailInfoViewController.sectionHeaderElementKind,
+            ofKind: .CollectionViewSectionHeaderKind,
             withReuseIdentifier: "header",
             for: indexPath
         ) as! MDMangaDetailInfoHeader
