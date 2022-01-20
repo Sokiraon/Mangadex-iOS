@@ -107,6 +107,7 @@
 		B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2461278BEA6500344EE3 /* MDButton.swift */; };
 		B89F2464278BF34C00344EE3 /* MDColorSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */; };
 		B89F2466278C17F000344EE3 /* MDColorSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */; };
+		B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */; };
 		B8E39736278E905700B42760 /* MDBaseSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */; };
 		B8E39738278EAF1100B42760 /* MDSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39737278EAF1100B42760 /* MDSettingsManager.swift */; };
 		B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */; };
@@ -294,6 +295,7 @@
 		B89F2461278BEA6500344EE3 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
 		B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingCollectionCell.swift; sourceTree = "<group>"; };
 		B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingsPopupView.swift; sourceTree = "<group>"; };
+		B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Ext.swift"; sourceTree = "<group>"; };
 		B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBaseSettingCollectionCell.swift; sourceTree = "<group>"; };
 		B8E39737278EAF1100B42760 /* MDSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsManager.swift; sourceTree = "<group>"; };
 		B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLangSettingsPopupView.swift; sourceTree = "<group>"; };
@@ -814,6 +816,7 @@
 				390E77D76060F0B415020713 /* UIView+Ext.swift */,
 				7A9A5FF526C7743A00196953 /* CustomOperator.swift */,
 				05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */,
+				B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1061,6 +1064,7 @@
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
 				052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */,
 				7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */,
+				B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */,
 				7A89D9BD267DAC9500E41147 /* MDHTTPManager.swift in Sources */,
 				7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */,
 				7A89D9C3267DCA0200E41147 /* MDHTTPManager+Author.swift in Sources */,
