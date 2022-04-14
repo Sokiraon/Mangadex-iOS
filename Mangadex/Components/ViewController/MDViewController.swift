@@ -45,9 +45,8 @@ class MDViewController: UIViewController {
     ///
     /// Used for setting up top navigation bar.
     /// - Parameters:
-    ///   - preserveStatus: **true** to reserve space for system status bar, **false** for hiding it
     ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
-    func setupNavBar(preserveStatus: Bool, backgroundColor: UIColor? = nil) {
+    func setupNavBar(backgroundColor: UIColor? = nil) {
         appBar = MDAppBar(title: viewTitle, backgroundColor: backgroundColor)
         appBar?.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         

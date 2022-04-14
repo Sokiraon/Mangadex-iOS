@@ -17,13 +17,13 @@ target "Mangadex" do
   pod 'Localize-Swift', '~> 3.2'
   pod 'Loaf'
   pod 'SkeletonView'
-  pod 'Segmentio'
   pod 'Pageboy', '~> 3.6.2'
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
   pod 'SwiftTheme'
   pod 'Eureka'
   pod 'SwiftEntryKit', '2.0.0'
   pod 'FlagKit'
+  pod "PromiseKit", "~> 6.17.1"
   
 end
 

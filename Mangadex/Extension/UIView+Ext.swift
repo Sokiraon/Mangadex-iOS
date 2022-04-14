@@ -25,10 +25,11 @@ extension UIView {
                 make.height.equalTo(0.5)
             }
             break
-            
-        default:
-            break
         }
+    }
+    
+    func applyShadow() {
+        
     }
     
     static func +++ (superview: UIView, subview: UIView) {

@@ -39,16 +39,27 @@ class MDMangaListViewController: MDViewController {
         self.onFooterRefresh()
     }
     
-    func onHeaderRefresh() {
-    }
+    func onHeaderRefresh() {}
+    func onFooterRefresh() {}
     
-    func onFooterRefresh() {
-    }
+    private let vHeader: UIView = {
+        let view = UIView(backgroundColor: .white)
+        view.layer.shadowColor = UIColor.black2D2E2F.cgColor
+        view.layer.shadowRadius = 2
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        return view
+    }()
     
     override func setupUI() {
-        view.addSubview(vCollection)
+        view.addSubview(vHeader)
+        vHeader.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.height.equalTo(MDLayout.safeInsetTop + 44)
+        }
+        
+        view.insertSubview(vCollection, belowSubview: vHeader)
         vCollection.snp.makeConstraints { make in
-            make.top.equalTo(MDLayout.safeInsetTop)
+            make.top.equalTo(vHeader.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
     }
@@ -94,5 +105,17 @@ extension MDMangaListViewController: UICollectionViewDelegate,
             title: (cell as! MDMangaListCollectionCell).getTitle()
         )
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y > 10 {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+                self.vHeader.layer.shadowOpacity = 0.5
+            }
+        } else {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn) {
+                self.vHeader.layer.shadowOpacity = 0
+            }
+        }
     }
 }

@@ -39,7 +39,7 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
 class MDMangaItemAttributes: NSObject, YYModel {
     @objc var title: MDMangaMultiLanguageObject!
     @objc var altTitles: [MDMangaMultiLanguageObject]!
-    @objc var descript: MDMangaMultiLanguageObject!
+    @objc var descript: MDMangaMultiLanguageObject?
     @objc var status: String!
     @objc var tags: [MDMangaTagDataModel]!
     @objc var lastVolume: String?

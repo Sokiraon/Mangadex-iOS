@@ -11,6 +11,7 @@ import ProgressHUD
 import Kingfisher
 import SnapKit
 import Darwin
+import PromiseKit
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties
@@ -171,7 +172,7 @@ class MDMangaSlideViewController: MDViewController {
     }
     
     override func setupUI() {
-        setupNavBar(preserveStatus: false, backgroundColor: .black)
+        setupNavBar(backgroundColor: .black)
         
         view.backgroundColor = .black
         
@@ -218,23 +219,24 @@ class MDMangaSlideViewController: MDViewController {
     
     override func didSetupUI() {
         ProgressHUD.show()
-        MDHTTPManager.getInstance()
-                .getChapterDataById(chapterInfo.id) { data in
-                    let hash = data.chapter.chapterHash
-                    for fileName in data.chapter.data {
-                        self.pages.append("\(data.baseUrl ?? "")/data/\(hash ?? "")/\(fileName)")
-                    }
-                    DispatchQueue.main.async {
-                        if self.pages.count > 0 {
-                            self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
-                        } else {
-                            self.vSlider.maximumValue = 0
-                        }
-                        self.vPages.reloadData()
-                        self.showHideControlArea()
-                        ProgressHUD.dismiss()
-                    }
+        firstly {
+            MDRequests.Chapter.getPageData(chapterId: chapterInfo.id)
+        }.done { model in
+            let hash = model.chapter.chapterHash
+            for fileName in model.chapter.data {
+                self.pages.append("\(model.baseUrl ?? "")/data/\(hash ?? "")/\(fileName)")
+            }
+            DispatchQueue.main.async {
+                if self.pages.count > 0 {
+                    self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
+                } else {
+                    self.vSlider.maximumValue = 0
                 }
+                self.vPages.reloadData()
+                self.showHideControlArea()
+                ProgressHUD.dismiss()
+            }
+        }
     }
     
     override func doOnAppear() {

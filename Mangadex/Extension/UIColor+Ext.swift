@@ -19,17 +19,23 @@ extension UIColor {
     
     static let black2D2E2F = fromHex("2d2e2f")
     
-    /** 蔚蓝 */
-    static let cerulean400 = fromHex("32b0df")
+    // 蔚蓝
     static let cerulean700 = fromHex("0084ba")
+    static let cerulean400 = fromHex("32b0df")
+    static let cerulean200 = fromHex("81d1eb")
+    static let cerulean100 = fromHex("b2e3f3")
     static let cerulean50 = fromHex("e1f4fa")
-    /** 青绿 */
-    static let teal300 = fromHex("4fb3b0")
+    // 青绿
     static let teal600 = fromHex("09867f")
+    static let teal300 = fromHex("4fb3b0")
+    static let teal200 = fromHex("81c9c7")
+    static let teal100 = fromHex("b2dedd")
     static let teal50 = fromHex("e0f1f2")
     /** 珊瑚红 */
-    static let coral400 = fromHex("ff7f50")
     static let coral800 = fromHex("d85627")
+    static let coral400 = fromHex("ff7f50")
+    static let coral200 = fromHex("feb399")
+    static let coral100 = fromHex("fed0c1")
     static let coral50 = fromHex("faebe9")
     
     static let theme_primaryColor = ThemeColorPicker(
@@ -41,7 +47,8 @@ extension UIColor {
     static let theme_primaryCgColor = ThemeCGColorPicker(
         colors: cerulean400.cgColor, teal300.cgColor, coral400.cgColor
     )
-    static let theme_lightColor = ThemeColorPicker(colors: cerulean50, teal50, coral50)
+    static let theme_lightColor = ThemeColorPicker(colors: cerulean200, teal200, coral200)
+    static let theme_lightestColor = ThemeColorPicker(colors: cerulean50, teal50, coral50)
     
     static let primaryColors = [cerulean400, teal300, coral400]
     static let lightColors = [cerulean50, teal50, cerulean50]

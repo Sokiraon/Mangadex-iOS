@@ -28,7 +28,11 @@
 		05179A18279280EE0019D656 /* MDMangaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A17279280EE0019D656 /* MDMangaListViewController.swift */; };
 		05179A1A27928E630019D656 /* MDMangaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */; };
 		05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */; };
+		051BE38A288A49AF00FE172A /* MDRequests+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BE389288A49AF00FE172A /* MDRequests+User.swift */; };
+		051BE38E288A770000FE172A /* MDRequests+Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BE38D288A770000FE172A /* MDRequests+Chapter.swift */; };
+		051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BE390288ACF6800FE172A /* MDRequests+Auth.swift */; };
 		052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052D5785275E4CDF004256B3 /* MangaItem.swift */; };
+		0564F0B02889830A00222504 /* MDRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0564F0AF2889830A00222504 /* MDRequests.swift */; };
 		05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7967A88951D82F181FF4 /* MDCTextCard.swift */; };
@@ -46,21 +50,16 @@
 		390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */; };
 		390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E79EFFFCD328DAEC9D3FE /* UIColor+Ext.swift */; };
 		390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E765B11ECA5FCB12E29D5 /* MDLocale.swift */; };
+		568E5C38BF07F884A177FD31 /* MDRequests+Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = 568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */; };
 		7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */; };
 		7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */; };
 		7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */; };
 		7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */; };
 		7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */; };
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
-		7A53408326887D62003CE4C1 /* MDHTTPManager+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53408226887D62003CE4C1 /* MDHTTPManager+User.swift */; };
-		7A7544622686F8B700467EF1 /* MDHTTPManager+Chapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544612686F8B700467EF1 /* MDHTTPManager+Chapter.swift */; };
 		7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */; };
 		7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */; };
 		7A75446C26885FFA00467EF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A75446E26885FFA00467EF1 /* Localizable.strings */; };
-		7A89D9BD267DAC9500E41147 /* MDHTTPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9BC267DAC9500E41147 /* MDHTTPManager.swift */; };
-		7A89D9BF267DB8AF00E41147 /* MDHTTPManager+Manga.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9BE267DB8AF00E41147 /* MDHTTPManager+Manga.swift */; };
-		7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */; };
-		7A89D9C3267DCA0200E41147 /* MDHTTPManager+Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */; };
 		7A89D9C5267DD28A00E41147 /* MDMangaItemDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */; };
 		7A9A5FF126C76F9B00196953 /* MDAccountSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */; };
 		7A9A5FF426C76FD400196953 /* MDAccountSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */; };
@@ -112,6 +111,7 @@
 		B8E39738278EAF1100B42760 /* MDSettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39737278EAF1100B42760 /* MDSettingsManager.swift */; };
 		B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */; };
 		B8E3973C278ED0D000B42760 /* MDLangSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E3973B278ED0D000B42760 /* MDLangSettingCollectionCell.swift */; };
+		B8F33B4A279946B000DF9002 /* MDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F33B49279946B000DF9002 /* MDView.swift */; };
 		E91D0BB428A4FB3577929470 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */; };
 /* End PBXBuildFile section */
 
@@ -160,7 +160,11 @@
 		05179A17279280EE0019D656 /* MDMangaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListViewController.swift; sourceTree = "<group>"; };
 		05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListCollectionCell.swift; sourceTree = "<group>"; };
 		05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Ext.swift"; sourceTree = "<group>"; };
+		051BE389288A49AF00FE172A /* MDRequests+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDRequests+User.swift"; sourceTree = "<group>"; };
+		051BE38D288A770000FE172A /* MDRequests+Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDRequests+Chapter.swift"; sourceTree = "<group>"; };
+		051BE390288ACF6800FE172A /* MDRequests+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDRequests+Auth.swift"; sourceTree = "<group>"; };
 		052D5785275E4CDF004256B3 /* MangaItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaItem.swift; sourceTree = "<group>"; };
+		0564F0AF2889830A00222504 /* MDRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRequests.swift; sourceTree = "<group>"; };
 		05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsPopupView.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* UIImageView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 		390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPreLoginViewController.swift; sourceTree = "<group>"; };
 		390E7EBF79AD8DB19C02F3E0 /* NSString+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Ext.swift"; sourceTree = "<group>"; };
 		390E7FB625ED52EC42C2BC05 /* UILabel+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
+		568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MDRequests+Manga.swift"; sourceTree = "<group>"; };
 		7A16E01D26A42D080012C786 /* Mangadex-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mangadex-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDPlistStoreManager.swift; sourceTree = "<group>"; };
 		7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaProgressManager.swift; sourceTree = "<group>"; };
@@ -186,16 +191,10 @@
 		7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailTabViewController.swift; sourceTree = "<group>"; };
 		7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailChapterViewController.swift; sourceTree = "<group>"; };
 		7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailInfoViewController.swift; sourceTree = "<group>"; };
-		7A53408226887D62003CE4C1 /* MDHTTPManager+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+User.swift"; sourceTree = "<group>"; };
-		7A7544612686F8B700467EF1 /* MDHTTPManager+Chapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Chapter.swift"; sourceTree = "<group>"; };
 		7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterDataModel.swift; sourceTree = "<group>"; };
 		7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideCollectionCell.swift; sourceTree = "<group>"; };
 		7A75446D26885FFA00467EF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7A75993F26901AC700A20E64 /* Mangadex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mangadex.entitlements; sourceTree = "<group>"; };
-		7A89D9BC267DAC9500E41147 /* MDHTTPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDHTTPManager.swift; sourceTree = "<group>"; };
-		7A89D9BE267DB8AF00E41147 /* MDHTTPManager+Manga.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Manga.swift"; sourceTree = "<group>"; };
-		7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Auth.swift"; sourceTree = "<group>"; };
-		7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDHTTPManager+Author.swift"; sourceTree = "<group>"; };
 		7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaItemDataModel.swift; sourceTree = "<group>"; };
 		7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsSection.swift; sourceTree = "<group>"; };
 		7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsCell.swift; sourceTree = "<group>"; };
@@ -300,6 +299,7 @@
 		B8E39737278EAF1100B42760 /* MDSettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsManager.swift; sourceTree = "<group>"; };
 		B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLangSettingsPopupView.swift; sourceTree = "<group>"; };
 		B8E3973B278ED0D000B42760 /* MDLangSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLangSettingCollectionCell.swift; sourceTree = "<group>"; };
+		B8F33B49279946B000DF9002 /* MDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDView.swift; sourceTree = "<group>"; };
 		DA1A80F2A7AA06BA47E5F86D /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -379,17 +379,16 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		00170962264FA3A9005BEE67 /* Networking */ = {
+		00170962264FA3A9005BEE67 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				051BE38F288ACF5900FE172A /* Auth */,
 				7A53408126887D51003CE4C1 /* User */,
 				7A7544602686F88900467EF1 /* Chapter */,
 				7AACACA8267EE29C00232166 /* Manga */,
-				7A89D9BC267DAC9500E41147 /* MDHTTPManager.swift */,
-				7A89D9C0267DC51500E41147 /* MDHTTPManager+Auth.swift */,
-				7A89D9C2267DCA0200E41147 /* MDHTTPManager+Author.swift */,
+				0564F0AF2889830A00222504 /* MDRequests.swift */,
 			);
-			path = Networking;
+			path = Requests;
 			sourceTree = "<group>";
 		};
 		0025DADD2665D1F0006C6701 /* Detail */ = {
@@ -462,7 +461,7 @@
 				000810182662646B009C1005 /* Components */,
 				000810102662120F009C1005 /* Module */,
 				0008100D2661F669009C1005 /* Theming */,
-				00170962264FA3A9005BEE67 /* Networking */,
+				00170962264FA3A9005BEE67 /* Requests */,
 				004F7189264BF8EB00D61AEB /* AppDelegate.swift */,
 				004F718B264BF8EB00D61AEB /* SceneDelegate.swift */,
 				004F718F264BF8EB00D61AEB /* Main.storyboard */,
@@ -490,6 +489,14 @@
 				004F71B0264BF8ED00D61AEB /* Info.plist */,
 			);
 			path = MangadexUITests;
+			sourceTree = "<group>";
+		};
+		051BE38F288ACF5900FE172A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				051BE390288ACF6800FE172A /* MDRequests+Auth.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		390E70A25AC522141FF885AB /* Card */ = {
@@ -547,7 +554,7 @@
 		7A53408126887D51003CE4C1 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				7A53408226887D62003CE4C1 /* MDHTTPManager+User.swift */,
+				051BE389288A49AF00FE172A /* MDRequests+User.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -564,8 +571,8 @@
 		7A7544602686F88900467EF1 /* Chapter */ = {
 			isa = PBXGroup;
 			children = (
-				7A7544612686F8B700467EF1 /* MDHTTPManager+Chapter.swift */,
 				7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */,
+				051BE38D288A770000FE172A /* MDRequests+Chapter.swift */,
 			);
 			path = Chapter;
 			sourceTree = "<group>";
@@ -599,6 +606,7 @@
 			children = (
 				B89F2461278BEA6500344EE3 /* MDButton.swift */,
 				AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */,
+				B8F33B49279946B000DF9002 /* MDView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -606,11 +614,11 @@
 		7AACACA8267EE29C00232166 /* Manga */ = {
 			isa = PBXGroup;
 			children = (
-				7A89D9BE267DB8AF00E41147 /* MDHTTPManager+Manga.swift */,
 				7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */,
 				7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */,
 				390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */,
 				052D5785275E4CDF004256B3 /* MangaItem.swift */,
+				568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */,
 			);
 			path = Manga;
 			sourceTree = "<group>";
@@ -1044,6 +1052,7 @@
 				7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */,
 				B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */,
 				7AD6BA2826A8138C009FB2F5 /* MJRefreshAutoStateFooter.m in Sources */,
+				051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */,
 				00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */,
 				7AD6BA3F26A825D7009FB2F5 /* MJRefreshStateLeader.m in Sources */,
 				000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */,
@@ -1063,11 +1072,9 @@
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
 				052D5786275E4CDF004256B3 /* MangaItem.swift in Sources */,
-				7A89D9C1267DC51500E41147 /* MDHTTPManager+Auth.swift in Sources */,
 				B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */,
-				7A89D9BD267DAC9500E41147 /* MDHTTPManager.swift in Sources */,
 				7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */,
-				7A89D9C3267DCA0200E41147 /* MDHTTPManager+Author.swift in Sources */,
+				051BE38A288A49AF00FE172A /* MDRequests+User.swift in Sources */,
 				7AD6BA2E26A8138C009FB2F5 /* MJRefreshStateHeader.m in Sources */,
 				7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */,
 				05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */,
@@ -1083,10 +1090,7 @@
 				7AFFAB08267F41F3003D7C75 /* MDMangaSlideViewController.swift in Sources */,
 				7AD6BA3026A8138C009FB2F5 /* MJRefreshFooter.m in Sources */,
 				7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */,
-				7A53408326887D62003CE4C1 /* MDHTTPManager+User.swift in Sources */,
 				7AD6BA2426A8138C009FB2F5 /* UIView+MJExtension.m in Sources */,
-				7A7544622686F8B700467EF1 /* MDHTTPManager+Chapter.swift in Sources */,
-				7A89D9BF267DB8AF00E41147 /* MDHTTPManager+Manga.swift in Sources */,
 				390E7A55E702F87DC4EAB257 /* MDKeychain.swift in Sources */,
 				390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */,
 				390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */,
@@ -1104,11 +1108,14 @@
 				390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */,
 				7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */,
 				390E743C931911C7A8789480 /* UIAlertController+Ext.swift in Sources */,
+				0564F0B02889830A00222504 /* MDRequests.swift in Sources */,
 				7AD6BA2F26A8138C009FB2F5 /* MJRefreshGifHeader.m in Sources */,
+				B8F33B4A279946B000DF9002 /* MDView.swift in Sources */,
 				B86D2A7A278C31E00062F818 /* UICollectionView+Ext.swift in Sources */,
 				390E78B738C1AC7F9AE9B4B4 /* UILabel+Ext.swift in Sources */,
 				05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */,
 				390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */,
+				051BE38E288A770000FE172A /* MDRequests+Chapter.swift in Sources */,
 				B8E39738278EAF1100B42760 /* MDSettingsManager.swift in Sources */,
 				7AD6BA2226A8138C009FB2F5 /* UIScrollView+MJExtension.m in Sources */,
 				390E7B8FC16D467464DB04B6 /* UIImageView+Ext.swift in Sources */,
@@ -1122,6 +1129,7 @@
 				390E7AF4BBB6925DAE7FEC3A /* UIView+Ext.swift in Sources */,
 				390E74A989CA31FE56F6481C /* UINavigationController+Ext.swift in Sources */,
 				AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */,
+				568E5C38BF07F884A177FD31 /* MDRequests+Manga.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

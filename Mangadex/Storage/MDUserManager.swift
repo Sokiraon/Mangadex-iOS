@@ -8,6 +8,7 @@
 import Foundation
 import Just
 import SwiftyJSON
+import PromiseKit
 
 class MDUserManager {
     private static let instance = MDUserManager()
@@ -54,36 +55,42 @@ class MDUserManager {
         !(_session.isEmpty || _refresh.isEmpty || _username.isEmpty)
     }
     
-    func loginWithUsername(_ username: String,
-                           andPassword password: String,
-                           onSuccess success: @escaping () -> Void,
-                           onError error: @escaping () -> Void) {
-        MDHTTPManager.getInstance()
-            .loginWithUsername(username, andPassword: password) { session, refresh in
-                self.session = session
-                self.refresh = refresh
+    func login(username: String, password: String) -> Promise<Bool> {
+        Promise { seal in
+            firstly {
+                MDRequests.Auth.login(username: username, password: password)
+            }.done { loginToken in
+                self.session = loginToken.session
+                self.refresh = loginToken.refresh
                 self.username = username
-                success()
-            } onError: {
-                error()
+                seal.fulfill(true)
+            }.catch { error in
+                seal.reject(error)
             }
+        }
     }
     
-    func getValidatedToken(onSuccess success: @escaping (_ token: String) -> Void,
-                           onError error: @escaping () -> Void) {
-        MDHTTPManager.getInstance()
-            .checkToken(self.session) {
-                success(self.session)
-            } onError: {
-                MDHTTPManager.getInstance()
-                    .refreshToken(self.refresh) { session, refresh in
-                        self.session = session
-                        self.refresh = refresh
-                        success(session)
-                    } onError: {
-                        error()
-                    }
+    func getValidatedToken() -> Promise<String> {
+        Promise { seal in
+            // verify token
+            firstly {
+                MDRequests.Auth.verifyToken(token: self.session)
+            }.done { res in
+                seal.fulfill(self.session)
+            }.catch { error in
+                // if verification failed, try to refresh token
+                firstly {
+                    MDRequests.Auth.refreshToken(refresh: self.refresh)
+                }.done { loginToken in
+                    self.session = loginToken.session
+                    self.refresh = loginToken.refresh
+                    seal.fulfill(self.session)
+                }.catch { error in
+                    // if refresh failed, throw an Error
+                    seal.reject(MDRequests.ErrorResponse(code: .UnAuthenticated, message: "Authentication Expired"))
+                }
             }
+        }
     }
     
     static func logOut(completion: () -> Void) {

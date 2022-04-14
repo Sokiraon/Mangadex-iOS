@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 class MDMangaListCellTagItem: UIView {
     required init?(coder: NSCoder) {
@@ -60,7 +61,7 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
-        contentView.theme_backgroundColor = UIColor.theme_lightColor
+        contentView.theme_backgroundColor = UIColor.theme_lightestColor
         
         contentView.addSubview(ivCover)
         ivCover.snp.makeConstraints { make in
@@ -100,13 +101,14 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             MDFormatter.formattedDateString(fromISODateString: item.updatedAt)
         )
         
-        MDHTTPManager()
-            .getMangaCoverUrlById(item.coverId, forManga: item.id) { url in
-                DispatchQueue.main.async {
-                    self.ivCover.kf
-                        .setImage(with: url, placeholder: UIImage(named: "manga_cover_default"))
-                }
+        firstly {
+            MDRequests.Manga.getCoverUrl(coverId: item.coverId, mangaId: item.id)
+        }.done { url in
+            DispatchQueue.main.async {
+                self.ivCover.kf
+                    .setImage(with: url, placeholder: UIImage(named: "manga_cover_default"))
             }
+        }
     }
     
     func getTitle() -> String {

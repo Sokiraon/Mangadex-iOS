@@ -13,6 +13,7 @@ import SnapKit
 class MDMangaSlideCollectionCell: UICollectionViewCell {
     private lazy var vScroll: UIScrollView = {
         let view = UIScrollView()
+        view.backgroundColor = .black
         view.delegate = self
         view.minimumZoomScale = 1
         view.maximumZoomScale = 3
@@ -22,6 +23,7 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
     }()
     private lazy var ivPage: UIImageView = {
         let iv = UIImageView()
+        iv.kf.indicatorType = .activity
         iv.contentMode = .scaleAspectFit
         return iv
     }()
@@ -50,7 +52,10 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
     }
     
     func setImageUrl(_ url: String) {
-        ivPage.kf.setImage(with: URL(string: url))
+        ivPage.kf.setImage(with: URL(string: url), options: [
+            .transition(.fade(0.2)),
+            .cacheOriginalImage,
+        ])
     }
     
     @objc func handleTapGesture(_ gesture: MDShortTapGestureRecognizer) {

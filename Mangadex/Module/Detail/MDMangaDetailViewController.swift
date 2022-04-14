@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import Segmentio
 import SwiftEventBus
 import SwiftTheme
 
@@ -54,7 +53,7 @@ class MDMangaDetailViewController: MDViewController {
     }
     
     override func setupUI() {
-        setupNavBar(preserveStatus: true)
+        setupNavBar()
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         

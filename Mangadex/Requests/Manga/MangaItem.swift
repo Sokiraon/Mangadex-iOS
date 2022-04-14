@@ -32,7 +32,7 @@ struct MangaItem {
     init(model: MDMangaItemDataModel) {
         self.id = model.id
         self.title = model.attributes.getLocalizedTitle()
-        self.description = model.attributes.descript.localizedString()
+        self.description = model.attributes.descript?.localizedString() ?? "kMangaNoDescr".localized()
         self.status = model.attributes.status
         self.lastVolume = model.attributes.lastVolume
         self.lastChapter = model.attributes.lastChapter

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import SwiftEventBus
 import XLPagerTabStrip
+import PromiseKit
 
 class MDMangaDetailChapterViewController: MDViewController {
     // MARK: - properties
@@ -64,27 +65,28 @@ class MDMangaDetailChapterViewController: MDViewController {
         lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
         
         vProgress.startAnimating()
-        MDHTTPManager.getInstance()
-            .getChaptersByMangaId(
-                mangaItem.id,
+        firstly {
+            MDRequests.Chapter.getListForManga(
+                mangaId: mangaItem.id,
                 offset: 0,
                 locale: MDLocale.currentMangaLanguage,
                 order: .ASC
-            ) { models, total in
-                DispatchQueue.main.async {
-                    self.chapterModels = models
-                    self.totalChapters = total
-                    self.vChapters.reloadData()
-                    self.vProgress.stopAnimating()
-                    
-                    SwiftEventBus.onMainThread(self, name: "openChapter") { result in
-                        if (self.lastViewedChapterIndex == nil) {
-                            self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
-                        }
-                        self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+            )
+        }.done { result in
+            DispatchQueue.main.async {
+                self.chapterModels = result.data
+                self.totalChapters = result.total
+                self.vChapters.reloadData()
+                self.vProgress.stopAnimating()
+                
+                SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                    if (self.lastViewedChapterIndex == nil) {
+                        self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
                     }
+                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
                 }
             }
+        }
     }
     
     private func openSliderForIndexPath(_ path: IndexPath) {

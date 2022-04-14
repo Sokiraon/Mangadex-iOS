@@ -10,6 +10,7 @@ import SnapKit
 import MaterialComponents
 import ProgressHUD
 import Loaf
+import PromiseKit
 
 fileprivate let queue = DispatchQueue(label: "serial")
 
@@ -103,43 +104,44 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
 
         let username = usernameField.text!
         let password = passwordField.text!
-
-        MDUserManager.getInstance()
-            .loginWithUsername(username, andPassword: password) {
-                DispatchQueue.main.async {
-                    let vc = MDHomeTabViewController()
-                    ProgressHUD.dismiss()
-                    self.view.isUserInteractionEnabled = true
-                    if (!self.shouldAutoLogin) {
-                        let saveAlert = UIAlertController.initWithTitle("kKeychainSaveTitle".localized(),
-                                message: "kKeychainSaveMessage".localized(), style: .actionSheet,
-                                actions:
-                                AlertViewAction(title: "kOk".localized(), style: .default) { action in
-                                    MDKeychain.add(username: username, password: password, onSuccess: {
-                                        Loaf("kSaveSuccess".localized(), state: .success, sender: self).show(.short) { reason in
-                                            self.navigationController?.pushViewController(vc, animated: true)
-                                        }
-                                    }, onError: { error in
-                                        Loaf("kKeychainSaveError".localized(), state: .info, sender: self).show(.short) { reason in
-                                            self.navigationController?.pushViewController(vc, animated: true)
-                                        }
-                                    })
-                                },
-                                AlertViewAction(title: "kNo".localized(), style: .cancel) { action in
-                                    self.navigationController?.pushViewController(vc, animated: true)
+        
+        firstly {
+            MDUserManager.getInstance().login(username: username, password: password)
+        }.done { res in
+            DispatchQueue.main.async {
+                let vc = MDHomeTabViewController()
+                ProgressHUD.dismiss()
+                self.view.isUserInteractionEnabled = true
+                if (!self.shouldAutoLogin) {
+                    let saveAlert = UIAlertController.initWithTitle("kKeychainSaveTitle".localized(),
+                            message: "kKeychainSaveMessage".localized(), style: .actionSheet,
+                            actions:
+                            AlertViewAction(title: "kOk".localized(), style: .default) { action in
+                                MDKeychain.add(username: username, password: password, onSuccess: {
+                                    Loaf("kSaveSuccess".localized(), state: .success, sender: self).show(.short) { reason in
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                    }
+                                }, onError: { error in
+                                    Loaf("kKeychainSaveError".localized(), state: .info, sender: self).show(.short) { reason in
+                                        self.navigationController?.pushViewController(vc, animated: true)
+                                    }
                                 })
-                        self.present(saveAlert, animated: true)
-                    } else {
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                }
-            } onError: {
-                self.shouldAutoLogin = false
-                DispatchQueue.main.async {
-                    ProgressHUD.showError()
-                    self.view.isUserInteractionEnabled = true
+                            },
+                            AlertViewAction(title: "kNo".localized(), style: .cancel) { action in
+                                self.navigationController?.pushViewController(vc, animated: true)
+                            })
+                    self.present(saveAlert, animated: true)
+                } else {
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
+        }.catch { error in
+            self.shouldAutoLogin = false
+            DispatchQueue.main.async {
+                ProgressHUD.showError()
+                self.view.isUserInteractionEnabled = true
+            }
+        }
     }
 
     @objc func didTapGuest() {

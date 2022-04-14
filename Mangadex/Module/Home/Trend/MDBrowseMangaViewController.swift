@@ -9,19 +9,23 @@ import Foundation
 import UIKit
 import ProgressHUD
 import SkeletonView
+import PromiseKit
 
 class MDBrowseMangaViewController: MDMangaListViewController {
     
     override func onHeaderRefresh() {
-        MDHTTPManager.getInstance()
-            .getMangaListWithParams([:]) { data in
-                self.mangaList = data
+        firstly {
+            MDRequests.Manga.query()
+        }
+            .done { items in
+                self.mangaList = items
                 DispatchQueue.main.async {
                     self.refreshFooter.isHidden = false
                     self.vCollection.reloadData()
                     self.vCollection.mj_header?.endRefreshing()
                 }
-            } onError: {
+            }
+            .catch { error in
                 DispatchQueue.main.async {
                     ProgressHUD.showError()
                 }
@@ -30,17 +34,20 @@ class MDBrowseMangaViewController: MDMangaListViewController {
     }
     
     override func onFooterRefresh() {
-        MDHTTPManager.getInstance()
-            .getMangaListWithParams([
+        firstly {
+            MDRequests.Manga.query(params: [
                 "offset": self.mangaList.count,
                 "limit": 5
-            ]) { data in
-                self.mangaList.append(contentsOf: data)
+            ])
+        }
+            .done { items in
+                self.mangaList.append(contentsOf: items)
                 DispatchQueue.main.async {
                     self.vCollection.reloadData()
                     self.vCollection.mj_footer?.endRefreshing()
                 }
-            } onError: {
+            }
+            .catch { error in
                 DispatchQueue.main.async {
                     ProgressHUD.showError()
                 }

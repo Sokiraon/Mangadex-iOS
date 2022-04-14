@@ -67,3 +67,5 @@
 "kMangaTagTypeGenre" = "Genre";
 "kMangaTagTypeTheme" = "Theme";
 "kMangaTagTypeContent" = "Content";
+
+"kMangaNoDescr" = "No Description Found";
