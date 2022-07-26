@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 import SnapKit
-import MaterialComponents
 import XLPagerTabStrip
+import Down
+import MaterialComponents.MaterialCards
 
 class MDMangaDetailInfoHeader: UICollectionReusableView {
     let label = UILabel(fontSize: 18, fontWeight: .medium)
@@ -81,7 +82,7 @@ class MDMangaDetailInfoViewController: MDViewController {
     private lazy var vScroll = UIScrollView(bounce: .vertical, showIndicator: false)
     private lazy var vScrollContent = UIView()
     
-    private lazy var descrCard = MDCTextCard(title: "kDescription".localized(), message: "")
+    private lazy var descrCard = MDCTextCard(title: "kDescription".localized(), content: "kMangaNoDescr".localized())
     private lazy var tagsCard = MDCCustomCard(title: "kTags".localized())
     
     private lazy var tagsCollection: UICollectionView = {
@@ -106,7 +107,12 @@ class MDMangaDetailInfoViewController: MDViewController {
                 heightDimension: .absolute(40)
             )
         )
-        item.edgeSpacing = .init(leading: .fixed(0), top: .fixed(10), trailing: .fixed(5), bottom: .fixed(10))
+        item.edgeSpacing = .init(
+            leading: .fixed(0),
+            top: .fixed(10),
+            trailing: .fixed(5),
+            bottom: .fixed(10)
+        )
         
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: .init(
@@ -120,7 +126,10 @@ class MDMangaDetailInfoViewController: MDViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .estimated(44)
+        )
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerSize,
             elementKind: .CollectionViewSectionHeaderKind,
@@ -143,7 +152,8 @@ class MDMangaDetailInfoViewController: MDViewController {
     convenience init(mangaItem item: MangaItem) {
         self.init()
         mangaItem = item
-        descrCard.updateContent(message: item.description)
+        let descrStr = try? Down(markdownString: item.description).toAttributedString()
+        descrCard.update(attributedContent: descrStr)
     }
     
     override func setupUI() {
@@ -161,17 +171,17 @@ class MDMangaDetailInfoViewController: MDViewController {
         descrCard.setShadowElevation(.none, for: .normal)
         descrCard.applyBorder()
         vScrollContent.addSubview(descrCard)
-        descrCard.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalTo(15)
-            make.left.right.equalToSuperview().inset(10)
+        descrCard.snp.makeConstraints { make in
+            make.top.equalTo(16)
+            make.left.right.equalToSuperview().inset(12)
         }
-        
+    
         tagsCard.setShadowElevation(.none, for: .normal)
         tagsCard.applyBorder()
         vScrollContent.addSubview(tagsCard)
         tagsCard.snp.makeConstraints { (make: ConstraintMaker) in
-            make.top.equalTo(descrCard.snp.bottom).offset(10)
-            make.left.right.equalToSuperview().inset(10)
+            make.top.equalTo(descrCard.snp.bottom).offset(12)
+            make.left.right.equalToSuperview().inset(12)
             make.bottom.equalToSuperview().inset(MDLayout.adjustedSafeInsetBottom)
         }
         
@@ -231,18 +241,18 @@ extension MDMangaDetailInfoViewController: UICollectionViewDelegate,
             for: indexPath
         ) as! MDMangaDetailInfoHeader
         switch indexPath.section {
-        case 0:
-            view.label.text = "kMangaTagTypeFormat".localized()
-            break
-        case 1:
-            view.label.text = "kMangaTagTypeGenre".localized()
-            break
-        case 2:
-            view.label.text = "kMangaTagTypeTheme".localized()
-            break
-        default:
-            view.label.text = "kMangaTagTypeContent".localized()
-            break
+            case 0:
+                view.label.text = "kMangaTagTypeFormat".localized()
+                break
+            case 1:
+                view.label.text = "kMangaTagTypeGenre".localized()
+                break
+            case 2:
+                view.label.text = "kMangaTagTypeTheme".localized()
+                break
+            default:
+                view.label.text = "kMangaTagTypeContent".localized()
+                break
         }
         return view
     }

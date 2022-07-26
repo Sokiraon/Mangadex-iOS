@@ -28,7 +28,7 @@ class MDButton: UIButton {
         case .outlined:
             self.backgroundColor = .white
             self.theme_setTitleColor(UIColor.theme_darkColor, forState: .normal)
-            self.layer.borderWidth = 1
+            self.layer.borderWidth = 2
             self.layer.theme_borderColor = UIColor.theme_primaryCgColor
         }
     }

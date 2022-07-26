@@ -16,7 +16,7 @@ class MDAppBar: UIView {
         return button
     }()
     
-    lazy var lblTitle: UILabel = UILabel.initWithText("", ofFontWeight: .regular, andSize: 17)
+    lazy var lblTitle = UILabel(fontSize: 17)
     
     convenience init(title: String, backgroundColor: UIColor? = nil) {
         self.init()

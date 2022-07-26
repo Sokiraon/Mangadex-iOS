@@ -3,7 +3,7 @@
 //
 
 import Foundation
-import MaterialComponents
+import MaterialComponents.MaterialCards
 import SnapKit
 
 class MDCCustomCard : MDCCard {

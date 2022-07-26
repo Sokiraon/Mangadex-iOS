@@ -64,7 +64,7 @@ class MDSettingsPopupView: UIView, MDSettingsPopupViewDelegate {
     
     internal lazy var vCollectionBackground = UIView(backgroundColor: .lightestGrayF5F5F5)
     
-    let selectorColor = UIColor.amethyst
+    let selectorColor = UIColor.purple
     
     internal lazy var vSelector: UIView = {
         let view = UIView()

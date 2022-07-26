@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MaterialComponents
+import MaterialComponents.MaterialCards
 
 class MDAccountSettingsSection: MDCCard {
     

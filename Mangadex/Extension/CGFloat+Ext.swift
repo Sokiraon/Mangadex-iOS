@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension CGFloat {
     static func rectScreenOnlyValue(_ value: CGFloat) -> CGFloat {

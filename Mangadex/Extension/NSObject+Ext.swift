@@ -13,3 +13,16 @@ extension NSObject {
         return mirror.children.compactMap{ $0.label }
     }
 }
+
+
+// Add a Kotlin-style "apply" function to NSObject
+protocol HasApply { }
+
+extension HasApply {
+    func apply(closure: (Self) -> ()) -> Self {
+        closure(self)
+        return self
+    }
+}
+
+extension NSObject: HasApply {}

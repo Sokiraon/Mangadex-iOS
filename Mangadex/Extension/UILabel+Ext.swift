@@ -22,23 +22,4 @@ extension UILabel {
         self.adjustsFontSizeToFitWidth = scalable
         self.minimumScaleFactor = (fontSize - 2) / fontSize
     }
-    
-    static func initWithFontWeight(_ weight: UIFont.Weight,
-                                   andSize size: CGFloat,
-                                   scalable: Bool = false) -> UILabel {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: size, weight: weight)
-        label.adjustsFontSizeToFitWidth = scalable
-        label.minimumScaleFactor = (size - 2) / size
-        return label
-    }
-    
-    static func initWithText(_ text: String,
-                             ofFontWeight weight: UIFont.Weight,
-                             andSize size: CGFloat,
-                             scalable: Bool = false) -> UILabel {
-        let label = UILabel.initWithFontWeight(weight, andSize: size, scalable: scalable)
-        label.text = text
-        return label
-    }
 }

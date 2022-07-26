@@ -5,7 +5,7 @@ target "Mangadex" do
   
   use_frameworks!
   
-  pod 'MaterialComponents'
+  pod 'MaterialComponents/Cards'
   pod 'SnapKit', '~> 5.0.1'
   pod 'Just'
   pod 'SwiftyJSON', '~> 5.0.1'
@@ -16,14 +16,14 @@ target "Mangadex" do
   pod 'YYModel'
   pod 'Localize-Swift', '~> 3.2'
   pod 'Loaf'
-  pod 'SkeletonView'
   pod 'Pageboy', '~> 3.6.2'
   pod 'SwiftEventBus', :tag => '5.1.0', :git => 'https://github.com/cesarferreira/SwiftEventBus.git'
   pod 'SwiftTheme'
-  pod 'Eureka'
   pod 'SwiftEntryKit', '2.0.0'
   pod 'FlagKit'
   pod "PromiseKit", "~> 6.17.1"
+  pod 'Down'
+  pod 'MJRefresh', :git => 'https://github.com/Sokiraon/MJRefresh.git'
   
 end
 

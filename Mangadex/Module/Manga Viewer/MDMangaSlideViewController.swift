@@ -12,6 +12,7 @@ import Kingfisher
 import SnapKit
 import Darwin
 import PromiseKit
+import MJRefresh
 
 class MDMangaSlideViewController: MDViewController {
     // MARK: - properties

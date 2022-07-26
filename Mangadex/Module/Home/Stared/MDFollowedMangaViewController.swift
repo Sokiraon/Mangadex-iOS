@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import ProgressHUD
 import PromiseKit
+import MJRefresh
 
 class MDFollowedMangaViewController: MDMangaListViewController {
     

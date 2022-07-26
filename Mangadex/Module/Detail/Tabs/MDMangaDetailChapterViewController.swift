@@ -10,6 +10,7 @@ import UIKit
 import SwiftEventBus
 import XLPagerTabStrip
 import PromiseKit
+import MJRefresh
 
 class MDMangaDetailChapterViewController: MDViewController {
     // MARK: - properties
@@ -20,20 +21,31 @@ class MDMangaDetailChapterViewController: MDViewController {
     private var lastViewedChapterId: String?
     private var lastViewedChapterIndex: IndexPath?
     
-    private lazy var vChapters: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+    private lazy var vChaptersLayout = UICollectionViewFlowLayout().apply { layout in
         // four chapter cells per row
-        layout.itemSize = CGSize(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
-        
-        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        layout.itemSize = .init(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
+    }
+    
+    private lazy var vChapters = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: vChaptersLayout
+    ).apply { view in
         view.backgroundColor = .white
         view.delegate = self
         view.dataSource = self
-        view.contentInset = .cssStyle(-20, 15, 10)
+        view.contentInsetAdjustmentBehavior = .never
+        view.contentInset = .cssStyle(-20, 15, MDLayout.adjustedSafeInsetBottom)
         view.showsVerticalScrollIndicator = false
         view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
-        return view
-    }()
+    }
+    
+    private lazy var refreshHeader = MJRefreshNormalHeader {
+        self.reloadChapters()
+    }
+    
+    private lazy var refreshFooter = MJRefreshBackNormalFooter {
+        self.loadMoreChapters()
+    }
     
     private lazy var vProgress: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView(style: .large)
@@ -53,6 +65,14 @@ class MDMangaDetailChapterViewController: MDViewController {
         vChapters.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        vChapters.mj_header = refreshHeader
+        vChapters.mj_header?.isHidden = true
+        vChapters.mj_header?.ignoredScrollViewContentInsetTop = -20
+        
+        vChapters.mj_footer = refreshFooter
+        vChapters.mj_footer?.isHidden = true
+        vChapters.mj_footer?.ignoredScrollViewContentInsetBottom = MDLayout.adjustedSafeInsetBottom
         
         view.insertSubview(vProgress, aboveSubview: vChapters)
         vProgress.snp.makeConstraints { make in
@@ -76,6 +96,12 @@ class MDMangaDetailChapterViewController: MDViewController {
             DispatchQueue.main.async {
                 self.chapterModels = result.data
                 self.totalChapters = result.total
+                
+                self.vChapters.mj_header?.isHidden = false
+                if self.chapterModels.count < self.totalChapters {
+                    self.vChapters.mj_footer?.isHidden = false
+                }
+                
                 self.vChapters.reloadData()
                 self.vProgress.stopAnimating()
                 
@@ -107,6 +133,67 @@ class MDMangaDetailChapterViewController: MDViewController {
             }
         )
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func reloadChapters() {
+        self.vChapters.mj_footer?.isHidden = true
+        firstly {
+            MDRequests.Chapter.getListForManga(
+                mangaId: mangaItem.id,
+                offset: 0,
+                locale: MDLocale.currentMangaLanguage,
+                order: .ASC
+            )
+        }.done { result in
+            DispatchQueue.main.async {
+                self.chapterModels = result.data
+                self.totalChapters = result.total
+                
+                if self.chapterModels.count < self.totalChapters {
+                    self.vChapters.mj_footer?.isHidden = false
+                }
+                
+                self.vChapters.reloadData()
+                self.vChapters.mj_header?.endRefreshing()
+                
+                SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                    if (self.lastViewedChapterIndex == nil) {
+                        self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
+                    }
+                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+                }
+            }
+        }
+    }
+    
+    private func loadMoreChapters() {
+        firstly {
+            MDRequests.Chapter.getListForManga(
+                mangaId: mangaItem.id,
+                offset: chapterModels.count,
+                locale: MDLocale.currentMangaLanguage,
+                order: .ASC
+            )
+        }.done { result in
+            DispatchQueue.main.async {
+                self.chapterModels.append(contentsOf: result.data)
+                self.totalChapters = result.total
+                
+                self.vChapters.reloadData()
+                self.vChapters.mj_footer?.endRefreshing()
+                
+                if self.chapterModels.count == self.totalChapters {
+                    self.vChapters.mj_footer?.isHidden = true
+                }
+                
+                SwiftEventBus.onMainThread(self, name: "openChapter") { result in
+                    if (self.lastViewedChapterIndex == nil) {
+                        self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
+                    }
+                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+                }
+            }
+        }
     }
 }
 

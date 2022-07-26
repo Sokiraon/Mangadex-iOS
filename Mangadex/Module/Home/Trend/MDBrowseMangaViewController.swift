@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 import ProgressHUD
-import SkeletonView
 import PromiseKit
+import MJRefresh
 
 class MDBrowseMangaViewController: MDMangaListViewController {
     

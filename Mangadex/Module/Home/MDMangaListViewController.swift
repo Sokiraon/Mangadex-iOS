@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import ProgressHUD
+import MJRefresh
 
 fileprivate let cellMargin = 10.0
 

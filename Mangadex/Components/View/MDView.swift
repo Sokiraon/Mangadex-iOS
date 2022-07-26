@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /**
  Custom View that subclasses UIView and has a setupUI() method.
