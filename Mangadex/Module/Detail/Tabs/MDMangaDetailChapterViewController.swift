@@ -109,16 +109,16 @@ class MDMangaDetailChapterViewController: MDViewController {
                     if (self.lastViewedChapterIndex == nil) {
                         self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
                     }
-                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
+                    self.viewManga(indexPath: self.lastViewedChapterIndex!)
                 }
             }
         }
     }
     
-    private func openSliderForIndexPath(_ path: IndexPath) {
+    private func viewManga(indexPath: IndexPath) {
         let vc = MDMangaSlideViewController(
-            chapterInfo: chapterModels[path.row],
-            currentIndex: path.row,
+            chapterInfo: chapterModels[indexPath.row],
+            currentIndex: indexPath.row,
             requirePrevAction: { index in
                 return index > 0 ? self.chapterModels[index - 1] : nil
             },
@@ -129,6 +129,7 @@ class MDMangaDetailChapterViewController: MDViewController {
                 MDMangaProgressManager.saveProgress(forMangaId: self.mangaItem.id, chapterId: chapterId)
             },
             leavePageAction: {
+                self.lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: self.mangaItem.id)
                 self.vChapters.reloadData()
             }
         )
@@ -155,13 +156,6 @@ class MDMangaDetailChapterViewController: MDViewController {
                 
                 self.vChapters.reloadData()
                 self.vChapters.mj_header?.endRefreshing()
-                
-                SwiftEventBus.onMainThread(self, name: "openChapter") { result in
-                    if (self.lastViewedChapterIndex == nil) {
-                        self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
-                    }
-                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
-                }
             }
         }
     }
@@ -184,13 +178,6 @@ class MDMangaDetailChapterViewController: MDViewController {
                 
                 if self.chapterModels.count == self.totalChapters {
                     self.vChapters.mj_footer?.isHidden = true
-                }
-                
-                SwiftEventBus.onMainThread(self, name: "openChapter") { result in
-                    if (self.lastViewedChapterIndex == nil) {
-                        self.lastViewedChapterIndex = IndexPath(row: 0, section: 0)
-                    }
-                    self.openSliderForIndexPath(self.lastViewedChapterIndex!)
                 }
             }
         }
@@ -234,7 +221,7 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        openSliderForIndexPath(indexPath)
+        viewManga(indexPath: indexPath)
     }
     
     func collectionView(

@@ -30,24 +30,26 @@ class MDLocale {
     }
     
     static func mangadexLocale() -> String {
-        if (Locale.current.languageCode == "zh") {
-            if (Locale.current.regionCode == "CN") {
+        // The language that the user set, but not necessarily provided by the App
+        let preferredLanguage = NSLocale.preferredLanguages[0]
+        if (preferredLanguage.hasPrefix("zh")) {
+            if (preferredLanguage.hasPrefix("zh-Hans")) {
                 return "zh"
             } else {
+                // return zh-hk for both zh-Hant and zh-HK
                 return "zh-hk"
             }
         } else {
+            // The languageCode is the same as the language that the user set,
+            // only when that language is provided by the App
             return Locale.current.languageCode ?? "en"
         }
     }
     
     static func propertySafeLocale() -> String {
         let locale = mangadexLocale()
-        if (locale.count > 2) {
-            let parts = locale.split(separator: "-") as? [String]
-            if ((parts?.count)! >= 2) {
-                return parts![0] + parts![1].capitalized
-            }
+        if (locale == "zh-hk") {
+            return "zhHk"
         }
         return locale
     }

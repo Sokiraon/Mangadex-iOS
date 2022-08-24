@@ -24,6 +24,9 @@ target "Mangadex" do
   pod "PromiseKit", "~> 6.17.1"
   pod 'Down'
   pod 'MJRefresh', :git => 'https://github.com/Sokiraon/MJRefresh.git'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseCrashlytics'
+  pod 'FirebasePerformance'
   
 end
 
