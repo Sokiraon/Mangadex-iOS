@@ -252,17 +252,28 @@ class MDMangaSlideViewController: MDViewController {
     
     @objc private func handleSingleTap(_ recognizer: MDShortTapGestureRecognizer) {
         let touchPointX = recognizer.location(in: view).x
-        let screenWidth = MDLayout.screenWidth
-        let leftEdge = screenWidth / 2 - MDLayout.vw(15)
-        let rightEdge = screenWidth / 2 + MDLayout.vw(15)
+        let leftEdge = MDLayout.vw(35)
+        let rightEdge = MDLayout.vw(65)
         
-        let contentOffset = vPages.contentOffset
-        if (touchPointX < leftEdge && contentOffset.x >= screenWidth) {
+        let currentCell = vPages.visibleCells[0]
+        guard let currentIndexPath = vPages.indexPath(for: currentCell) else {
+            return
+        }
+        
+        if (touchPointX < leftEdge && currentIndexPath.item > 0) {
             hideControlArea()
-            vPages.contentOffset = CGPoint(x: contentOffset.x - screenWidth, y: contentOffset.y)
-        } else if (touchPointX > rightEdge && contentOffset.x < vPages.contentSize.width - screenWidth) {
+            vPages.scrollToItem(
+                at: .init(item: currentIndexPath.item - 1, section: currentIndexPath.section),
+                at: .centeredHorizontally,
+                animated: true
+            )
+        } else if (touchPointX > rightEdge && currentIndexPath.item < pages.count - 1) {
             hideControlArea()
-            vPages.contentOffset = CGPoint(x: contentOffset.x + screenWidth, y: contentOffset.y)
+            vPages.scrollToItem(
+                at: .init(item: currentIndexPath.item + 1, section: currentIndexPath.section),
+                at: .centeredHorizontally,
+                animated: true
+            )
         } else if (touchPointX >= leftEdge && touchPointX <= rightEdge) {
             showHideControlArea()
         }
@@ -334,7 +345,8 @@ extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionView
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if (otherGestureRecognizer is UIPanGestureRecognizer ||
+        if (otherGestureRecognizer is UIPinchGestureRecognizer ||
+            otherGestureRecognizer is UIPanGestureRecognizer ||
             otherGestureRecognizer is MDShortTapGestureRecognizer) {
             return true
         } else {
