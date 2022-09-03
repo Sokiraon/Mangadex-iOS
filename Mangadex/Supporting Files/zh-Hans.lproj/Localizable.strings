@@ -32,10 +32,8 @@
 "kSavedAccountsDismiss" = "跳过";
 "kLoginRequired" = "您还没有登录，请先登录后再继续操作";
 
-"kAuthor" = "原作：";
-"kAuthorUnknown" = "原作：佚名";
-"kArtist" = "原画：";
-"kArtistUnknown" = "原画：佚名";
+"kAuthorUnknown" = "佚名";
+
 "kDescription" = "简介";
 "kTags" = "标签";
 "kMangaLastUpdate" = "%@ 更新";

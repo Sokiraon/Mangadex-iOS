@@ -10,17 +10,23 @@ import PromiseKit
 
 extension MDRequests {
     enum User {
-        /// Get logged User followed Manga feed (Chapter list), requires authorization.
+        /// Get logged User followed Manga list, requires authorization.
         ///
         /// API defination available at:
-        /// [Mangadex API](https://api.mangadex.org/docs/docs/user/#get-logged-user-followed-manga-feed-chapter-list)
+        /// [Mangadex API](https://api.mangadex.org/docs/docs/user/#get-logged-user-followed-manga-list)
         /// 
         /// - Parameter params: Query parameters, **Dict**
         /// - Returns: Promise fulfilled by Array of MangaItem
         static func getFollowedMangas(params: [String: Any]) -> Promise<Array<MangaItem>> {
+            let defaultParams: [String: Any] = [
+                "includes[]": ["author", "artist", "cover_art"]
+            ]
+            let newParams = defaultParams.merging(params) { _, new in
+                new
+            }
             return Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/user/follows/manga", host: .main, params: params, auth: true)
+                    MDRequests.get(path: "/user/follows/manga", host: .main, params: newParams, auth: true)
                 }.done { json in
                     guard let data = json["data"] as? Array<[String: Any]> else {
                         seal.reject(MDRequests.ErrorResponse())

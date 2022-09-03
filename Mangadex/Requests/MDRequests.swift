@@ -40,7 +40,7 @@ enum MDRequests {
     
     static func get(
         path: String,
-        host: HostUrl,
+        host: HostUrl = .main,
         params: [String: Any] = [:],
         auth: Bool = false
     ) -> Promise<[String: Any]> {

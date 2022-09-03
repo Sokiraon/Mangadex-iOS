@@ -8,13 +8,15 @@
 import Foundation
 import UIKit
 import PromiseKit
+import SnapKit
+import Kingfisher
 
 class MDMangaListCellTagItem: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
     
-    let contentLabel = UILabel(fontSize: 15, color: .white)
+    let contentLabel = UILabel(fontSize: 14, color: .white)
     
     init() {
         super.init(frame: .zero)
@@ -24,7 +26,34 @@ class MDMangaListCellTagItem: UIView {
         
         addSubview(contentLabel)
         contentLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(5)
+            make.top.bottom.equalToSuperview().inset(4)
+            make.leading.trailing.equalToSuperview().inset(6)
+        }
+    }
+}
+
+class MDMangaListCellInfoItem: UIView {
+    private let ivIcon = UIImageView()
+    let lblInfo = UILabel(fontSize: 15, color: .black2D2E2F)
+    
+    convenience init(icon: UIImage?, defaultText: String = "N/A") {
+        self.init()
+        ivIcon.image = icon
+        ivIcon.tintColor = .black2D2E2F
+        lblInfo.text = defaultText
+        
+        addSubview(ivIcon)
+        ivIcon.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.width.height.equalTo(18)
+        }
+        
+        addSubview(lblInfo)
+        lblInfo.snp.makeConstraints { make in
+            make.trailing.top.bottom.equalToSuperview()
+            make.centerY.equalTo(ivIcon)
+            make.leading.equalTo(ivIcon.snp.trailing).offset(8)
+            make.width.greaterThanOrEqualTo(40)
         }
     }
 }
@@ -35,12 +64,15 @@ class MDMangaListCollectionCell: UICollectionViewCell {
     private let titleLabel = UILabel(
         fontSize: 18,
         fontWeight: .medium,
-        color: .black2D2E2F,
-        numberOfLines: 2,
-        scalable: true
+        color: .black2D2E2F
     )
-//    private let statusTag = MDMangaListCellTagItem()
-    private let updateTag = MDMangaListCellTagItem()
+    private let infoAuthor = MDMangaListCellInfoItem(
+        icon: .init(named: "icon_draw"),
+        defaultText: "kAuthorUnknown".localized()
+    )
+    private let infoRate = MDMangaListCellInfoItem(icon: .init(named: "icon_grade"))
+    private let infoFollow = MDMangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
+    private let statusTag = MDMangaListCellTagItem()
     
     required init?(coder: NSCoder) {
         fatalError()
@@ -77,38 +109,81 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             make.right.equalToSuperview().inset(10)
         }
         
-//        contentView.addSubview(statusTag)
-//        statusTag.snp.makeConstraints { make in
-//            make.left.equalTo(titleLabel)
-//            make.bottom.equalToSuperview().inset(8)
-//        }
-        
-        contentView.addSubview(updateTag)
-        updateTag.snp.makeConstraints { make in
+        contentView.addSubview(statusTag)
+        statusTag.snp.makeConstraints { make in
             make.right.equalToSuperview().inset(10)
             make.bottom.equalToSuperview().inset(8)
+        }
+        
+        contentView.addSubview(infoRate)
+        infoRate.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel)
+            make.centerY.equalTo(statusTag)
+        }
+        
+        contentView.addSubview(infoFollow)
+        infoFollow.snp.makeConstraints { make in
+            make.leading.equalTo(infoRate.snp.trailing).offset(16)
+            make.centerY.equalTo(statusTag)
+        }
+        
+        contentView.addSubview(infoAuthor)
+        infoAuthor.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel)
+            make.bottom.equalTo(infoRate.snp.top).offset(-8)
         }
     }
     
     func setContent(mangaItem item: MangaItem) {
         titleLabel.text = item.title
-//        if (item.status == "ongoing") {
-//            statusTag.contentLabel.text = "kMangaOngoing".localized()
-//        } else {
-//            statusTag.contentLabel.text = "kMangaCompleted".localized()
-//        }
-        updateTag.contentLabel.text = "kMangaLastUpdate".localizedPlural(
-            MDFormatter.formattedDateString(fromISODateString: item.updatedAt)
-        )
-        
-        firstly {
-            MDRequests.Manga.getCoverUrl(coverId: item.coverId, mangaId: item.id)
-        }.done { url in
-            DispatchQueue.main.async {
-                self.ivCover.kf
-                    .setImage(with: url, placeholder: UIImage(named: "manga_cover_default"))
-            }
+        if (item.status == "ongoing") {
+            statusTag.contentLabel.text = "kMangaOngoing".localized()
+        } else {
+            statusTag.contentLabel.text = "kMangaCompleted".localized()
         }
+        if item.coverArts.count > 0 {
+            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(item.id)/\(item.coverArts[0].fileName!).256.jpg"
+            ivCover.kf.setImage(
+                with: URL(string: urlStr),
+                placeholder: UIImage(named: "manga_cover_default")
+            )
+        }
+        if item.authors.count > 0, let authorName = item.authors[0].attributes?.name {
+            infoAuthor.lblInfo.text = authorName
+        }
+        firstly {
+            MDRequests.Manga.getStatistics(mangaId: item.id)
+        }
+            .done { statistics in
+                DispatchQueue.main.async {
+                    if statistics.follows != nil {
+                        let num = statistics.follows!.intValue
+                        if num > 1000000 {
+                            self.infoFollow.lblInfo.text = "\(num / 1000000)M"
+                        } else if num > 1000 {
+                            self.infoFollow.lblInfo.text = "\(num / 1000)K"
+                        } else {
+                            self.infoFollow.lblInfo.text = "\(num)"
+                        }
+                    }
+                    if statistics.rating != nil {
+                        let nf = NumberFormatter().apply { formatter in
+                            formatter.numberStyle = .decimal
+                            formatter.minimumFractionDigits = 2
+                            formatter.maximumFractionDigits = 2
+                        }
+                        if statistics.rating?.bayesian != nil {
+                            self.infoRate.lblInfo.text = nf.string(
+                                from: statistics.rating!.bayesian!
+                            )
+                        } else if statistics.rating?.average != nil {
+                            self.infoRate.lblInfo.text = nf.string(
+                                from: statistics.rating!.average!
+                            )
+                        }
+                    }
+                }
+            }
     }
     
     func getTitle() -> String {

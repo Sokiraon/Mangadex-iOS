@@ -21,23 +21,7 @@ class MDMangaDetailChapterViewController: MDViewController {
     private var lastViewedChapterId: String?
     private var lastViewedChapterIndex: IndexPath?
     
-    private lazy var vChaptersLayout = UICollectionViewFlowLayout().apply { layout in
-        // four chapter cells per row
-        layout.itemSize = .init(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
-    }
-    
-    private lazy var vChapters = UICollectionView(
-        frame: .zero,
-        collectionViewLayout: vChaptersLayout
-    ).apply { view in
-        view.backgroundColor = .white
-        view.delegate = self
-        view.dataSource = self
-        view.contentInsetAdjustmentBehavior = .never
-        view.contentInset = .cssStyle(-20, 15, MDLayout.adjustedSafeInsetBottom)
-        view.showsVerticalScrollIndicator = false
-        view.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
-    }
+    private var cvChapters: UICollectionView!
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         self.reloadChapters()
@@ -58,23 +42,36 @@ class MDMangaDetailChapterViewController: MDViewController {
     convenience init(mangaItem item: MangaItem) {
         self.init()
         mangaItem = item
+    
+        let layout = UICollectionViewFlowLayout()
+        // four chapter cells per row
+        layout.itemSize = .init(width: (MDLayout.screenWidth - 2 * 15 - 3 * 10) / 4, height: 45)
+        
+        cvChapters = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cvChapters.backgroundColor = .white
+        cvChapters.delegate = self
+        cvChapters.dataSource = self
+        cvChapters.contentInsetAdjustmentBehavior = .never
+        cvChapters.contentInset = .cssStyle(-20, 15, MDLayout.adjustedSafeInsetBottom)
+        cvChapters.showsVerticalScrollIndicator = false
+        cvChapters.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
     }
     
     override func setupUI() {
-        view.addSubview(vChapters)
-        vChapters.snp.makeConstraints { make in
+        view.addSubview(cvChapters)
+        cvChapters.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        vChapters.mj_header = refreshHeader
-        vChapters.mj_header?.isHidden = true
-        vChapters.mj_header?.ignoredScrollViewContentInsetTop = -20
+        cvChapters.mj_header = refreshHeader
+        cvChapters.mj_header?.isHidden = true
+        cvChapters.mj_header?.ignoredScrollViewContentInsetTop = -20
         
-        vChapters.mj_footer = refreshFooter
-        vChapters.mj_footer?.isHidden = true
-        vChapters.mj_footer?.ignoredScrollViewContentInsetBottom = MDLayout.adjustedSafeInsetBottom
+        cvChapters.mj_footer = refreshFooter
+        cvChapters.mj_footer?.isHidden = true
+        cvChapters.mj_footer?.ignoredScrollViewContentInsetBottom = MDLayout.adjustedSafeInsetBottom
         
-        view.insertSubview(vProgress, aboveSubview: vChapters)
+        view.insertSubview(vProgress, aboveSubview: cvChapters)
         vProgress.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
             make.bottom.equalToSuperview().inset(48)
@@ -97,12 +94,12 @@ class MDMangaDetailChapterViewController: MDViewController {
                 self.chapterModels = result.data
                 self.totalChapters = result.total
                 
-                self.vChapters.mj_header?.isHidden = false
+                self.cvChapters.mj_header?.isHidden = false
                 if self.chapterModels.count < self.totalChapters {
-                    self.vChapters.mj_footer?.isHidden = false
+                    self.cvChapters.mj_footer?.isHidden = false
                 }
                 
-                self.vChapters.reloadData()
+                self.cvChapters.reloadData()
                 self.vProgress.stopAnimating()
                 
                 SwiftEventBus.onMainThread(self, name: "openChapter") { result in
@@ -120,24 +117,24 @@ class MDMangaDetailChapterViewController: MDViewController {
             chapterInfo: chapterModels[indexPath.row],
             currentIndex: indexPath.row,
             requirePrevAction: { index in
-                return index > 0 ? self.chapterModels[index - 1] : nil
+                index > 0 ? self.chapterModels[index - 1] : nil
             },
             requireNextAction: { index in
-                return index < self.chapterModels.count - 1 ? self.chapterModels[index + 1] : nil
+                index < self.chapterModels.count - 1 ? self.chapterModels[index + 1] : nil
             },
             enterPageAction: { chapterId in
                 MDMangaProgressManager.saveProgress(forMangaId: self.mangaItem.id, chapterId: chapterId)
             },
             leavePageAction: {
                 self.lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: self.mangaItem.id)
-                self.vChapters.reloadData()
+                self.cvChapters.reloadData()
             }
         )
         navigationController?.pushViewController(vc, animated: true)
     }
     
     private func reloadChapters() {
-        self.vChapters.mj_footer?.isHidden = true
+        self.cvChapters.mj_footer?.isHidden = true
         firstly {
             MDRequests.Chapter.getListForManga(
                 mangaId: mangaItem.id,
@@ -151,11 +148,11 @@ class MDMangaDetailChapterViewController: MDViewController {
                 self.totalChapters = result.total
                 
                 if self.chapterModels.count < self.totalChapters {
-                    self.vChapters.mj_footer?.isHidden = false
+                    self.cvChapters.mj_footer?.isHidden = false
                 }
                 
-                self.vChapters.reloadData()
-                self.vChapters.mj_header?.endRefreshing()
+                self.cvChapters.reloadData()
+                self.cvChapters.mj_header?.endRefreshing()
             }
         }
     }
@@ -173,11 +170,11 @@ class MDMangaDetailChapterViewController: MDViewController {
                 self.chapterModels.append(contentsOf: result.data)
                 self.totalChapters = result.total
                 
-                self.vChapters.reloadData()
-                self.vChapters.mj_footer?.endRefreshing()
+                self.cvChapters.reloadData()
+                self.cvChapters.mj_footer?.endRefreshing()
                 
                 if self.chapterModels.count == self.totalChapters {
-                    self.vChapters.mj_footer?.isHidden = true
+                    self.cvChapters.mj_footer?.isHidden = true
                 }
             }
         }

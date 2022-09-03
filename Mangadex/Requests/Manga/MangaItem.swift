@@ -10,9 +10,9 @@ import Foundation
 struct MangaItem {
     var id: String
     var title: String
-    var authorId: String
-    var artistId: String
-    var coverId: String
+    var authors = [MDMangaAuthor]()
+    var artists = [MDMangaAuthor]()
+    var coverArts = [MDMangaCoverAttributes]()
     var description: String
     
     var formatTags = [String]()
@@ -38,17 +38,19 @@ struct MangaItem {
         self.lastChapter = model.attributes.lastChapter
         self.updatedAt = model.attributes.updatedAt
         
-        self.authorId = ""; self.artistId = ""; self.coverId = ""
         for relationship in model.relationships {
             switch relationship.type {
             case "author":
-                self.authorId = relationship.id
+                self.authors.append(MDMangaAuthor(relationshipItem: relationship))
                 break
             case "artist":
-                self.artistId = relationship.id
+                self.artists.append(MDMangaAuthor(relationshipItem: relationship))
                 break
             case "cover_art":
-                self.coverId = relationship.id
+                guard let data = MDMangaCoverAttributes.yy_model(with: relationship.attributes) else {
+                    break
+                }
+                self.coverArts.append(data)
                 break
             default:
                 break

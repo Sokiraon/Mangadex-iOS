@@ -28,21 +28,19 @@ class MDMangaSlideViewController: MDViewController {
         leader.setArrowImage(UIImage(named: "icon_arrow_forward_18pt")!)
         
         leader.refreshingBlock = {
-            let dataModel = self.requirePrev(self.currentIndex)
-            if (dataModel == nil) {
+            guard let dataModel = self.requirePrev(self.currentIndex) else {
                 self.refreshLeader.endRefreshing()
-            } else {
-                let vc = MDMangaSlideViewController(
-                    chapterInfo: dataModel!,
-                    currentIndex: self.currentIndex - 1,
-                    requirePrevAction: self.requirePrev,
-                    requireNextAction: self.requireNext,
-                    enterPageAction: self.enterPageAction,
-                    leavePageAction: self.leavePageAction
-                )
-                self.refreshLeader.endRefreshing()
-                self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
+                return
             }
+            let vc = MDMangaSlideViewController(
+                chapterInfo: dataModel,
+                currentIndex: self.currentIndex - 1,
+                requirePrevAction: self.requirePrev,
+                requireNextAction: self.requireNext,
+                enterPageAction: self.enterPageAction,
+                leavePageAction: self.leavePageAction
+            )
+            self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
         }
         return leader
     }()
@@ -55,21 +53,19 @@ class MDMangaSlideViewController: MDViewController {
         trailer.setArrowImage(UIImage(named: "icon_arrow_back_18pt")!)
         
         trailer.refreshingBlock = {
-            let dataModel = self.requireNext(self.currentIndex)
-            if (dataModel == nil) {
+            guard let dataModel = self.requireNext(self.currentIndex) else {
                 self.refreshTrailer.endRefreshing()
-            } else {
-                let vc = MDMangaSlideViewController(
-                    chapterInfo: self.chapterInfo!,
-                    currentIndex: self.currentIndex + 1,
-                    requirePrevAction: self.requirePrev,
-                    requireNextAction: self.requireNext,
-                    enterPageAction: self.enterPageAction,
-                    leavePageAction: self.leavePageAction
-                )
-                self.refreshTrailer.endRefreshing()
-                self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
+                return
             }
+            let vc = MDMangaSlideViewController(
+                chapterInfo: dataModel,
+                currentIndex: self.currentIndex + 1,
+                requirePrevAction: self.requirePrev,
+                requireNextAction: self.requireNext,
+                enterPageAction: self.enterPageAction,
+                leavePageAction: self.leavePageAction
+            )
+            self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
         }
         return trailer
     }()

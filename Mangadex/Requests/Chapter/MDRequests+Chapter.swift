@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import SwiftyJSON
+import YYModel
 
 extension MDRequests {
     enum Chapter {
@@ -45,18 +46,23 @@ extension MDRequests {
                         "translatedLanguage[]": locale,
                         "order[chapter]": order.rawValue
                     ])
-                }.done { json in
-                    let total = json["total"] as! Int
-                    let results = json["data"] as! Array<[String: Any]>
-                    let models = NSArray.yy_modelArray(with: MDMangaChapterInfoModel.classForCoder(), json: results)
-                    if let data = models as? [MDMangaChapterInfoModel] {
-                        seal.fulfill(MangaChapterList(total: total, data: data))
-                    } else {
-                        seal.reject(MDRequests.DefaultError)
-                    }
-                }.catch { error in
-                    seal.reject(error)
                 }
+                    .done { json in
+                        let total = json["total"] as! Int
+                        let results = json["data"] as! Array<[String: Any]>
+                        let models = NSArray.yy_modelArray(
+                            with: MDMangaChapterInfoModel.classForCoder(),
+                            json: results
+                        )
+                        if let data = models as? [MDMangaChapterInfoModel] {
+                            seal.fulfill(MangaChapterList(total: total, data: data))
+                        } else {
+                            seal.reject(MDRequests.DefaultError)
+                        }
+                    }
+                    .catch { error in
+                        seal.reject(error)
+                    }
             }
         }
         
@@ -64,14 +70,16 @@ extension MDRequests {
             return Promise { seal in
                 firstly {
                     MDRequests.get(path: "/at-home/server/\(chapterId)", host: .main)
-                }.done { result in
-                    let json = JSON(result)
-                    if let data = MDMangaChapterPagesModel.yy_model(withJSON: json.rawValue) {
-                        seal.fulfill(data)
-                    }
-                }.catch { error in
-                    seal.reject(error)
                 }
+                    .done { result in
+                        let json = JSON(result)
+                        if let data = MDMangaChapterPagesModel.yy_model(withJSON: json.rawValue) {
+                            seal.fulfill(data)
+                        }
+                    }
+                    .catch { error in
+                        seal.reject(error)
+                    }
             }
         }
     }

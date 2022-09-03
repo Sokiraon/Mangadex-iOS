@@ -77,17 +77,12 @@ class MDMangaItemAttributes: NSObject, YYModel {
     }
 }
 
-class MDMangaItemRelationship: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-}
-
 class MDMangaItemDataModel: NSObject, YYModel {
     @objc var id: String!
     @objc var attributes: MDMangaItemAttributes!
-    @objc var relationships: [MDMangaItemRelationship]!
+    @objc var relationships: [MDMangaRelationshipItem]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["relationships": MDMangaItemRelationship.classForCoder()]
+        ["relationships": MDMangaRelationshipItem.classForCoder()]
     }
 }

@@ -9,9 +9,15 @@ import SwiftyJSON
 extension MDRequests {
     enum Manga {
         static func query(params: [String: Any] = [:]) -> Promise<[MangaItem]> {
-            Promise { seal in
+            let defaultParams: [String: Any] = [
+                "includes[]": ["author", "artist", "cover_art"]
+            ]
+            let newParams = defaultParams.merging(params) { _, new in
+                new
+            }
+            return Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/manga", host: .main, params: params)
+                    MDRequests.get(path: "/manga", host: .main, params: newParams)
                 }
                     .done { json in
                         guard let data = json["data"] as? Array<[String: Any]> else {
@@ -33,12 +39,27 @@ extension MDRequests {
             Promise { seal in
                 firstly {
                     MDRequests.get(path: "/cover/\(coverId)", host: .main)
+                }.done { json in
+                    let data = JSON(json)
+                    if let filename = data["data"]["attributes"]["fileName"].string {
+                        let coverUrl = "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(filename).256.jpg"
+                        seal.fulfill(URL(string: coverUrl)!)
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
+        static func getStatistics(mangaId: String) -> Promise<MangaStatisticsModel> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(path: "/statistics/manga/\(mangaId)", host: .main)
                 }
                     .done { json in
                         let data = JSON(json)
-                        if let filename = data["data"]["attributes"]["fileName"].string {
-                            let coverUrl = "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(filename).256.jpg"
-                            seal.fulfill(URL(string: coverUrl)!)
+                        if let model = MangaStatisticsModel.yy_model(withJSON: data["statistics"][mangaId].rawValue) {
+                            seal.fulfill(model)
                         }
                     }
                     .catch { error in
