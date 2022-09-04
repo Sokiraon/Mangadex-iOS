@@ -254,22 +254,6 @@
 			path = Module;
 			sourceTree = "<group>";
 		};
-		0008101326621236009C1005 /* Trend */ = {
-			isa = PBXGroup;
-			children = (
-				0008101126621229009C1005 /* MDBrowseMangaViewController.swift */,
-			);
-			path = Trend;
-			sourceTree = "<group>";
-		};
-		0008101526621249009C1005 /* Stared */ = {
-			isa = PBXGroup;
-			children = (
-				000810162662125B009C1005 /* MDFollowedMangaViewController.swift */,
-			);
-			path = Stared;
-			sourceTree = "<group>";
-		};
 		000810182662646B009C1005 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,8 +432,8 @@
 				00170965264FC9CB005BEE67 /* MDHomeTabViewController.swift */,
 				05179A17279280EE0019D656 /* MDMangaListViewController.swift */,
 				05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */,
-				0008101326621236009C1005 /* Trend */,
-				0008101526621249009C1005 /* Stared */,
+				0008101126621229009C1005 /* MDBrowseMangaViewController.swift */,
+				000810162662125B009C1005 /* MDFollowedMangaViewController.swift */,
 				7ABB61B92678D76700BF2860 /* Account */,
 			);
 			path = Home;

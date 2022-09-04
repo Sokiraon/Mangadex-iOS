@@ -9,44 +9,44 @@ import Foundation
 import UIKit
 
 class MDViewController: UIViewController {
-    var viewTitle: String = ""
-    var appBar: MDAppBar?
+    internal var viewTitle: String = ""
+    internal var appBar: MDAppBar?
 
     ///
     /// Called at viewDidLoad, before setupUI().
     ///
     /// Should be used for preparing data that is needed by UI components.
     /// However, do notice that this will only be called once in the lifecycle (compared to initOnAppear).
-    func willSetupUI() {}
+    internal func willSetupUI() {}
 
     ///
     /// Called at viewDidLoad, after willSetupUI().
     ///
     /// Should be used for adding subviews and configuring their layout.
-    func setupUI() {}
+    internal func setupUI() {}
 
     ///
     /// Called at viewDidLoad, after setupUI().
-    func didSetupUI() {}
+    internal func didSetupUI() {}
 
     ///
     /// Called at viewWillAppear.
     ///
     /// Should be used for initializing data or organizing views for animation.
     /// Do notice that this will be called every time the view comes into foreground, so you may want to avoid complex actions.
-    func doOnAppear() {}
+    internal func doOnAppear() {}
     
     ///
     /// Called when vc is aboout to leave the page (i.e. user taps back button).
     ///
     /// You may use this func to save progress.
-    func willLeavePage() {}
+    internal func willLeavePage() {}
     
     ///
     /// Used for setting up top navigation bar.
     /// - Parameters:
     ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
-    func setupNavBar(backgroundColor: UIColor? = nil) {
+    internal func setupNavBar(backgroundColor: UIColor? = nil) {
         appBar = MDAppBar(title: viewTitle, backgroundColor: backgroundColor)
         appBar?.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         

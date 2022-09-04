@@ -15,7 +15,9 @@ class MDBrowseMangaViewController: MDMangaListViewController {
     
     override func onHeaderRefresh() {
         firstly {
-            MDRequests.Manga.query()
+            MDRequests.Manga.query(params: [
+                "title": filterOptions.searchText
+            ])
         }
             .done { items in
                 self.mangaList = items
@@ -36,6 +38,7 @@ class MDBrowseMangaViewController: MDMangaListViewController {
     override func onFooterRefresh() {
         firstly {
             MDRequests.Manga.query(params: [
+                "title": filterOptions.searchText,
                 "offset": self.mangaList.count,
                 "limit": 5
             ])
@@ -53,5 +56,22 @@ class MDBrowseMangaViewController: MDMangaListViewController {
                 }
                 self.vCollection.mj_footer?.endRefreshing()
             }
+    }
+    
+    override func filterOptionsDidChange() {
+        firstly {
+            MDRequests.Manga.query(params: [
+                "title": filterOptions.searchText
+            ])
+        }.done { items in
+            self.mangaList = items
+            DispatchQueue.main.async {
+                self.vCollection.reloadData()
+            }
+        }.catch { error in
+            DispatchQueue.main.async {
+                ProgressHUD.showError()
+            }
+        }
     }
 }

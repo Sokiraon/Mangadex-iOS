@@ -15,7 +15,9 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func onHeaderRefresh() {
         firstly {
-            MDRequests.User.getFollowedMangas(params: [:])
+            MDRequests.User.getFollowedMangas(params: [
+                "title": filterOptions.searchText
+            ])
         }.done { data in
             self.mangaList = data
             DispatchQueue.main.async {
@@ -33,8 +35,11 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func onFooterRefresh() {
         firstly {
-            MDRequests.User.getFollowedMangas(params: ["offset": self.mangaList.count,
-                                                       "limit": 5])
+            MDRequests.User.getFollowedMangas(params: [
+                "title": filterOptions.searchText,
+                "offset": self.mangaList.count,
+                "limit": 5
+            ])
         }.done { data in
             self.mangaList.append(contentsOf: data)
             DispatchQueue.main.async {
@@ -49,7 +54,25 @@ class MDFollowedMangaViewController: MDMangaListViewController {
         }
     }
     
+    override func filterOptionsDidChange() {
+        firstly {
+            MDRequests.User.getFollowedMangas(params: [
+                "title": filterOptions.searchText
+            ])
+        }.done { items in
+            self.mangaList = items
+            DispatchQueue.main.async {
+                self.vCollection.reloadData()
+            }
+        }.catch { error in
+            DispatchQueue.main.async {
+                ProgressHUD.showError()
+            }
+        }
+    }
+    
     private func alertForLogin() {
+        vSearch.isUserInteractionEnabled = false
         let alert = UIAlertController.initWithTitle(
             "kWarning".localized(),
             message: "kLoginRequired".localized(), style: .alert,

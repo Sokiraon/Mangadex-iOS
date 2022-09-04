@@ -18,12 +18,18 @@ class MDHomeTabViewController: TabmanViewController {
         MDAccountViewController()
     ]
     private lazy var tabBarItems = [
-        TMBarItem(title: "kHomeTabBrowse".localized(),
-                  image: UIImage(named: "icon_home")!),
-        TMBarItem(title: "kHomeTabFollowed".localized(),
-                  image: UIImage(named: "icon_bookmark")!),
-        TMBarItem(title: "kHomeTabAccount".localized(),
-                  image: UIImage(named: "icon_person")!)
+        TMBarItem(
+            title: "kHomeTabBrowse".localized(),
+            image: .init(systemName: "books.vertical.fill")!
+        ),
+        TMBarItem(
+            title: "kHomeTabFollowed".localized(),
+            image: .init(systemName: "bookmark.fill")!
+        ),
+        TMBarItem(
+            title: "kHomeTabAccount".localized(),
+            image: .init(systemName: "person.fill")!
+        ),
     ]
     
     private let bar = TMBar.TabBar()
