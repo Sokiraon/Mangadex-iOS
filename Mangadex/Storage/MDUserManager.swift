@@ -51,10 +51,6 @@ class MDUserManager {
         }
     }
     
-    func isLoggedIn() -> Bool {
-        !(_session.isEmpty || _refresh.isEmpty || _username.isEmpty)
-    }
-    
     func login(username: String, password: String) -> Promise<Bool> {
         Promise { seal in
             firstly {
@@ -68,6 +64,23 @@ class MDUserManager {
                 seal.reject(error)
             }
         }
+    }
+    
+    var userIsLoggedIn: Bool {
+        !(_session.isEmpty || _refresh.isEmpty || _username.isEmpty)
+    }
+    
+    func loginAsGuest() {
+        MDUserDefaultsManager.storeBool(true, forKey: .kUserIsGuest)
+    }
+    
+    var userIsGuest: Bool {
+        MDUserDefaultsManager.retrieveBool(forKey: .kUserIsGuest)
+    }
+    
+    /// Determine whether the user should see login (or pre-login) page at launch
+    var shouldDisplayLoginAtLaunch: Bool {
+        !(userIsLoggedIn || userIsGuest)
     }
     
     func getValidatedToken() -> Promise<String> {
@@ -93,10 +106,13 @@ class MDUserManager {
         }
     }
     
-    static func logOut(completion: () -> Void) {
+    static func logOutAsUser() {
         instance.session = ""
         instance.refresh = ""
         instance.username = ""
-        completion()
+    }
+    
+    static func logOutAsGuest() {
+        MDUserDefaultsManager.storeBool(false, forKey: .kUserIsGuest)
     }
 }

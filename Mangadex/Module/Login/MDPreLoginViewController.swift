@@ -79,13 +79,7 @@ class MDPreLoginViewController: MDViewController {
     }()
     
     override func willSetupUI() {
-        let credentials = MDKeychain.read()
-        if credentials.isEmpty {
-            let vc = MDLoginViewController()
-            navigationController?.pushViewController(vc, animated: true)
-        } else {
-            self.credentials = credentials
-        }
+        credentials = MDKeychain.read()
     }
     
     override func setupUI() {

@@ -301,19 +301,11 @@
 		00363097266F67590058BE25 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				0036309C266F82D50058BE25 /* AppBar */,
+				0036309A266F74AF0058BE25 /* MDAppBar.swift */,
 				00363098266F676A0058BE25 /* MDNavigationController.swift */,
 				7A9A5FF726C8CF7700196953 /* MDRouter.swift */,
 			);
 			path = Navigation;
-			sourceTree = "<group>";
-		};
-		0036309C266F82D50058BE25 /* AppBar */ = {
-			isa = PBXGroup;
-			children = (
-				0036309A266F74AF0058BE25 /* MDAppBar.swift */,
-			);
-			path = AppBar;
 			sourceTree = "<group>";
 		};
 		004F717D264BF8EB00D61AEB = {
@@ -413,6 +405,7 @@
 				7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */,
 				B8E39737278EAF1100B42760 /* MDSettingsManager.swift */,
 				00170963264FA3E6005BEE67 /* MDUserManager.swift */,
+				390E756BDFB0EA839C22FD01 /* MDKeychain.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -528,7 +521,6 @@
 			isa = PBXGroup;
 			children = (
 				004F718D264BF8EB00D61AEB /* MDLoginViewController.swift */,
-				390E756BDFB0EA839C22FD01 /* MDKeychain.swift */,
 				390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */,
 			);
 			path = Login;

@@ -111,6 +111,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
             MDUserManager.getInstance().login(username: username, password: password)
         }
             .done { res in
+                MDUserManager.logOutAsGuest()
                 DispatchQueue.main.async {
                     let vc = MDHomeTabViewController()
                     ProgressHUD.dismiss()
@@ -162,6 +163,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     }
     
     @objc func didTapGuest() {
+        MDUserManager.getInstance().loginAsGuest()
         let vc = MDHomeTabViewController()
         navigationController?.pushViewController(vc, animated: true)
     }

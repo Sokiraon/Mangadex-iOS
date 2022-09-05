@@ -20,25 +20,33 @@ class MDRouter {
         .first?.windows
         .filter({ $0.isKeyWindow }).first
     
-    static func topViewController() -> UIViewController {
-        if var topVC = keyWindow?.rootViewController {
-            while let presentedVC = topVC.presentedViewController {
-                topVC = presentedVC
-            }
-            return topVC
-        }
-        fatalError("Cannot find a rootViewController")
+    static var navigationController: MDNavigationController? {
+        keyWindow?.rootViewController as? MDNavigationController
+    }
+    
+    static var topViewController: UIViewController? {
+        navigationController?.topViewController
     }
     
     static func showVC(_ vc: UIViewController, withType type: MDShowVCActionType) {
         switch type {
         case .present:
-            topViewController().present(vc, animated: true, completion: nil)
+            topViewController?.present(vc, animated: true, completion: nil)
             break
             
         default:
-            topViewController().navigationController?.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
             break
         }
+    }
+    
+    static func goToLogin() {
+        let vc: UIViewController
+        if MDKeychain.read().isEmpty {
+            vc = MDLoginViewController()
+        } else {
+            vc = MDPreLoginViewController()
+        }
+        navigationController?.setViewControllers([vc], animated: true)
     }
 }

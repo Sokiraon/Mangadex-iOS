@@ -17,7 +17,7 @@ extension MDRequests {
         /// 
         /// - Parameter params: Query parameters, **Dict**
         /// - Returns: Promise fulfilled by Array of MangaItem
-        static func getFollowedMangas(params: [String: Any]) -> Promise<Array<MangaItem>> {
+        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<Array<MangaItem>> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"]
             ]

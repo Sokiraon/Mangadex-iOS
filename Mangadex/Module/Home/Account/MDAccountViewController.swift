@@ -19,7 +19,7 @@ class MDAccountViewController: MDViewController {
         button.setImage(UIImage(named: "icon_logout"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
-        button.isHidden = !MDUserManager.getInstance().isLoggedIn()
+        button.isHidden = !MDUserManager.getInstance().userIsLoggedIn
         return button
     }()
     
@@ -75,7 +75,7 @@ class MDAccountViewController: MDViewController {
             make.right.equalTo(btnLogout.snp.left).offset(-20)
         }
         lblUsername.text = MDUserManager.getInstance().username
-        lblUsername.isUserInteractionEnabled = !MDUserManager.getInstance().isLoggedIn()
+        lblUsername.isUserInteractionEnabled = !MDUserManager.getInstance().userIsLoggedIn
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
         view +++ configSection
@@ -101,16 +101,13 @@ class MDAccountViewController: MDViewController {
     // MARK: - actions
     
     @objc private func didTapLogout() {
-        MDUserManager.logOut {
-            let vc = MDPreLoginViewController()
-            self.navigationController?.setViewControllers([vc], animated: true)
-        }
+        MDUserManager.logOutAsUser()
+        MDRouter.goToLogin()
     }
     
     @objc private func didTapUsername() {
-        if !MDUserManager.getInstance().isLoggedIn() {
-            let vc = MDPreLoginViewController()
-            navigationController?.pushViewController(vc, animated: true)
+        if !MDUserManager.getInstance().userIsLoggedIn {
+            MDRouter.goToLogin()
         }
     }
     

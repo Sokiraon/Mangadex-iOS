@@ -13,11 +13,22 @@ import MJRefresh
 
 class MDFollowedMangaViewController: MDMangaListViewController {
     
+    override func setupUI() {
+        allowFilter = false
+        super.setupUI()
+    }
+    
+    override func didSetupUI() {
+        super.didSetupUI()
+        if !MDUserManager.getInstance().userIsLoggedIn {
+            refreshHeader.endRefreshing()
+            alertForLogin()
+        }
+    }
+    
     override func onHeaderRefresh() {
         firstly {
-            MDRequests.User.getFollowedMangas(params: [
-                "title": filterOptions.searchText
-            ])
+            MDRequests.User.getFollowedMangas()
         }.done { data in
             self.mangaList = data
             DispatchQueue.main.async {
@@ -36,7 +47,6 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     override func onFooterRefresh() {
         firstly {
             MDRequests.User.getFollowedMangas(params: [
-                "title": filterOptions.searchText,
                 "offset": self.mangaList.count,
                 "limit": 5
             ])
@@ -54,32 +64,13 @@ class MDFollowedMangaViewController: MDMangaListViewController {
         }
     }
     
-    override func filterOptionsDidChange() {
-        firstly {
-            MDRequests.User.getFollowedMangas(params: [
-                "title": filterOptions.searchText
-            ])
-        }.done { items in
-            self.mangaList = items
-            DispatchQueue.main.async {
-                self.vCollection.reloadData()
-            }
-        }.catch { error in
-            DispatchQueue.main.async {
-                ProgressHUD.showError()
-            }
-        }
-    }
-    
     private func alertForLogin() {
-        vSearch.isUserInteractionEnabled = false
         let alert = UIAlertController.initWithTitle(
             "kWarning".localized(),
             message: "kLoginRequired".localized(), style: .alert,
             actions:
                 AlertViewAction(title: "kOk".localized(), style: .default) { action in
-                    let vc = MDPreLoginViewController()
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    MDRouter.goToLogin()
                 },
             AlertViewAction(title: "kNo".localized(), style: .default, handler: nil)
         )

@@ -18,6 +18,7 @@ class MDMangaListViewController: MDViewController {
         var searchText: String = ""
     }
     
+    internal var allowFilter = true
     internal var filterOptions = FilterOptions()
     
     internal var mangaList = [MangaItem]()
@@ -62,22 +63,30 @@ class MDMangaListViewController: MDViewController {
     }
     
     override func setupUI() {
-        view.addSubview(vTopBar)
-        vTopBar.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-        }
-        
-        vTopBar.addSubview(vSearch)
-        vSearch.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
-            make.height.equalTo(56)
-        }
-        
-        view.insertSubview(vCollection, belowSubview: vTopBar)
-        vCollection.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop + 56)
-            make.left.right.bottom.equalToSuperview()
+        if allowFilter {
+            view.addSubview(vTopBar)
+            vTopBar.snp.makeConstraints { make in
+                make.top.left.right.equalToSuperview()
+            }
+            
+            vTopBar.addSubview(vSearch)
+            vSearch.snp.makeConstraints { make in
+                make.leading.trailing.bottom.equalToSuperview()
+                make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
+                make.height.equalTo(56)
+            }
+            
+            view.insertSubview(vCollection, belowSubview: vTopBar)
+            vCollection.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(MDLayout.safeInsetTop + 56)
+                make.left.right.bottom.equalToSuperview()
+            }
+        } else {
+            view.addSubview(vCollection)
+            vCollection.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
+                make.left.right.bottom.equalToSuperview()
+            }
         }
     }
     

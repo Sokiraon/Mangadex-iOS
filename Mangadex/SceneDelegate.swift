@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         MDSettingsManager.initData()
         
         var rootVC: UIViewController
-        if MDUserManager.getInstance().isLoggedIn() {
+        if !MDUserManager.getInstance().shouldDisplayLoginAtLaunch {
             rootVC = MDHomeTabViewController()
         } else if MDKeychain.read().isEmpty {
             rootVC = MDLoginViewController()

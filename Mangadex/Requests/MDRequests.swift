@@ -17,21 +17,21 @@ enum HostUrl: String {
 
 enum MDRequests {
     enum ErrorCode: Int {
-        case Default = 400
+        case BadRequest = 400
         case UnAuthenticated = 401
     }
     
     struct ErrorResponse: Error {
-        let code: ErrorCode
+        let statusCode: ErrorCode
         let message: String
         
         init() {
-            self.code = .Default
+            self.statusCode = .BadRequest
             self.message = "Network Request Failed"
         }
         
         init(code: ErrorCode, message: String) {
-            self.code = code
+            self.statusCode = code
             self.message = message
         }
     }
