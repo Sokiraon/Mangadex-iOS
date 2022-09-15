@@ -14,15 +14,3 @@ $ pod install
 ```
 
 Then, open the `Mangadex.xcworkspace` file from Xcode, and you are ready to go!
-
-### For those who don't know how `pod install` works
-
-Basically, `pod install` checks if there exists a `Podfile` in the directory, then installs the corresponding packages declared in that file.
-
-A typical `Podfile` may look like this:
-```
-target "Mangadex" do
-    pod 'SomePackage', '~> x.x.x'
-end
-```
-which installs `SomePackage` of version `x.x.x` for build target `Mangadex`.
