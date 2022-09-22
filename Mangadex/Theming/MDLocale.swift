@@ -29,7 +29,8 @@ class MDLocale {
         availableLanguages[languages[MDSettingsManager.mangaLangIndex]]!
     }
     
-    static func mangadexLocale() -> String {
+    /// Get current locale, similar to NSLocale.current but slightly modified
+    static var current: String {
         // The language that the user set, but not necessarily provided by the App
         let preferredLanguage = NSLocale.preferredLanguages[0]
         if (preferredLanguage.hasPrefix("zh")) {
@@ -46,11 +47,19 @@ class MDLocale {
         }
     }
     
+    static var altLocale: String {
+        if current == "zh" {
+            return "zh-hk"
+        } else if current == "zh-hk" {
+            return "zh"
+        }
+        return current
+    }
+    
     static func propertySafeLocale() -> String {
-        let locale = mangadexLocale()
-        if (locale == "zh-hk") {
+        if (current == "zh-hk") {
             return "zhHk"
         }
-        return locale
+        return current
     }
 }

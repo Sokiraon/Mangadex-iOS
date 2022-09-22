@@ -72,7 +72,7 @@
 		7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF526C7743A00196953 /* CustomOperator.swift */; };
 		7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF726C8CF7700196953 /* MDRouter.swift */; };
 		7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */; };
-		7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */; };
+		7AACACAE267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAD267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift */; };
 		7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB4219326BF7907003A38BB /* NSObject+Ext.swift */; };
 		7ABB61B82678D45300BF2860 /* DispatchQueue+once.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */; };
 		7ABB61BB2678D77500BF2860 /* MDAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */; };
@@ -185,7 +185,7 @@
 		7A9A5FF526C7743A00196953 /* CustomOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperator.swift; sourceTree = "<group>"; };
 		7A9A5FF726C8CF7700196953 /* MDRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRouter.swift; sourceTree = "<group>"; };
 		7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaVolumesDataModel.swift; sourceTree = "<group>"; };
-		7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterCollectionCell.swift; sourceTree = "<group>"; };
+		7AACACAD267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailChapterCollectionCell.swift; sourceTree = "<group>"; };
 		7AB4219326BF7907003A38BB /* NSObject+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Ext.swift"; sourceTree = "<group>"; };
 		7ABB61B72678D45300BF2860 /* DispatchQueue+once.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+once.swift"; sourceTree = "<group>"; };
 		7ABB61BA2678D77500BF2860 /* MDAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountViewController.swift; sourceTree = "<group>"; };
@@ -285,7 +285,6 @@
 			children = (
 				7A53408026887873003CE4C1 /* Tabs */,
 				0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */,
-				7AACACAD267EFD6B00232166 /* MDMangaChapterCollectionCell.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -437,6 +436,7 @@
 			children = (
 				7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */,
 				7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */,
+				7AACACAD267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift */,
 				7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */,
 			);
 			path = Tabs;
@@ -805,7 +805,7 @@
 				000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */,
 				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
 				0008101226621229009C1005 /* MDBrowseMangaViewController.swift in Sources */,
-				7AACACAE267EFD6B00232166 /* MDMangaChapterCollectionCell.swift in Sources */,
+				7AACACAE267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift in Sources */,
 				7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,

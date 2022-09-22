@@ -11,27 +11,6 @@ import PromiseKit
 import SnapKit
 import Kingfisher
 
-class MDMangaListCellTagItem: UIView {
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
-    let contentLabel = UILabel(fontSize: 14, color: .white)
-    
-    init() {
-        super.init(frame: .zero)
-        
-        layer.cornerRadius = 4
-        theme_backgroundColor = UIColor.theme_primaryColor
-        
-        addSubview(contentLabel)
-        contentLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(4)
-            make.leading.trailing.equalToSuperview().inset(6)
-        }
-    }
-}
-
 class MDMangaListCellInfoItem: UIView {
     private let ivIcon = UIImageView()
     let lblInfo = UILabel(fontSize: 15, color: .black2D2E2F)
@@ -72,7 +51,13 @@ class MDMangaListCollectionCell: UICollectionViewCell {
     )
     private let infoRate = MDMangaListCellInfoItem(icon: .init(named: "icon_grade"))
     private let infoFollow = MDMangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
-    private let statusTag = MDMangaListCellTagItem()
+    
+    private let statusView = UIView(backgroundColor: .fromHex("219653"))
+    private let statusLabel = UILabel(
+        fontSize: 15, fontWeight: .medium, color: .black2D2E2F
+    ).apply { label in
+        label.text = "kMangaOngoing".localized()
+    }
     
     required init?(coder: NSCoder) {
         fatalError()
@@ -96,6 +81,7 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         contentView.theme_backgroundColor = UIColor.theme_lightestColor
         
         contentView.addSubview(ivCover)
+        ivCover.contentMode = .scaleAspectFill
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
             make.height.equalTo(MDMangaListCollectionCell.cellHeight)
@@ -106,25 +92,19 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         titleLabel.snp.makeConstraints { make in
             make.left.equalTo(ivCover.snp.right).offset(15)
             make.top.equalToSuperview().inset(10)
-            make.right.equalToSuperview().inset(10)
-        }
-        
-        contentView.addSubview(statusTag)
-        statusTag.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(10)
-            make.bottom.equalToSuperview().inset(8)
+            make.right.equalToSuperview().inset(15)
         }
         
         contentView.addSubview(infoRate)
         infoRate.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
-            make.centerY.equalTo(statusTag)
+            make.bottom.equalToSuperview().inset(10)
         }
         
         contentView.addSubview(infoFollow)
         infoFollow.snp.makeConstraints { make in
             make.leading.equalTo(infoRate.snp.trailing).offset(16)
-            make.centerY.equalTo(statusTag)
+            make.centerY.equalTo(infoRate)
         }
         
         contentView.addSubview(infoAuthor)
@@ -132,14 +112,27 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             make.leading.equalTo(titleLabel)
             make.bottom.equalTo(infoRate.snp.top).offset(-8)
         }
+        
+        contentView.addSubview(statusLabel)
+        statusLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(titleLabel)
+            make.centerY.equalTo(infoFollow)
+        }
+        
+        contentView.addSubview(statusView)
+        statusView.layer.cornerRadius = 4
+        statusView.snp.makeConstraints { make in
+            make.size.equalTo(8)
+            make.centerY.equalTo(statusLabel)
+            make.trailing.equalTo(statusLabel.snp.leading).offset(-8)
+        }
     }
     
     func setContent(mangaItem item: MangaItem) {
         titleLabel.text = item.title
-        if (item.status == "ongoing") {
-            statusTag.contentLabel.text = "kMangaOngoing".localized()
-        } else {
-            statusTag.contentLabel.text = "kMangaCompleted".localized()
+        if item.status == "completed" {
+            statusView.backgroundColor = .fromHex("eb5757")
+            statusLabel.text = "kMangaCompleted".localized()
         }
         if item.coverArts.count > 0 {
             let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(item.id)/\(item.coverArts[0].fileName!).256.jpg"

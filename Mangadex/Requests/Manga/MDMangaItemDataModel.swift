@@ -37,9 +37,9 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
 }
 
 class MDMangaItemAttributes: NSObject, YYModel {
-    @objc var title: MDMangaMultiLanguageObject!
-    @objc var altTitles: [MDMangaMultiLanguageObject]!
-    @objc var descript: MDMangaMultiLanguageObject?
+    @objc var title: [String: Any]!
+    @objc var altTitles: [[String: Any]]!
+    @objc var descript: [String: Any]?
     @objc var status: String!
     @objc var tags: [MDMangaTagDataModel]!
     @objc var lastVolume: String?
@@ -53,27 +53,42 @@ class MDMangaItemAttributes: NSObject, YYModel {
     class func modelContainerPropertyGenericClass() -> [String: Any]? {
         [
             "tags": MDMangaTagDataModel.classForCoder(),
-            "altTitles": MDMangaMultiLanguageObject.classForCoder()
+            "title": Any.self,
+            "altTitles": Any.self,
         ]
     }
     
     func getLocalizedTitle() -> String {
-        let locale = MDLocale.propertySafeLocale()
-        let titleValue = title.value(forKey: locale)
-        if (titleValue != nil) {
-            return titleValue as! String
+        let locale = MDLocale.current
+        let altLocale = MDLocale.altLocale
+        var altTitle: String?
+        if let titleValue = title[locale] as? String {
+            return titleValue
+        } else if let titleValue = title[altLocale] as? String {
+            altTitle = titleValue
         }
         for altTitleObj in altTitles {
-            let value = altTitleObj.value(forKey: locale)
-            if (value != nil) {
-                return value as! String
-            }
-            let str = altTitleObj.en
-            if (str != nil && str?.guessedLocale() == locale) {
-                return str!
+            if let titleValue = altTitleObj[locale] as? String {
+                return titleValue
+            } else if let titleValue = altTitleObj[altLocale] as? String {
+                altTitle = titleValue
             }
         }
-        return title.localizedString()
+        if altTitle == nil {
+            altTitle = Array(title.values)[0] as? String
+        }
+        return altTitle ?? "N/A"
+    }
+    
+    var localizedDescription: String {
+        let locale = MDLocale.current
+        let altLocale = MDLocale.altLocale
+        if let str = descript?[locale] as? String {
+            return str
+        } else if let str = descript?[altLocale] as? String {
+            return str
+        }
+        return Array(title.values)[0] as? String ?? "kMangaNoDescr".localized()
     }
 }
 

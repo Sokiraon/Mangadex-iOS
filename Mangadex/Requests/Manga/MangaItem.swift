@@ -24,6 +24,7 @@ struct MangaItem {
         [formatTags, genreTags, themeTags, contentTags]
     }
     
+    /// In the form of "2022-09-13T23:21:30+00:00"
     var updatedAt: String
     var lastVolume: String?
     var lastChapter: String?
@@ -32,7 +33,7 @@ struct MangaItem {
     init(model: MDMangaItemDataModel) {
         self.id = model.id
         self.title = model.attributes.getLocalizedTitle()
-        self.description = model.attributes.descript?.localizedString() ?? "kMangaNoDescr".localized()
+        self.description = model.attributes.localizedDescription
         self.status = model.attributes.status
         self.lastVolume = model.attributes.lastVolume
         self.lastChapter = model.attributes.lastChapter

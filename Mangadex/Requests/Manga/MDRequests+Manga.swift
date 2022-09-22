@@ -67,5 +67,29 @@ extension MDRequests {
                     }
             }
         }
+        
+        static func follow(mangaId: String) -> Promise<Bool> {
+            Promise { seal in
+                firstly {
+                    MDRequests.post(path: "/manga/\(mangaId)/follow", auth: true)
+                }.done { json in
+                    seal.fulfill(true)
+                }.catch { error in
+                    seal.fulfill(false)
+                }
+            }
+        }
+        
+        static func unFollow(mangaId: String) -> Promise<Bool> {
+            Promise { seal in
+                firstly {
+                    MDRequests.delete(path: "/manga/\(mangaId)/follow", auth: true)
+                }.done { json in
+                    seal.fulfill(true)
+                }.catch { error in
+                    seal.fulfill(false)
+                }
+            }
+        }
     }
 }

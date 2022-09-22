@@ -53,6 +53,7 @@
 "kMangaActionContinue" = "Continue from last viewed";
 "kMangaActionToFollow" = "Follow";
 "kMangaActionFollowed" = "Followed";
+"kMangaActionFollowLoading" = "Loading...";
 
 "kDefaultUsername" = "Not Logged In";
 
@@ -67,3 +68,11 @@
 "kMangaTagTypeContent" = "Content";
 
 "kMangaNoDescr" = "No Description Found";
+
+"kTimeDeltaOneYear" = "1 year";
+"kTimeDeltaYears" = "%d years";
+"kTimeDeltaOneMonth" = "1 month";
+"kTimeDeltaMonths" = "%d months";
+"kTimeDeltaOneDay" = "1 day";
+"kTimeDeltaDays" = "%d days";
+"kTimeDeltaToday" = "today";

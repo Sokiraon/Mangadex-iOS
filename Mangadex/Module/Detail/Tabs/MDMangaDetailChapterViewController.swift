@@ -54,7 +54,7 @@ class MDMangaDetailChapterViewController: MDViewController {
         cvChapters.contentInsetAdjustmentBehavior = .never
         cvChapters.contentInset = .cssStyle(-20, 15, MDLayout.adjustedSafeInsetBottom)
         cvChapters.showsVerticalScrollIndicator = false
-        cvChapters.register(MDMangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
+        cvChapters.register(MDMangaDetailChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter")
     }
     
     override func setupUI() {
@@ -201,7 +201,7 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
             withReuseIdentifier: "chapter",
             for: indexPath
         )
-            as! MDMangaChapterCollectionCell
+            as! MDMangaDetailChapterCollectionCell
         
         let model = chapterModels[indexPath.row]
         let lastViewed = model.id == lastViewedChapterId

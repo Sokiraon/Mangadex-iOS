@@ -40,7 +40,6 @@ class MDBrowseMangaViewController: MDMangaListViewController {
             MDRequests.Manga.query(params: [
                 "title": filterOptions.searchText,
                 "offset": self.mangaList.count,
-                "limit": 5
             ])
         }
             .done { items in

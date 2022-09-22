@@ -48,7 +48,6 @@ class MDFollowedMangaViewController: MDMangaListViewController {
         firstly {
             MDRequests.User.getFollowedMangas(params: [
                 "offset": self.mangaList.count,
-                "limit": 5
             ])
         }.done { data in
             self.mangaList.append(contentsOf: data)

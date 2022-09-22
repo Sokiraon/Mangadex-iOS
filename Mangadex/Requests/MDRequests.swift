@@ -44,19 +44,20 @@ enum MDRequests {
         params: [String: Any] = [:],
         auth: Bool = false
     ) -> Promise<[String: Any]> {
+        let hostUrl = URL(string: host.rawValue)!
         if auth {
             return Promise { seal in
                 firstly {
                     MDUserManager.getInstance().getValidatedToken()
                 }.done { token in
-                    Just.get(host.rawValue + path,
+                    Just.get(hostUrl.appendingPathComponent(path),
                              params: params,
                              headers: ["Authorization": "Bearer \(token)"],
                              asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
                         } else {
-                            seal.reject(ErrorResponse())
+                            seal.reject(DefaultError)
                         }
                     })
                 }.catch { error in
@@ -65,26 +66,101 @@ enum MDRequests {
             }
         } else {
             return Promise { seal in
-                Just.get(host.rawValue + path, params: params, asyncCompletionHandler:  { r in
-                    if r.ok, let json = r.json as? [String: Any] {
-                        seal.fulfill(json)
-                    } else {
-                        seal.reject(ErrorResponse())
-                    }
-                })
+                Just.get(
+                    hostUrl.appendingPathComponent(path),
+                    params: params,
+                    asyncCompletionHandler:  { r in
+                        if r.ok, let json = r.json as? [String: Any] {
+                            seal.fulfill(json)
+                        } else {
+                            seal.reject(DefaultError)
+                        }
+                    })
             }
         }
     }
     
-    static func post(path: String, host: HostUrl, data: Any) -> Promise<[String: Any]> {
-        return Promise { seal in
-            Just.post(host.rawValue + path, json: data, asyncCompletionHandler:  { r in
-                if r.ok, let json = r.json as? [String: Any] {
-                    seal.fulfill(json)
-                } else {
-                    seal.reject(ErrorResponse())
+    static func post(
+        path: String,
+        host: HostUrl = .main,
+        data: Any? = nil,
+        auth: Bool = false
+    ) -> Promise<[String: Any]> {
+        let hostUrl = URL(string: host.rawValue)!
+        if auth {
+            return Promise { seal in
+                firstly {
+                    MDUserManager.getInstance().getValidatedToken()
+                }.done { token in
+                    Just.post(
+                        hostUrl.appendingPathComponent(path),
+                        json: data,
+                        headers: ["Authorization": "Bearer \(token)"],
+                        asyncCompletionHandler: { r in
+                            if r.ok, let json = r.json as? [String: Any] {
+                                seal.fulfill(json)
+                            } else {
+                                seal.reject(DefaultError)
+                            }
+                        }
+                    )
+                }.catch { error in
+                    seal.reject(error)
                 }
-            })
+            }
+        } else {
+            return Promise { seal in
+                Just.post(
+                    hostUrl.appendingPathComponent(path),
+                    json: data,
+                    asyncCompletionHandler:  { r in
+                        if r.ok, let json = r.json as? [String: Any] {
+                            seal.fulfill(json)
+                        } else {
+                            seal.reject(DefaultError)
+                        }
+                    })
+            }
+        }
+    }
+    
+    static func delete(
+        path: String,
+        host: HostUrl = .main,
+        auth: Bool = false
+    ) -> Promise<[String: Any]> {
+        let hostUrl = URL(string: host.rawValue)!
+        if auth {
+            return Promise { seal in
+                firstly {
+                    MDUserManager.getInstance().getValidatedToken()
+                }.done { token in
+                    Just.delete(
+                        hostUrl.appendingPathComponent(path),
+                        headers: ["Authorization": "Bearer \(token)"],
+                        asyncCompletionHandler:  { r in
+                            if r.ok, let json = r.json as? [String: Any] {
+                                seal.fulfill(json)
+                            } else {
+                                seal.reject(DefaultError)
+                            }
+                        })
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        } else {
+            return Promise { seal in
+                Just.delete(
+                    hostUrl.appendingPathComponent(path),
+                    asyncCompletionHandler:  { r in
+                        if r.ok, let json = r.json as? [String: Any] {
+                            seal.fulfill(json)
+                        } else {
+                            seal.reject(DefaultError)
+                        }
+                    })
+            }
         }
     }
 }

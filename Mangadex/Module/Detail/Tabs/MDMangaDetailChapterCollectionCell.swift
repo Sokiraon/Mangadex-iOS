@@ -1,5 +1,5 @@
 //
-//  MDMangaChapterCollectionCell.swift
+//  MDMangaDetailChapterCollectionCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/20.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MDMangaChapterCollectionCell: UICollectionViewCell {
+class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
     var volumeName: String?
     var chapterName: String!
     

@@ -52,6 +52,7 @@
 "kMangaActionContinue" = "继续上次阅读";
 "kMangaActionToFollow" = "追漫";
 "kMangaActionFollowed" = "已追";
+"kMangaActionFollowLoading" = "加载中...";
 
 "Cerulean" = "蔚蓝";
 "Teal" = "青绿";
@@ -152,3 +153,11 @@
 "kPrefPopupSave" = "保存设置";
 
 "kMangaNoDescr" = "无简介";
+
+"kTimeDeltaOneYear" = "1年";
+"kTimeDeltaYears" = "%d年";
+"kTimeDeltaOneMonth" = "1个月";
+"kTimeDeltaMonths" = "%d个月";
+"kTimeDeltaOneDay" = "1天";
+"kTimeDeltaDays" = "%d天";
+"kTimeDeltaToday" = "今天";

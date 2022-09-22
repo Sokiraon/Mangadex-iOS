@@ -26,7 +26,7 @@ extension MDRequests {
             }
             return Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/user/follows/manga", host: .main, params: newParams, auth: true)
+                    MDRequests.get(path: "/user/follows/manga", params: newParams, auth: true)
                 }.done { json in
                     guard let data = json["data"] as? Array<[String: Any]> else {
                         seal.reject(MDRequests.ErrorResponse())
@@ -40,6 +40,18 @@ extension MDRequests {
                     seal.fulfill(result)
                 }.catch { error in
                     seal.reject(error)
+                }
+            }
+        }
+        
+        static func checkIfFollowsManga(mangaId: String) -> Promise<Bool> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(path: "/user/follows/manga/\(mangaId)", auth: true)
+                }.done { json in
+                    seal.fulfill(true)
+                }.catch { error in
+                    seal.fulfill(false)
                 }
             }
         }
