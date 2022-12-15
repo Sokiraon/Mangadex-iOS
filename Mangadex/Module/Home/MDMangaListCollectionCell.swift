@@ -133,6 +133,9 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         if item.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
             statusLabel.text = "kMangaCompleted".localized()
+        } else {
+            statusView.backgroundColor = .fromHex("219653")
+            statusLabel.text = "kMangaOngoing".localized()
         }
         if item.coverArts.count > 0 {
             let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(item.id)/\(item.coverArts[0].fileName!).256.jpg"
