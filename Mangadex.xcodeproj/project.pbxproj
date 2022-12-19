@@ -36,7 +36,9 @@
 		0530A89228C1F92C00B4702B /* MDMangaAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A89128C1F92C00B4702B /* MDMangaAuthor.swift */; };
 		0530A89428C22BF400B4702B /* MDMangaRelationshipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A89328C22BF400B4702B /* MDMangaRelationshipItem.swift */; };
 		0564F0B02889830A00222504 /* MDRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0564F0AF2889830A00222504 /* MDRequests.swift */; };
+		05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */; };
 		05AE0ECC28B51B2500FE4107 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */; };
+		05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */; };
 		05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E72BEB00D326BBAB6F4E8 /* MDCTextCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7967A88951D82F181FF4 /* MDCTextCard.swift */; };
@@ -146,7 +148,9 @@
 		0530A89128C1F92C00B4702B /* MDMangaAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaAuthor.swift; sourceTree = "<group>"; };
 		0530A89328C22BF400B4702B /* MDMangaRelationshipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaRelationshipItem.swift; sourceTree = "<group>"; };
 		0564F0AF2889830A00222504 /* MDRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRequests.swift; sourceTree = "<group>"; };
+		05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailHeaderView.swift; sourceTree = "<group>"; };
 		05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Ext.swift"; sourceTree = "<group>"; };
 		05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsPopupView.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* UIImageView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Ext.swift"; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 			children = (
 				7A53408026887873003CE4C1 /* Tabs */,
 				0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */,
+				05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -561,6 +566,7 @@
 				7A9A5FF526C7743A00196953 /* CustomOperator.swift */,
 				05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */,
 				B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */,
+				05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -602,7 +608,7 @@
 				004F7183264BF8EB00D61AEB /* Frameworks */,
 				004F7184264BF8EB00D61AEB /* Resources */,
 				273DD3772FFE09B3EC8DFF38 /* [CP] Embed Pods Frameworks */,
-				05AE0ECD28B51C2300FE4107 /* ShellScript */,
+				05AE0ECD28B51C2300FE4107 /* Run Script [FirebaseCrashlytics] */,
 			);
 			buildRules = (
 			);
@@ -723,7 +729,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		05AE0ECD28B51C2300FE4107 /* ShellScript */ = {
+		05AE0ECD28B51C2300FE4107 /* Run Script [FirebaseCrashlytics] */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -734,6 +740,7 @@
 				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
 				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
 			);
+			name = "Run Script [FirebaseCrashlytics]";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -801,11 +808,13 @@
 				7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */,
 				B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */,
 				051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */,
+				05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */,
 				00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */,
 				000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */,
 				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
 				0008101226621229009C1005 /* MDBrowseMangaViewController.swift in Sources */,
 				7AACACAE267EFD6B00232166 /* MDMangaDetailChapterCollectionCell.swift in Sources */,
+				05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */,
 				7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,

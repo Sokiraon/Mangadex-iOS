@@ -11,12 +11,12 @@ import SwiftyJSON
 
 extension MDRequests {
     enum Auth {
-        struct LoginToken {
+        struct Token {
             let session: String
             let refresh: String
         }
         
-        static func login(username: String, password: String) -> Promise<LoginToken> {
+        static func login(username: String, password: String) -> Promise<Token> {
             Promise { seal in
                 firstly {
                     MDRequests.post(
@@ -31,7 +31,7 @@ extension MDRequests {
                     let json = JSON(json)
                     if let session = json["token"]["session"].string,
                        let refresh = json["token"]["refresh"].string {
-                        seal.fulfill(LoginToken(session: session, refresh: refresh))
+                        seal.fulfill(Token(session: session, refresh: refresh))
                     } else {
                         seal.reject(MDRequests.DefaultError)
                     }
@@ -47,10 +47,11 @@ extension MDRequests {
                     MDRequests.get(
                         path: "/auth/check",
                         host: .main,
-                        params: ["Authorization": "Bearer \(token)"]
+                        headers: ["Authorization": "Bearer \(token)"]
                     )
                 }.done { json in
-                    if (json["isAuthenticated"] as? Bool == true) {
+                    let json = JSON(json)
+                    if json["isAuthenticated"].boolValue {
                         seal.fulfill(true)
                     } else {
                         seal.reject(MDRequests.DefaultError)
@@ -61,7 +62,7 @@ extension MDRequests {
             }
         }
         
-        static func refreshToken(refresh: String) -> Promise<LoginToken> {
+        static func refreshToken(refresh: String) -> Promise<Token> {
             Promise { seal in
                 firstly {
                     MDRequests.post(
@@ -70,10 +71,10 @@ extension MDRequests {
                         data: ["token": refresh]
                     )
                 }.done { json in
-                    let token = json["token"] as! [String: Any]
-                    if let session = token["session"] as? String,
-                       let refresh = token["refresh"] as? String {
-                        seal.fulfill(LoginToken(session: session, refresh: refresh))
+                    let token = JSON(json)["token"]
+                    if let session = token["session"].string,
+                       let refresh = token["refresh"].string {
+                        seal.fulfill(Token(session: session, refresh: refresh))
                     } else {
                         seal.reject(MDRequests.DefaultError)
                     }

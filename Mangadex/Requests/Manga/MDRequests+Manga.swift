@@ -5,6 +5,7 @@
 import Foundation
 import PromiseKit
 import SwiftyJSON
+import YYModel
 
 extension MDRequests {
     enum Manga {
@@ -19,19 +20,24 @@ extension MDRequests {
                 firstly {
                     MDRequests.get(path: "/manga", host: .main, params: newParams)
                 }
-                    .done { json in
-                        guard let data = json["data"] as? Array<[String: Any]> else {
-                            seal.reject(MDRequests.DefaultError)
-                            return
-                        }
-                        let itemModels = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(), json: data)
-                        if let items = itemModels as? [MDMangaItemDataModel] {
-                            seal.fulfill(items.map { MangaItem.init(model: $0)})
-                        }
+                .done { json in
+                    guard let data = json["data"] as? Array<[String: Any]> else {
+                        seal.reject(MDRequests.DefaultError)
+                        return
                     }
-                    .catch { error in
-                        seal.reject(error)
+                    let itemModels = NSArray.yy_modelArray(
+                        with: MDMangaItemDataModel.classForCoder(),
+                        json: data
+                    )
+                    if let items = itemModels as? [MDMangaItemDataModel] {
+                        seal.fulfill(items.map {
+                            MangaItem(model: $0)
+                        })
                     }
+                }
+                .catch { error in
+                    seal.reject(error)
+                }
             }
         }
         
@@ -39,13 +45,15 @@ extension MDRequests {
             Promise { seal in
                 firstly {
                     MDRequests.get(path: "/cover/\(coverId)", host: .main)
-                }.done { json in
+                }
+                .done { json in
                     let data = JSON(json)
                     if let filename = data["data"]["attributes"]["fileName"].string {
                         let coverUrl = "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(filename).256.jpg"
                         seal.fulfill(URL(string: coverUrl)!)
                     }
-                }.catch { error in
+                }
+                .catch { error in
                     seal.reject(error)
                 }
             }
@@ -56,25 +64,76 @@ extension MDRequests {
                 firstly {
                     MDRequests.get(path: "/statistics/manga/\(mangaId)", host: .main)
                 }
-                    .done { json in
-                        let data = JSON(json)
-                        if let model = MangaStatisticsModel.yy_model(withJSON: data["statistics"][mangaId].rawValue) {
-                            seal.fulfill(model)
-                        }
+                .done { json in
+                    let data = JSON(json)
+                    if let model = MangaStatisticsModel.yy_model(
+                        withJSON: data["statistics"][mangaId].rawValue
+                    ) {
+                        seal.fulfill(model)
                     }
-                    .catch { error in
-                        seal.reject(error)
+                }
+                .catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
+        static func getReadingStatus(mangaId: String) -> Promise<MDMangaReadingStatus> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(path: "/manga/\(mangaId)/status", requireAuth: true)
+                }
+                .done { json in
+                    let data = JSON(json)
+                    if let statusStr = data["status"].string,
+                       let status = MDMangaReadingStatus(rawValue: statusStr) {
+                        seal.fulfill(status)
+                    } else {
+                        seal.fulfill(.null)
                     }
+                }
+                .catch { error in
+                    seal.fulfill(.null)
+                }
+            }
+        }
+        
+        /// Update the reading status of a given manga.
+        /// Using a `nil` value in the `status` field will remove the status.
+        /// 
+        /// [Documentation](https://api.mangadex.org/docs/docs/manga/#update-manga-reading-status)
+        static func updateReadingStatus(
+            mangaId: String, newStatus: MDMangaReadingStatus
+        ) -> Promise<Bool> {
+            let status = newStatus == .null ? nil : newStatus.rawValue
+            return Promise { seal in
+                firstly {
+                    MDRequests.post(
+                        path: "/manga/\(mangaId)/status",
+                        data: ["status": status],
+                        requireAuth: true
+                    )
+                }
+                .done { json in
+                    seal.fulfill(true)
+                }
+                .catch { error in
+                    seal.fulfill(false)
+                }
             }
         }
         
         static func follow(mangaId: String) -> Promise<Bool> {
             Promise { seal in
                 firstly {
-                    MDRequests.post(path: "/manga/\(mangaId)/follow", auth: true)
-                }.done { json in
+                    when(fulfilled: updateReadingStatus(mangaId: mangaId, newStatus: .reading),
+                         MDRequests.post(path: "/manga/\(mangaId)/follow", requireAuth: true)
+                    )
+                }
+                .done { _ in
                     seal.fulfill(true)
-                }.catch { error in
+                }
+                .catch { error in
                     seal.fulfill(false)
                 }
             }
@@ -83,10 +142,14 @@ extension MDRequests {
         static func unFollow(mangaId: String) -> Promise<Bool> {
             Promise { seal in
                 firstly {
-                    MDRequests.delete(path: "/manga/\(mangaId)/follow", auth: true)
-                }.done { json in
+                    when(fulfilled: updateReadingStatus(mangaId: mangaId, newStatus: .null),
+                         MDRequests.delete(path: "/manga/\(mangaId)/follow", requireAuth: true)
+                    )
+                }
+                .done { _ in
                     seal.fulfill(true)
-                }.catch { error in
+                }
+                .catch { error in
                     seal.fulfill(false)
                 }
             }

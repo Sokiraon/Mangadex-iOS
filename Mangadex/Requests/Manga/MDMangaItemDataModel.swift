@@ -8,6 +8,17 @@
 import Foundation
 import YYModel
 
+enum MDMangaReadingStatus: String {
+    case reading = "reading"
+    case onHold = "on_hold"
+    case planToRead = "plan_to_read"
+    case dropped = "dropped"
+    case reReading = "re_reading"
+    case completed = "completed"
+    /// Represents the "unfollowed" status.
+    case null = "null"
+}
+
 class MDMangaMultiLanguageObject: NSObject, YYModel {
     @objc var en: String?
     @objc var jp: String?
@@ -37,9 +48,9 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
 }
 
 class MDMangaItemAttributes: NSObject, YYModel {
-    @objc var title: [String: Any]!
-    @objc var altTitles: [[String: Any]]!
-    @objc var descript: [String: Any]?
+    @objc var title: [String: String]!
+    @objc var altTitles: [[String: String]]!
+    @objc var descript: [String: String]?
     @objc var status: String!
     @objc var tags: [MDMangaTagDataModel]!
     @objc var lastVolume: String?
@@ -60,35 +71,45 @@ class MDMangaItemAttributes: NSObject, YYModel {
     
     func getLocalizedTitle() -> String {
         let locale = MDLocale.current
-        let altLocale = MDLocale.altLocale
+        let altLocale = MDLocale.alternative
         var altTitle: String?
-        if let titleValue = title[locale] as? String {
+        if let titleValue = title[locale] {
             return titleValue
-        } else if let titleValue = title[altLocale] as? String {
+        } else if let titleValue = title[altLocale] {
             altTitle = titleValue
         }
         for altTitleObj in altTitles {
-            if let titleValue = altTitleObj[locale] as? String {
+            if let titleValue = altTitleObj[locale] {
                 return titleValue
-            } else if let titleValue = altTitleObj[altLocale] as? String {
+            } else if let titleValue = altTitleObj[altLocale] {
                 altTitle = titleValue
             }
         }
         if altTitle == nil {
-            altTitle = Array(title.values)[0] as? String
+            altTitle = Array(title.values)[0]
         }
         return altTitle ?? "N/A"
     }
     
     var localizedDescription: String {
-        let locale = MDLocale.current
-        let altLocale = MDLocale.altLocale
-        if let str = descript?[locale] as? String {
-            return str
-        } else if let str = descript?[altLocale] as? String {
-            return str
+        if let description = descript {
+            let locale = MDLocale.current
+            let altLocale = MDLocale.alternative
+            let fallback = MDLocale.fallback
+            if description.contains(locale) {
+                return description[locale]!
+            }
+            if description.contains(altLocale) {
+                return description[altLocale]!
+            }
+            if description.contains(fallback) {
+                return description[fallback]!
+            }
+            if description.count > 0 {
+                return description[Array(description.keys)[0]]!
+            }
         }
-        return Array(title.values)[0] as? String ?? "kMangaNoDescr".localized()
+        return "kMangaDetailNoDescr".localized()
     }
 }
 

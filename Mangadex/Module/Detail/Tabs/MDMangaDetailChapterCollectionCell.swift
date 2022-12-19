@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
-    var volumeName: String?
-    var chapterName: String!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,10 +30,8 @@ class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
         }
     }
     
-    func set(volume: String?, chapter: String, lastViewed: Bool) {
-        volumeName = volume
-        chapterName = chapter
-        lblTitle.text = chapter
+    func update(model: MDMangaChapterInfoModel, lastViewed: Bool) {
+        lblTitle.text = model.attributes.chapter ?? "N/A"
         
         if lastViewed {
             contentView.theme_backgroundColor = UIColor.theme_primaryColor

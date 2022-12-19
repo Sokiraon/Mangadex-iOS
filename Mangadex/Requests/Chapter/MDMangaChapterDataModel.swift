@@ -12,7 +12,7 @@ import YYModel
 
 class MDMangaChapterInfoAttrs: NSObject {
     @objc var volume: String?
-    @objc var chapter: String!
+    @objc var chapter: String?
     @objc var title: String?
     var pages: Int = 0
 }

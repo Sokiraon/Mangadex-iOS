@@ -133,7 +133,6 @@ extension MDMangaListViewController: UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
         let vc = MDMangaDetailViewController(mangaItem: mangaList[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }

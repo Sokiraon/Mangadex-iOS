@@ -47,13 +47,19 @@ class MDLocale {
         }
     }
     
-    static var altLocale: String {
+    /// The alternative locale to use for Chinese speakers.
+    /// For Simplified Chinese, the alternative is Traditional Chinese and vice versa.
+    static var alternative: String {
         if current == "zh" {
             return "zh-hk"
         } else if current == "zh-hk" {
             return "zh"
         }
         return current
+    }
+    
+    static var fallback: String {
+        "en"
     }
     
     static func propertySafeLocale() -> String {

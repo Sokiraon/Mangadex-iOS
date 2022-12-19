@@ -67,7 +67,10 @@
 "kMangaTagTypeTheme" = "Theme";
 "kMangaTagTypeContent" = "Content";
 
-"kMangaNoDescr" = "No Description Found";
+"kMangaDetailDescr" = "About this manga";
+"kMangaDetailDescrMore" = "More";
+"kMangaDetailNoDescr" = "Not available";
+"kMangaDetailChapters" = "Chapters";
 
 "kTimeDeltaOneYear" = "1 year";
 "kTimeDeltaYears" = "%d years";

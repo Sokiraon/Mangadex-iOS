@@ -43,7 +43,7 @@ class MDHomeTabViewController: TabmanViewController {
         bar.layout.contentInset = .bottom(.rectScreenOnlyValue(5))
         bar.buttons.customize { button in
             button.font = .systemFont(ofSize: 13)
-            button.selectedTintColor = .primaryColor
+            button.selectedTintColor = .themePrimary
             button.imageViewSize = CGSize(width: 32, height: 32)
         }
         
@@ -59,7 +59,7 @@ class MDHomeTabViewController: TabmanViewController {
     
     @objc func didChangeTheme() {
         bar.buttons.customize { button in
-            button.selectedTintColor = .primaryColor
+            button.selectedTintColor = .themePrimary
         }
     }
 }

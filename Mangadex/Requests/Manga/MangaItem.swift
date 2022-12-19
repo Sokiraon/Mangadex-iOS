@@ -79,4 +79,19 @@ struct MangaItem {
             }
         }
     }
+    
+    func getAuthor() -> String? {
+        guard authors.count > 0 else {
+            return nil
+        }
+        return authors[0].attributes.name
+    }
+    
+    func getCoverArtUrl() -> URL? {
+        guard coverArts.count > 0 else {
+            return nil
+        }
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id)/\(coverArts[0].fileName!).256.jpg"
+        return URL(string: urlStr)
+    }
 }

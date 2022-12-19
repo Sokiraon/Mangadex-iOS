@@ -27,6 +27,8 @@ target "Mangadex" do
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'
   pod 'FirebasePerformance'
+  pod 'TTTAttributedLabel'
+  pod "MarkdownKit"
   
 end
 

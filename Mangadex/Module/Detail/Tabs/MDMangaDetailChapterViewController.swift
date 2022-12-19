@@ -205,11 +205,7 @@ extension MDMangaDetailChapterViewController: UICollectionViewDelegate,
         
         let model = chapterModels[indexPath.row]
         let lastViewed = model.id == lastViewedChapterId
-        cell.set(
-            volume: model.attributes.volume,
-            chapter: model.attributes.chapter,
-            lastViewed: lastViewed
-        )
+        cell.update(model: model, lastViewed: lastViewed)
         if lastViewed {
             lastViewedChapterIndex = indexPath
         }

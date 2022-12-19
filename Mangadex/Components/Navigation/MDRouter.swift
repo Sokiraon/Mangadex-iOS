@@ -28,7 +28,7 @@ class MDRouter {
         navigationController?.topViewController
     }
     
-    static func showVC(_ vc: UIViewController, withType type: MDShowVCActionType) {
+    static func showVC(_ vc: UIViewController, actionType type: MDShowVCActionType) {
         switch type {
         case .present:
             topViewController?.present(vc, animated: true, completion: nil)

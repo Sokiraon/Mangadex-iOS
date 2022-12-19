@@ -48,7 +48,7 @@
 "kReleaseNextChapter" = "释放来加载下一话";
 "kLoading" = "加载中...";
 
-"kMangaActionStartOver" = "从头阅读";
+"kMangaActionStartOver" = "从头开始阅读";
 "kMangaActionContinue" = "继续上次阅读";
 "kMangaActionToFollow" = "追漫";
 "kMangaActionFollowed" = "已追";
@@ -152,7 +152,10 @@
 
 "kPrefPopupSave" = "保存设置";
 
-"kMangaNoDescr" = "无简介";
+"kMangaDetailDescr" = "漫画简介";
+"kMangaDetailDescrMore" = "更多";
+"kMangaDetailNoDescr" = "暂无";
+"kMangaDetailChapters" = "章节";
 
 "kTimeDeltaOneYear" = "1年";
 "kTimeDeltaYears" = "%d年";

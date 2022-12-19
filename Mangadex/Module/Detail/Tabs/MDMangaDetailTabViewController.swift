@@ -24,7 +24,7 @@ class MDMangaDetailTabViewController: ButtonBarPagerTabStripViewController {
     override func viewDidLoad() {
         settings.style.buttonBarBackgroundColor = .white
         settings.style.buttonBarItemBackgroundColor = .white
-        settings.style.selectedBarBackgroundColor = .primaryColor
+        settings.style.selectedBarBackgroundColor = .themePrimary
         settings.style.selectedBarHeight = 3
         settings.style.buttonBarItemTitleColor = .black2D2E2F
         
@@ -51,7 +51,7 @@ class MDMangaDetailTabViewController: ButtonBarPagerTabStripViewController {
                 UIView.transition(
                     with: newCell!.label!, duration: 0.3, options: .transitionCrossDissolve
                 ) {
-                    newCell?.label.textColor = .primaryColor
+                    newCell?.label.textColor = .themePrimary
                 }
             }
         }

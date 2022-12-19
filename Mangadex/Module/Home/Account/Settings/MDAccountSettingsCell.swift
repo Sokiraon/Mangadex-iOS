@@ -112,7 +112,7 @@ class MDAccountSettingsCell: UIView {
             guard let vc = delegate?.viewControllerToDisplay(forCell: self, withId: self.id) else {
                 fatalError("Cannot find a target viewcontroller to display")
             }
-            MDRouter.showVC(vc, withType: .push)
+            MDRouter.showVC(vc, actionType: .push)
             break
             
         default:

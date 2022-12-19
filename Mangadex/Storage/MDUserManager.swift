@@ -55,9 +55,9 @@ class MDUserManager {
         Promise { seal in
             firstly {
                 MDRequests.Auth.login(username: username, password: password)
-            }.done { loginToken in
-                self.session = loginToken.session
-                self.refresh = loginToken.refresh
+            }.done { token in
+                self.session = token.session
+                self.refresh = token.refresh
                 self.username = username
                 seal.fulfill(true)
             }.catch { error in
@@ -94,9 +94,9 @@ class MDUserManager {
                 // if verification failed, try to refresh token
                 firstly {
                     MDRequests.Auth.refreshToken(refresh: self.refresh)
-                }.done { loginToken in
-                    self.session = loginToken.session
-                    self.refresh = loginToken.refresh
+                }.done { token in
+                    self.session = token.session
+                    self.refresh = token.refresh
                     seal.fulfill(self.session)
                 }.catch { error in
                     // if refresh failed, throw an Error

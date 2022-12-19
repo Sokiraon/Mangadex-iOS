@@ -19,6 +19,8 @@ extension UIColor {
     
     static let black2D2E2F = fromHex("2d2e2f")
     
+    static let primaryTextColor = black2D2E2F
+    
     // 蔚蓝
     static let cerulean700 = fromHex("0084ba")
     /// Primary color of the cerulean palatte
@@ -55,10 +57,16 @@ extension UIColor {
     static let theme_lightestColor = ThemeColorPicker(colors: cerulean50, teal50, coral50)
     
     static let primaryColors = [cerulean400, teal300, coral400]
-    static let lightColors = [cerulean50, teal50, cerulean50]
+    static let lightColors = [cerulean200, teal200, coral200]
+    static let lighterColors = [cerulean100, teal100, coral100]
+    static let lightestColors = [cerulean50, teal50, coral50]
+    static let darkColors = [cerulean700, teal600, coral800]
     
-    static var primaryColor: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
-    static var lightColor: UIColor { lightColors[MDSettingsManager.themeColorIndex] }
+    static var themePrimary: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
+    static var themeLightest: UIColor { lightestColors[MDSettingsManager.themeColorIndex] }
+    static var themeLighter: UIColor { lighterColors[MDSettingsManager.themeColorIndex] }
+    static var themeLight: UIColor { lightColors[MDSettingsManager.themeColorIndex] }
+    static var themeDark: UIColor { darkColors[MDSettingsManager.themeColorIndex] }
     
     static func fromHex(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

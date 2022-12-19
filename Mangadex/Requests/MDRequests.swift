@@ -42,17 +42,22 @@ enum MDRequests {
         path: String,
         host: HostUrl = .main,
         params: [String: Any] = [:],
-        auth: Bool = false
+        headers: [String: String] = [:],
+        requireAuth: Bool = false
     ) -> Promise<[String: Any]> {
         let hostUrl = URL(string: host.rawValue)!
-        if auth {
+        if requireAuth {
             return Promise { seal in
                 firstly {
                     MDUserManager.getInstance().getValidatedToken()
                 }.done { token in
+                    var newHeaders = headers
+                    if !newHeaders.contains("Authorization") {
+                        newHeaders["Authorization"] = "Bearer \(token)"
+                    }
                     Just.get(hostUrl.appendingPathComponent(path),
                              params: params,
-                             headers: ["Authorization": "Bearer \(token)"],
+                             headers: newHeaders,
                              asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
@@ -69,6 +74,7 @@ enum MDRequests {
                 Just.get(
                     hostUrl.appendingPathComponent(path),
                     params: params,
+                    headers: headers,
                     asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
@@ -84,10 +90,10 @@ enum MDRequests {
         path: String,
         host: HostUrl = .main,
         data: Any? = nil,
-        auth: Bool = false
+        requireAuth: Bool = false
     ) -> Promise<[String: Any]> {
         let hostUrl = URL(string: host.rawValue)!
-        if auth {
+        if requireAuth {
             return Promise { seal in
                 firstly {
                     MDUserManager.getInstance().getValidatedToken()
@@ -127,10 +133,10 @@ enum MDRequests {
     static func delete(
         path: String,
         host: HostUrl = .main,
-        auth: Bool = false
+        requireAuth: Bool = false
     ) -> Promise<[String: Any]> {
         let hostUrl = URL(string: host.rawValue)!
-        if auth {
+        if requireAuth {
             return Promise { seal in
                 firstly {
                     MDUserManager.getInstance().getValidatedToken()
