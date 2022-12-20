@@ -87,14 +87,14 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         button.configuration = btnFollowConfUnFollowed
     }
     
-    private var mangaItem: MangaItem!
+    private var mangaModel: MDMangaItemDataModel!
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         self.fetchData()
     }
     private let vScroll = UIScrollView()
     
-    private lazy var vHeader = MDMangaDetailHeaderView(mangaItem: self.mangaItem)
+    private lazy var vHeader = MDMangaDetailHeaderView(mangaModel: mangaModel)
     private let lblDescr = TTTAttributedLabel()
     private lazy var vDescrMore = MangaDescrMoreView()
     
@@ -108,9 +108,9 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     private var vChapters: MyCollectionView!
     
     // MARK: - Initialization
-    convenience init(mangaItem: MangaItem) {
+    convenience init(mangaModel: MDMangaItemDataModel) {
         self.init()
-        self.mangaItem = mangaItem
+        self.mangaModel = mangaModel
     }
     
     override func setupUI() {
@@ -143,7 +143,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         let parser = MarkdownParser()
         parser.link.color = UIColor.themeDark
         let descrStr = NSMutableAttributedString(
-            attributedString: parser.parse(mangaItem.description)
+            attributedString: parser.parse(mangaModel.attributes.localizedDescription)
         )
         let fontToUse = UIFont.systemFont(ofSize: 15)
         descrStr.addAttributes(
@@ -238,7 +238,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     }
     
     override func doOnAppear() {
-        lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaItem.id)
+        lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaModel.id)
         if lastViewedChapterId != nil {
             btnContinue.setTitle("kMangaActionContinue".localized(), for: .normal)
         }
@@ -260,9 +260,9 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     
     private func fetchData() {
         _ = firstly {
-            when(fulfilled: MDRequests.Manga.getReadingStatus(mangaId: mangaItem.id),
+            when(fulfilled: MDRequests.Manga.getReadingStatus(mangaId: mangaModel.id),
                  MDRequests.Chapter.getListForManga(
-                     mangaId: mangaItem.id,
+                     mangaId: mangaModel.id,
                      offset: 0,
                      locale: MDLocale.currentMangaLanguage,
                      order: .ASC
@@ -286,7 +286,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     private func loadMoreChapters() {
         _ = firstly {
             MDRequests.Chapter.getListForManga(
-                mangaId: mangaItem.id,
+                mangaId: mangaModel.id,
                 offset: chapterModels.count,
                 locale: MDLocale.currentMangaLanguage,
                 order: .ASC
@@ -317,10 +317,10 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
                 index < self.chapterModels.count - 1 ? self.chapterModels[index + 1] : nil
             },
             enterPageAction: { chapterId in
-                MDMangaProgressManager.saveProgress(forMangaId: self.mangaItem.id, chapterId: chapterId)
+                MDMangaProgressManager.saveProgress(forMangaId: self.mangaModel.id, chapterId: chapterId)
             },
             leavePageAction: {
-                self.lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: self.mangaItem.id)
+                self.lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: self.mangaModel.id)
                 self.vChapters.reloadData()
             }
         )

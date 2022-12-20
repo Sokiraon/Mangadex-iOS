@@ -128,27 +128,27 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         }
     }
     
-    func setContent(mangaItem item: MangaItem) {
-        titleLabel.text = item.title
-        if item.status == "completed" {
+    func update(mangaModel model: MDMangaItemDataModel) {
+        titleLabel.text = model.attributes.localizedTitle
+        if model.attributes.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
             statusLabel.text = "kMangaCompleted".localized()
         } else {
             statusView.backgroundColor = .fromHex("219653")
             statusLabel.text = "kMangaOngoing".localized()
         }
-        if item.coverArts.count > 0 {
-            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(item.id)/\(item.coverArts[0].fileName!).256.jpg"
+        if let coverArt = model.coverArts.get(0) {
+            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(model.id!)/\(coverArt.fileName!).256.jpg"
             ivCover.kf.setImage(
                 with: URL(string: urlStr),
                 placeholder: UIImage(named: "manga_cover_default")
             )
         }
-        if item.authors.count > 0, let authorName = item.authors[0].attributes?.name {
+        if let authorName = model.authors.get(0)?.attributes?.name {
             infoAuthor.lblInfo.text = authorName
         }
-        firstly {
-            MDRequests.Manga.getStatistics(mangaId: item.id)
+        _ = firstly {
+            MDRequests.Manga.getStatistics(mangaId: model.id)
         }
             .done { statistics in
                 DispatchQueue.main.async {

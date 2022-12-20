@@ -69,7 +69,7 @@ class MDMangaItemAttributes: NSObject, YYModel {
         ]
     }
     
-    func getLocalizedTitle() -> String {
+    var localizedTitle: String {
         let locale = MDLocale.current
         let altLocale = MDLocale.alternative
         var altTitle: String?
@@ -120,5 +120,32 @@ class MDMangaItemDataModel: NSObject, YYModel {
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         ["relationships": MDMangaRelationshipItem.classForCoder()]
+    }
+    
+    var authors: [MDMangaAuthor] {
+        let items = relationships.filter { relationship in
+            relationship.type == "author"
+        }
+        return items.map { item in
+            MDMangaAuthor(relationshipItem: item)
+        }
+    }
+    
+    var artists: [MDMangaAuthor] {
+        let items = relationships.filter { relationship in
+            relationship.type == "artists"
+        }
+        return items.map { item in
+            MDMangaAuthor(relationshipItem: item)
+        }
+    }
+    
+    var coverArts: [MDMangaCoverAttributes] {
+        let items = relationships.filter { relationship in
+            relationship.type == "cover_art"
+        }
+        return items.map { item in
+            MDMangaCoverAttributes.yy_model(with: item.attributes)!
+        }
     }
 }

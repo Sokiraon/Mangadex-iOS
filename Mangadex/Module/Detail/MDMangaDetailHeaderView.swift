@@ -26,7 +26,7 @@ class MDMangaDetailHeaderView: UIView {
     }
     private let lblAbout = UILabel(fontSize: 16, fontWeight: .medium)
     
-    private var mangaItem: MangaItem!
+    private var mangaModel: MDMangaItemDataModel!
     
     private var btnFollow: UIButton!
     private lazy var btnFollowConfFollowed = {
@@ -67,10 +67,10 @@ class MDMangaDetailHeaderView: UIView {
         return conf
     }()
     
-    convenience init(mangaItem: MangaItem) {
+    convenience init(mangaModel: MDMangaItemDataModel) {
         self.init()
         
-        self.mangaItem = mangaItem
+        self.mangaModel = mangaModel
         self.setupUI()
     }
     
@@ -84,12 +84,13 @@ class MDMangaDetailHeaderView: UIView {
             make.width.equalTo(100)
             make.height.equalTo(150)
         }
-        if let coverUrl = mangaItem.getCoverArtUrl() {
-            ivCover.kf.setImage(with: coverUrl)
+        if let coverArt = mangaModel.coverArts.get(0) {
+            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(mangaModel.id!)/\(coverArt.fileName!).256.jpg"
+            ivCover.kf.setImage(with: URL(string: urlStr))
         }
         
         addSubview(lblTitle)
-        lblTitle.text = mangaItem.title
+        lblTitle.text = mangaModel.attributes.localizedTitle
         lblTitle.snp.makeConstraints { make in
             make.top.equalTo(ivCover).inset(4)
             make.left.equalTo(ivCover.snp.right).offset(16)
@@ -104,7 +105,9 @@ class MDMangaDetailHeaderView: UIView {
         }
         
         addSubview(btnAuthor)
-        btnAuthor.setTitle(mangaItem.getAuthor(), for: .normal)
+        if let authorName = mangaModel.authors.get(0)?.attributes.name {
+            btnAuthor.setTitle(authorName, for: .normal)
+        }
         btnAuthor.snp.makeConstraints { make in
             make.centerY.equalTo(ivAuthor)
             make.left.equalTo(ivAuthor.snp.right).offset(4)
@@ -161,10 +164,10 @@ class MDMangaDetailHeaderView: UIView {
         var promise: Promise<Bool>
         var newStatus: MDMangaReadingStatus
         if readingStatus == .reading {
-            promise = MDRequests.Manga.unFollow(mangaId: mangaItem.id)
+            promise = MDRequests.Manga.unFollow(mangaId: mangaModel.id)
             newStatus = .null
         } else {
-            promise = MDRequests.Manga.follow(mangaId: mangaItem.id)
+            promise = MDRequests.Manga.follow(mangaId: mangaModel.id)
             newStatus = .reading
         }
         _ = promise.done { result in

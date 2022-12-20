@@ -9,7 +9,7 @@ import YYModel
 
 extension MDRequests {
     enum Manga {
-        static func query(params: [String: Any] = [:]) -> Promise<[MangaItem]> {
+        static func query(params: [String: Any] = [:]) -> Promise<[MDMangaItemDataModel]> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"]
             ]
@@ -29,10 +29,8 @@ extension MDRequests {
                         with: MDMangaItemDataModel.classForCoder(),
                         json: data
                     )
-                    if let items = itemModels as? [MDMangaItemDataModel] {
-                        seal.fulfill(items.map {
-                            MangaItem(model: $0)
-                        })
+                    if let models = itemModels as? [MDMangaItemDataModel] {
+                        seal.fulfill(models)
                     }
                 }
                 .catch { error in

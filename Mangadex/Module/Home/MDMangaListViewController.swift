@@ -21,7 +21,7 @@ class MDMangaListViewController: MDViewController {
     internal var allowFilter = true
     internal var filterOptions = FilterOptions()
     
-    internal var mangaList = [MangaItem]()
+    internal var mangaList = [MDMangaItemDataModel]()
     
     internal lazy var vCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -128,12 +128,12 @@ extension MDMangaListViewController: UICollectionViewDelegate,
             withReuseIdentifier: "mangaCell",
             for: indexPath
         )
-        (cell as! MDMangaListCollectionCell).setContent(mangaItem: mangaList[indexPath.row])
+        (cell as! MDMangaListCollectionCell).update(mangaModel: mangaList[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MDMangaDetailViewController(mangaItem: mangaList[indexPath.row])
+        let vc = MDMangaDetailViewController(mangaModel: mangaList[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
     
