@@ -153,7 +153,8 @@
 "kPrefPopupSave" = "保存设置";
 
 "kMangaDetailDescr" = "漫画简介";
-"kMangaDetailDescrMore" = "更多";
+"kMangaDetailDescrMore" = "展开";
+"kMangaDetailDescrLess" = "收起";
 "kMangaDetailNoDescr" = "暂无";
 "kMangaDetailChapters" = "章节";
 

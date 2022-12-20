@@ -70,7 +70,7 @@ class MDMangaListCollectionCell: UICollectionViewCell {
     
     public static let cellHeight = 105.0
     
-    func setupUI() {
+    private func setupUI() {
         layer.theme_shadowColor = UIColor.theme_primaryCgColor
         layer.shadowOffset = CGSize(width: 0, height: 1)
         layer.shadowOpacity = 0.5
@@ -81,6 +81,7 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         contentView.theme_backgroundColor = UIColor.theme_lightestColor
         
         contentView.addSubview(ivCover)
+        ivCover.clipsToBounds = true
         ivCover.contentMode = .scaleAspectFill
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()

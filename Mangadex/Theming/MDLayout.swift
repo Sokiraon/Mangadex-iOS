@@ -13,14 +13,18 @@ import UIKit
  */
 class MDLayout {
     
-    static var safeAreaInsets = UIApplication.shared.windows[0].safeAreaInsets
+    static var keyWindow: UIWindow {
+        UIApplication.shared.windows[0]
+    }
+    
+    static var safeAreaInsets = keyWindow.safeAreaInsets
     static var safeInsetTop = safeAreaInsets.top
     static var safeInsetBottom = safeAreaInsets.bottom
     static var adjustedSafeInsetBottom = safeInsetBottom > 0 ? safeInsetBottom : 15
     
     static var isNotchScreen = safeInsetBottom > 0
     
-    static var screenSize = UIApplication.shared.windows[0].bounds.size
+    static var screenSize = keyWindow.bounds.size
     static var screenWidth = screenSize.width
     static var screenHeight = screenSize.height
     

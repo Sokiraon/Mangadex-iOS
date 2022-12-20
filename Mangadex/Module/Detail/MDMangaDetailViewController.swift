@@ -17,6 +17,7 @@ import TTTAttributedLabel
 import SafariServices
 import MarkdownKit
 
+/// Define a custom collectionView here to allow it to scroll with another scrollView
 private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
@@ -26,66 +27,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     }
 }
 
-private class MangaDescrMoreView: UIView {
-    private let lblMore = UILabel(fontSize: 15)
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    private func setupUI() {
-        addSubview(lblMore)
-        lblMore.backgroundColor = .clear
-        lblMore.text = "kMangaDetailDescrMore".localized()
-        lblMore.theme_textColor = UIColor.theme_darkColor
-        lblMore.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.right.equalToSuperview().inset(6)
-            make.bottom.equalToSuperview().inset(1)
-        }
-        
-        backgroundColor = .white
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.white.cgColor
-        layer.shadowOpacity = 1
-        layer.shadowOffset = .init(width: -8, height: 0)
-        layer.shadowRadius = 3
-    }
-}
-
 class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate {
-    
-    private var btnFollowConfFollowed: UIButton.Configuration!
-    private var btnFollowConfUnFollowed: UIButton.Configuration!
-    
-    private lazy var btnFollow = UIButton(
-        type: .custom,
-        primaryAction: UIAction { _ in
-        }
-    ).apply { button in
-        var btnConfCommon = UIButton.Configuration.gray()
-        btnConfCommon.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
-        btnConfCommon.imagePadding = 4
-        
-        btnFollowConfFollowed = btnConfCommon
-        btnFollowConfFollowed.title = "kMangaActionFollowed".localized()
-        btnFollowConfFollowed.image = .init(named: "icon_bookmark")
-        btnFollowConfFollowed.baseForegroundColor = .black2D2E2F
-        
-        btnFollowConfUnFollowed = btnConfCommon
-        btnFollowConfUnFollowed.title = "kMangaActionToFollow".localized()
-        btnFollowConfUnFollowed.image = .init(named: "icon_bookmark_border")
-        btnFollowConfUnFollowed.baseForegroundColor = .white
-        btnFollowConfUnFollowed.baseBackgroundColor = .cerulean400
-        
-        button.configuration = btnFollowConfUnFollowed
-    }
     
     private var mangaModel: MDMangaItemDataModel!
     
@@ -96,18 +38,16 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     
     private lazy var vHeader = MDMangaDetailHeaderView(mangaModel: mangaModel)
     private let lblDescr = TTTAttributedLabel()
-    private lazy var vDescrMore = MangaDescrMoreView()
     
     private let vDivider = UIView(style: .line)
     
     private let lblChapters = UILabel(fontSize: 20, fontWeight: .medium)
+    private var vChapters: MyCollectionView!
     
     private var chapterModels = [MDMangaChapterInfoModel]()
     private var totalChapters: Int!
     
-    private var vChapters: MyCollectionView!
-    
-    // MARK: - Initialization
+    // MARK: - Lifecycle
     convenience init(mangaModel: MDMangaItemDataModel) {
         self.init()
         self.mangaModel = mangaModel
@@ -141,7 +81,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             make.left.right.equalToSuperview().inset(16)
         }
         let parser = MarkdownParser()
-        parser.link.color = UIColor.themeDark
+        parser.link.color = .themeDark
         let descrStr = NSMutableAttributedString(
             attributedString: parser.parse(mangaModel.attributes.localizedDescription)
         )
@@ -150,9 +90,9 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             [.font: fontToUse],
             range: .init(location: 0, length: descrStr.length)
         )
-        lblDescr.text = descrStr
-        lblDescr.numberOfLines = 3
         lblDescr.delegate = self
+        lblDescr.text = descrStr
+        lblDescr.contentMode = .top
         
         let labelWidth = MDLayout.screenWidth - 16 * 2
         let constrainedSize = CGSize(width: labelWidth, height: .greatestFiniteMagnitude)
@@ -161,24 +101,41 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             context: nil
         )
-        let lines = Int(ceil(rect.height / fontToUse.lineHeight))
+        let lines = rect.height / fontToUse.lineHeight
         if lines > 3 {
-            vScroll.insertSubview(vDescrMore, aboveSubview: lblDescr)
-            vDescrMore.snp.makeConstraints { make in
-                make.right.bottom.equalTo(lblDescr)
+            lblDescr.numberOfLines = 0
+            
+            descrMinHeight = 3 * fontToUse.lineHeight
+            
+            descrExpandDuration = 0.2 + Double(lines - 4) * 0.02
+            descrExpandDuration = min(descrExpandDuration, 0.4)
+            
+            lblDescr.snp.makeConstraints { make in
+                make.height.equalTo(descrMinHeight)
             }
-            vDescrMore.addGestureRecognizer(
-                UITapGestureRecognizer(target: self, action: #selector(expandDescrption))
-            )
-        }
-        
-        vScroll.addSubview(btnContinue)
-        btnContinue.layer.cornerRadius = 22
-        btnContinue.setTitle("kMangaActionStartOver".localized(), for: .normal)
-        btnContinue.snp.makeConstraints { make in
-            make.top.equalTo(lblDescr.snp.bottom).offset(16)
-            make.left.right.equalToSuperview().inset(16)
-            make.height.equalTo(44)
+            
+            vScroll.addSubview(btnDescrAction)
+            btnDescrAction.setNeedsUpdateConfiguration()
+            btnDescrAction.snp.makeConstraints { make in
+                make.top.equalTo(lblDescr.snp.bottom)
+                make.left.right.equalToSuperview().inset(16)
+            }
+            
+            vScroll.addSubview(btnContinue)
+            btnContinue.snp.makeConstraints { make in
+                make.top.equalTo(btnDescrAction.snp.bottom).offset(16)
+                make.left.right.equalToSuperview().inset(16)
+                make.height.equalTo(44)
+            }
+        } else {
+            lblDescr.numberOfLines = 3
+            
+            vScroll.addSubview(btnContinue)
+            btnContinue.snp.makeConstraints { make in
+                make.top.equalTo(lblDescr.snp.bottom).offset(16)
+                make.left.right.equalToSuperview().inset(16)
+                make.height.equalTo(44)
+            }
         }
         
         vScroll.addSubview(vDivider)
@@ -193,6 +150,13 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             make.top.equalTo(vDivider.snp.bottom).offset(16)
             make.left.right.equalToSuperview().inset(16)
         }
+        
+        view.layoutIfNeeded()
+        
+        let collectionViewHeight = MDLayout.screenHeight - (
+            appBar!.frame.height + 16 + btnContinue.frame.height + 16 +
+            vDivider.frame.height + 16 + lblChapters.frame.height + 16
+        )
         
         let collectionLayout = UICollectionViewFlowLayout()
         collectionLayout.itemSize = .init(
@@ -213,12 +177,73 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         vChapters.snp.makeConstraints { make in
             make.top.equalTo(lblChapters.snp.bottom).offset(16)
             make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(view)
+            make.height.equalTo(collectionViewHeight)
         }
     }
     
     override func didSetupUI() {
         vScroll.mj_header?.beginRefreshing()
+    }
+    
+    // MARK: - Expand Description
+    
+    private lazy var btnDescrActionConfUpdateHandler: UIButton.ConfigurationUpdateHandler = { button in
+        var newConfig = button.configuration!
+        var container = AttributeContainer()
+        container.font = .systemFont(ofSize: 14)
+        if self.isExpanded {
+            newConfig.image = .init(named: "icon_expand_less")
+            newConfig.attributedTitle = AttributedString(
+                "kMangaDetailDescrLess".localized(), attributes: container
+            )
+        } else {
+            newConfig.image = .init(named: "icon_expand_more")
+            newConfig.attributedTitle = AttributedString(
+                "kMangaDetailDescrMore".localized(), attributes: container
+            )
+        }
+        button.configuration = newConfig
+    }
+    
+    private lazy var btnDescrActionConf = {
+        var conf = UIButton.Configuration.plain()
+        conf.buttonSize = .small
+        conf.image = .init(named: "icon_expand_more")
+        conf.imagePadding = 4
+        conf.baseForegroundColor = .primaryTextColor
+        return conf
+    }()
+    
+    private lazy var btnDescrAction = UIButton(
+        configuration: btnDescrActionConf,
+        primaryAction: UIAction { _ in self.expandFoldDescription() }
+    ).apply { button in
+        button.configurationUpdateHandler = self.btnDescrActionConfUpdateHandler
+    }
+    
+    private var isExpanded = false
+    
+    private var descrMinHeight: CGFloat!
+    private var descrExpandDuration: TimeInterval!
+    
+    private func expandFoldDescription() {
+        if isExpanded {
+            lblDescr.snp.remakeConstraints { make in
+                make.top.equalTo(vHeader.snp.bottom).offset(8)
+                make.left.right.equalToSuperview().inset(16)
+                make.height.equalTo(self.descrMinHeight)
+            }
+        } else {
+            lblDescr.snp.remakeConstraints { make in
+                make.top.equalTo(vHeader.snp.bottom).offset(8)
+                make.left.right.equalToSuperview().inset(16)
+            }
+        }
+        isExpanded = !isExpanded
+        btnDescrAction.setNeedsUpdateConfiguration()
+        UIView.animate(withDuration: descrExpandDuration) {
+            self.vScroll.layoutIfNeeded()
+        }
     }
     
     // MARK: - Button Continue
@@ -232,9 +257,11 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             self.viewManga(atIndexPath: self.lastViewedChapterIndex)
         }
     ).apply { button in
+        button.layer.cornerRadius = 22
         button.theme_backgroundColor = UIColor.theme_primaryColor
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.white, for: .normal)
+        button.setTitle("kMangaActionStartOver".localized(), for: .normal)
     }
     
     override func doOnAppear() {
@@ -248,15 +275,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         .lightContent
     }
     
-    // MARK: - Actions
-    @objc private func expandDescrption() {
-        lblDescr.numberOfLines = 0
-        vDescrMore.removeFromSuperview()
-        UIView.animate(withDuration: 0.3) {
-            self.lblDescr.sizeToFit()
-            self.vScroll.layoutIfNeeded()
-        }
-    }
+    // MARK: - Fetch Data
     
     private func fetchData() {
         _ = firstly {
@@ -334,7 +353,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     }
 }
 
-// MARK: - CollectionView Delegate
+// MARK: - CollectionViewDelegate
 extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         chapterModels.count
@@ -361,11 +380,11 @@ extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionVie
     }
 }
 
-// MARK: - ScrollView Mechanism
+// MARK: - Double ScrollView Mechanism
 extension MDMangaDetailViewController: UIScrollViewDelegate {
     
     private var parentMaxContentOffsetY: CGFloat {
-        lblDescr.frame.origin.y + lblDescr.frame.height
+        btnContinue.frame.origin.y - 16
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

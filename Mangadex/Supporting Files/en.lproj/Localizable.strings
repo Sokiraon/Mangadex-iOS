@@ -69,6 +69,7 @@
 
 "kMangaDetailDescr" = "About this manga";
 "kMangaDetailDescrMore" = "More";
+"kMangaDetailDescrLess" = "Less";
 "kMangaDetailNoDescr" = "Not available";
 "kMangaDetailChapters" = "Chapters";
 

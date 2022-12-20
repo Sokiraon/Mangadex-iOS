@@ -22,7 +22,6 @@ target "Mangadex" do
   pod 'SwiftEntryKit', '2.0.0'
   pod 'FlagKit'
   pod "PromiseKit", "~> 6.17.1"
-  pod 'Down'
   pod 'MJRefresh', :git => 'https://github.com/Sokiraon/MJRefresh.git'
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'
