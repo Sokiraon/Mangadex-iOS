@@ -155,12 +155,8 @@ class MDMangaSlideViewController: MDViewController {
                      leavePageAction: (() -> Void)!
     ) {
         self.init()
-        if chapterInfo.attributes.title.isBlank {
-            viewTitle = "\(chapterInfo.attributes.chapter!) \("kChapter".localized())"
-        } else {
-            viewTitle = chapterInfo.attributes.title!
-        }
         self.chapterInfo = chapterInfo
+        self.viewTitle = chapterInfo.attributes.chapterNameToDisplay
         self.currentIndex = currentIndex
         self.requirePrev = requirePrevAction
         self.requireNext = requireNextAction

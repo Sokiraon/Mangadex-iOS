@@ -19,7 +19,8 @@ extension UIColor {
     
     static let black2D2E2F = fromHex("2d2e2f")
     
-    static let primaryTextColor = black2D2E2F
+    static let primaryText = black2D2E2F
+    static let secondaryText = darkerGray565656
     
     // 蔚蓝
     static let cerulean700 = fromHex("0084ba")

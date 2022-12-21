@@ -73,10 +73,18 @@
 "kMangaDetailNoDescr" = "Not available";
 "kMangaDetailChapters" = "Chapters";
 
-"kTimeDeltaOneYear" = "1 year";
-"kTimeDeltaYears" = "%d years";
-"kTimeDeltaOneMonth" = "1 month";
-"kTimeDeltaMonths" = "%d months";
-"kTimeDeltaOneDay" = "1 day";
-"kTimeDeltaDays" = "%d days";
-"kTimeDeltaToday" = "today";
+"kMangaChapterNameSimple" = "Ch. %@";
+"kMangaChapterNameDetailed" = "Ch. %@ - %@";
+"kMangaChapterNameNull" = "[Null]";
+
+"kTimeDeltaOneYear" = "1 year ago";
+"kTimeDeltaYears" = "%d years ago";
+"kTimeDeltaOneMonth" = "1 month ago";
+"kTimeDeltaMonths" = "%d months ago";
+"kTimeDeltaOneDay" = "1 day ago";
+"kTimeDeltaDays" = "%d days ago";
+"kTimeDeltaOneHour" = "1 hour ago";
+"kTimeDeltaHours" = "%d hours ago";
+"kTimeDeltaOneMinute" = "1 minute ago";
+"kTimeDeltaMinutes" = "%d minutes ago";
+"kTimeDeltaLatest" = "in a minute";

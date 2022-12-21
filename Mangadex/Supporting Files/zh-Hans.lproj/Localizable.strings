@@ -158,10 +158,18 @@
 "kMangaDetailNoDescr" = "暂无";
 "kMangaDetailChapters" = "章节";
 
-"kTimeDeltaOneYear" = "1年";
-"kTimeDeltaYears" = "%d年";
-"kTimeDeltaOneMonth" = "1个月";
-"kTimeDeltaMonths" = "%d个月";
-"kTimeDeltaOneDay" = "1天";
-"kTimeDeltaDays" = "%d天";
-"kTimeDeltaToday" = "今天";
+"kMangaChapterNameSimple" = "%@ 话";
+"kMangaChapterNameDetailed" = "%@ 话 - %@";
+"kMangaChapterNameNull" = "[无标题]";
+
+"kTimeDeltaOneYear" = "1 年前";
+"kTimeDeltaYears" = "%d 年前";
+"kTimeDeltaOneMonth" = "1 个月前";
+"kTimeDeltaMonths" = "%d 个月前";
+"kTimeDeltaOneDay" = "1 天前";
+"kTimeDeltaDays" = "%d 天前";
+"kTimeDeltaOneHour" = "1 小时前";
+"kTimeDeltaHours" = "%d 小时前";
+"kTimeDeltaOneMinute" = "1 分钟前";
+"kTimeDeltaMinutes" = "%d 分钟前";
+"kTimeDeltaLatest" = "1 分钟内";

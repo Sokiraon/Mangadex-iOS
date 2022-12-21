@@ -33,7 +33,7 @@ class MDMangaAuthor: NSObject, YYModel {
     @objc var type: String!
     @objc var attributes: MDMangaAuthorAttributes!
     
-    convenience init(relationshipItem: MDMangaRelationshipItem) {
+    convenience init(relationshipItem: MDRelationshipModel) {
         self.init()
         id = relationshipItem.id
         type = relationshipItem.type

@@ -12,9 +12,9 @@ import YYModel
 
 extension MDRequests {
     enum Chapter {
-        enum ChapterOrder: String {
-            case ASC = "asc"
-            case DESC = "desc"
+        enum Order: String {
+            case asc = "asc"
+            case desc = "desc"
         }
         
         struct MangaChapterList {
@@ -37,22 +37,24 @@ extension MDRequests {
             mangaId: String,
             offset: Int,
             locale: String,
-            order: ChapterOrder
+            order: Order
         ) -> Promise<MangaChapterList> {
             return Promise { seal in
                 firstly {
                     MDRequests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
                         "offset": offset,
+                        "includes[]": [ "scanlation_group", "user" ],
                         "translatedLanguage[]": locale,
                         "order[chapter]": order.rawValue
                     ])
                 }
                     .done { json in
-                        let total = json["total"] as! Int
-                        let results = json["data"] as! Array<[String: Any]>
+                        let json = JSON(json)
+                        let total = json["total"].intValue
+                        let results = json["data"].arrayObject
                         let models = NSArray.yy_modelArray(
                             with: MDMangaChapterInfoModel.classForCoder(),
-                            json: results
+                            json: results ?? []
                         )
                         if let data = models as? [MDMangaChapterInfoModel] {
                             seal.fulfill(MangaChapterList(total: total, data: data))

@@ -33,7 +33,8 @@
 		051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051BE390288ACF6800FE172A /* MDRequests+Auth.swift */; };
 		0530A89028C1F8DD00B4702B /* MDRequests+Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A88F28C1F8DD00B4702B /* MDRequests+Author.swift */; };
 		0530A89228C1F92C00B4702B /* MDMangaAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A89128C1F92C00B4702B /* MDMangaAuthor.swift */; };
-		0530A89428C22BF400B4702B /* MDMangaRelationshipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A89328C22BF400B4702B /* MDMangaRelationshipItem.swift */; };
+		0530A89428C22BF400B4702B /* MDRelationshipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0530A89328C22BF400B4702B /* MDRelationshipModel.swift */; };
+		055DB92929534E3A0077B836 /* MDScanlationGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 055DB92829534E3A0077B836 /* MDScanlationGroupModel.swift */; };
 		0564F0B02889830A00222504 /* MDRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0564F0AF2889830A00222504 /* MDRequests.swift */; };
 		05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */; };
 		05AE0ECC28B51B2500FE4107 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */; };
@@ -60,8 +61,6 @@
 		7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */; };
 		7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */; };
 		7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */; };
-		7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */; };
-		7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */; };
 		7A53407F26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */; };
 		7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */; };
 		7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */; };
@@ -143,7 +142,8 @@
 		051BE390288ACF6800FE172A /* MDRequests+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDRequests+Auth.swift"; sourceTree = "<group>"; };
 		0530A88F28C1F8DD00B4702B /* MDRequests+Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MDRequests+Author.swift"; sourceTree = "<group>"; };
 		0530A89128C1F92C00B4702B /* MDMangaAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaAuthor.swift; sourceTree = "<group>"; };
-		0530A89328C22BF400B4702B /* MDMangaRelationshipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaRelationshipItem.swift; sourceTree = "<group>"; };
+		0530A89328C22BF400B4702B /* MDRelationshipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRelationshipModel.swift; sourceTree = "<group>"; };
+		055DB92829534E3A0077B836 /* MDScanlationGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDScanlationGroupModel.swift; sourceTree = "<group>"; };
 		0564F0AF2889830A00222504 /* MDRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRequests.swift; sourceTree = "<group>"; };
 		05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailHeaderView.swift; sourceTree = "<group>"; };
 		05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -172,8 +172,6 @@
 		7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaProgressManager.swift; sourceTree = "<group>"; };
 		7A3FA32D26B4FDA100C4E2EF /* MDUserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDUserDefaultsManager.swift; sourceTree = "<group>"; };
 		7A53407826886258003CE4C1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailTabViewController.swift; sourceTree = "<group>"; };
-		7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailChapterViewController.swift; sourceTree = "<group>"; };
 		7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailInfoViewController.swift; sourceTree = "<group>"; };
 		7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaChapterDataModel.swift; sourceTree = "<group>"; };
 		7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideCollectionCell.swift; sourceTree = "<group>"; };
@@ -270,6 +268,7 @@
 		00170962264FA3A9005BEE67 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				055DB92729534E0D0077B836 /* Group */,
 				0530A88E28C1F8CC00B4702B /* Author */,
 				051BE38F288ACF5900FE172A /* Auth */,
 				7A53408126887D51003CE4C1 /* User */,
@@ -390,6 +389,14 @@
 			path = Author;
 			sourceTree = "<group>";
 		};
+		055DB92729534E0D0077B836 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				055DB92829534E3A0077B836 /* MDScanlationGroupModel.swift */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
 		7A3319DA26AD33600015D9D1 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -427,8 +434,6 @@
 		7A53408026887873003CE4C1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				7A53407926886966003CE4C1 /* MDMangaDetailTabViewController.swift */,
-				7A53407C26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift */,
 				7A53407E26886CB4003CE4C1 /* MDMangaDetailInfoViewController.swift */,
 			);
 			path = Tabs;
@@ -503,7 +508,7 @@
 				390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */,
 				568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */,
 				568E5F3082DC8D4E34F1C632 /* MangaStatisticsModel.swift */,
-				0530A89328C22BF400B4702B /* MDMangaRelationshipItem.swift */,
+				0530A89328C22BF400B4702B /* MDRelationshipModel.swift */,
 			);
 			path = Manga;
 			sourceTree = "<group>";
@@ -792,9 +797,9 @@
 				B8E3973C278ED0D000B42760 /* MDLangSettingCollectionCell.swift in Sources */,
 				05B4FB0F29516C2400E6C0B4 /* Array+Ext.swift in Sources */,
 				0008100F2661F681009C1005 /* MDLayout.swift in Sources */,
-				7A53407D26886C82003CE4C1 /* MDMangaDetailChapterViewController.swift in Sources */,
 				B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */,
 				051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */,
+				055DB92929534E3A0077B836 /* MDScanlationGroupModel.swift in Sources */,
 				05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */,
 				00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */,
 				000810172662125B009C1005 /* MDFollowedMangaViewController.swift in Sources */,
@@ -816,7 +821,6 @@
 				B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */,
 				7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */,
 				051BE38A288A49AF00FE172A /* MDRequests+User.swift in Sources */,
-				7A53407A26886966003CE4C1 /* MDMangaDetailTabViewController.swift in Sources */,
 				05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */,
 				004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */,
 				00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */,
@@ -844,7 +848,7 @@
 				05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */,
 				390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */,
 				051BE38E288A770000FE172A /* MDRequests+Chapter.swift in Sources */,
-				0530A89428C22BF400B4702B /* MDMangaRelationshipItem.swift in Sources */,
+				0530A89428C22BF400B4702B /* MDRelationshipModel.swift in Sources */,
 				B8E39738278EAF1100B42760 /* MDSettingsManager.swift in Sources */,
 				390E7B8FC16D467464DB04B6 /* UIImageView+Ext.swift in Sources */,
 				390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */,

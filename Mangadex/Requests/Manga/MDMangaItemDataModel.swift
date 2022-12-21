@@ -116,10 +116,10 @@ class MDMangaItemAttributes: NSObject, YYModel {
 class MDMangaItemDataModel: NSObject, YYModel {
     @objc var id: String!
     @objc var attributes: MDMangaItemAttributes!
-    @objc var relationships: [MDMangaRelationshipItem]!
+    @objc var relationships: [MDRelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["relationships": MDMangaRelationshipItem.classForCoder()]
+        ["relationships": MDRelationshipModel.classForCoder()]
     }
     
     var authors: [MDMangaAuthor] {

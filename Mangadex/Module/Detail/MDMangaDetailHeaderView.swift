@@ -21,10 +21,10 @@ class MDMangaDetailHeaderView: UIView {
     )
     private let ivAuthor = UIImageView(imageNamed: "icon_person", color: .black2D2E2F)
     private let btnAuthor = UIButton(type: .system).apply { button in
-        button.titleLabel?.font = .systemFont(ofSize: 14)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         button.theme_setTitleColor(UIColor.theme_darkColor, forState: .normal)
     }
-    private let lblAbout = UILabel(fontSize: 16, fontWeight: .medium)
+    private let lblAbout = UILabel(fontWeight: .medium)
     
     private var mangaModel: MDMangaItemDataModel!
     
@@ -37,7 +37,7 @@ class MDMangaDetailHeaderView: UIView {
         conf.imagePadding = 4
         conf.contentInsets = .init(top: 8, leading: 16, bottom: 8, trailing: 16)
         conf.image = .init(named: "icon_favorite")
-        conf.baseForegroundColor = .primaryTextColor
+        conf.baseForegroundColor = .primaryText
         conf.baseBackgroundColor = .themeLight
         
         var container = AttributeContainer()

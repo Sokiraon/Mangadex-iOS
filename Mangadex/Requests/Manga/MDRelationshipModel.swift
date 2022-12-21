@@ -1,5 +1,5 @@
 //
-//  MDMangaRelationshipItem.swift
+//  MDRelationshipModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 9/2/22.
@@ -18,7 +18,7 @@ class MDMangaCoverAttributes: NSObject {
     }
 }
 
-class MDMangaRelationshipItem: NSObject, YYModel {
+class MDRelationshipModel: NSObject, YYModel {
     @objc var id: String!
     @objc var type: String!
     @objc var attributes: [String: Any]!

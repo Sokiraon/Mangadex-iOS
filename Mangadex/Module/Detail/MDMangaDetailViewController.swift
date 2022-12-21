@@ -17,7 +17,7 @@ import TTTAttributedLabel
 import SafariServices
 import MarkdownKit
 
-/// Define a custom collectionView here to allow it to scroll with another scrollView
+/// Define a custom collectionView here to allow it to scroll with another scrollView.
 private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     func gestureRecognizer(
         _ gestureRecognizer: UIGestureRecognizer,
@@ -27,7 +27,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     }
 }
 
-class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate {
+class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
     
     private var mangaModel: MDMangaItemDataModel!
     
@@ -41,11 +41,11 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     
     private let vDivider = UIView(style: .line)
     
-    private let lblChapters = UILabel(fontSize: 20, fontWeight: .medium)
+    private let lblChapters = UILabel(fontWeight: .medium)
     private var vChapters: MyCollectionView!
     
     private var chapterModels = [MDMangaChapterInfoModel]()
-    private var totalChapters: Int!
+    private var totalChapters = 0
     
     // MARK: - Lifecycle
     convenience init(mangaModel: MDMangaItemDataModel) {
@@ -61,6 +61,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         vScroll.delegate = self
         vScroll.delaysContentTouches = false
         vScroll.showsVerticalScrollIndicator = false
+        vScroll.contentInsetAdjustmentBehavior = .never
         vScroll.mj_header = refreshHeader
         
         view.addSubview(vScroll)
@@ -148,7 +149,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         lblChapters.text = "kMangaDetailChapters".localized()
         lblChapters.snp.makeConstraints { make in
             make.top.equalTo(vDivider.snp.bottom).offset(16)
-            make.left.right.equalToSuperview().inset(16)
+            make.left.equalToSuperview().inset(16)
         }
         
         view.layoutIfNeeded()
@@ -158,19 +159,24 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             vDivider.frame.height + 16 + lblChapters.frame.height + 16
         )
         
-        let collectionLayout = UICollectionViewFlowLayout()
-        collectionLayout.itemSize = .init(
-            width: (MDLayout.screenWidth - 2 * 16 - 3 * 10) / 4, height: 45
-        )
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.minimumLineSpacing = 8
+        collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
         vChapters = MyCollectionView(
-            frame: .zero, collectionViewLayout: collectionLayout
+            frame: .zero, collectionViewLayout: collectionViewLayout
         )
+        vChapters.bounces = false
         vChapters.delegate = self
         vChapters.dataSource = self
-        vChapters.contentInset = .cssStyle(0, 16, MDLayout.adjustedSafeInsetBottom)
         vChapters.showsVerticalScrollIndicator = false
+        
+        vChapters.contentInset = .cssStyle(0, 16, MDLayout.adjustedSafeInsetBottom)
         vChapters.register(
             MDMangaDetailChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter"
+        )
+        vChapters.register(
+            MDCollectionLoadingCell.self, forCellWithReuseIdentifier: "loader"
         )
         
         vScroll.addSubview(vChapters)
@@ -183,6 +189,10 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     
     override func didSetupUI() {
         vScroll.mj_header?.beginRefreshing()
+    }
+    
+    override func doOnAppear() {
+        retrieveMangaProgress()
     }
     
     // MARK: - Expand Description
@@ -210,7 +220,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         conf.buttonSize = .small
         conf.image = .init(named: "icon_expand_more")
         conf.imagePadding = 4
-        conf.baseForegroundColor = .primaryTextColor
+        conf.baseForegroundColor = .primaryText
         return conf
     }()
     
@@ -264,7 +274,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         button.setTitle("kMangaActionStartOver".localized(), for: .normal)
     }
     
-    override func doOnAppear() {
+    private func retrieveMangaProgress() {
         lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: mangaModel.id)
         if lastViewedChapterId != nil {
             btnContinue.setTitle("kMangaActionContinue".localized(), for: .normal)
@@ -277,14 +287,17 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
     
     // MARK: - Fetch Data
     
+    private var chapterOrder = MDRequests.Chapter.Order.desc
+    private var chapterLocale = MDLocale.currentMangaLanguage
+    
     private func fetchData() {
         _ = firstly {
             when(fulfilled: MDRequests.Manga.getReadingStatus(mangaId: mangaModel.id),
                  MDRequests.Chapter.getListForManga(
                      mangaId: mangaModel.id,
                      offset: 0,
-                     locale: MDLocale.currentMangaLanguage,
-                     order: .ASC
+                     locale: chapterLocale,
+                     order: chapterOrder
                  )
             )
         }.done { readingStatus, chapters in
@@ -307,8 +320,8 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
             MDRequests.Chapter.getListForManga(
                 mangaId: mangaModel.id,
                 offset: chapterModels.count,
-                locale: MDLocale.currentMangaLanguage,
-                order: .ASC
+                locale: chapterLocale,
+                order: chapterOrder
             )
         }.done { result in
             DispatchQueue.main.async {
@@ -316,11 +329,6 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
                 self.totalChapters = result.total
                 
                 self.vChapters.reloadData()
-                self.vChapters.mj_footer?.endRefreshing()
-                
-                if self.chapterModels.count == self.totalChapters {
-                    self.vChapters.mj_footer?.isHidden = true
-                }
             }
         }
     }
@@ -351,54 +359,113 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate 
         let vc = SFSafariViewController(url: url)
         self.present(vc, animated: true)
     }
+    
+    // MARK: - Double ScrollView Mechanism
+    private var parentScrollViewMaxContentOffsetY: CGFloat {
+        btnContinue.frame.origin.y - 16
+    }
+    
+    private var hasParentScrollViewReachedMax = false
+    private var isChildScrollViewScrollable: Bool {
+        vChapters.contentSize.height > vChapters.frame.height
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard isChildScrollViewScrollable else {
+            return
+        }
+        if hasParentScrollViewReachedMax && (
+            vChapters.contentOffset.y > 0 ||
+            vScroll.contentOffset.y >= parentScrollViewMaxContentOffsetY
+        ) {
+            vScroll.contentOffset.y = parentScrollViewMaxContentOffsetY
+            return
+        }
+        if vScroll.contentOffset.y >= parentScrollViewMaxContentOffsetY {
+            // Set the flag
+            hasParentScrollViewReachedMax = true
+        } else {
+            // Child scrollView is not allowed to scroll,
+            // if parent scrollView hasn't reached the desired place.
+            hasParentScrollViewReachedMax = false
+            vChapters.contentOffset.y = 0
+        }
+    }
 }
 
 // MARK: - CollectionViewDelegate
 extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    enum CollectionSection: Int {
+        case chapterList
+        case loader
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        chapterModels.count
+        guard let section = CollectionSection(rawValue: section) else {
+            return 0
+        }
+        switch section {
+        case .chapterList:
+            return chapterModels.count
+        case .loader:
+            return chapterModels.count < totalChapters ? 1 : 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "chapter",
-            for: indexPath
-        ) as! MDMangaDetailChapterCollectionCell
-        
-        let model = chapterModels[indexPath.row]
-        let lastViewed = model.id == lastViewedChapterId
-        if lastViewed {
-            lastViewedChapterIndex = indexPath
+        guard let section = CollectionSection(rawValue: indexPath.section) else {
+            return UICollectionViewCell()
         }
-        cell.update(model: model, lastViewed: lastViewed)
+        switch section {
+        case .chapterList:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "chapter",
+                for: indexPath
+            ) as! MDMangaDetailChapterCollectionCell
+            
+            let model = chapterModels[indexPath.row]
+            let lastViewed = model.id == lastViewedChapterId
+            if lastViewed {
+                lastViewedChapterIndex = indexPath
+            }
+            cell.update(model: model, lastViewed: lastViewed)
+            return cell
+            
+        case .loader:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "loader",
+                for: indexPath
+            )
+            return cell
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let section = CollectionSection(rawValue: indexPath.section) else {
+            return
+        }
+        guard !chapterModels.isEmpty else { return }
         
-        return cell
+        if section == .loader {
+            loadMoreChapters()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewManga(atIndexPath: indexPath)
-    }
-}
-
-// MARK: - Double ScrollView Mechanism
-extension MDMangaDetailViewController: UIScrollViewDelegate {
-    
-    private var parentMaxContentOffsetY: CGFloat {
-        btnContinue.frame.origin.y - 16
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let isScrollingUp = scrollView.panGestureRecognizer.translation(in: scrollView).y < 0
-        if isScrollingUp {
-            if vScroll.contentOffset.y >= parentMaxContentOffsetY {
-                vScroll.contentOffset.y = parentMaxContentOffsetY
-            } else {
-                vChapters.contentOffset.y = 0
-            }
-        } else {
-            if vChapters.contentOffset.y > 0 {
-                vScroll.contentOffset.y = parentMaxContentOffsetY
-            }
+        guard let section = CollectionSection(rawValue: indexPath.section) else {
+            return
+        }
+        if section == .chapterList {
+            viewManga(atIndexPath: indexPath)
         }
     }
 }

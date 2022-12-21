@@ -42,9 +42,11 @@ class MDFormatter {
             return "N/A"
         }
         let dateDelta = Int(abs(Date.now.timeIntervalSinceReferenceDate - date.timeIntervalSinceReferenceDate))
-        let dayLength = 3600 * 24
-        let monthLength = dayLength * 30
-        let yearLength = dayLength * 365
+        let minuteLength = 60
+        let hourLength = 60 * minuteLength
+        let dayLength = 24 * hourLength
+        let monthLength = 30 * dayLength
+        let yearLength = 365 * dayLength
         if dateDelta >= yearLength {
             let years = dateDelta / yearLength
             if years > 1 {
@@ -66,8 +68,22 @@ class MDFormatter {
             } else {
                 return "kTimeDeltaOneDay".localized()
             }
+        } else if dateDelta >= hourLength {
+            let hours = dateDelta / hourLength
+            if hours > 1 {
+                return "kTimeDeltaHours".localizedFormat(hours)
+            } else {
+                return "kTimeDeltaOneHour".localized()
+            }
+        } else if dateDelta >= minuteLength {
+            let minutes = dateDelta / minuteLength
+            if minutes > 1 {
+                return "kTimeDeltaMinutes".localizedFormat(minutes)
+            } else {
+                return "kTimeDeltaOneMinute".localized()
+            }
         } else {
-            return "kTimeDeltaToday".localized()
+            return "kTimeDeltaLatest".localized()
         }
     }
 }
