@@ -44,18 +44,18 @@ extension UIColor {
     static let coral100 = fromHex("fed0c1")
     static let coral50 = fromHex("faebe9")
     
-    static let theme_primaryColor = ThemeColorPicker(
+    static let themePrimaryPicker = ThemeColorPicker(
         colors: cerulean400, teal300, coral400
     )
-    static let theme_darkColor = ThemeColorPicker(
+    static let themeDarkPicker = ThemeColorPicker(
         colors: cerulean700, teal600, coral800
     )
-    static let theme_primaryCgColor = ThemeCGColorPicker(
+    static let themePrimaryCgPicker = ThemeCGColorPicker(
         colors: cerulean400.cgColor, teal300.cgColor, coral400.cgColor
     )
-    static let theme_lightColor = ThemeColorPicker(colors: cerulean200, teal200, coral200)
-    static let theme_lighterColor = ThemeColorPicker(colors: cerulean100, teal100, coral100)
-    static let theme_lightestColor = ThemeColorPicker(colors: cerulean50, teal50, coral50)
+    static let themeLightPicker = ThemeColorPicker(colors: cerulean200, teal200, coral200)
+    static let themeLighterPicker = ThemeColorPicker(colors: cerulean100, teal100, coral100)
+    static let themeLightestPicker = ThemeColorPicker(colors: cerulean50, teal50, coral50)
     
     static let primaryColors = [cerulean400, teal300, coral400]
     static let lightColors = [cerulean200, teal200, coral200]

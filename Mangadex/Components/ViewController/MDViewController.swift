@@ -9,9 +9,6 @@ import Foundation
 import UIKit
 
 class MDViewController: UIViewController {
-    internal var viewTitle: String = ""
-    internal var appBar: MDAppBar?
-
     ///
     /// Called at viewDidLoad, before setupUI().
     ///
@@ -42,16 +39,14 @@ class MDViewController: UIViewController {
     /// You may use this func to save progress.
     internal func willLeavePage() {}
     
+    internal lazy var appBar = MDAppBar()
     ///
     /// Used for setting up top navigation bar.
-    /// - Parameters:
-    ///   - backgroundColor: color for bar background, this will be used for generating color for bar text by **reversing**
-    internal func setupNavBar(backgroundColor: UIColor? = nil) {
-        appBar = MDAppBar(title: viewTitle, backgroundColor: backgroundColor)
-        appBar?.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+    internal func setupNavBar() {
+        appBar.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         
-        view.addSubview(appBar!)
-        appBar!.snp.makeConstraints { make in
+        view.addSubview(appBar)
+        appBar.snp.makeConstraints { make in
             make.top.equalTo(view)
             make.width.equalTo(MDLayout.screenWidth)
             make.height.equalTo(MDLayout.safeInsetTop + 44)

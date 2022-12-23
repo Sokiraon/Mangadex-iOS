@@ -24,7 +24,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         
         field.layer.borderWidth = 2
         field.layer.cornerRadius = 4
-        field.layer.theme_borderColor = UIColor.theme_primaryCgColor
+        field.layer.theme_borderColor = UIColor.themePrimaryCgPicker
     }
     
     lazy var fieldPassword = MDTextField().apply { field in
@@ -37,7 +37,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         
         field.layer.borderWidth = 2
         field.layer.cornerRadius = 4
-        field.layer.theme_borderColor = UIColor.theme_primaryCgColor
+        field.layer.theme_borderColor = UIColor.themePrimaryCgPicker
     }
     
     private lazy var btnLogin = MDButton(variant: .contained).apply { button in

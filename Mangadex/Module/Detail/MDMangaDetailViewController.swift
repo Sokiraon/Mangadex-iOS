@@ -39,12 +39,14 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     private lazy var vHeader = MDMangaDetailHeaderView(mangaModel: mangaModel)
     private let lblDescr = TTTAttributedLabel()
     
-    private let vDivider = UIView(style: .line)
+    private let vDivider = UIView(backgroundColor: .grayDFDFDF)
+    private let vDivider2 = UIView(backgroundColor: .grayDFDFDF)
     
-    private let lblChapters = UILabel(fontWeight: .medium)
+    private let lblChapters = UILabel(fontSize: 18, fontWeight: .medium)
+    private let vChaptersHeader = UIView()
     private var vChapters: MyCollectionView!
     
-    private var chapterModels = [MDMangaChapterInfoModel]()
+    private var chapterModels = [MDMangaChapterModel]()
     private var totalChapters = 0
     
     // MARK: - Lifecycle
@@ -55,6 +57,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     
     override func setupUI() {
         setupNavBar()
+        appBar.theme_backgroundColor = UIColor.themePrimaryPicker
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
@@ -66,7 +69,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
         
         view.addSubview(vScroll)
         vScroll.snp.makeConstraints { make in
-            make.top.equalTo(appBar!.snp.bottom)
+            make.top.equalTo(appBar.snp.bottom)
             make.left.right.bottom.equalToSuperview()
         }
         
@@ -139,28 +142,48 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
             }
         }
         
-        vScroll.addSubview(vDivider)
-        vDivider.snp.makeConstraints { make in
+        vScroll.addSubview(vChaptersHeader)
+        vChaptersHeader.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
             make.top.equalTo(btnContinue.snp.bottom).offset(16)
+        }
+        
+        vChaptersHeader.addSubview(vDivider)
+        vDivider.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(0.67)
             make.left.right.equalToSuperview().inset(16)
         }
         
-        vScroll.addSubview(lblChapters)
+        vChaptersHeader.addSubview(lblChapters)
         lblChapters.text = "kMangaDetailChapters".localized()
         lblChapters.snp.makeConstraints { make in
             make.top.equalTo(vDivider.snp.bottom).offset(16)
             make.left.equalToSuperview().inset(16)
         }
         
+        vChaptersHeader.addSubview(btnOrder)
+        btnOrder.snp.makeConstraints { make in
+            make.centerY.equalTo(lblChapters)
+            make.right.equalToSuperview().inset(16)
+        }
+        
+        vChaptersHeader.addSubview(vDivider2)
+        vDivider2.snp.makeConstraints { make in
+            make.top.equalTo(lblChapters.snp.bottom).offset(16)
+            make.height.equalTo(0.67)
+            make.left.right.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
+        }
+        
         view.layoutIfNeeded()
         
         let collectionViewHeight = MDLayout.screenHeight - (
-            appBar!.frame.height + 16 + btnContinue.frame.height + 16 +
-            vDivider.frame.height + 16 + lblChapters.frame.height + 16
+            appBar.frame.height + 16 + btnContinue.frame.height + 16 + vChaptersHeader.frame.height
         )
         
         let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.minimumLineSpacing = 8
+        collectionViewLayout.minimumLineSpacing = 0
         collectionViewLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         vChapters = MyCollectionView(
@@ -181,7 +204,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
         
         vScroll.addSubview(vChapters)
         vChapters.snp.makeConstraints { make in
-            make.top.equalTo(lblChapters.snp.bottom).offset(16)
+            make.top.equalTo(vChaptersHeader.snp.bottom)
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(collectionViewHeight)
         }
@@ -259,16 +282,15 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     // MARK: - Button Continue
     
     private var lastViewedChapterId: String?
-    private var lastViewedChapterIndex = IndexPath(row: 0, section: 0)
     
     private lazy var btnContinue = UIButton(
         type: .system,
         primaryAction: UIAction { _ in
-            self.viewManga(atIndexPath: self.lastViewedChapterIndex)
+            self.viewChapter(id: self.lastViewedChapterId)
         }
     ).apply { button in
         button.layer.cornerRadius = 22
-        button.theme_backgroundColor = UIColor.theme_primaryColor
+        button.theme_backgroundColor = UIColor.themePrimaryPicker
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.setTitleColor(.white, for: .normal)
         button.setTitle("kMangaActionStartOver".localized(), for: .normal)
@@ -290,6 +312,43 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     private var chapterOrder = MDRequests.Chapter.Order.desc
     private var chapterLocale = MDLocale.currentMangaLanguage
     
+    private lazy var btnOrder: UIButton = {
+        var conf = UIButton.Configuration.plain()
+        conf.contentInsets = .zero
+        conf.imagePlacement = .trailing
+        conf.baseForegroundColor = .primaryText
+        
+        let button = UIButton(
+            configuration: conf,
+            primaryAction: UIAction { _ in
+                self.updateChapterOrder()
+            }
+        )
+        button.configurationUpdateHandler = { button in
+            var conf = button.configuration
+            let imageSize = CGSize(width: 20, height: 20)
+            if self.chapterOrder == .asc {
+                conf?.title = "Ascending".localized()
+                conf?.image = .init(named: "icon_arrow_upward")?.resized(imageSize)
+            } else {
+                conf?.title = "Descending".localized()
+                conf?.image = .init(named: "icon_arrow_downward")?.resized(imageSize)
+            }
+            button.configuration = conf
+        }
+        return button
+    }()
+    
+    private func updateChapterOrder() {
+        if chapterOrder == .desc {
+            chapterOrder = .asc
+        } else {
+            chapterOrder = .desc
+        }
+        btnOrder.setNeedsUpdateConfiguration()
+        vScroll.mj_header?.beginRefreshing()
+    }
+    
     private func fetchData() {
         _ = firstly {
             when(fulfilled: MDRequests.Manga.getReadingStatus(mangaId: mangaModel.id),
@@ -309,6 +368,10 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
                 self.vHeader.update(readingStatus: readingStatus)
             }
         }.ensure {
+            // If found no chapters, do not allow user to click the view button.
+            if self.chapterModels.isEmpty {
+                self.btnContinue.isUserInteractionEnabled = false
+            }
             DispatchQueue.main.async {
                 self.vScroll.mj_header?.endRefreshing()
             }
@@ -324,33 +387,18 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
                 order: chapterOrder
             )
         }.done { result in
+            self.chapterModels.append(contentsOf: result.data)
+            self.totalChapters = result.total
+            
             DispatchQueue.main.async {
-                self.chapterModels.append(contentsOf: result.data)
-                self.totalChapters = result.total
-                
                 self.vChapters.reloadData()
             }
         }
     }
     
-    private func viewManga(atIndexPath indexPath: IndexPath) {
-        let vc = MDMangaSlideViewController(
-            chapterInfo: chapterModels[indexPath.row],
-            currentIndex: indexPath.row,
-            requirePrevAction: { index in
-                index > 0 ? self.chapterModels[index - 1] : nil
-            },
-            requireNextAction: { index in
-                index < self.chapterModels.count - 1 ? self.chapterModels[index + 1] : nil
-            },
-            enterPageAction: { chapterId in
-                MDMangaProgressManager.saveProgress(forMangaId: self.mangaModel.id, chapterId: chapterId)
-            },
-            leavePageAction: {
-                self.lastViewedChapterId = MDMangaProgressManager.retrieveProgress(forMangaId: self.mangaModel.id)
-                self.vChapters.reloadData()
-            }
-        )
+    private func viewChapter(id: String?) {
+        let chapterId = id ?? chapterModels[0].id!
+        let vc = MDMangaSlideViewController(chapterId: chapterId)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -429,11 +477,7 @@ extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionVie
             ) as! MDMangaDetailChapterCollectionCell
             
             let model = chapterModels[indexPath.row]
-            let lastViewed = model.id == lastViewedChapterId
-            if lastViewed {
-                lastViewedChapterIndex = indexPath
-            }
-            cell.update(model: model, lastViewed: lastViewed)
+            cell.update(model: model)
             return cell
             
         case .loader:
@@ -465,7 +509,15 @@ extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionVie
             return
         }
         if section == .chapterList {
-            viewManga(atIndexPath: indexPath)
+            let chapterInfo = chapterModels[indexPath.row]
+            if let externalUrl = chapterInfo.attributes.externalUrl,
+               let url = URL(string: externalUrl) {
+                // if points to an external url, open it in a safari controller
+                let vc = SFSafariViewController(url: url)
+                self.present(vc, animated: true)
+            } else {
+                viewChapter(id: chapterInfo.id)
+            }
         }
     }
 }

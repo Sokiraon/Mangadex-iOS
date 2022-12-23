@@ -28,10 +28,6 @@ extension UIView {
         }
     }
     
-    func applyShadow() {
-        
-    }
-    
     static func +++ (superview: UIView, subview: UIView) {
         superview.addSubview(subview)
     }

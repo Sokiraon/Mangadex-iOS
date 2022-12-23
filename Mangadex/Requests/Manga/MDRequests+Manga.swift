@@ -22,7 +22,7 @@ extension MDRequests {
                 }
                 .done { json in
                     guard let data = json["data"] as? Array<[String: Any]> else {
-                        seal.reject(MDRequests.DefaultError)
+                        seal.reject(Errors.IllegalData)
                         return
                     }
                     let itemModels = NSArray.yy_modelArray(
@@ -31,6 +31,8 @@ extension MDRequests {
                     )
                     if let models = itemModels as? [MDMangaItemDataModel] {
                         seal.fulfill(models)
+                    } else {
+                        seal.reject(Errors.IllegalData)
                     }
                 }
                 .catch { error in
@@ -49,6 +51,8 @@ extension MDRequests {
                     if let filename = data["data"]["attributes"]["fileName"].string {
                         let coverUrl = "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(filename).256.jpg"
                         seal.fulfill(URL(string: coverUrl)!)
+                    } else {
+                        seal.reject(Errors.IllegalData)
                     }
                 }
                 .catch { error in
@@ -68,6 +72,8 @@ extension MDRequests {
                         withJSON: data["statistics"][mangaId].rawValue
                     ) {
                         seal.fulfill(model)
+                    } else {
+                        seal.reject(Errors.IllegalData)
                     }
                 }
                 .catch { error in
@@ -149,6 +155,30 @@ extension MDRequests {
                 }
                 .catch { error in
                     seal.fulfill(false)
+                }
+            }
+        }
+        
+        static func getVolumesAndChapters(
+            mangaId: String, groupId: String, language: String
+        ) -> Promise<MDMangaAggregatedModel> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(
+                        path: "/manga/\(mangaId)/aggregate",
+                        params: [
+                            "groups[]": groupId,
+                            "translatedLanguage[]": language
+                        ]
+                    )
+                }.done { json in
+                    if let model = MDMangaAggregatedModel.yy_model(with: json) {
+                        seal.fulfill(model)
+                    } else {
+                        seal.reject(Errors.IllegalData)
+                    }
+                }.catch { error in
+                    seal.reject(error)
                 }
             }
         }

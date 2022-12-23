@@ -9,38 +9,48 @@ import Foundation
 import UIKit
 
 class MDAppBar: UIView {
-    lazy var btnBack: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "icon_arrow_back_white"), for: .normal)
-        button.contentMode = .scaleToFill
-        return button
-    }()
     
-    lazy var lblTitle = UILabel(fontSize: 17)
-    
-    convenience init(title: String, backgroundColor: UIColor? = nil) {
-        self.init()
-        
-        if (backgroundColor != nil) {
-            self.backgroundColor = backgroundColor!
-        } else {
-            theme_backgroundColor = UIColor.theme_primaryColor
-        }
-        lblTitle.text = title
-        lblTitle.textColor = backgroundColor?.inverseColor() ?? .white
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+    
+    lazy var btnBack: UIButton = {
+        var conf = UIButton.Configuration.plain()
+        conf.image = .init(named: "icon_arrow_back")
+        conf.baseForegroundColor = .white
+        
+        let button = UIButton(configuration: conf)
+        return button
+    }()
+    
+    lazy var lblTitle = UILabel(fontSize: 17, color: .white)
+    var title: String? = nil {
+        didSet {
+            lblTitle.text = title
+        }
+    }
+    
+    override var backgroundColor: UIColor? {
+        didSet {
+            lblTitle.textColor = backgroundColor?.inverseColor() ?? .white
+        }
+    }
+    
     func setupUI() {
-        self.addSubview(self.btnBack)
-        self.btnBack.snp.makeConstraints { make in
+        addSubview(btnBack)
+        btnBack.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.left.equalToSuperview().inset(20)
             make.bottom.equalToSuperview().inset(10)
         }
         
-        self.addSubview(lblTitle)
+        addSubview(lblTitle)
         lblTitle.textAlignment = .center
         lblTitle.snp.makeConstraints { make in
             make.left.equalTo(self.btnBack.snp.right).offset(15)

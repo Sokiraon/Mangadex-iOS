@@ -27,7 +27,7 @@ class MDAccountSettingsCell: UIView {
     private lazy var ivIcon = UIImageView()
     private lazy var lblTitle = UILabel(fontSize: 15, fontWeight: .medium, color: .darkerGray565656)
     lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
-    private lazy var ivNext = UIImageView(imageNamed: "icon_arrow_forward", color: .darkerGray565656)
+    private lazy var ivNext = UIImageView(imageNamed: "icon_chevron_right", color: .darkerGray565656)
     
     convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
                      iconName: String,

@@ -19,7 +19,7 @@ extension MDRequests {
         
         struct MangaChapterList {
             let total: Int
-            let data: [MDMangaChapterInfoModel]
+            let data: [MDMangaChapterModel]
         }
         
         /// Get list of chapters for a specific manga.
@@ -53,13 +53,13 @@ extension MDRequests {
                         let total = json["total"].intValue
                         let results = json["data"].arrayObject
                         let models = NSArray.yy_modelArray(
-                            with: MDMangaChapterInfoModel.classForCoder(),
+                            with: MDMangaChapterModel.classForCoder(),
                             json: results ?? []
                         )
-                        if let data = models as? [MDMangaChapterInfoModel] {
+                        if let data = models as? [MDMangaChapterModel] {
                             seal.fulfill(MangaChapterList(total: total, data: data))
                         } else {
-                            seal.reject(MDRequests.DefaultError)
+                            seal.reject(Errors.IllegalData)
                         }
                     }
                     .catch { error in
@@ -68,8 +68,29 @@ extension MDRequests {
             }
         }
         
+        static func get(id: String) -> Promise<MDMangaChapterModel> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(
+                        path: "/chapter/\(id)",
+                        params: [
+                            "includes[]": ["scanlation_group", "manga", "user"]
+                        ]
+                    )
+                }.done { json in
+                    if json.contains("data"), let model = MDMangaChapterModel.yy_model(withJSON: json["data"]!) {
+                        seal.fulfill(model)
+                    } else {
+                        seal.reject(Errors.IllegalData)
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
         static func getPageData(chapterId: String) -> Promise<MDMangaChapterPagesModel> {
-            return Promise { seal in
+            Promise { seal in
                 firstly {
                     MDRequests.get(path: "/at-home/server/\(chapterId)", host: .main)
                 }

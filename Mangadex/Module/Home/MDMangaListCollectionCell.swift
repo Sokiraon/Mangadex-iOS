@@ -71,14 +71,14 @@ class MDMangaListCollectionCell: UICollectionViewCell {
     public static let cellHeight = 105.0
     
     private func setupUI() {
-        layer.theme_shadowColor = UIColor.theme_primaryCgColor
+        layer.theme_shadowColor = UIColor.themePrimaryCgPicker
         layer.shadowOffset = CGSize(width: 0, height: 1)
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 1
         
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8
-        contentView.theme_backgroundColor = UIColor.theme_lightestColor
+        contentView.theme_backgroundColor = UIColor.themeLightestPicker
         
         contentView.addSubview(ivCover)
         ivCover.clipsToBounds = true
@@ -138,14 +138,14 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             statusView.backgroundColor = .fromHex("219653")
             statusLabel.text = "kMangaOngoing".localized()
         }
-        if let coverArt = model.coverArts.get(0) {
+        if let coverArt = model.coverArts.first {
             let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(model.id!)/\(coverArt.fileName!).256.jpg"
             ivCover.kf.setImage(
                 with: URL(string: urlStr),
                 placeholder: UIImage(named: "manga_cover_default")
             )
         }
-        if let authorName = model.authors.get(0)?.attributes?.name {
+        if let authorName = model.authors.first?.attributes?.name {
             infoAuthor.lblInfo.text = authorName
         }
         _ = firstly {

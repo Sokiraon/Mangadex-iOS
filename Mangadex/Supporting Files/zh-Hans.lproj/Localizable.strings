@@ -173,3 +173,6 @@
 "kTimeDeltaOneMinute" = "1 分钟前";
 "kTimeDeltaMinutes" = "%d 分钟前";
 "kTimeDeltaLatest" = "1 分钟内";
+
+"Ascending" = "升序";
+"Descending" = "降序";

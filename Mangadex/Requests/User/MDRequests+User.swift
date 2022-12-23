@@ -29,12 +29,14 @@ extension MDRequests {
                     MDRequests.get(path: "/user/follows/manga", params: newParams, requireAuth: true)
                 }.done { json in
                     guard let data = json["data"] as? Array<[String: Any]> else {
-                        seal.reject(MDRequests.ErrorResponse())
+                        seal.reject(Errors.IllegalData)
                         return
                     }
                     let mangaList = NSArray.yy_modelArray(with: MDMangaItemDataModel.classForCoder(), json: data)
                     if let models = mangaList as? [MDMangaItemDataModel] {
                         seal.fulfill(models)
+                    } else {
+                        seal.reject(Errors.IllegalData)
                     }
                 }.catch { error in
                     seal.reject(error)

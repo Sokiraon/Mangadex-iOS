@@ -58,7 +58,7 @@ class MDPreLoginViewController: MDViewController {
     }
     private lazy var btnDismiss = UIButton(type: .system).apply { button in
         button.setTitle("kSavedAccountsDismiss".localized(), for: .normal)
-        button.theme_setTitleColor(UIColor.theme_primaryColor, forState: .normal)
+        button.theme_setTitleColor(UIColor.themePrimaryPicker, forState: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
         button.addTarget(self, action: #selector(didTapDismiss), for: .touchUpInside)
     }

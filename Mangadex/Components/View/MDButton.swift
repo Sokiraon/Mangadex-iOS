@@ -21,15 +21,15 @@ class MDButton: UIButton {
         
         switch variant {
         case .text:
-            self.theme_tintColor = UIColor.theme_primaryColor
+            self.theme_tintColor = UIColor.themePrimaryPicker
         case .contained:
             self.setTitleColor(.white, for: .normal)
-            self.theme_backgroundColor = UIColor.theme_primaryColor
+            self.theme_backgroundColor = UIColor.themePrimaryPicker
         case .outlined:
             self.backgroundColor = .white
-            self.theme_setTitleColor(UIColor.theme_darkColor, forState: .normal)
+            self.theme_setTitleColor(UIColor.themeDarkPicker, forState: .normal)
             self.layer.borderWidth = 2
-            self.layer.theme_borderColor = UIColor.theme_primaryCgColor
+            self.layer.theme_borderColor = UIColor.themePrimaryCgPicker
         }
     }
 }

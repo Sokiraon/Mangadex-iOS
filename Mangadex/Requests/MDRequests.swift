@@ -19,16 +19,12 @@ enum MDRequests {
     enum ErrorCode: Int {
         case BadRequest = 400
         case UnAuthenticated = 401
+        case IllegalData = 402
     }
     
     struct ErrorResponse: Error {
         let statusCode: ErrorCode
         let message: String
-        
-        init() {
-            self.statusCode = .BadRequest
-            self.message = "Network Request Failed"
-        }
         
         init(code: ErrorCode, message: String) {
             self.statusCode = code
@@ -36,7 +32,14 @@ enum MDRequests {
         }
     }
     
-    static let DefaultError = ErrorResponse()
+    enum Errors {
+        static let Default = ErrorResponse(
+            code: .BadRequest, message: "Network Request Failed"
+        )
+        static let IllegalData = ErrorResponse(
+            code: .IllegalData, message: "Illegal Data"
+        )
+    }
     
     static func get(
         path: String,
@@ -62,7 +65,7 @@ enum MDRequests {
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
                         } else {
-                            seal.reject(DefaultError)
+                            seal.reject(Errors.Default)
                         }
                     })
                 }.catch { error in
@@ -79,7 +82,7 @@ enum MDRequests {
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
                         } else {
-                            seal.reject(DefaultError)
+                            seal.reject(Errors.Default)
                         }
                     })
             }
@@ -106,7 +109,7 @@ enum MDRequests {
                             if r.ok, let json = r.json as? [String: Any] {
                                 seal.fulfill(json)
                             } else {
-                                seal.reject(DefaultError)
+                                seal.reject(Errors.Default)
                             }
                         }
                     )
@@ -123,7 +126,7 @@ enum MDRequests {
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
                         } else {
-                            seal.reject(DefaultError)
+                            seal.reject(Errors.Default)
                         }
                     })
             }
@@ -148,7 +151,7 @@ enum MDRequests {
                             if r.ok, let json = r.json as? [String: Any] {
                                 seal.fulfill(json)
                             } else {
-                                seal.reject(DefaultError)
+                                seal.reject(Errors.Default)
                             }
                         })
                 }.catch { error in
@@ -163,10 +166,17 @@ enum MDRequests {
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)
                         } else {
-                            seal.reject(DefaultError)
+                            seal.reject(Errors.Default)
                         }
                     })
             }
+        }
+    }
+    
+    /// - Returns: A placeholder Promise object that gets fulfilled immediately with the given value.
+    static func Placeholder<V>(_ value: V) -> Promise<V> {
+        Promise { seal in
+            seal.fulfill(value)
         }
     }
 }

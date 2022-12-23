@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "baseline_arrow_back_black_18pt_1x.png",
+      "filename" : "round_arrow_upward_black_24pt_1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "baseline_arrow_back_black_18pt_2x.png",
+      "filename" : "round_arrow_upward_black_24pt_2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "baseline_arrow_back_black_18pt_3x.png",
+      "filename" : "round_arrow_upward_black_24pt_3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

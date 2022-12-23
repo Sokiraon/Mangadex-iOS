@@ -22,7 +22,7 @@ class MDMangaDetailHeaderView: UIView {
     private let ivAuthor = UIImageView(imageNamed: "icon_person", color: .black2D2E2F)
     private let btnAuthor = UIButton(type: .system).apply { button in
         button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.theme_setTitleColor(UIColor.theme_darkColor, forState: .normal)
+        button.theme_setTitleColor(UIColor.themeDarkPicker, forState: .normal)
     }
     private let lblAbout = UILabel(fontWeight: .medium)
     
@@ -84,7 +84,7 @@ class MDMangaDetailHeaderView: UIView {
             make.width.equalTo(100)
             make.height.equalTo(150)
         }
-        if let coverArt = mangaModel.coverArts.get(0) {
+        if let coverArt = mangaModel.coverArts.first {
             let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(mangaModel.id!)/\(coverArt.fileName!).256.jpg"
             ivCover.kf.setImage(with: URL(string: urlStr))
         }
@@ -105,7 +105,7 @@ class MDMangaDetailHeaderView: UIView {
         }
         
         addSubview(btnAuthor)
-        if let authorName = mangaModel.authors.get(0)?.attributes.name {
+        if let authorName = mangaModel.authors.first?.attributes.name {
             btnAuthor.setTitle(authorName, for: .normal)
         }
         btnAuthor.snp.makeConstraints { make in

@@ -33,7 +33,7 @@ extension MDRequests {
                        let refresh = json["token"]["refresh"].string {
                         seal.fulfill(Token(session: session, refresh: refresh))
                     } else {
-                        seal.reject(MDRequests.DefaultError)
+                        seal.reject(Errors.IllegalData)
                     }
                 }.catch { error in
                     seal.reject(error)
@@ -54,7 +54,7 @@ extension MDRequests {
                     if json["isAuthenticated"].boolValue {
                         seal.fulfill(true)
                     } else {
-                        seal.reject(MDRequests.DefaultError)
+                        seal.reject(Errors.IllegalData)
                     }
                 }.catch { error in
                     seal.reject(error)
@@ -76,7 +76,7 @@ extension MDRequests {
                        let refresh = token["refresh"].string {
                         seal.fulfill(Token(session: session, refresh: refresh))
                     } else {
-                        seal.reject(MDRequests.DefaultError)
+                        seal.reject(Errors.IllegalData)
                     }
                 }.catch { error in
                     seal.reject(error)
