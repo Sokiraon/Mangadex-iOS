@@ -13,6 +13,7 @@ import SnapKit
 import Darwin
 import PromiseKit
 import MJRefresh
+import SafariServices
 
 class MDMangaSlideViewController: MDViewController {
     
@@ -46,7 +47,7 @@ class MDMangaSlideViewController: MDViewController {
         
         trailer.refreshingBlock = {
             guard let chapterInfo = self.chaptersInfo.get(self.currentIndex + 1) else {
-                self.refreshLeader.endRefreshing()
+                self.refreshTrailer.endRefreshing()
                 return
             }
             let vc = MDMangaSlideViewController(
@@ -118,6 +119,38 @@ class MDMangaSlideViewController: MDViewController {
         titleColor: .white
     )
     
+    private func bottomButtonBuilder(
+        image: UIImage?, titleKey: String, action: UIAction
+    ) -> UIButton {
+        var conf = UIButton.Configuration.plain()
+        conf.buttonSize = .small
+        conf.baseForegroundColor = .white
+        conf.image = image
+        conf.imagePadding = 8
+        conf.imagePlacement = .top
+        var titleContainer = AttributeContainer()
+        titleContainer.font = .systemFont(ofSize: 14)
+        conf.attributedTitle = AttributedString(titleKey.localized(), attributes: titleContainer)
+        let button = UIButton(configuration: conf, primaryAction: action)
+        return button
+    }
+    
+    private lazy var btnSettings = bottomButtonBuilder(
+        image: .init(systemName: "gearshape.fill"),
+        titleKey: "kMangaViewerSettings",
+        action: UIAction { _ in }
+    )
+    private lazy var btnInfo = bottomButtonBuilder(
+        image: .init(systemName: "info.circle.fill"),
+        titleKey: "kMangaViewerInfo",
+        action: UIAction { _ in }
+    )
+    private lazy var btnComment = bottomButtonBuilder(
+        image: .init(systemName: "bubble.left.and.bubble.right.fill"),
+        titleKey: "kMangaViewerComment",
+        action: UIAction { _ in self.openForumSafe() }
+    )
+    
     // MARK: - Lifecycle methods
     
     convenience init(chapterId: String) {
@@ -150,22 +183,39 @@ class MDMangaSlideViewController: MDViewController {
         
         vBottomControl.addSubview(btnPrev)
         btnPrev.snp.makeConstraints { make in
-            make.top.equalTo(15)
-            make.left.equalTo(15)
-            make.bottom.equalTo(-MDLayout.safeInsetBottom)
+            make.top.left.equalToSuperview().inset(16)
         }
         
         vBottomControl.addSubview(btnNext)
         btnNext.snp.makeConstraints { make in
             make.centerY.equalTo(btnPrev)
-            make.right.equalTo(-15)
+            make.right.equalToSuperview().inset(16)
         }
         
         vBottomControl.addSubview(vSlider)
         vSlider.snp.makeConstraints { (make: ConstraintMaker) in
-            make.left.equalTo(btnPrev.snp.right).offset(15)
-            make.right.equalTo(btnNext.snp.left).offset(-15)
+            make.left.equalTo(btnPrev.snp.right).inset(-16)
+            make.right.equalTo(btnNext.snp.left).inset(-16)
             make.centerY.equalTo(btnPrev)
+        }
+        
+        vBottomControl.addSubview(btnSettings)
+        btnSettings.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(16)
+            make.top.equalTo(btnPrev.snp.bottom).offset(16)
+            make.bottom.equalToSuperview().inset(MDLayout.adjustedSafeInsetBottom)
+        }
+        
+        vBottomControl.addSubview(btnInfo)
+        btnInfo.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(btnSettings)
+        }
+        
+        vBottomControl.addSubview(btnComment)
+        btnComment.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(16)
+            make.centerY.equalTo(btnSettings)
         }
     }
     
@@ -177,6 +227,7 @@ class MDMangaSlideViewController: MDViewController {
     
     private var chapterId: String!
     private var chapterModel: MDMangaChapterModel!
+    private var statistics: MDChapterStatistics!
     
     private var aggregatedModel: MDMangaAggregatedModel!
     private var chaptersInfo: [MDMangaAggregatedChapter] {
@@ -193,8 +244,11 @@ class MDMangaSlideViewController: MDViewController {
     private func fetchData(withAggregate: Bool) {
         ProgressHUD.show()
         firstly {
-            MDRequests.Chapter.get(id: chapterId)
-        }.then { chapterModel in
+            when(fulfilled: MDRequests.Chapter.get(id: chapterId),
+                 MDRequests.Chapter.getStatistics(id: chapterId)
+            )
+        }.then { (chapterModel: MDMangaChapterModel, statistics: MDChapterStatistics) in
+            self.statistics = statistics
             self.chapterModel = chapterModel
             self.appBar.title = chapterModel.attributes.chapterName
             if let mangaId = chapterModel.mangaId {
@@ -243,6 +297,38 @@ class MDMangaSlideViewController: MDViewController {
         }.catch { error in
             DispatchQueue.main.async {
                 ProgressHUD.showError()
+            }
+        }
+    }
+    
+    // MARK: - Bottom Controls
+    
+    /// A method to open forum thread safely.
+    /// It will alert the user to create the corresponding thread if it does not exist.
+    @objc private func openForumSafe() {
+        if self.statistics.comments != nil {
+            openForum()
+        } else {
+            let alert = UIAlertController(
+                title: "kInfo".localized(), message: "kAlertMessageNoThread".localized(), preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
+            alert.addAction(UIAlertAction(title: "kOk".localized(), style: .default, handler: { action in
+                MDRequests.Chapter.createForumThread(chapterId: self.chapterId)
+                    .done { statistics in
+                        self.statistics = statistics
+                        self.openForum()
+                    }
+            }))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    private func openForum() {
+        if let threadId = self.statistics.comments?.threadId {
+            if let url = URL(string: "https://forums.mangadex.org/threads/\(threadId)") {
+                let vc = SFSafariViewController(url: url)
+                self.present(vc, animated: true)
             }
         }
     }

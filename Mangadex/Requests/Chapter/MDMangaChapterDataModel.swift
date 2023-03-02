@@ -26,7 +26,13 @@ class MDMangaChapterAttrs: NSObject {
     @objc var translatedLanguage: String!
     
     var chapterName: String {
-        title ?? "kMangaChapterNameNull".localized()
+        if !title.isBlank {
+            return title!
+        } else if !chapter.isBlank {
+            return "kMangaChapterNameSimple".localizedFormat(chapter!)
+        } else {
+            return "kMangaChapterNameNull".localized()
+        }
     }
     
     var fullChapterName: String {

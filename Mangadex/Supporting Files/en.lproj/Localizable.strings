@@ -9,6 +9,8 @@
 "kOk" = "OK";
 "kNo" = "No Thanks";
 "kWarning" = "Warning";
+"kCancel" = "Cancel";
+"kInfo" = "Info";
 
 "kLoginUsername" = "Username";
 "kLoginPassword" = "Password";
@@ -88,3 +90,8 @@
 "kTimeDeltaOneMinute" = "1 minute ago";
 "kTimeDeltaMinutes" = "%d minutes ago";
 "kTimeDeltaLatest" = "in a minute";
+
+"kMangaViewerSettings" = "Settings";
+"kMangaViewerInfo" = "Info";
+"kMangaViewerComment" = "Comment";
+"kAlertMessageNoThread" = "The forum thread for this chapter has not been created. Click OK to create one.";

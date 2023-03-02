@@ -39,7 +39,7 @@ class MDMangaAggregatedModel: NSObject, YYModel {
             }
         }
         return Array(mapped.joined()).sorted { chapter1, chapter2 in
-            chapter1.chapter < chapter2.chapter
+            chapter1.chapter.localizedStandardCompare(chapter2.chapter) == .orderedAscending
         }
     }
 }

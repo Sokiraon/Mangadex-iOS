@@ -1,5 +1,5 @@
 //
-//  MDThemeManager.swift
+//  MDLayout.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/29.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /**
- Custom class as layout helper
+ A helper class for layout-related variables and functions.
  */
 class MDLayout {
     
@@ -20,7 +20,7 @@ class MDLayout {
     static var safeAreaInsets = keyWindow.safeAreaInsets
     static var safeInsetTop = safeAreaInsets.top
     static var safeInsetBottom = safeAreaInsets.bottom
-    static var adjustedSafeInsetBottom = safeInsetBottom > 0 ? safeInsetBottom : 15
+    static var adjustedSafeInsetBottom = max(safeInsetBottom, 16)
     
     static var isNotchScreen = safeInsetBottom > 0
     

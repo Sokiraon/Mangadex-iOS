@@ -41,6 +41,7 @@
 		05B4FB0F29516C2400E6C0B4 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4FB0E29516C2400E6C0B4 /* Array+Ext.swift */; };
 		05D1C5D729548008000039D0 /* MDMangaAggregatedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1C5D629548008000039D0 /* MDMangaAggregatedModel.swift */; };
 		05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */; };
+		05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */; };
 		05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E73D01E67642D26A2255E /* MDShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* MDShortTapGestureRecognizer.swift */; };
@@ -151,6 +152,7 @@
 		05B4FB0E29516C2400E6C0B4 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		05D1C5D629548008000039D0 /* MDMangaAggregatedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaAggregatedModel.swift; sourceTree = "<group>"; };
 		05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Ext.swift"; sourceTree = "<group>"; };
+		05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDChapterStatisticsModel.swift; sourceTree = "<group>"; };
 		05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsPopupView.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* Image+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+Ext.swift"; sourceTree = "<group>"; };
@@ -463,6 +465,7 @@
 			children = (
 				7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */,
 				051BE38D288A770000FE172A /* MDRequests+Chapter.swift */,
+				05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */,
 			);
 			path = Chapter;
 			sourceTree = "<group>";
@@ -813,6 +816,7 @@
 				05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */,
 				7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
+				05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */,
 				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,
 				7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */,
 				0530A89028C1F8DD00B4702B /* MDRequests+Author.swift in Sources */,

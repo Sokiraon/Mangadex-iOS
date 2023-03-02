@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import SwiftEventBus
 import SwiftTheme
 import PromiseKit
 import ProgressHUD

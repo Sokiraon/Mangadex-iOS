@@ -39,7 +39,7 @@ extension MDRequests {
             locale: String,
             order: Order
         ) -> Promise<MangaChapterList> {
-            return Promise { seal in
+            Promise { seal in
                 firstly {
                     MDRequests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
                         "offset": offset,
@@ -89,20 +89,59 @@ extension MDRequests {
             }
         }
         
+        static func getStatistics(id: String) -> Promise<MDChapterStatistics> {
+            Promise { seal in
+                firstly {
+                    MDRequests.get(path: "/statistics/chapter/\(id)")
+                }.done { json in
+                    let json = JSON(json)
+                    if let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
+                       let model = MDChapterStatistics.yy_model(withJSON: dict) {
+                        seal.fulfill(model)
+                    } else {
+                        seal.reject(Errors.IllegalData)
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
         static func getPageData(chapterId: String) -> Promise<MDMangaChapterPagesModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/at-home/server/\(chapterId)", host: .main)
+                    MDRequests.get(path: "/at-home/server/\(chapterId)")
                 }
                     .done { result in
                         let json = JSON(result)
                         if let data = MDMangaChapterPagesModel.yy_model(withJSON: json.rawValue) {
                             seal.fulfill(data)
+                        } else {
+                            seal.reject(Errors.IllegalData)
                         }
                     }
                     .catch { error in
                         seal.reject(error)
                     }
+            }
+        }
+        
+        static func createForumThread(chapterId: String) -> Promise<MDChapterStatistics> {
+            Promise { seal in
+                MDRequests.post(
+                    path: "/forums/thread",
+                    data: ["type": "chapter", "id": chapterId]
+                ).done { result in
+                    let data = JSON(result)["data"]
+                    if let id = data["id"].int,
+                       let repliesCount = data["attributes"]["repliesCount"].int {
+                        seal.fulfill(MDChapterStatistics(threadId: id, repliesCount: repliesCount))
+                    } else {
+                        seal.reject(Errors.IllegalData)
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
             }
         }
     }
