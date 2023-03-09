@@ -226,7 +226,7 @@ class MDMangaSlideViewController: MDViewController {
     // MARK: - Data
     
     private var chapterId: String!
-    private var chapterModel: MDMangaChapterModel!
+    private var chapterModel: MDMangaChapterModel?
     private var statistics: MDChapterStatistics!
     
     private var aggregatedModel: MDMangaAggregatedModel!
@@ -251,9 +251,7 @@ class MDMangaSlideViewController: MDViewController {
             self.statistics = statistics
             self.chapterModel = chapterModel
             self.appBar.title = chapterModel.attributes.chapterName
-            if let mangaId = chapterModel.mangaId {
-                MDMangaProgressManager.saveProgress(forMangaId: mangaId, chapterId: self.chapterId)
-            }
+            self.updateReadingStatus()
             if withAggregate {
                 return when(fulfilled: MDRequests.Chapter.getPageData(chapterId: chapterModel.id),
                             MDRequests.Manga.getVolumesAndChapters(
@@ -301,6 +299,16 @@ class MDMangaSlideViewController: MDViewController {
         }
     }
     
+    
+    /// Mark the current chapter as **read** to the Mangadex server,
+    /// and save the status in MDMangaProgressManager so that users can return to their last read chapter.
+    private func updateReadingStatus() {
+        if let mangaId = chapterModel?.mangaId {
+            _ = MDRequests.Chapter.markAsRead(mangaId: mangaId, chapterId: chapterId)
+            MDMangaProgressManager.saveProgress(forMangaId: mangaId, chapterId: chapterId)
+        }
+    }
+    
     // MARK: - Bottom Controls
     
     /// A method to open forum thread safely.
@@ -314,7 +322,7 @@ class MDMangaSlideViewController: MDViewController {
             )
             alert.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
             alert.addAction(UIAlertAction(title: "kOk".localized(), style: .default, handler: { action in
-                MDRequests.Chapter.createForumThread(chapterId: self.chapterId)
+                _ = MDRequests.Chapter.createForumThread(chapterId: self.chapterId)
                     .done { statistics in
                         self.statistics = statistics
                         self.openForum()

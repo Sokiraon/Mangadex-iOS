@@ -144,5 +144,19 @@ extension MDRequests {
                 }
             }
         }
+        
+        static func markAsRead(mangaId: String, chapterId: String) -> Promise<Void> {
+            Promise { seal in
+                MDRequests.post(
+                    path: "/manga/\(mangaId)/read",
+                    data: ["chapterIdsRead": [chapterId]],
+                    requireAuth: true
+                ).done { _ in
+                    seal.fulfill_()
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
     }
 }
