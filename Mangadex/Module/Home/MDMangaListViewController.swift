@@ -35,24 +35,26 @@ class MDMangaListViewController: MDViewController {
         view.delegate = self
         view.dataSource = self
         view.register(MDMangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
+        view.register(MDCollectionLoadingCell.self, forCellWithReuseIdentifier: "loader")
         view.contentInset = .cssStyle(5, cellMargin)
         view.backgroundColor = .clear
         return view
     }()
     
     internal lazy var refreshHeader = MJRefreshNormalHeader {
-        self.onHeaderRefresh()
+        self.fetchData()
     }
-    internal lazy var refreshFooter = MJRefreshBackNormalFooter {
-        self.onFooterRefresh()
-    }
+    
+    /// Called when user pulls the refresh header.
+    /// Should be overrideen by sub-classes to request initial data from the source.
+    internal func fetchData() {}
+    /// Called when the loader view enters screen.
+    /// Should be overridden by sub-classes to request following data from the source to achieve infinite scrolling.
+    internal func loadMoreData() {}
     
     internal lazy var vSearch = UISearchBar().apply { view in
         view.delegate = self
     }
-    
-    internal func onHeaderRefresh() {}
-    internal func onFooterRefresh() {}
     
     internal func filterOptionsDidChange() {}
     
@@ -92,9 +94,6 @@ class MDMangaListViewController: MDViewController {
     
     override func didSetupUI() {
         vCollection.mj_header = refreshHeader
-        vCollection.mj_footer = refreshFooter
-        vCollection.mj_footer?.isHidden = true
-        
         refreshHeader.beginRefreshing()
     }
     
@@ -113,23 +112,67 @@ class MDMangaListViewController: MDViewController {
 extension MDMangaListViewController: UICollectionViewDelegate,
                                      UICollectionViewDataSource,
                                      UICollectionViewDelegateFlowLayout {
+    enum CollectionSection: Int {
+        case mangaList
+        case loader
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        mangaList.count
+        guard let section = CollectionSection(rawValue: section) else {
+            return 0
+        }
+        switch section {
+        case .mangaList:
+            return mangaList.count
+        case .loader:
+            return mangaList.count > 0 ? 1 : 0
+        }
     }
     
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "mangaCell",
-            for: indexPath
-        )
-        (cell as! MDMangaListCollectionCell).update(mangaModel: mangaList[indexPath.row])
-        return cell
+        guard let section = CollectionSection(rawValue: indexPath.section) else {
+            return UICollectionViewCell()
+        }
+        switch section {
+        case .mangaList:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "mangaCell",
+                for: indexPath
+            )
+            (cell as! MDMangaListCollectionCell).update(mangaModel: mangaList[indexPath.row])
+            return cell
+        case .loader:
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: "loader",
+                for: indexPath
+            )
+            return cell
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let section = CollectionSection(rawValue: indexPath.section) else {
+            return
+        }
+        guard !mangaList.isEmpty else { return }
+        
+        if section == .loader {
+            loadMoreData()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

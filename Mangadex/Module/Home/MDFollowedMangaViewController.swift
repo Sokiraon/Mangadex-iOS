@@ -26,41 +26,36 @@ class MDFollowedMangaViewController: MDMangaListViewController {
         }
     }
     
-    override func onHeaderRefresh() {
-        firstly {
-            MDRequests.User.getFollowedMangas()
-        }.done { data in
-            self.mangaList = data
-            DispatchQueue.main.async {
-                self.refreshFooter.isHidden = false
-                self.vCollection.reloadData()
+    override func fetchData() {
+        MDRequests.User.getFollowedMangas()
+            .done { data in
+                self.mangaList = data
+                DispatchQueue.main.async {
+                    self.vCollection.reloadData()
+                    self.vCollection.mj_header?.endRefreshing()
+                }
+            }
+            .catch { error in
                 self.vCollection.mj_header?.endRefreshing()
+                DispatchQueue.main.async {
+                    self.alertForLogin()
+                }
             }
-        }.catch { error in
-            self.vCollection.mj_header?.endRefreshing()
-            DispatchQueue.main.async {
-                self.alertForLogin()
-            }
-        }
     }
     
-    override func onFooterRefresh() {
-        firstly {
-            MDRequests.User.getFollowedMangas(params: [
-                "offset": self.mangaList.count,
-            ])
-        }.done { data in
-            self.mangaList.append(contentsOf: data)
-            DispatchQueue.main.async {
-                self.vCollection.reloadData()
-                self.vCollection.mj_footer?.endRefreshing()
+    override func loadMoreData() {
+        MDRequests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
+            .done { data in
+                self.mangaList.append(contentsOf: data)
+                DispatchQueue.main.async {
+                    self.vCollection.reloadData()
+                }
             }
-        }.catch { error in
-            self.vCollection.mj_footer?.endRefreshing()
-            DispatchQueue.main.async {
-                self.alertForLogin()
+            .catch { error in
+                DispatchQueue.main.async {
+                    self.alertForLogin()
+                }
             }
-        }
     }
     
     private func alertForLogin() {
