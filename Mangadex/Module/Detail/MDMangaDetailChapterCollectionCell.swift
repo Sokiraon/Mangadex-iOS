@@ -9,31 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 
-/// The loader cell, used for representing the loading state.
-class MDCollectionLoadingCell: UICollectionViewCell {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
-    }
-    
-    private let vLoading = UIActivityIndicatorView()
-    
-    private func setupUI() {
-        addSubview(vLoading)
-        vLoading.startAnimating()
-        vLoading.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.bottom.equalToSuperview().inset(16)
-        }
-    }
-}
-
 class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {

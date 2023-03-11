@@ -28,8 +28,9 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func fetchData() {
         MDRequests.User.getFollowedMangas()
-            .done { data in
-                self.mangaList = data
+            .done { model in
+                self.mangaList = model.data
+                self.mangaTotal = model.total
                 DispatchQueue.main.async {
                     self.vCollection.reloadData()
                     self.vCollection.mj_header?.endRefreshing()
@@ -45,8 +46,9 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func loadMoreData() {
         MDRequests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
-            .done { data in
-                self.mangaList.append(contentsOf: data)
+            .done { model in
+                self.mangaList.append(contentsOf: model.data)
+                self.mangaTotal = model.total
                 DispatchQueue.main.async {
                     self.vCollection.reloadData()
                 }

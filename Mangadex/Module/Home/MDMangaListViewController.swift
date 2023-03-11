@@ -11,8 +11,6 @@ import ProgressHUD
 import MJRefresh
 import SnapKit
 
-fileprivate let cellMargin = 10.0
-
 class MDMangaListViewController: MDViewController {
     struct FilterOptions {
         var searchText: String = ""
@@ -22,21 +20,19 @@ class MDMangaListViewController: MDViewController {
     internal var filterOptions = FilterOptions()
     
     internal var mangaList = [MDMangaItemDataModel]()
+    internal var mangaTotal = 0
     
     internal lazy var vCollection: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(
-            width: MDLayout.screenWidth - cellMargin * 2,
-            height: MDMangaListCollectionCell.cellHeight
-        )
         layout.minimumLineSpacing = 10
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let view = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.dataSource = self
         view.register(MDMangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
-        view.register(MDCollectionLoadingCell.self, forCellWithReuseIdentifier: "loader")
-        view.contentInset = .cssStyle(5, cellMargin)
+        view.register(MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
+        view.contentInset = .cssStyle(5, 10)
         view.backgroundColor = .clear
         return view
     }()
@@ -132,7 +128,7 @@ extension MDMangaListViewController: UICollectionViewDelegate,
         case .mangaList:
             return mangaList.count
         case .loader:
-            return mangaList.count > 0 ? 1 : 0
+            return mangaList.count < mangaTotal ? 1 : 0
         }
     }
     

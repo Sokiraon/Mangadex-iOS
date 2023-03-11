@@ -15,8 +15,9 @@ class MDBrowseMangaViewController: MDMangaListViewController {
     
     override func fetchData() {
         MDRequests.Manga.query(params: ["title": filterOptions.searchText])
-            .done { items in
-                self.mangaList = items
+            .done { model in
+                self.mangaList = model.data
+                self.mangaTotal = model.total
                 DispatchQueue.main.async {
                     self.vCollection.reloadData()
                 }
@@ -36,8 +37,9 @@ class MDBrowseMangaViewController: MDMangaListViewController {
             "title": filterOptions.searchText,
             "offset": self.mangaList.count,
         ])
-        .done { items in
-            self.mangaList.append(contentsOf: items)
+        .done { model in
+            self.mangaList.append(contentsOf: model.data)
+            self.mangaTotal = model.total
             DispatchQueue.main.async {
                 self.vCollection.reloadData()
             }
@@ -54,8 +56,9 @@ class MDBrowseMangaViewController: MDMangaListViewController {
             MDRequests.Manga.query(params: [
                 "title": filterOptions.searchText
             ])
-        }.done { items in
-            self.mangaList = items
+        }.done { model in
+            self.mangaList = model.data
+            self.mangaTotal = model.total
             DispatchQueue.main.async {
                 self.vCollection.reloadData()
             }

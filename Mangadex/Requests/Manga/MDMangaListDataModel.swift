@@ -149,3 +149,14 @@ class MDMangaItemDataModel: NSObject, YYModel {
         }
     }
 }
+
+class MDMangaListDataModel: NSObject, YYModel {
+    @objc var data: [MDMangaItemDataModel]!
+    @objc var limit = 0
+    @objc var offset = 0
+    @objc var total = 0
+    
+    static func modelContainerPropertyGenericClass() -> [String : Any]? {
+        [ "data": MDMangaItemDataModel.self ]
+    }
+}

@@ -25,6 +25,7 @@
 		004F7199264BF8ED00D61AEB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 004F7197264BF8ED00D61AEB /* LaunchScreen.storyboard */; };
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
+		0507060729BC540B0051CF8B /* MDCollectionLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */; };
 		05179A18279280EE0019D656 /* MDMangaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A17279280EE0019D656 /* MDMangaListViewController.swift */; };
 		05179A1A27928E630019D656 /* MDMangaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */; };
 		05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */; };
@@ -67,7 +68,7 @@
 		7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7544632686FC3D00467EF1 /* MDMangaChapterDataModel.swift */; };
 		7A754466268709D900467EF1 /* MDMangaSlideCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */; };
 		7A75446C26885FFA00467EF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A75446E26885FFA00467EF1 /* Localizable.strings */; };
-		7A89D9C5267DD28A00E41147 /* MDMangaItemDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */; };
+		7A89D9C5267DD28A00E41147 /* MDMangaListDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C4267DD28A00E41147 /* MDMangaListDataModel.swift */; };
 		7A9A5FF126C76F9B00196953 /* MDAccountSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */; };
 		7A9A5FF426C76FD400196953 /* MDAccountSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */; };
 		7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF526C7743A00196953 /* CustomOperator.swift */; };
@@ -136,6 +137,7 @@
 		004F71AA264BF8ED00D61AEB /* MangadexUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MangadexUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCollectionLoaderCell.swift; sourceTree = "<group>"; };
 		05179A17279280EE0019D656 /* MDMangaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListViewController.swift; sourceTree = "<group>"; };
 		05179A1927928E630019D656 /* MDMangaListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListCollectionCell.swift; sourceTree = "<group>"; };
 		05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Ext.swift"; sourceTree = "<group>"; };
@@ -181,7 +183,7 @@
 		7A754465268709D900467EF1 /* MDMangaSlideCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaSlideCollectionCell.swift; sourceTree = "<group>"; };
 		7A75446D26885FFA00467EF1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7A75993F26901AC700A20E64 /* Mangadex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mangadex.entitlements; sourceTree = "<group>"; };
-		7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaItemDataModel.swift; sourceTree = "<group>"; };
+		7A89D9C4267DD28A00E41147 /* MDMangaListDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaListDataModel.swift; sourceTree = "<group>"; };
 		7A9A5FF026C76F9B00196953 /* MDAccountSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsSection.swift; sourceTree = "<group>"; };
 		7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsCell.swift; sourceTree = "<group>"; };
 		7A9A5FF526C7743A00196953 /* CustomOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperator.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 				AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */,
 				B8F33B49279946B000DF9002 /* MDView.swift */,
 				568E5D6DD46FA5AB23B18B9E /* MDTextField.swift */,
+				0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -508,7 +511,7 @@
 		7AACACA8267EE29C00232166 /* Manga */ = {
 			isa = PBXGroup;
 			children = (
-				7A89D9C4267DD28A00E41147 /* MDMangaItemDataModel.swift */,
+				7A89D9C4267DD28A00E41147 /* MDMangaListDataModel.swift */,
 				7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */,
 				390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */,
 				568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */,
@@ -793,7 +796,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A89D9C5267DD28A00E41147 /* MDMangaItemDataModel.swift in Sources */,
+				7A89D9C5267DD28A00E41147 /* MDMangaListDataModel.swift in Sources */,
 				0530A89228C1F92C00B4702B /* MDMangaAuthor.swift in Sources */,
 				00363096266F5BD80058BE25 /* MDViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* MDUserManager.swift in Sources */,
@@ -818,6 +821,7 @@
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */,
 				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,
+				0507060729BC540B0051CF8B /* MDCollectionLoaderCell.swift in Sources */,
 				7A3FA32E26B4FDA100C4E2EF /* MDUserDefaultsManager.swift in Sources */,
 				0530A89028C1F8DD00B4702B /* MDRequests+Author.swift in Sources */,
 				B89F2464278BF34C00344EE3 /* MDColorSettingCollectionCell.swift in Sources */,

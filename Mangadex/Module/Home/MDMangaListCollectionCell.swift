@@ -37,6 +37,8 @@ class MDMangaListCellInfoItem: UIView {
     }
 }
 
+fileprivate let cellHeight = 105.0
+
 class MDMangaListCollectionCell: UICollectionViewCell {
     
     private let ivCover = UIImageView(imageNamed: "manga_cover_default")
@@ -68,8 +70,6 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         setupUI()
     }
     
-    public static let cellHeight = 105.0
-    
     private func setupUI() {
         layer.theme_shadowColor = UIColor.themePrimaryCgPicker
         layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -80,13 +80,18 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 8
         contentView.theme_backgroundColor = UIColor.themeLightestPicker
         
+        contentView.snp.makeConstraints { make in
+            make.width.equalTo(MDLayout.screenWidth - 2 * 10)
+        }
+        contentView.translatesAutoresizingMaskIntoConstraints = true
+        
         contentView.addSubview(ivCover)
         ivCover.clipsToBounds = true
         ivCover.contentMode = .scaleAspectFill
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
-            make.height.equalTo(MDMangaListCollectionCell.cellHeight)
-            make.width.equalTo(MDMangaListCollectionCell.cellHeight * 2 / 3)
+            make.height.equalTo(cellHeight)
+            make.width.equalTo(cellHeight * 2 / 3)
         }
         
         contentView.addSubview(titleLabel)

@@ -198,7 +198,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
             MDMangaDetailChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter"
         )
         vChapters.register(
-            MDCollectionLoadingCell.self, forCellWithReuseIdentifier: "loader"
+            MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader"
         )
         
         vScroll.addSubview(vChapters)
