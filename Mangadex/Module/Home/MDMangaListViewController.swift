@@ -69,6 +69,12 @@ class MDMangaListViewController: MDViewController {
     override func didSetupUI() {
         refreshHeader.beginRefreshing()
     }
+    
+    func scrollToTop() {
+        if mangaList.count > 0 {
+            vCollection.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
+    }
 }
 
 

@@ -1087,8 +1087,6 @@
 					"-framework",
 					"\"MaterialComponents\"",
 					"-framework",
-					"\"Pageboy\"",
-					"-framework",
 					"\"ProgressHUD\"",
 					"-framework",
 					"\"QuartzCore\"",
@@ -1096,8 +1094,6 @@
 					"\"SnapKit\"",
 					"-framework",
 					"\"SwiftyJSON\"",
-					"-framework",
-					"\"Tabman\"",
 					"-framework",
 					"\"WebKit\"",
 				);
