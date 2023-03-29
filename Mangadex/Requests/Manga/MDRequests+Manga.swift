@@ -11,11 +11,10 @@ extension MDRequests {
     enum Manga {
         static func query(params: [String: Any] = [:]) -> Promise<MDMangaListDataModel> {
             let defaultParams: [String: Any] = [
-                "includes[]": ["author", "artist", "cover_art"]
+                "includes[]": ["author", "artist", "cover_art"],
+                "limit": 20,
             ]
-            let newParams = defaultParams.merging(params) { _, new in
-                new
-            }
+            let newParams = defaultParams + params
             return Promise { seal in
                 firstly {
                     MDRequests.get(path: "/manga", host: .main, params: newParams)

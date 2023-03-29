@@ -63,6 +63,8 @@ extension UIColor {
     static let lightestColors = [cerulean50, teal50, coral50]
     static let darkColors = [cerulean700, teal600, coral800]
     
+    static let primaryShadow = black2D2E2F.cgColor
+    
     static var themePrimary: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
     static var themeLightest: UIColor { lightestColors[MDSettingsManager.themeColorIndex] }
     static var themeLighter: UIColor { lighterColors[MDSettingsManager.themeColorIndex] }

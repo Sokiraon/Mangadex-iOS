@@ -20,9 +20,10 @@ class MDMangaDetailHeaderView: UIView {
         numberOfLines: 2
     )
     private let ivAuthor = UIImageView(imageNamed: "icon_person", color: .black2D2E2F)
-    private let btnAuthor = UIButton(type: .system).apply { button in
+    private lazy var btnAuthor = UIButton(type: .system).apply { (button: UIButton) in
         button.titleLabel?.font = .systemFont(ofSize: 15)
         button.theme_setTitleColor(UIColor.themeDarkPicker, forState: .normal)
+        button.addTarget(self, action: #selector(showAuthorMangaList), for: .touchUpInside)
     }
     private let lblAbout = UILabel(fontWeight: .medium)
     
@@ -105,7 +106,7 @@ class MDMangaDetailHeaderView: UIView {
         }
         
         addSubview(btnAuthor)
-        if let authorName = mangaModel.authors.first?.attributes.name {
+        if let authorName = mangaModel.mainAuthor?.attributes.name {
             btnAuthor.setTitle(authorName, for: .normal)
         }
         btnAuthor.snp.makeConstraints { make in
@@ -174,6 +175,16 @@ class MDMangaDetailHeaderView: UIView {
             self.isLoading = false
             self.readingStatus = newStatus
             self.btnFollow.setNeedsUpdateConfiguration()
+        }
+    }
+    
+    @objc func showAuthorMangaList() {
+        if let author = mangaModel.mainAuthor {
+            let vc = MDTaggedMangaViewController(
+                title: author.attributes.name,
+                queryOptions: ["authorOrArtist": author.id!]
+            )
+            MDRouter.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

@@ -39,12 +39,12 @@ class MDViewController: UIViewController {
     /// You may use this func to save progress.
     internal func willLeavePage() {}
     
-    internal lazy var appBar = MDAppBar()
+    internal lazy var appBar = MDAppBar().apply { bar in
+        bar.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+    }
     ///
     /// Used for setting up top navigation bar.
     internal func setupNavBar() {
-        appBar.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
-        
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
             make.top.equalTo(view)

@@ -131,6 +131,10 @@ class MDMangaItemDataModel: NSObject, YYModel {
         }
     }
     
+    var mainAuthor: MDMangaAuthor? {
+        authors.first
+    }
+    
     var artists: [MDMangaAuthor] {
         let items = relationships.filter { relationship in
             relationship.type == "artists"

@@ -14,8 +14,11 @@ import MJRefresh
 class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func setupUI() {
-        allowFilter = false
         super.setupUI()
+        
+        vTopArea.snp.makeConstraints { make in
+            make.height.equalTo(MDLayout.safeInsetTop)
+        }
     }
     
     override func didSetupUI() {
@@ -31,16 +34,15 @@ class MDFollowedMangaViewController: MDMangaListViewController {
             .done { model in
                 self.mangaList = model.data
                 self.mangaTotal = model.total
-                DispatchQueue.main.async {
-                    self.vCollection.reloadData()
-                    self.vCollection.mj_header?.endRefreshing()
-                }
+                self.reloadCollection()
             }
             .catch { error in
-                self.vCollection.mj_header?.endRefreshing()
                 DispatchQueue.main.async {
                     self.alertForLogin()
                 }
+            }
+            .finally {
+                self.vCollection.mj_header?.endRefreshing()
             }
     }
     
@@ -49,9 +51,7 @@ class MDFollowedMangaViewController: MDMangaListViewController {
             .done { model in
                 self.mangaList.append(contentsOf: model.data)
                 self.mangaTotal = model.total
-                DispatchQueue.main.async {
-                    self.vCollection.reloadData()
-                }
+                self.reloadCollection()
             }
             .catch { error in
                 DispatchQueue.main.async {

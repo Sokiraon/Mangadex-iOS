@@ -12,12 +12,8 @@ import MJRefresh
 import SnapKit
 
 class MDMangaListViewController: MDViewController {
-    struct FilterOptions {
-        var searchText: String = ""
-    }
-    
-    internal var allowFilter = true
-    internal var filterOptions = FilterOptions()
+
+    final let vTopArea = UIView()
     
     internal var mangaList = [MDMangaItemDataModel]()
     internal var mangaTotal = 0
@@ -48,58 +44,30 @@ class MDMangaListViewController: MDViewController {
     /// Should be overridden by sub-classes to request following data from the source to achieve infinite scrolling.
     internal func loadMoreData() {}
     
-    internal lazy var vSearch = UISearchBar().apply { view in
-        view.delegate = self
-    }
-    
-    internal func filterOptionsDidChange() {}
-    
-    private let vTopBar = UIView(backgroundColor: .white).apply { view in
-        view.layer.shadowColor = UIColor.black2D2E2F.cgColor
-        view.layer.shadowRadius = 2
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+    internal func reloadCollection() {
+        DispatchQueue.main.async {
+            self.vCollection.reloadData()
+            self.vCollection.setNeedsLayout()
+            self.vCollection.layoutIfNeeded()
+        }
     }
     
     override func setupUI() {
-        if allowFilter {
-            view.addSubview(vTopBar)
-            vTopBar.snp.makeConstraints { make in
-                make.top.left.right.equalToSuperview()
-            }
-            
-            vTopBar.addSubview(vSearch)
-            vSearch.snp.makeConstraints { make in
-                make.leading.trailing.bottom.equalToSuperview()
-                make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
-                make.height.equalTo(56)
-            }
-            
-            view.insertSubview(vCollection, belowSubview: vTopBar)
-            vCollection.snp.makeConstraints { make in
-                make.top.equalToSuperview().inset(MDLayout.safeInsetTop + 56)
-                make.left.right.bottom.equalToSuperview()
-            }
-        } else {
-            view.addSubview(vCollection)
-            vCollection.snp.makeConstraints { make in
-                make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
-                make.left.right.bottom.equalToSuperview()
-            }
+        view.addSubview(vTopArea)
+        vTopArea.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+        }
+
+        view.insertSubview(vCollection, belowSubview: vTopArea)
+        vCollection.mj_header = refreshHeader
+        vCollection.snp.makeConstraints { make in
+            make.top.equalTo(vTopArea.snp.bottom)
+            make.left.right.bottom.equalToSuperview()
         }
     }
     
     override func didSetupUI() {
-        vCollection.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
-    }
-    
-    internal var timer: Timer?
-    
-    private func scheduleFilterOptionChange() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
-            self.filterOptionsDidChange()
-        })
     }
 }
 
@@ -164,8 +132,6 @@ extension MDMangaListViewController: UICollectionViewDelegate,
         guard let section = CollectionSection(rawValue: indexPath.section) else {
             return
         }
-        guard !mangaList.isEmpty else { return }
-        
         if section == .loader {
             loadMoreData()
         }
@@ -174,39 +140,5 @@ extension MDMangaListViewController: UICollectionViewDelegate,
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MDMangaDetailViewController(mangaModel: mangaList[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > 0 {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
-                self.vTopBar.layer.shadowOpacity = 0.5
-            }
-        } else {
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
-                self.vTopBar.layer.shadowOpacity = 0
-            }
-        }
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        vSearch.endEditing(true)
-        vSearch.setShowsCancelButton(false, animated: true)
-    }
-}
-
-// MARK: - UISearchBar Delegate Methods
-extension MDMangaListViewController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterOptions.searchText = searchText
-        scheduleFilterOptionChange()
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBar.setShowsCancelButton(true, animated: true)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.endEditing(true)
-        searchBar.setShowsCancelButton(false, animated: true)
     }
 }
