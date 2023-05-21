@@ -1,5 +1,5 @@
 //
-//  MDViewController.swift
+//  BaseViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/6/8.
@@ -8,43 +8,55 @@
 import Foundation
 import UIKit
 
-class MDViewController: UIViewController {
+class BaseViewController: UIViewController {
+    
     ///
     /// Called at viewDidLoad, before setupUI().
     ///
     /// Should be used for preparing data that is needed by UI components.
     /// However, do notice that this will only be called once in the lifecycle (compared to initOnAppear).
     internal func willSetupUI() {}
-
+    
     ///
     /// Called at viewDidLoad, after willSetupUI().
     ///
     /// Should be used for adding subviews and configuring their layout.
     internal func setupUI() {}
-
+    
     ///
     /// Called at viewDidLoad, after setupUI().
     internal func didSetupUI() {}
-
-    ///
-    /// Called at viewWillAppear.
-    ///
-    /// Should be used for initializing data or organizing views for animation.
-    /// Do notice that this will be called every time the view comes into foreground, so you may want to avoid complex actions.
-    internal func doOnAppear() {}
     
-    ///
-    /// Called when vc is aboout to leave the page (i.e. user taps back button).
-    ///
-    /// You may use this func to save progress.
-    internal func willLeavePage() {}
-    
-    internal lazy var appBar = MDAppBar().apply { bar in
-        bar.btnBack.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
+    internal var statusBarStyle = UIStatusBarStyle.default {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
     }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        statusBarStyle
+    }
+    
+    internal var isStatusBarHidden = false {
+        didSet {
+            setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    override var prefersStatusBarHidden: Bool {
+        isStatusBarHidden
+    }
+    
+    /// Default AppBar of the viewController. Loaded on-demand.
+    internal lazy var appBar = MDAppBar().apply { _ in
+        self.statusBarStyle = .lightContent
+    }
+    
     ///
     /// Used for setting up top navigation bar.
-    internal func setupNavBar() {
+    internal func setupNavBar(title: String? = nil, backgroundColor: UIColor = .themePrimary) {
+        appBar.title = title
+        appBar.backgroundColor = backgroundColor
+        statusBarStyle = .lightContent
+        
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
             make.top.equalTo(view)
@@ -55,30 +67,20 @@ class MDViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = true
         navigationController?.isToolbarHidden = true
-
+        
         willSetupUI()
         setupUI()
         didSetupUI()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        doOnAppear()
-    }
-    
-    @objc private func didTapBack() {
-        willLeavePage()
-        navigationController?.popViewController(animated: true)
-    }
-    
-    #if DEBUG
+#if DEBUG
     // For injectionIII
     @objc func injected() {
         viewDidLoad()
     }
-    #endif
+#endif
 }

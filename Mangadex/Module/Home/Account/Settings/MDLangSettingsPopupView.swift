@@ -13,7 +13,7 @@ class MDLangSettingsPopupView: MDSettingsPopupView {
         super.viewDidAppear()
         
         vOptCollection.scrollToItem(
-            at: IndexPath(row: MDSettingsManager.mangaLangIndex, section: 0),
+            at: IndexPath(row: SettingsManager.mangaLangIndex, section: 0),
             at: .centeredHorizontally,
             animated: true
         )
@@ -40,6 +40,6 @@ class MDLangSettingsPopupView: MDSettingsPopupView {
     }
     
     override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {
-        MDSettingsManager.mangaLangIndex = indexPath.row
+        SettingsManager.mangaLangIndex = indexPath.row
     }
 }

@@ -35,7 +35,7 @@
 "kSavedAccountsDismiss" = "None of the above";
 "kLoginRequired" = "Oops, seems that you aren't logged in. Please log in first.";
 
-"kAuthorUnknown" = "Unknown";
+"kAuthorUnknown" = "[Unknown]";
 
 "kDescription" = "Description";
 "kTags" = "Tags";
@@ -63,6 +63,8 @@
 "kPrefMangaLang" = "Change Manga Language";
 "kPrefMangaLangCur" = "Current: %@";
 "kPrefPopupSave" = "Save";
+"kPrefDownloads" = "Downloads";
+"kSettingsDataSaving" = "Data-saving Mode";
 
 "kMangaTagTypeFormat" = "Format";
 "kMangaTagTypeGenre" = "Genre";
@@ -94,4 +96,11 @@
 "kMangaViewerSettings" = "Settings";
 "kMangaViewerInfo" = "Info";
 "kMangaViewerComment" = "Comment";
-"kAlertMessageNoThread" = "The forum thread for this chapter has not been created. Click OK to create one.";
+"kMangaViewerDownload" = "Download";
+"kMangaViewerChapters" = "Chapters";
+"kAlertMessageNoThread" = "The forum thread for this chapter has not been created.\nClick OK to create one.";
+"kInfoMessageAddedDownload" = "Added to the queue";
+
+"kNoChapterAlertMsg" = "You have reached the end of chapters.\nClick OK to return.";
+
+"kDownloadedMangaChapterCount" = "%d Chapter(s)";

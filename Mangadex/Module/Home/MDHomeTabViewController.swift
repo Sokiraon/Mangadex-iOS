@@ -34,7 +34,7 @@ class MDHomeTabViewController: UITabBarController, UITabBarControllerDelegate {
         followed.tabBarItem.title = "kHomeTabFollowed".localized()
         followed.tabBarItem.image = .init(systemName: "bookmark.fill")
         
-        let account = MDAccountViewController()
+        let account = AccountViewController()
         account.tabBarItem.title = "kHomeTabAccount".localized()
         account.tabBarItem.image = .init(systemName: "person.fill")
         

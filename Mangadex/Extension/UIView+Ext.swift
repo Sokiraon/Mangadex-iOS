@@ -5,8 +5,8 @@
 import Foundation
 import UIKit
 
-enum ViewStyle {
-    case line
+enum UIViewStyle {
+    case lineHorizontal, lineVertical
 }
 
 extension UIView {
@@ -15,30 +15,21 @@ extension UIView {
         self.backgroundColor = backgroundColor
     }
     
-    convenience init(style: ViewStyle) {
+    convenience init(style: UIViewStyle) {
         self.init()
         
         switch style {
-        case .line:
+        case .lineHorizontal:
             backgroundColor = .grayDFDFDF
             self.snp.makeConstraints { make in
-                make.height.equalTo(0.5)
+                make.height.equalTo(MDLayout.native1px * 2)
             }
             break
+        case .lineVertical:
+            backgroundColor = .grayDFDFDF
+            self.snp.makeConstraints { make in
+                make.width.equalTo(MDLayout.native1px * 2)
+            }
         }
-    }
-    
-    static func +++ (superview: UIView, subview: UIView) {
-        superview.addSubview(subview)
-    }
-    
-    static func +++ (superview: UIView, subviews: [UIView]) {
-        for view in subviews {
-            superview.addSubview(view)
-        }
-    }
-    
-    static func +++ (superview: UIView, layoutGuide: UILayoutGuide) {
-        superview.addLayoutGuide(layoutGuide)
     }
 }

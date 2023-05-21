@@ -8,12 +8,12 @@
 import Foundation
 import SwiftEntryKit
 
-enum MDAccountSettingsCellTextStyle {
+enum AccountSettingsCellStyle {
     case oneLine, twoLine
 }
 
-enum MDAccountSettingsCellActionType {
-    case selector, push
+enum AccountSettingsCellInteractionType {
+    case popUp, newPage, `switch`
 }
 
 protocol MDAccountSettingsCellDelegate {
@@ -24,39 +24,42 @@ protocol MDAccountSettingsCellDelegate {
 class MDAccountSettingsCell: UIView {
     
     private lazy var contentView = UIView()
-    private lazy var ivIcon = UIImageView()
+    private lazy var ivIcon = UIImageView().apply { iv in
+        iv.tintColor = .darkGray808080
+    }
     private lazy var lblTitle = UILabel(fontSize: 15, fontWeight: .medium, color: .darkerGray565656)
     lazy var lblSubtitle = UILabel(fontSize: 11, fontWeight: .medium, color: .darkGray808080)
     private lazy var ivNext = UIImageView(imageNamed: "icon_chevron_right", color: .darkerGray565656)
     
-    convenience init(textStyle: MDAccountSettingsCellTextStyle = .oneLine,
-                     iconName: String,
-                     title: String,
-                     subtitle: String = "") {
+    convenience init(icon: UIImage?, title: String) {
         self.init()
-        ivIcon.image = UIImage(named: iconName)
-        ivIcon.tintColor = .darkGray808080
-        
+        setupUI(textStyle: .oneLine)
+        ivIcon.image = icon
         lblTitle.text = title
-        if (!subtitle.isEmpty) {
-            lblSubtitle.text = subtitle
-        }
-        
-        setupUI(textStyle: textStyle)
     }
     
-    private func setupUI(textStyle: MDAccountSettingsCellTextStyle) {
-        self +++ contentView
+    convenience init(icon: UIImage?, title: String, subtitle: String) {
+        self.init()
+        setupUI(textStyle: .twoLine)
+        ivIcon.image = icon
+        lblTitle.text = title
+        lblSubtitle.text = subtitle
+    }
+    
+    private func setupUI(textStyle: AccountSettingsCellStyle) {
+        addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.bottom.right.equalToSuperview().inset(10)
             make.left.equalToSuperview().inset(15)
         }
         
-        contentView +++ [ivIcon, ivNext]
+        contentView.addSubview(ivIcon)
         ivIcon.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.left.centerY.equalToSuperview()
         }
+        
+        contentView.addSubview(ivNext)
         ivNext.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.right.centerY.equalToSuperview()
@@ -64,12 +67,14 @@ class MDAccountSettingsCell: UIView {
         
         switch textStyle {
         case .twoLine:
-            contentView +++ [lblTitle, lblSubtitle]
+            contentView.addSubview(lblTitle)
             lblTitle.snp.makeConstraints { make in
                 make.top.equalToSuperview()
                 make.left.equalTo(ivIcon.snp.right).offset(10)
                 make.right.equalTo(ivNext.snp.left).offset(-15)
             }
+            
+            contentView.addSubview(lblSubtitle)
             lblSubtitle.snp.makeConstraints { make in
                 make.bottom.equalToSuperview()
                 make.top.equalTo(lblTitle.snp.bottom).offset(3)
@@ -78,7 +83,7 @@ class MDAccountSettingsCell: UIView {
             break
             
         default:
-            contentView +++ lblTitle
+            contentView.addSubview(lblTitle)
             lblTitle.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.left.equalTo(ivIcon.snp.right).offset(10)
@@ -98,24 +103,24 @@ class MDAccountSettingsCell: UIView {
     
     // MARK: - Actions
     
-    private var actionType: MDAccountSettingsCellActionType!
+    private var actionType: AccountSettingsCellInteractionType!
     private var id: String!
     
-    func setActionType(_ actionType: MDAccountSettingsCellActionType, withId id: String) {
+    func setActionType(_ actionType: AccountSettingsCellInteractionType, withId id: String) {
         self.actionType = actionType
         self.id = id
     }
     
     @objc private func didTapCell() {
         switch actionType {
-        case .push:
+        case .newPage:
             guard let vc = delegate?.viewControllerToDisplay(forCell: self, withId: self.id) else {
                 fatalError("Cannot find a target viewcontroller to display")
             }
             MDRouter.showVC(vc, actionType: .push)
             break
             
-        default:
+        case .popUp:
             guard let view = delegate?.viewToDisplay(forCell: self, withId: self.id) else {
                 fatalError("Cannot find a view to display")
             }
@@ -138,6 +143,12 @@ class MDAccountSettingsCell: UIView {
             
             SwiftEntryKit.display(entry: view, using: attrs)
             
+            break
+            
+        case .switch:
+            break
+            
+        default:
             break
         }
     }

@@ -11,7 +11,7 @@ import ProgressHUD
 import MJRefresh
 import SnapKit
 
-class MDMangaListViewController: MDViewController {
+class MDMangaListViewController: BaseViewController {
 
     final let vTopArea = UIView()
     
@@ -23,7 +23,7 @@ class MDMangaListViewController: MDViewController {
         layout.minimumLineSpacing = 10
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
-        let view = UICollectionView.init(frame: .zero, collectionViewLayout: layout)
+        let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.dataSource = self
         view.register(MDMangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")

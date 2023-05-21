@@ -1,5 +1,5 @@
 //
-//  MDMangaDetailChapterCollectionCell.swift
+//  MangaChapterCollectionCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/20.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
+class MangaChapterCollectionCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -56,7 +56,7 @@ class MDMangaDetailChapterCollectionCell: UICollectionViewCell {
         }
     }
     
-    func update(model: MDMangaChapterModel) {
+    func update(with model: MDMangaChapterModel) {
         lblChapter.text = model.attributes.fullChapterName
         lblUpdate.text = MDFormatter.dateStringFromNow(
             isoDateString: model.attributes.updatedAt

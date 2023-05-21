@@ -25,20 +25,19 @@ class MDAppBar: UIView {
         conf.image = .init(named: "icon_arrow_back")
         conf.baseForegroundColor = .white
         
-        let button = UIButton(configuration: conf)
+        let button = UIButton(
+            configuration: conf,
+            primaryAction: UIAction { _ in
+                MDRouter.navigationController?.popViewController(animated: true)
+            }
+        )
         return button
     }()
     
-    lazy var lblTitle = UILabel(fontSize: 17, color: .white)
+    lazy var lblTitle = UILabel(fontSize: 17, fontWeight: .medium, color: .white)
     var title: String? = nil {
         didSet {
             lblTitle.text = title
-        }
-    }
-    
-    override var backgroundColor: UIColor? {
-        didSet {
-            lblTitle.textColor = backgroundColor?.inverseColor() ?? .white
         }
     }
     

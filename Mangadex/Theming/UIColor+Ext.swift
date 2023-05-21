@@ -65,11 +65,11 @@ extension UIColor {
     
     static let primaryShadow = black2D2E2F.cgColor
     
-    static var themePrimary: UIColor { primaryColors[MDSettingsManager.themeColorIndex] }
-    static var themeLightest: UIColor { lightestColors[MDSettingsManager.themeColorIndex] }
-    static var themeLighter: UIColor { lighterColors[MDSettingsManager.themeColorIndex] }
-    static var themeLight: UIColor { lightColors[MDSettingsManager.themeColorIndex] }
-    static var themeDark: UIColor { darkColors[MDSettingsManager.themeColorIndex] }
+    static var themePrimary: UIColor { primaryColors[SettingsManager.themeColorIndex] }
+    static var themeLightest: UIColor { lightestColors[SettingsManager.themeColorIndex] }
+    static var themeLighter: UIColor { lighterColors[SettingsManager.themeColorIndex] }
+    static var themeLight: UIColor { lightColors[SettingsManager.themeColorIndex] }
+    static var themeDark: UIColor { darkColors[SettingsManager.themeColorIndex] }
     
     static func fromHex(_ hex: String) -> UIColor {
         var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()

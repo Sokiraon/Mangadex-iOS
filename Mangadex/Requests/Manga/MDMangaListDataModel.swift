@@ -131,8 +131,12 @@ class MDMangaItemDataModel: NSObject, YYModel {
         }
     }
     
-    var mainAuthor: MDMangaAuthor? {
+    var primaryAuthor: MDMangaAuthor? {
         authors.first
+    }
+    
+    var primaryAuthorName: String {
+        primaryAuthor?.attributes.name ?? "kAuthorUnknown".localized()
     }
     
     var artists: [MDMangaAuthor] {
@@ -151,6 +155,14 @@ class MDMangaItemDataModel: NSObject, YYModel {
         return items.map { item in
             MDMangaCoverAttributes.yy_model(with: item.attributes)!
         }
+    }
+    
+    var coverURL: URL? {
+        guard let attr = coverArts.first else {
+            return nil
+        }
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).256.jpg"
+        return URL(string: urlStr)
     }
 }
 

@@ -52,7 +52,7 @@ enum MDRequests {
         if requireAuth {
             return Promise { seal in
                 firstly {
-                    MDUserManager.getInstance().getValidatedToken()
+                    UserManager.shared.getValidatedToken()
                 }.done { token in
                     var newHeaders = headers
                     if !newHeaders.contains("Authorization") {
@@ -99,7 +99,7 @@ enum MDRequests {
         if requireAuth {
             return Promise { seal in
                 firstly {
-                    MDUserManager.getInstance().getValidatedToken()
+                    UserManager.shared.getValidatedToken()
                 }.done { token in
                     Just.post(
                         hostUrl.appendingPathComponent(path),
@@ -142,7 +142,7 @@ enum MDRequests {
         if requireAuth {
             return Promise { seal in
                 firstly {
-                    MDUserManager.getInstance().getValidatedToken()
+                    UserManager.shared.getValidatedToken()
                 }.done { token in
                     Just.delete(
                         hostUrl.appendingPathComponent(path),

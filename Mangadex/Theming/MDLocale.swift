@@ -26,7 +26,7 @@ class MDLocale {
     ]
     
     static var currentMangaLanguage: String {
-        availableLanguages[languages[MDSettingsManager.mangaLangIndex]]!
+        availableLanguages[languages[SettingsManager.mangaLangIndex]]!
     }
     
     /// Get current locale, similar to NSLocale.current but slightly modified

@@ -1,5 +1,5 @@
 //
-//  MDUserManager.swift
+//  UserManager.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/15.
@@ -10,18 +10,21 @@ import Just
 import SwiftyJSON
 import PromiseKit
 
-class MDUserManager {
-    private static let instance = MDUserManager()
-    
-    static func getInstance() -> MDUserManager {
-        return instance
-    }
+class UserManager {
+    static let shared = UserManager()
     
     private init() {}
     
-    private lazy var _session = MDUserDefaultsManager.retrieveStr(forKey: .kUserSessionToken) ?? ""
-    private lazy var _refresh = MDUserDefaultsManager.retrieveStr(forKey: .kUserRefreshToken) ?? ""
-    private lazy var _username = MDUserDefaultsManager.retrieveStr(forKey: .kUsernameToken) ?? ""
+    private enum Keys: String {
+        case session = "com.sokiraon.Mangadex.sessionToken"
+        case refresh = "com.sokiraon.Mangadex.refreshToken"
+        case username = "com.sokiraon.Mangadex.username"
+        case isGuestUser = "com.sokiraon.Mangadex.isGuestUser"
+    }
+    
+    private lazy var _session = UserDefaults.standard.string(forKey: Keys.session.rawValue) ?? ""
+    private lazy var _refresh = UserDefaults.standard.string(forKey: Keys.refresh.rawValue) ?? ""
+    private lazy var _username = UserDefaults.standard.string(forKey: Keys.username.rawValue) ?? ""
     
     private var session: String {
         get {
@@ -29,7 +32,7 @@ class MDUserManager {
         }
         set {
             self._session = newValue
-            MDUserDefaultsManager.storeStr(newValue, forKey: .kUserSessionToken)
+            UserDefaults.standard.set(newValue, forKey: Keys.session.rawValue)
         }
     }
     private var refresh: String {
@@ -38,7 +41,7 @@ class MDUserManager {
         }
         set {
             self._refresh = newValue
-            MDUserDefaultsManager.storeStr(newValue, forKey: .kUserRefreshToken)
+            UserDefaults.standard.set(newValue, forKey: Keys.refresh.rawValue)
         }
     }
     var username: String {
@@ -47,7 +50,7 @@ class MDUserManager {
         }
         set {
             self._username = newValue
-            MDUserDefaultsManager.storeStr(newValue, forKey: .kUsernameToken)
+            UserDefaults.standard.set(newValue, forKey: Keys.username.rawValue)
         }
     }
     
@@ -70,12 +73,16 @@ class MDUserManager {
         !(_session.isEmpty || _refresh.isEmpty || _username.isEmpty)
     }
     
-    func loginAsGuest() {
-        MDUserDefaultsManager.storeBool(true, forKey: .kUserIsGuest)
+    var userIsGuest: Bool {
+        UserDefaults.standard.bool(forKey: Keys.isGuestUser.rawValue)
     }
     
-    var userIsGuest: Bool {
-        MDUserDefaultsManager.retrieveBool(forKey: .kUserIsGuest)
+    func loginAsGuest() {
+        UserDefaults.standard.set(true, forKey: Keys.isGuestUser.rawValue)
+    }
+    
+    static func logOutAsGuest() {
+        UserDefaults.standard.set(false, forKey: Keys.isGuestUser.rawValue)
     }
     
     /// Determine whether the user should see login (or pre-login) page at launch
@@ -107,12 +114,8 @@ class MDUserManager {
     }
     
     static func logOutAsUser() {
-        instance.session = ""
-        instance.refresh = ""
-        instance.username = ""
-    }
-    
-    static func logOutAsGuest() {
-        MDUserDefaultsManager.storeBool(false, forKey: .kUserIsGuest)
+        shared.session = ""
+        shared.refresh = ""
+        shared.username = ""
     }
 }

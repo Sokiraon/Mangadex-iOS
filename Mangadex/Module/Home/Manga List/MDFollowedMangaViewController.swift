@@ -23,7 +23,7 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     
     override func didSetupUI() {
         super.didSetupUI()
-        if !MDUserManager.getInstance().userIsLoggedIn {
+        if !UserManager.shared.userIsLoggedIn {
             refreshHeader.endRefreshing()
             alertForLogin()
         }

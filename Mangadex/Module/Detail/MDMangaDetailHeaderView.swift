@@ -106,9 +106,7 @@ class MDMangaDetailHeaderView: UIView {
         }
         
         addSubview(btnAuthor)
-        if let authorName = mangaModel.mainAuthor?.attributes.name {
-            btnAuthor.setTitle(authorName, for: .normal)
-        }
+        btnAuthor.setTitle(mangaModel.primaryAuthorName, for: .normal)
         btnAuthor.snp.makeConstraints { make in
             make.centerY.equalTo(ivAuthor)
             make.left.equalTo(ivAuthor.snp.right).offset(4)
@@ -179,7 +177,7 @@ class MDMangaDetailHeaderView: UIView {
     }
     
     @objc func showAuthorMangaList() {
-        if let author = mangaModel.mainAuthor {
+        if let author = mangaModel.primaryAuthor {
             let vc = MDTaggedMangaViewController(
                 title: author.attributes.name,
                 queryOptions: ["authorOrArtist": author.id!]

@@ -50,7 +50,7 @@ class MDPreLoginAccountView: UICollectionViewCell {
     }
 }
 
-class MDPreLoginViewController: MDViewController {
+class MDPreLoginViewController: BaseViewController {
     private lazy var credentials: [Credential] = []
     private lazy var lblTitle = UILabel(fontSize: 22, fontWeight: .medium, scalable: true).apply {
         label in

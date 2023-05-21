@@ -26,7 +26,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     }
 }
 
-class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
+class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
     
     private var mangaModel: MDMangaItemDataModel!
     
@@ -55,8 +55,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     }
     
     override func setupUI() {
-        setupNavBar()
-        appBar.theme_backgroundColor = UIColor.themePrimaryPicker
+        setupNavBar(title: mangaModel.attributes.localizedTitle)
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         
@@ -195,7 +194,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
         
         vChapters.contentInset = .cssStyle(0, 16, MDLayout.adjustedSafeInsetBottom)
         vChapters.register(
-            MDMangaDetailChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter"
+            MangaChapterCollectionCell.self, forCellWithReuseIdentifier: "chapter"
         )
         vChapters.register(
             MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader"
@@ -213,7 +212,8 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
         vScroll.mj_header?.beginRefreshing()
     }
     
-    override func doOnAppear() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         retrieveMangaProgress()
     }
     
@@ -300,10 +300,6 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
         if lastViewedChapterId != nil {
             btnContinue.setTitle("kMangaActionContinue".localized(), for: .normal)
         }
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
     }
     
     // MARK: - Fetch Data
@@ -397,7 +393,7 @@ class MDMangaDetailViewController: MDViewController, TTTAttributedLabelDelegate,
     
     private func viewChapter(id: String?) {
         let chapterId = id ?? chapterModels[0].id!
-        let vc = MDMangaSlideViewController(chapterId: chapterId)
+        let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterId)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -473,10 +469,10 @@ extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionVie
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "chapter",
                 for: indexPath
-            ) as! MDMangaDetailChapterCollectionCell
+            ) as! MangaChapterCollectionCell
             
             let model = chapterModels[indexPath.row]
-            cell.update(model: model)
+            cell.update(with: model)
             return cell
             
         case .loader:

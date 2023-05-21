@@ -13,7 +13,7 @@ import PromiseKit
 
 fileprivate let queue = DispatchQueue(label: "serial")
 
-class MDLoginViewController: MDViewController, UITextFieldDelegate {
+class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     
     lazy var fieldUsername = MDTextField().apply { field in
         field.placeholder = "kLoginUsername".localized()
@@ -92,8 +92,9 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         }
     }
     
-    override func doOnAppear() {
-        if (shouldAutoLogin) {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if shouldAutoLogin {
             didTapLogin()
         }
     }
@@ -108,10 +109,10 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
         let password = fieldPassword.text!
         
         firstly {
-            MDUserManager.getInstance().login(username: username, password: password)
+            UserManager.shared.login(username: username, password: password)
         }
             .done { res in
-                MDUserManager.logOutAsGuest()
+                UserManager.logOutAsGuest()
                 DispatchQueue.main.async {
                     let vc = MDHomeTabViewController()
                     ProgressHUD.dismiss()
@@ -163,7 +164,7 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
     }
     
     @objc func didTapGuest() {
-        MDUserManager.getInstance().loginAsGuest()
+        UserManager.shared.loginAsGuest()
         let vc = MDHomeTabViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -175,10 +176,6 @@ class MDLoginViewController: MDViewController, UITextFieldDelegate {
             textField.resignFirstResponder()
         }
         return false
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
 }
 

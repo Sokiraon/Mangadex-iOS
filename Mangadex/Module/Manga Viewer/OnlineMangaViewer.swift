@@ -1,5 +1,5 @@
 //
-//  MDMangaSlideViewController.swift
+//  OnlineMangaViewer.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/20.
@@ -15,7 +15,7 @@ import PromiseKit
 import MJRefresh
 import SafariServices
 
-class MDMangaSlideViewController: MDViewController {
+class OnlineMangaViewer: BaseViewController {
     
     // MARK: - views
     private lazy var refreshLeader: MJRefreshNormalLeader = {
@@ -24,16 +24,19 @@ class MDMangaSlideViewController: MDViewController {
         leader.setTitle("kReleasePrevChapter".localized(), for: .pulling)
         leader.setTitle("kLoading".localized(), for: .refreshing)
         leader.setArrowImage(UIImage(named: "icon_arrow_forward")!)
-        
+
         leader.refreshingBlock = {
             guard let chapterInfo = self.chaptersInfo.get(self.currentIndex - 1) else {
                 self.refreshLeader.endRefreshing()
+                self.showNoChapterAlert()
                 return
             }
-            let vc = MDMangaSlideViewController(
-                chapterId: chapterInfo.id, aggregatedModel: self.aggregatedModel
+            let vc = OnlineMangaViewer(
+                mangaModel: self.mangaModel,
+                chapterId: chapterInfo.id,
+                aggregatedModel: self.aggregatedModel
             )
-            self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
+            self.navigationController?.replaceTopViewController(with: vc, using: .leftIn)
         }
         return leader
     }()
@@ -48,12 +51,15 @@ class MDMangaSlideViewController: MDViewController {
         trailer.refreshingBlock = {
             guard let chapterInfo = self.chaptersInfo.get(self.currentIndex + 1) else {
                 self.refreshTrailer.endRefreshing()
+                self.showNoChapterAlert()
                 return
             }
-            let vc = MDMangaSlideViewController(
-                chapterId: chapterInfo.id, aggregatedModel: self.aggregatedModel
+            let vc = OnlineMangaViewer(
+                mangaModel: self.mangaModel,
+                chapterId: chapterInfo.id,
+                aggregatedModel: self.aggregatedModel
             )
-            self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
+            self.navigationController?.replaceTopViewController(with: vc, using: .rightIn)
         }
         return trailer
     }()
@@ -74,7 +80,7 @@ class MDMangaSlideViewController: MDViewController {
         
         view.isPagingEnabled = true
         view.contentInsetAdjustmentBehavior = .never
-        view.register(MDMangaSlideCollectionCell.self, forCellWithReuseIdentifier: "page")
+        view.register(MangaPageCollectionCell.self, forCellWithReuseIdentifier: "page")
         
         let doubleTapRecognizer = MDShortTapGestureRecognizer.init(target: self, action: #selector(handleDoubleTap(_:)))
         doubleTapRecognizer.numberOfTapsRequired = 2
@@ -89,31 +95,31 @@ class MDMangaSlideViewController: MDViewController {
         return view
     }()
     
-    lazy var vSlider: UISlider = {
-        let slider = UISlider()
-        slider.addTarget(self, action: #selector(handleSliderChange), for: .valueChanged)
-        return slider
-    }()
+    lazy var vSlider = UISlider().apply { slider in
+        slider.addTarget(self, action: #selector(handleSliderChange(_:)), for: .valueChanged)
+    }
     
     let vBottomControl = UIView(backgroundColor: .black)
     lazy var btnPrev = UIButton(
         handler: {
-            let vc = MDMangaSlideViewController(
+            let vc = OnlineMangaViewer(
+                mangaModel: self.mangaModel,
                 chapterId: self.chaptersInfo[self.currentIndex - 1].id,
                 aggregatedModel: self.aggregatedModel
             )
-            self.navigationController?.replaceTopViewController(with: vc, animation: .leftIn)
+            self.navigationController?.replaceTopViewController(with: vc, using: .leftIn)
         },
         title: "kSliderActionPrevChapter".localized(),
         titleColor: .white
     )
     lazy var btnNext = UIButton(
         handler: {
-            let vc = MDMangaSlideViewController(
+            let vc = OnlineMangaViewer(
+                mangaModel: self.mangaModel,
                 chapterId: self.chaptersInfo[self.currentIndex + 1].id,
                 aggregatedModel: self.aggregatedModel
             )
-            self.navigationController?.replaceTopViewController(with: vc, animation: .rightIn)
+            self.navigationController?.replaceTopViewController(with: vc, using: .rightIn)
         },
         title: "kSliderActionNextChapter".localized(),
         titleColor: .white
@@ -150,23 +156,42 @@ class MDMangaSlideViewController: MDViewController {
         titleKey: "kMangaViewerComment",
         action: UIAction { _ in self.openForumSafe() }
     )
+    private lazy var btnDownload = bottomButtonBuilder(
+        image: .init(systemName: "arrow.down.circle.fill"),
+        titleKey: "kMangaViewerDownload",
+        action: UIAction { _ in self.downloadChapter() }
+    )
+    private lazy var btnChapters = bottomButtonBuilder(
+        image: .init(systemName: "list.bullet.circle.fill"),
+        titleKey: "kMangaViewerChapters",
+        action: UIAction { _ in }
+    )
+    
+    private lazy var vBottomActions = UIStackView(
+        arrangedSubviews: [btnComment, btnDownload, btnChapters]
+    )
     
     // MARK: - Lifecycle methods
     
-    convenience init(chapterId: String) {
+    convenience init(mangaModel: MDMangaItemDataModel, chapterId: String) {
         self.init()
+        self.mangaModel = mangaModel
         self.chapterId = chapterId
     }
     
-    convenience init(chapterId: String, aggregatedModel: MDMangaAggregatedModel) {
+    convenience init(
+        mangaModel: MDMangaItemDataModel,
+        chapterId: String,
+        aggregatedModel: MDMangaAggregatedModel
+    ) {
         self.init()
+        self.mangaModel = mangaModel
         self.chapterId = chapterId
         self.aggregatedModel = aggregatedModel
     }
     
     override func setupUI() {
-        setupNavBar()
-        appBar.backgroundColor = .black
+        setupNavBar(backgroundColor: .black)
         
         view.backgroundColor = .black
         
@@ -199,23 +224,11 @@ class MDMangaSlideViewController: MDViewController {
             make.centerY.equalTo(btnPrev)
         }
         
-        vBottomControl.addSubview(btnSettings)
-        btnSettings.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(16)
+        vBottomControl.addSubview(vBottomActions)
+        vBottomActions.snp.makeConstraints { make in
             make.top.equalTo(btnPrev.snp.bottom).offset(16)
+            make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(MDLayout.adjustedSafeInsetBottom)
-        }
-        
-        vBottomControl.addSubview(btnInfo)
-        btnInfo.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.centerY.equalTo(btnSettings)
-        }
-        
-        vBottomControl.addSubview(btnComment)
-        btnComment.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(16)
-            make.centerY.equalTo(btnSettings)
         }
     }
     
@@ -225,8 +238,10 @@ class MDMangaSlideViewController: MDViewController {
     
     // MARK: - Data
     
+    private var mangaModel: MDMangaItemDataModel!
+    
     private var chapterId: String!
-    private var chapterModel: MDMangaChapterModel?
+    private var chapterModel: MDMangaChapterModel!
     private var statistics: MDChapterStatistics!
     
     private var aggregatedModel: MDMangaAggregatedModel!
@@ -234,12 +249,13 @@ class MDMangaSlideViewController: MDViewController {
         aggregatedModel.chapters
     }
     
-    private var currentIndex: Int {
+    private lazy var currentIndex: Int = {
         chaptersInfo.firstIndex { chapterInfo in
             chapterInfo.id == chapterId
-        } ?? 0
-    }
-    private var pages: [String] = []
+        }!
+    }()
+    
+    private var pageURLs: [URL] = []
     
     private func fetchData(withAggregate: Bool) {
         ProgressHUD.show()
@@ -268,14 +284,12 @@ class MDMangaSlideViewController: MDViewController {
         }.done { pagesModel, aggregatedModel in
             let hash = pagesModel.chapter.chapterHash
             for fileName in pagesModel.chapter.data {
-                self.pages.append("\(pagesModel.baseUrl!)/data/\(hash!)/\(fileName)")
+                if let pageURL = URL(string: "\(pagesModel.baseUrl!)/data/\(hash!)/\(fileName)") {
+                    self.pageURLs.append(pageURL)
+                }
             }
-            // Set up slider range based on page count
-            if self.pages.count > 0 {
-                self.vSlider.maximumValue = Float(self.pages.count - 1) / Float(self.pages.count)
-            } else {
-                self.vSlider.maximumValue = 0
-            }
+            // Set slider range based on page count
+            self.vSlider.maximumValue = Float(self.pageURLs.count - 1)
             self.aggregatedModel = aggregatedModel
 
             if self.currentIndex == 0 {
@@ -289,7 +303,7 @@ class MDMangaSlideViewController: MDViewController {
 
             DispatchQueue.main.async {
                 self.vPages.reloadData()
-                self.showHideControlArea()
+                self.toggleControlArea()
                 ProgressHUD.dismiss()
             }
         }.catch { error in
@@ -310,6 +324,15 @@ class MDMangaSlideViewController: MDViewController {
     }
     
     // MARK: - Bottom Controls
+    
+    @objc private func downloadChapter() {
+        Task {
+            await DownloadsManager.default.downloadChapter(
+                mangaModel: mangaModel, chapterModel: chapterModel, pageURLs: pageURLs
+            )
+        }
+        ProgressHUD.showSuccess("kInfoMessageAddedDownload".localized())
+    }
     
     /// A method to open forum thread safely.
     /// It will alert the user to create the corresponding thread if it does not exist.
@@ -341,7 +364,7 @@ class MDMangaSlideViewController: MDViewController {
         }
     }
     
-    // MARK: - Actions
+    // MARK: - Handlers
     
     @objc private func handleSingleTap(_ recognizer: MDShortTapGestureRecognizer) {
         let touchPointX = recognizer.location(in: view).x
@@ -349,7 +372,7 @@ class MDMangaSlideViewController: MDViewController {
         let rightEdge = MDLayout.vw(65)
         
         if touchPointX >= leftEdge && touchPointX <= rightEdge {
-            showHideControlArea()
+            toggleControlArea()
             return
         }
         
@@ -365,7 +388,7 @@ class MDMangaSlideViewController: MDViewController {
                 at: .centeredHorizontally,
                 animated: true
             )
-        } else if touchPointX > rightEdge && currentIndexPath.item < pages.count - 1 {
+        } else if touchPointX > rightEdge && currentIndexPath.item < pageURLs.count - 1 {
             hideControlArea()
             vPages.scrollToItem(
                 at: .init(item: currentIndexPath.item + 1, section: currentIndexPath.section),
@@ -377,69 +400,78 @@ class MDMangaSlideViewController: MDViewController {
     
     @objc private func handleDoubleTap(_ recognizer: MDShortTapGestureRecognizer) {
         if let currentCell = vPages.visibleCells.first {
-            (currentCell as? MDMangaSlideCollectionCell)?.handleTapGesture(recognizer)
+            (currentCell as? MangaPageCollectionCell)?.handleTapGesture(recognizer)
         }
     }
     
-    private func showHideControlArea() {
-        if (appBar.isHidden == true) {
-            appBar.isHidden = false
-            vBottomControl.isHidden = false
-            let transform = appBar.transform.translatedBy(x: 0, y: appBar.frame.height)
+    @objc private func handleSliderChange(_ slider: UISlider) {
+        let newValue = round(slider.value)
+        let newOffsetX = MDLayout.screenWidth * CGFloat(newValue)
+        let curOffsetX = vPages.contentOffset.x
+        if newOffsetX != curOffsetX {
+            vPages.contentOffset = CGPoint(x: newOffsetX, y: 0)
+        }
+        slider.value = newValue
+    }
+    
+    // MARK: - Actions
+    
+    private var isControlVisible = true
+    private func toggleControlArea() {
+        if isControlVisible {
+            isControlVisible = false
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-                self.appBar.transform = transform
+                self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: -self.appBar.frame.height)
                 self.vBottomControl.transform = self.vBottomControl.transform
-                    .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
+                    .translatedBy(x: 0, y: self.vBottomControl.frame.height)
+                self.isStatusBarHidden = true
             }
         } else {
-            hideControlArea()
+            isControlVisible = true
+            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+                self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: self.appBar.frame.height)
+                self.vBottomControl.transform = self.vBottomControl.transform
+                    .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
+                self.isStatusBarHidden = false
+            }
         }
     }
     
     private func hideControlArea() {
-        if (appBar.isHidden == false) {
-            let transform = appBar.transform.translatedBy(x: 0, y: -appBar.frame.height)
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
-                self.appBar.transform = transform
-                self.vBottomControl.transform = self.vBottomControl.transform
-                    .translatedBy(x: 0, y: self.vBottomControl.frame.height)
-            } completion: { status in
-                self.appBar.isHidden = true
-                self.vBottomControl.isHidden = true
-            }
+        if isControlVisible {
+            toggleControlArea()
         }
     }
     
-    @objc private func handleSliderChange() {
-        let newValue = vSlider.value
-        if (newValue < 1) {
-            let newIndex = floor(newValue * Float(pages.count))
-            let targetOffsetX = MDLayout.screenWidth * CGFloat(newIndex)
-            let currentOffsetX = vPages.contentOffset.x
-            if (targetOffsetX != currentOffsetX) {
-                vPages.contentOffset = CGPoint(x: targetOffsetX, y: 0)
-            }
-        }
+    private func showNoChapterAlert() {
+        let alert = UIAlertController(
+            title: "kInfo".localized(), message: "kNoChapterAlertMsg".localized(), preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
+        alert.addAction(UIAlertAction(title: "kOk".localized(), style: .default, handler: { _ in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        self.present(alert, animated: true)
     }
 }
 
 // MARK: - CollectionViewDelegate
-extension MDMangaSlideViewController: UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
+extension OnlineMangaViewer: UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "page", for: indexPath)
-        as! MDMangaSlideCollectionCell
-        cell.setImageUrl(pages[indexPath.row])
+        as! MangaPageCollectionCell
+        cell.setImageUrl(pageURLs[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        pages.count
+        pageURLs.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! MDMangaSlideCollectionCell).resetScale()
+        (cell as! MangaPageCollectionCell).resetScale()
         // update slider value when scrolled to a new page
-        vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth) / CGFloat(pages.count))
+        vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth))
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {

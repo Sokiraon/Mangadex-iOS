@@ -32,10 +32,6 @@ class MDTaggedMangaViewController: MDMangaListViewController {
         }
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
-    }
-    
     override func fetchData() {
         MDRequests.Manga.query(params: queryOptions)
             .done { model in

@@ -13,7 +13,7 @@ import Kingfisher
 
 class MDMangaListCellInfoItem: UIView {
     private let ivIcon = UIImageView()
-    let lblInfo = UILabel(fontSize: 15, color: .black2D2E2F)
+    private let lblInfo = UILabel(fontSize: 15)
     
     convenience init(icon: UIImage?, defaultText: String = "N/A") {
         self.init()
@@ -35,9 +35,11 @@ class MDMangaListCellInfoItem: UIView {
             make.width.greaterThanOrEqualTo(40)
         }
     }
+    
+    func setText(_ text: String?) {
+        lblInfo.text = text
+    }
 }
-
-fileprivate let cellHeight = 105.0
 
 class MDMangaListCollectionCell: UICollectionViewCell {
     
@@ -90,8 +92,8 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         ivCover.contentMode = .scaleAspectFill
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
-            make.height.equalTo(cellHeight)
-            make.width.equalTo(cellHeight * 2 / 3)
+            make.height.equalTo(105)
+            make.width.equalTo(105 * 2 / 3)
         }
         
         contentView.addSubview(titleLabel)
@@ -143,16 +145,11 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             statusView.backgroundColor = .fromHex("219653")
             statusLabel.text = "kMangaOngoing".localized()
         }
-        if let coverArt = model.coverArts.first {
-            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(model.id!)/\(coverArt.fileName!).256.jpg"
-            ivCover.kf.setImage(
-                with: URL(string: urlStr),
-                placeholder: UIImage(named: "manga_cover_default")
-            )
-        }
-        if let authorName = model.authors.first?.attributes?.name {
-            infoAuthor.lblInfo.text = authorName
-        }
+        ivCover.kf.setImage(
+            with: model.coverURL,
+            placeholder: UIImage(named: "manga_cover_default")
+        )
+        infoAuthor.setText(model.primaryAuthorName)
         _ = firstly {
             MDRequests.Manga.getStatistics(mangaId: model.id)
         }
@@ -161,11 +158,11 @@ class MDMangaListCollectionCell: UICollectionViewCell {
                     if statistics.follows != nil {
                         let num = statistics.follows!.intValue
                         if num > 1000000 {
-                            self.infoFollow.lblInfo.text = "\(num / 1000000)M"
+                            self.infoFollow.setText("\(num / 1000000)M")
                         } else if num > 1000 {
-                            self.infoFollow.lblInfo.text = "\(num / 1000)K"
+                            self.infoFollow.setText("\(num / 1000)K")
                         } else {
-                            self.infoFollow.lblInfo.text = "\(num)"
+                            self.infoFollow.setText("\(num)")
                         }
                     }
                     if statistics.rating != nil {
@@ -175,12 +172,12 @@ class MDMangaListCollectionCell: UICollectionViewCell {
                             formatter.maximumFractionDigits = 2
                         }
                         if statistics.rating?.bayesian != nil {
-                            self.infoRate.lblInfo.text = nf.string(
-                                from: statistics.rating!.bayesian!
+                            self.infoRate.setText(
+                                nf.string(from: statistics.rating!.bayesian!)
                             )
                         } else if statistics.rating?.average != nil {
-                            self.infoRate.lblInfo.text = nf.string(
-                                from: statistics.rating!.average!
+                            self.infoRate.setText(
+                                nf.string(from: statistics.rating!.average!)
                             )
                         }
                     }

@@ -1,5 +1,5 @@
 //
-//  MDAccountViewController.swift
+//  AccountViewController.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/15.
@@ -8,8 +8,9 @@
 import Foundation
 import UIKit
 import SwiftTheme
+import SnapKit
 
-class MDAccountViewController: MDViewController {
+class AccountViewController: BaseViewController {
     
     private lazy var vTopArea = UIView()
     private lazy var ivAvatar = UIImageView(imageNamed: "icon_avatar_round")
@@ -19,31 +20,51 @@ class MDAccountViewController: MDViewController {
         button.setImage(UIImage(named: "icon_logout"), for: .normal)
         button.tintColor = .white
         button.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
-        button.isHidden = !MDUserManager.getInstance().userIsLoggedIn
+        button.isHidden = !UserManager.shared.userIsLoggedIn
         return button
     }()
     
+    private lazy var cellDataSaving = AccountSettingsSwitchItem(
+        icon: .init(named: "icon_signal_cellular"),
+        title: "kSettingsDataSaving".localized(),
+        key: .isDataSaving
+    )
+    
     private lazy var colorCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
-            textStyle: .oneLine, iconName: "icon_palette", title: "kPrefThemeColor".localized()
+            icon: .init(named: "icon_palette"), title: "kPrefThemeColor".localized()
         )
-        cell.setActionType(.selector, withId: "colorSelector")
+        cell.setActionType(.popUp, withId: "colorSelector")
         cell.delegate = self
         return cell
     }()
     private lazy var langCell: MDAccountSettingsCell = {
         let cell = MDAccountSettingsCell(
-            textStyle: .twoLine, iconName: "icon_language",
+            icon: .init(named: "icon_language"),
             title: "kPrefMangaLang".localized(),
             subtitle: "kPrefMangaLangCur".localizedFormat(
-                MDLocale.languages[MDSettingsManager.mangaLangIndex]
+                MDLocale.languages[SettingsManager.mangaLangIndex]
             )
         )
-        cell.setActionType(.selector, withId: "langSelector")
+        cell.setActionType(.popUp, withId: "langSelector")
         cell.delegate = self
         return cell
     }()
-    private lazy var configSection = MDAccountSettingsSection(cells: [colorCell, langCell])
+    private lazy var downloadsCell = MDAccountSettingsCell(
+        icon: .init(named: "icon_download"), title: "kPrefDownloads".localized()
+    ).apply { cell in
+        cell.setActionType(.newPage, withId: "downloads")
+        cell.delegate = self
+    }
+    
+    private lazy var configSection1 = AccountSettingsSection(cells: [cellDataSaving])
+    private lazy var configSection2 = AccountSettingsSection(cells: [downloadsCell, colorCell, langCell])
+    private lazy var vConfigStack = UIStackView(
+        arrangedSubviews: [configSection1, configSection2]
+    ).apply { vStack in
+        vStack.axis = .vertical
+        vStack.spacing = 16
+    }
     
     override func setupUI() {
         view.backgroundColor = .lightestGrayF5F5F5
@@ -74,12 +95,12 @@ class MDAccountViewController: MDViewController {
             make.left.equalTo(ivAvatar.snp.right).offset(20)
             make.right.equalTo(btnLogout.snp.left).offset(-20)
         }
-        lblUsername.text = MDUserManager.getInstance().username
-        lblUsername.isUserInteractionEnabled = !MDUserManager.getInstance().userIsLoggedIn
+        lblUsername.text = UserManager.shared.username
+        lblUsername.isUserInteractionEnabled = !UserManager.shared.userIsLoggedIn
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
-        view +++ configSection
-        configSection.snp.makeConstraints { make in
+        view.addSubview(vConfigStack)
+        vConfigStack.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(15)
             make.top.equalTo(vTopArea.snp.bottom).offset(15)
         }
@@ -101,26 +122,31 @@ class MDAccountViewController: MDViewController {
     // MARK: - actions
     
     @objc private func didTapLogout() {
-        MDUserManager.logOutAsUser()
+        UserManager.logOutAsUser()
         MDRouter.goToLogin()
     }
     
     @objc private func didTapUsername() {
-        if !MDUserManager.getInstance().userIsLoggedIn {
+        if !UserManager.shared.userIsLoggedIn {
             MDRouter.goToLogin()
         }
     }
     
     @objc private func didUpdateSetting() {
         langCell.lblSubtitle.text = "kPrefMangaLangCur".localizedFormat(
-            MDLocale.languages[MDSettingsManager.mangaLangIndex]
+            MDLocale.languages[SettingsManager.mangaLangIndex]
         )
     }
 }
 
-extension MDAccountViewController: MDAccountSettingsCellDelegate {
+extension AccountViewController: MDAccountSettingsCellDelegate {
     func viewControllerToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIViewController? {
-        UIViewController()
+        switch id {
+        case "downloads":
+            return DownloadsViewController()
+        default:
+            return nil
+        }
     }
     
     func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> MDSettingsPopupView? {

@@ -1,5 +1,5 @@
 //
-//  MDMangaSlideCollectionCell.swift
+//  MangaPageCollectionCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/26.
@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-class MDMangaSlideCollectionCell: UICollectionViewCell {
+class MangaPageCollectionCell: UICollectionViewCell {
     private lazy var vScroll: UIScrollView = {
         let view = UIScrollView()
         view.backgroundColor = .black
@@ -51,8 +51,8 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
         }
     }
     
-    func setImageUrl(_ url: String) {
-        ivPage.kf.setImage(with: URL(string: url), options: [
+    func setImageUrl(_ url: URL) {
+        ivPage.kf.setImage(with: url, options: [
             .transition(.fade(0.2)),
             .cacheOriginalImage,
         ])
@@ -79,7 +79,7 @@ class MDMangaSlideCollectionCell: UICollectionViewCell {
     }
 }
 
-extension MDMangaSlideCollectionCell: UIScrollViewDelegate {
+extension MangaPageCollectionCell: UIScrollViewDelegate {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         ivPage
     }

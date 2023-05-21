@@ -35,7 +35,7 @@
 "kSavedAccountsDismiss" = "跳过";
 "kLoginRequired" = "您还没有登录，请先登录后再继续操作";
 
-"kAuthorUnknown" = "佚名";
+"kAuthorUnknown" = "[佚名]";
 
 "kDescription" = "简介";
 "kTags" = "标签";
@@ -152,8 +152,9 @@
 "kPrefThemeColor" = "设置主题色";
 "kPrefMangaLang" = "修改阅读语言";
 "kPrefMangaLangCur" = "当前：%@";
-
 "kPrefPopupSave" = "保存设置";
+"kPrefDownloads" = "下载项";
+"kSettingsDataSaving" = "低数据模式";
 
 "kMangaDetailDescr" = "漫画简介";
 "kMangaDetailDescrMore" = "展开";
@@ -183,4 +184,11 @@
 "kMangaViewerSettings" = "设置";
 "kMangaViewerInfo" = "详情";
 "kMangaViewerComment" = "评论";
-"kAlertMessageNoThread" = "本章节的评论区尚未创建。点击确定来创建。";
+"kMangaViewerDownload" = "下载";
+"kMangaViewerChapters" = "章节";
+"kAlertMessageNoThread" = "本章节的评论区尚未创建。\n点击确定来创建。";
+"kInfoMessageAddedDownload" = "已加入下载队列";
+
+"kNoChapterAlertMsg" = "你已经看完了所有的章节。\n点击确定来退出。";
+
+"kDownloadedMangaChapterCount" = "共 %d 话";

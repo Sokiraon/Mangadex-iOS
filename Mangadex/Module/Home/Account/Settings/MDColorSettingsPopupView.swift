@@ -40,7 +40,7 @@ class MDColorSettingsPopupView: MDSettingsPopupView {
     }
     
     override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView, atIndexPath indexPath: IndexPath) {
-        MDSettingsManager.themeColorIndex = indexPath.row
-        ThemeManager.setTheme(index: MDSettingsManager.themeColorIndex)
+        SettingsManager.themeColorIndex = indexPath.row
+        ThemeManager.setTheme(index: SettingsManager.themeColorIndex)
     }
 }

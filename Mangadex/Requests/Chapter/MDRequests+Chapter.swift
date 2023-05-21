@@ -130,7 +130,8 @@ extension MDRequests {
             Promise { seal in
                 MDRequests.post(
                     path: "/forums/thread",
-                    data: ["type": "chapter", "id": chapterId]
+                    data: ["type": "chapter", "id": chapterId],
+                    requireAuth: true
                 ).done { result in
                     let data = JSON(result)["data"]
                     if let id = data["id"].int,
