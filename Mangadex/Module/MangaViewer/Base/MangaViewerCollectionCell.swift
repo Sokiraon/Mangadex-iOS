@@ -1,5 +1,5 @@
 //
-//  MangaPageCollectionCell.swift
+//  MangaViewerCollectionCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/26.
@@ -10,23 +10,30 @@ import UIKit
 import Kingfisher
 import SnapKit
 
-class MangaPageCollectionCell: UICollectionViewCell {
-    private lazy var vScroll: UIScrollView = {
-        let view = UIScrollView()
+class MangaViewerCollectionCell: UICollectionViewCell {
+    
+    private lazy var vScroll = UIScrollView().apply { view in
         view.backgroundColor = .black
         view.delegate = self
         view.minimumZoomScale = 1
         view.maximumZoomScale = 3
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
-        return view
-    }()
-    private lazy var ivPage: UIImageView = {
-        let iv = UIImageView()
+    }
+    
+    private lazy var ivPage = UIImageView().apply { iv in
         iv.kf.indicatorType = .activity
         iv.contentMode = .scaleAspectFit
-        return iv
-    }()
+    }
+    
+    var imageURL: URL? = nil {
+        didSet {
+            ivPage.kf.setImage(with: imageURL, options: [
+                .transition(.fade(0.2)),
+                .cacheOriginalImage,
+            ])
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -51,14 +58,7 @@ class MangaPageCollectionCell: UICollectionViewCell {
         }
     }
     
-    func setImageUrl(_ url: URL) {
-        ivPage.kf.setImage(with: url, options: [
-            .transition(.fade(0.2)),
-            .cacheOriginalImage,
-        ])
-    }
-    
-    @objc func handleTapGesture(_ gesture: MDShortTapGestureRecognizer) {
+    @objc func handleTapGesture(_ gesture: ShortTapGestureRecognizer) {
         if vScroll.zoomScale > 1 {
             vScroll.setZoomScale(1, animated: true)
         } else {
@@ -79,7 +79,7 @@ class MangaPageCollectionCell: UICollectionViewCell {
     }
 }
 
-extension MangaPageCollectionCell: UIScrollViewDelegate {
+extension MangaViewerCollectionCell: UIScrollViewDelegate {
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         ivPage
     }

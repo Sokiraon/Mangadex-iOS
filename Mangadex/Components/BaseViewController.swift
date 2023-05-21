@@ -46,7 +46,7 @@ class BaseViewController: UIViewController {
     }
     
     /// Default AppBar of the viewController. Loaded on-demand.
-    internal lazy var appBar = MDAppBar().apply { _ in
+    internal lazy var appBar = AppBar().apply { _ in
         self.statusBarStyle = .lightContent
     }
     

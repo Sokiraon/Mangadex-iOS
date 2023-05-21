@@ -6,14 +6,19 @@ import Foundation
 import UIKit
 
 extension UIButton {
-    convenience init(handler: @escaping () -> Void, title: String = "", titleColor: UIColor, backgroundColor: UIColor? = nil) {
+    convenience init(
+        title: String = "",
+        titleColor: UIColor? = .white,
+        backgroundColor: UIColor? = .themePrimary,
+        action: UIAction? = nil
+    ) {
         self.init()
-        addAction(UIAction(handler: { action in
-            handler()
-        }), for: .touchUpInside)
         setTitle(title, for: .normal)
         setTitleColor(titleColor, for: .normal)
         self.backgroundColor = backgroundColor
+        if let action = action {
+            addAction(action, for: .touchUpInside)
+        }
     }
     
     convenience init(imgNormal: UIImage?, imgDisabled: UIImage? = nil) {

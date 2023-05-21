@@ -5,7 +5,7 @@
 import Foundation
 import UIKit
 
-class MDShortTapGestureRecognizer: UITapGestureRecognizer {
+class ShortTapGestureRecognizer: UITapGestureRecognizer {
     private let maxDelayMilli = 200
     var isContinuous: Bool = false
     

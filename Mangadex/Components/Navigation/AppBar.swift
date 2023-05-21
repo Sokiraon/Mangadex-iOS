@@ -1,5 +1,5 @@
 //
-//  MDAppBar.swift
+//  AppBar.swift
 //  Mangadex
 //
 //  Created by edz on 2021/6/8.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MDAppBar: UIView {
+class AppBar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,7 +20,7 @@ class MDAppBar: UIView {
         setupUI()
     }
     
-    lazy var btnBack: UIButton = {
+    private lazy var btnBack: UIButton = {
         var conf = UIButton.Configuration.plain()
         conf.image = .init(named: "icon_arrow_back")
         conf.baseForegroundColor = .white
@@ -34,7 +34,7 @@ class MDAppBar: UIView {
         return button
     }()
     
-    lazy var lblTitle = UILabel(fontSize: 17, fontWeight: .medium, color: .white)
+    private lazy var lblTitle = UILabel(fontSize: 17, fontWeight: .medium, color: .white)
     var title: String? = nil {
         didSet {
             lblTitle.text = title
