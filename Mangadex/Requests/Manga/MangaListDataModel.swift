@@ -1,5 +1,5 @@
 //
-//  MDMangaItemDataModel.swift
+//  MangaListDataModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/19.
@@ -8,7 +8,7 @@
 import Foundation
 import YYModel
 
-enum MDMangaReadingStatus: String {
+enum MangaReadingStatus: String {
     case reading = "reading"
     case onHold = "on_hold"
     case planToRead = "plan_to_read"
@@ -19,7 +19,7 @@ enum MDMangaReadingStatus: String {
     case null = "null"
 }
 
-class MDMangaMultiLanguageObject: NSObject, YYModel {
+class MangaMultiLanguageObject: NSObject, YYModel {
     @objc var en: String?
     @objc var jp: String?
     @objc var zh: String?
@@ -47,7 +47,7 @@ class MDMangaMultiLanguageObject: NSObject, YYModel {
     }
 }
 
-class MDMangaItemAttributes: NSObject, YYModel {
+class MangaItemAttributes: NSObject, YYModel {
     @objc var title: [String: String]!
     @objc var altTitles: [[String: String]]!
     @objc var descript: [String: String]?
@@ -113,9 +113,9 @@ class MDMangaItemAttributes: NSObject, YYModel {
     }
 }
 
-class MDMangaItemDataModel: NSObject, YYModel {
-    @objc var id: String!
-    @objc var attributes: MDMangaItemAttributes!
+class MangaItemDataModel: NSObject, YYModel {
+    @objc var id: String! = ""
+    @objc var attributes: MangaItemAttributes!
     @objc var relationships: [MDRelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
@@ -166,13 +166,13 @@ class MDMangaItemDataModel: NSObject, YYModel {
     }
 }
 
-class MDMangaListDataModel: NSObject, YYModel {
-    @objc var data: [MDMangaItemDataModel]!
+class MangaListDataModel: NSObject, YYModel {
+    @objc var data: [MangaItemDataModel]!
     @objc var limit = 0
     @objc var offset = 0
     @objc var total = 0
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": MDMangaItemDataModel.self ]
+        [ "data": MangaItemDataModel.self ]
     }
 }

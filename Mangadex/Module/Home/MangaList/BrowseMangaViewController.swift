@@ -1,5 +1,5 @@
 //
-//  MDTrendViewController.swift
+//  BrowseMangaViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/29.
@@ -11,14 +11,15 @@ import ProgressHUD
 import PromiseKit
 import MJRefresh
 
-class MDBrowseMangaViewController: MDMangaListViewController {
+class BrowseMangaViewController: MangaListViewController {
     
     override func fetchData() {
-        MDRequests.Manga.query(params: ["title": filterOptions.searchText])
+        MDRequests.Manga.query(params: [
+            "title": filterOptions.searchText,
+            "limit": 20
+        ])
             .done { model in
-                self.mangaList = model.data
-                self.mangaTotal = model.total
-                self.reloadCollection()
+                self.setData(with: model)
             }
             .catch { error in
                 DispatchQueue.main.async {
@@ -36,9 +37,7 @@ class MDBrowseMangaViewController: MDMangaListViewController {
             "offset": self.mangaList.count,
         ])
         .done { model in
-            self.mangaList.append(contentsOf: model.data)
-            self.mangaTotal = model.total
-            self.reloadCollection()
+            self.updateData(with: model)
         }
         .catch { error in
             DispatchQueue.main.async {
@@ -79,11 +78,7 @@ class MDBrowseMangaViewController: MDMangaListViewController {
                 "title": filterOptions.searchText
             ])
         }.done { model in
-            self.mangaList = model.data
-            self.mangaTotal = model.total
-            DispatchQueue.main.async {
-                self.vCollection.reloadData()
-            }
+            self.setData(with: model)
         }.catch { error in
             DispatchQueue.main.async {
                 ProgressHUD.showError()
@@ -102,7 +97,7 @@ class MDBrowseMangaViewController: MDMangaListViewController {
 }
 
 // MARK: - UICollectionView Delegate
-extension MDBrowseMangaViewController {
+extension BrowseMangaViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y > 0 {
             UIView.animate(withDuration: 0.3, delay: 0, options: .curveLinear) {
@@ -122,7 +117,7 @@ extension MDBrowseMangaViewController {
 }
 
 // MARK: - UISearchBar Delegate
-extension MDBrowseMangaViewController: UISearchBarDelegate {
+extension BrowseMangaViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         filterOptions.searchText = searchText
         scheduleFilterOptionChange()

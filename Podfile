@@ -23,6 +23,7 @@ target "Mangadex" do
   pod 'FirebasePerformance'
   pod 'TTTAttributedLabel'
   pod "MarkdownKit"
+  pod 'SkeletonView'
   
 end
 

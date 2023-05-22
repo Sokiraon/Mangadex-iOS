@@ -6,7 +6,7 @@ import Foundation
 import YYModel
 
 class MDMangaTagAttributes: NSObject {
-    @objc var name: MDMangaMultiLanguageObject!
+    @objc var name: MangaMultiLanguageObject!
     @objc var group: String!
 }
 

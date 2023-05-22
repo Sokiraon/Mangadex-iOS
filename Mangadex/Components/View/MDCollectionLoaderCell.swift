@@ -28,6 +28,7 @@ class MDCollectionLoaderCell: UICollectionViewCell {
         vLoading.startAnimating()
         vLoading.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.width.height.equalTo(18)
             make.top.bottom.equalToSuperview().inset(16)
         }
     }

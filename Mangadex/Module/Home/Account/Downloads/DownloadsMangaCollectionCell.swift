@@ -16,7 +16,7 @@ class DownloadsMangaCollectionCell: UICollectionViewCell {
         fontSize: 18, fontWeight: .medium, numberOfLines: 2
     )
     
-    private let infoAuthor = MDMangaListCellInfoItem(
+    private let infoAuthor = MangaListCellInfoItem(
         icon: .init(named: "icon_draw"),
         defaultText: "kAuthorUnknown".localized()
     )
@@ -83,12 +83,9 @@ class DownloadsMangaCollectionCell: UICollectionViewCell {
     }
     
     func update(mangaModel: LocalMangaModel) {
-        ivCover.kf.setImage(
-            with: mangaModel.coverURL,
-            placeholder: UIImage(named: "manga_cover_default")
-        )
+        ivCover.kf.setImage(with: mangaModel.coverURL)
         lblTitle.text = mangaModel.info.attributes.localizedTitle
         lblCount.text = "kDownloadedMangaChapterCount".localizedFormat(mangaModel.chapterURLs.count)
-        infoAuthor.setText(mangaModel.info.primaryAuthorName)
+        infoAuthor.text = mangaModel.info.primaryAuthorName
     }
 }

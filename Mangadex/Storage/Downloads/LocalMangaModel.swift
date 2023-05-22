@@ -38,9 +38,9 @@ class LocalMangaModel {
     let baseURL: URL
     let coverURL: URL
     let chapterURLs: [URL]
-    let info: MDMangaItemDataModel
+    let info: MangaItemDataModel
     
-    init(baseURL: URL, coverURL: URL, chapterURLs: [URL], info: MDMangaItemDataModel) {
+    init(baseURL: URL, coverURL: URL, chapterURLs: [URL], info: MangaItemDataModel) {
         self.baseURL = baseURL
         self.coverURL = coverURL
         self.chapterURLs = chapterURLs

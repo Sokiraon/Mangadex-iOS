@@ -27,7 +27,7 @@ class MDMangaDetailHeaderView: UIView {
     }
     private let lblAbout = UILabel(fontWeight: .medium)
     
-    private var mangaModel: MDMangaItemDataModel!
+    private var mangaModel: MangaItemDataModel!
     
     private var btnFollow: UIButton!
     private lazy var btnFollowConfFollowed = {
@@ -68,7 +68,7 @@ class MDMangaDetailHeaderView: UIView {
         return conf
     }()
     
-    convenience init(mangaModel: MDMangaItemDataModel) {
+    convenience init(mangaModel: MangaItemDataModel) {
         self.init()
         
         self.mangaModel = mangaModel
@@ -148,10 +148,10 @@ class MDMangaDetailHeaderView: UIView {
         }
     }
     
-    private var readingStatus: MDMangaReadingStatus!
+    private var readingStatus: MangaReadingStatus!
     private var isLoading = false
     
-    func update(readingStatus: MDMangaReadingStatus) {
+    func update(readingStatus: MangaReadingStatus) {
         self.readingStatus = readingStatus
         btnFollow.setNeedsUpdateConfiguration()
     }
@@ -161,7 +161,7 @@ class MDMangaDetailHeaderView: UIView {
         btnFollow.setNeedsUpdateConfiguration()
         
         var promise: Promise<Bool>
-        var newStatus: MDMangaReadingStatus
+        var newStatus: MangaReadingStatus
         if readingStatus == .reading {
             promise = MDRequests.Manga.unFollow(mangaId: mangaModel.id)
             newStatus = .null
@@ -178,7 +178,7 @@ class MDMangaDetailHeaderView: UIView {
     
     @objc func showAuthorMangaList() {
         if let author = mangaModel.primaryAuthor {
-            let vc = MDTaggedMangaViewController(
+            let vc = TaggedMangaViewController(
                 title: author.attributes.name,
                 queryOptions: ["authorOrArtist": author.id!]
             )

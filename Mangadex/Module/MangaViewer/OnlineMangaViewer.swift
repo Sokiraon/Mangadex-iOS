@@ -65,14 +65,14 @@ class OnlineMangaViewer: MangaViewer {
     
     // MARK: - Lifecycle methods
     
-    convenience init(mangaModel: MDMangaItemDataModel, chapterId: String) {
+    convenience init(mangaModel: MangaItemDataModel, chapterId: String) {
         self.init()
         self.mangaModel = mangaModel
         self.chapterId = chapterId
     }
     
     convenience init(
-        mangaModel: MDMangaItemDataModel,
+        mangaModel: MangaItemDataModel,
         chapterId: String,
         aggregatedModel: MDMangaAggregatedModel
     ) {
@@ -119,7 +119,7 @@ class OnlineMangaViewer: MangaViewer {
     
     // MARK: - Model
     
-    private var mangaModel: MDMangaItemDataModel!
+    private var mangaModel: MangaItemDataModel!
     
     private var chapterId: String!
     private var chapterModel: MDMangaChapterModel!

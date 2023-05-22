@@ -1,5 +1,5 @@
 //
-//  MDMangaListCollectionCell.swift
+//  MangaListCollectionCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 1/15/22.
@@ -10,16 +10,19 @@ import UIKit
 import PromiseKit
 import SnapKit
 import Kingfisher
+import SkeletonView
 
-class MDMangaListCellInfoItem: UIView {
+class MangaListCellInfoItem: UIView {
     private let ivIcon = UIImageView()
     private let lblInfo = UILabel(fontSize: 15)
     
     convenience init(icon: UIImage?, defaultText: String = "N/A") {
         self.init()
+        isSkeletonable = true
         ivIcon.image = icon
         ivIcon.tintColor = .black2D2E2F
         lblInfo.text = defaultText
+        lblInfo.isSkeletonable = true
         
         addSubview(ivIcon)
         ivIcon.snp.makeConstraints { make in
@@ -36,25 +39,28 @@ class MDMangaListCellInfoItem: UIView {
         }
     }
     
-    func setText(_ text: String?) {
-        lblInfo.text = text
+    var text: String? {
+        didSet {
+            hideSkeleton()
+            lblInfo.text = text
+        }
     }
 }
 
-class MDMangaListCollectionCell: UICollectionViewCell {
+class MangaListCollectionCell: UICollectionViewCell {
     
-    private let ivCover = UIImageView(imageNamed: "manga_cover_default")
-    private let titleLabel = UILabel(
+    private let ivCover = UIImageView()
+    private let lblTitle = UILabel(
         fontSize: 18,
         fontWeight: .medium,
         color: .black2D2E2F
     )
-    private let infoAuthor = MDMangaListCellInfoItem(
+    private let infoAuthor = MangaListCellInfoItem(
         icon: .init(named: "icon_draw"),
         defaultText: "kAuthorUnknown".localized()
     )
-    private let infoRate = MDMangaListCellInfoItem(icon: .init(named: "icon_grade"))
-    private let infoFollow = MDMangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
+    private let infoRate = MangaListCellInfoItem(icon: .init(named: "icon_grade"))
+    private let infoFollow = MangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
     
     private let statusView = UIView(backgroundColor: .fromHex("219653"))
     private let statusLabel = UILabel(
@@ -84,32 +90,35 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         
         contentView.snp.makeConstraints { make in
             make.width.equalTo(MDLayout.screenWidth - 2 * 10)
+            make.height.equalTo(105)
         }
         contentView.translatesAutoresizingMaskIntoConstraints = true
         
         contentView.addSubview(ivCover)
         ivCover.clipsToBounds = true
         ivCover.contentMode = .scaleAspectFill
+        ivCover.isSkeletonable = true
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
-            make.height.equalTo(105)
             make.width.equalTo(105 * 2 / 3)
         }
         
-        contentView.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
+        contentView.addSubview(lblTitle)
+        lblTitle.snp.makeConstraints { make in
             make.left.equalTo(ivCover.snp.right).offset(15)
             make.top.equalToSuperview().inset(10)
             make.right.equalToSuperview().inset(15)
         }
         
         contentView.addSubview(infoRate)
+        infoRate.isSkeletonable = true
         infoRate.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
+            make.leading.equalTo(lblTitle)
             make.bottom.equalToSuperview().inset(10)
         }
         
         contentView.addSubview(infoFollow)
+        infoFollow.isSkeletonable = true
         infoFollow.snp.makeConstraints { make in
             make.leading.equalTo(infoRate.snp.trailing).offset(16)
             make.centerY.equalTo(infoRate)
@@ -117,13 +126,13 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         
         contentView.addSubview(infoAuthor)
         infoAuthor.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
+            make.leading.equalTo(lblTitle)
             make.bottom.equalTo(infoRate.snp.top).offset(-8)
         }
         
         contentView.addSubview(statusLabel)
         statusLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(titleLabel)
+            make.trailing.equalTo(lblTitle)
             make.centerY.equalTo(infoFollow)
         }
         
@@ -136,8 +145,8 @@ class MDMangaListCollectionCell: UICollectionViewCell {
         }
     }
     
-    func update(mangaModel model: MDMangaItemDataModel) {
-        titleLabel.text = model.attributes.localizedTitle
+    func update(mangaModel model: MangaItemDataModel) {
+        lblTitle.text = model.attributes.localizedTitle
         if model.attributes.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
             statusLabel.text = "kMangaCompleted".localized()
@@ -145,47 +154,38 @@ class MDMangaListCollectionCell: UICollectionViewCell {
             statusView.backgroundColor = .fromHex("219653")
             statusLabel.text = "kMangaOngoing".localized()
         }
-        ivCover.kf.setImage(
-            with: model.coverURL,
-            placeholder: UIImage(named: "manga_cover_default")
-        )
-        infoAuthor.setText(model.primaryAuthorName)
-        _ = firstly {
-            MDRequests.Manga.getStatistics(mangaId: model.id)
+        ivCover.showAnimatedSkeleton()
+        ivCover.kf.setImage(with: model.coverURL) { _ in
+            self.ivCover.hideSkeleton()
         }
+        infoAuthor.text = model.primaryAuthorName
+        
+        infoRate.showAnimatedSkeleton()
+        infoFollow.showAnimatedSkeleton()
+        _ = MDRequests.Manga.getStatistics(mangaId: model.id)
             .done { statistics in
-                DispatchQueue.main.async {
-                    if statistics.follows != nil {
-                        let num = statistics.follows!.intValue
-                        if num > 1000000 {
-                            self.infoFollow.setText("\(num / 1000000)M")
-                        } else if num > 1000 {
-                            self.infoFollow.setText("\(num / 1000)K")
-                        } else {
-                            self.infoFollow.setText("\(num)")
-                        }
+                if statistics.follows != nil {
+                    let num = statistics.follows!.intValue
+                    if num > 1000000 {
+                        self.infoFollow.text = "\(num / 1000000)M"
+                    } else if num > 1000 {
+                        self.infoFollow.text = "\(num / 1000)K"
+                    } else {
+                        self.infoFollow.text = "\(num)"
                     }
-                    if statistics.rating != nil {
-                        let nf = NumberFormatter().apply { formatter in
-                            formatter.numberStyle = .decimal
-                            formatter.minimumFractionDigits = 2
-                            formatter.maximumFractionDigits = 2
-                        }
-                        if statistics.rating?.bayesian != nil {
-                            self.infoRate.setText(
-                                nf.string(from: statistics.rating!.bayesian!)
-                            )
-                        } else if statistics.rating?.average != nil {
-                            self.infoRate.setText(
-                                nf.string(from: statistics.rating!.average!)
-                            )
-                        }
+                }
+                if statistics.rating != nil {
+                    let nf = NumberFormatter().apply { formatter in
+                        formatter.numberStyle = .decimal
+                        formatter.minimumFractionDigits = 2
+                        formatter.maximumFractionDigits = 2
+                    }
+                    if statistics.rating?.bayesian != nil {
+                        self.infoRate.text = nf.string(from: statistics.rating!.bayesian!)
+                    } else if statistics.rating?.average != nil {
+                        self.infoRate.text = nf.string(from: statistics.rating!.average!)
                     }
                 }
             }
-    }
-    
-    func getTitle() -> String {
-        titleLabel.text ?? ""
     }
 }

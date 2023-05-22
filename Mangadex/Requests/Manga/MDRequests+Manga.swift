@@ -9,10 +9,10 @@ import YYModel
 
 extension MDRequests {
     enum Manga {
-        static func query(params: [String: Any] = [:]) -> Promise<MDMangaListDataModel> {
+        static func query(params: [String: Any] = [:]) -> Promise<MangaListDataModel> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
-                "limit": 20,
+                "limit": 10,
             ]
             let newParams = defaultParams + params
             return Promise { seal in
@@ -20,7 +20,7 @@ extension MDRequests {
                     MDRequests.get(path: "/manga", host: .main, params: newParams)
                 }
                 .done { json in
-                    guard let model = MDMangaListDataModel.yy_model(withJSON: json) else {
+                    guard let model = MangaListDataModel.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }
@@ -73,7 +73,7 @@ extension MDRequests {
             }
         }
         
-        static func getReadingStatus(mangaId: String) -> Promise<MDMangaReadingStatus> {
+        static func getReadingStatus(mangaId: String) -> Promise<MangaReadingStatus> {
             Promise { seal in
                 firstly {
                     MDRequests.get(path: "/manga/\(mangaId)/status", requireAuth: true)
@@ -81,7 +81,7 @@ extension MDRequests {
                 .done { json in
                     let data = JSON(json)
                     if let statusStr = data["status"].string,
-                       let status = MDMangaReadingStatus(rawValue: statusStr) {
+                       let status = MangaReadingStatus(rawValue: statusStr) {
                         seal.fulfill(status)
                     } else {
                         seal.fulfill(.null)
@@ -98,7 +98,7 @@ extension MDRequests {
         /// 
         /// [Documentation](https://api.mangadex.org/docs/docs/manga/#update-manga-reading-status)
         static func updateReadingStatus(
-            mangaId: String, newStatus: MDMangaReadingStatus
+            mangaId: String, newStatus: MangaReadingStatus
         ) -> Promise<Bool> {
             let status = newStatus == .null ? nil : newStatus.rawValue
             return Promise { seal in

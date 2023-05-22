@@ -26,11 +26,11 @@ class MDHomeTabViewController: UITabBarController, UITabBarControllerDelegate {
     private func setupTabBar() {
         delegate = self
         
-        let browse = MDBrowseMangaViewController()
+        let browse = BrowseMangaViewController()
         browse.tabBarItem.title = "kHomeTabBrowse".localized()
         browse.tabBarItem.image = .init(systemName: "books.vertical.fill")
         
-        let followed = MDFollowedMangaViewController()
+        let followed = FollowedMangaViewController()
         followed.tabBarItem.title = "kHomeTabFollowed".localized()
         followed.tabBarItem.image = .init(systemName: "bookmark.fill")
         
@@ -58,7 +58,7 @@ class MDHomeTabViewController: UITabBarController, UITabBarControllerDelegate {
         _ tabBarController: UITabBarController,
         didSelect viewController: UIViewController
     ) {
-        if let vc = viewController as? MDMangaListViewController,
+        if let vc = viewController as? MangaListViewController,
            viewController == previousViewController {
             vc.scrollToTop()
         }

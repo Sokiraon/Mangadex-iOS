@@ -1,5 +1,5 @@
 //
-//  MDStaredViewController.swift
+//  FollowedMangaViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/29.
@@ -11,7 +11,7 @@ import ProgressHUD
 import PromiseKit
 import MJRefresh
 
-class MDFollowedMangaViewController: MDMangaListViewController {
+class FollowedMangaViewController: MangaListViewController {
     
     override func setupUI() {
         super.setupUI()
@@ -32,9 +32,7 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     override func fetchData() {
         MDRequests.User.getFollowedMangas()
             .done { model in
-                self.mangaList = model.data
-                self.mangaTotal = model.total
-                self.reloadCollection()
+                self.setData(with: model)
             }
             .catch { error in
                 DispatchQueue.main.async {
@@ -49,9 +47,7 @@ class MDFollowedMangaViewController: MDMangaListViewController {
     override func loadMoreData() {
         MDRequests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
             .done { model in
-                self.mangaList.append(contentsOf: model.data)
-                self.mangaTotal = model.total
-                self.reloadCollection()
+                self.updateData(with: model)
             }
             .catch { error in
                 DispatchQueue.main.async {

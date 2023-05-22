@@ -28,7 +28,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
 
 class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
     
-    private var mangaModel: MDMangaItemDataModel!
+    private var mangaModel: MangaItemDataModel!
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         self.fetchData()
@@ -49,7 +49,7 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     private var totalChapters = 0
     
     // MARK: - Lifecycle
-    convenience init(mangaModel: MDMangaItemDataModel) {
+    convenience init(mangaModel: MangaItemDataModel) {
         self.init()
         self.mangaModel = mangaModel
     }

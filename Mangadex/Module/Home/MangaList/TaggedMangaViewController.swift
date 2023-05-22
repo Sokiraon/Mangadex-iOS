@@ -1,5 +1,5 @@
 //
-//  MDTaggedMangaViewController.swift
+//  TaggedMangaViewController.swift
 //  Mangadex
 //
 //  Created by John Rion on 2023/3/15.
@@ -10,7 +10,7 @@ import UIKit
 import ProgressHUD
 import PromiseKit
 
-class MDTaggedMangaViewController: MDMangaListViewController {
+class TaggedMangaViewController: MangaListViewController {
     private var queryOptions: [String: Any] = [:]
     
     convenience init(title: String?, queryOptions: [String: Any]) {
@@ -35,9 +35,7 @@ class MDTaggedMangaViewController: MDMangaListViewController {
     override func fetchData() {
         MDRequests.Manga.query(params: queryOptions)
             .done { model in
-                self.mangaList = model.data
-                self.mangaTotal = model.total
-                self.reloadCollection()
+                self.setData(with: model)
             }
             .catch { error in
                 ProgressHUD.showError()
@@ -50,9 +48,7 @@ class MDTaggedMangaViewController: MDMangaListViewController {
     override func loadMoreData() {
         MDRequests.Manga.query(params: queryOptions + ["offset": mangaList.count])
             .done { model in
-                self.mangaList.append(contentsOf: model.data)
-                self.mangaTotal = model.total
-                self.reloadCollection()
+                self.updateData(with: model)
             }
             .catch { error in
                 ProgressHUD.showError()

@@ -17,7 +17,7 @@ extension MDRequests {
         /// 
         /// - Parameter params: Query parameters, **Dict**
         /// - Returns: Promise fulfilled by Array of MangaItem
-        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<MDMangaListDataModel> {
+        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<MangaListDataModel> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
                 "limit": 20,
@@ -27,7 +27,7 @@ extension MDRequests {
                 firstly {
                     MDRequests.get(path: "/user/follows/manga", params: newParams, requireAuth: true)
                 }.done { json in
-                    guard let model = MDMangaListDataModel.yy_model(withJSON: json) else {
+                    guard let model = MangaListDataModel.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }
