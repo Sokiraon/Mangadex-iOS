@@ -93,6 +93,18 @@ class MDMangaChapterPages: NSObject, YYModel {
 }
 
 class MDMangaChapterPagesModel: NSObject {
-    @objc var baseUrl: String!
-    @objc var chapter: MDMangaChapterPages!
+    @objc private var baseUrl: String!
+    @objc private var chapter: MDMangaChapterPages!
+    
+    var pageURLs: [URL] {
+        if SettingsManager.isDataSavingMode {
+            return chapter.dataSaver.map { fileName in
+                URL(string: "\(baseUrl!)/data-saver/\(chapter.chapterHash!)/\(fileName)")!
+            }
+        } else {
+            return chapter.data.map { fileName in
+                URL(string: "\(baseUrl!)/data/\(chapter.chapterHash!)/\(fileName)")!
+            }
+        }
+    }
 }

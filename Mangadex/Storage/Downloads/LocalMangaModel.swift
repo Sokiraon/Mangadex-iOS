@@ -15,15 +15,32 @@ class LocalChapterModel: Equatable {
         let infoURL = baseURL.appendingPathComponent("info.json")
         let infoData = FileManager.default.contents(atPath: infoURL.path)
         self.info = MDMangaChapterModel.yy_model(withJSON: infoData!)!
-        let enumerator = FileManager.default.enumerator(
-            at: baseURL,
-            includingPropertiesForKeys: nil
-        )
-        for case let fileURL as URL in enumerator! {
-            if fileURL.pathExtension == "png" || fileURL.pathExtension == "jpg" {
-                pageURLs.append(fileURL)
+        
+        let pagesDir = baseURL.appendingPathComponent("data")
+        let pagesDirAlt = baseURL.appendingPathComponent("data-saver")
+        
+        if FileManager.default.fileExists(atPath: pagesDir.path) {
+            let enumerator = FileManager.default.enumerator(
+                at: pagesDir,
+                includingPropertiesForKeys: nil
+            )
+            for case let fileURL as URL in enumerator! {
+                if fileURL.pathExtension == "png" {
+                    pageURLs.append(fileURL)
+                }
+            }
+        } else if FileManager.default.fileExists(atPath: pagesDirAlt.path) {
+            let enumerator = FileManager.default.enumerator(
+                at: pagesDirAlt,
+                includingPropertiesForKeys: nil
+            )
+            for case let fileURL as URL in enumerator! {
+                if fileURL.pathExtension == "jpg" {
+                    pageURLs.append(fileURL)
+                }
             }
         }
+        
         pageURLs.sort { url1, url2 in
             url1.path < url2.path
         }

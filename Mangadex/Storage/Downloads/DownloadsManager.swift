@@ -8,6 +8,7 @@
 import Foundation
 import Just
 import YYModel
+import os
 
 fileprivate let documentDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
 
@@ -31,12 +32,13 @@ class DownloadsManager {
     ) async {
         do {
             let dir = mangaDir.appendingPathComponent(mangaModel.id)
+            try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
             // Serialize and store manga info
             if let mangaData = mangaModel.yy_modelToJSONData() {
                 let mangaInfoURL = dir.appendingPathComponent("info.json")
                 try mangaData.write(to: mangaInfoURL)
             }
-            // Create dir to save chapter pages
+            // Create dir to save chapter
             let chapterDir = dir.appendingPathComponent(chapterModel.id)
             try FileManager.default.createDirectory(at: chapterDir, withIntermediateDirectories: true)
             // Serialize and store chapter info
@@ -49,14 +51,20 @@ class DownloadsManager {
                 let destURL = dir.appendingPathComponent("cover.jpg")
                 try await downloadFile(from: coverURL, to: destURL)
             }
+            // Create dir to save pages (separate dirs for different quality)
+            let pagesDir = chapterDir.appendingPathComponent(
+                SettingsManager.isDataSavingMode ? "data-saver" : "data"
+            )
+            try FileManager.default.createDirectory(at: pagesDir, withIntermediateDirectories: true)
             // Download chapter pages
             for (index, pageURL) in pageURLs.enumerated() {
                 let pathExtension = pageURL.pathExtension
-                let destURL = chapterDir.appendingPathComponent("\(index).\(pathExtension)")
+                let destURL = pagesDir.appendingPathComponent("\(index).\(pathExtension)")
                 try await downloadFile(from: pageURL, to: destURL)
             }
         } catch {
             // TODO: Handle download error
+            Logger().error("\(error.localizedDescription)")
         }
     }
     

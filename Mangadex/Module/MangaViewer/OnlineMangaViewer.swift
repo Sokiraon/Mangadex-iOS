@@ -161,10 +161,7 @@ class OnlineMangaViewer: MangaViewer {
                 )
             }
         }.done { pagesModel, aggregatedModel in
-            let hash = pagesModel.chapter.chapterHash
-            self.pageURLs = pagesModel.chapter.data.map { fileName in
-                URL(string: "\(pagesModel.baseUrl!)/data/\(hash!)/\(fileName)")!
-            }
+            self.pageURLs = pagesModel.pageURLs
             // Set slider range based on page count
             self.vSlider.maximumValue = Float(self.pageURLs.count - 1)
             self.aggregatedModel = aggregatedModel
