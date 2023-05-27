@@ -43,28 +43,32 @@
 		05610BF22A0D291300668C62 /* LocalMangaModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05610BF12A0D291300668C62 /* LocalMangaModel.swift */; };
 		05610BF42A0F722700668C62 /* DownloadedChaptersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05610BF32A0F722700668C62 /* DownloadedChaptersViewController.swift */; };
 		0564F0B02889830A00222504 /* MDRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0564F0AF2889830A00222504 /* MDRequests.swift */; };
+		056B8C3D2A1C86AC0006DE23 /* AccountSettingsActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C3C2A1C86AC0006DE23 /* AccountSettingsActionCell.swift */; };
+		056B8C412A1DE0C10006DE23 /* FileManager+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C402A1DE0C10006DE23 /* FileManager+Ext.swift */; };
+		056B8C442A1DFC910006DE23 /* AccountSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C432A1DFC910006DE23 /* AccountSettingsCell.swift */; };
+		056B8C462A1E05B40006DE23 /* AccountSettingsTappableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C452A1E05B40006DE23 /* AccountSettingsTappableCell.swift */; };
+		056B8C482A1E0FFE0006DE23 /* AccountSettingsPushCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C472A1E0FFE0006DE23 /* AccountSettingsPushCell.swift */; };
+		056B8C4A2A1E44D30006DE23 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C492A1E44D30006DE23 /* AccountSettingsView.swift */; };
+		056B8C4F2A1F887C0006DE23 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C4E2A1F887C0006DE23 /* LineView.swift */; };
+		056B8C512A1F88CE0006DE23 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C502A1F88CE0006DE23 /* ImageButton.swift */; };
 		05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */; };
 		05AE0ECC28B51B2500FE4107 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */; };
 		05B4FB0F29516C2400E6C0B4 /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B4FB0E29516C2400E6C0B4 /* Array+Ext.swift */; };
 		05BDF3032A19DC93009D25DC /* MangaViewerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BDF3022A19DC93009D25DC /* MangaViewerCollectionView.swift */; };
 		05BDF3052A1A399D009D25DC /* MangaViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05BDF3042A1A399D009D25DC /* MangaViewer.swift */; };
 		05C7A9BA29C1EF0C00B8401E /* TaggedMangaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C7A9B929C1EF0C00B8401E /* TaggedMangaViewController.swift */; };
-		05CC13FA2A15006200964A84 /* AccountSettingsSwitchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CC13F92A15006200964A84 /* AccountSettingsSwitchItem.swift */; };
+		05CC13FA2A15006200964A84 /* AccountSettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CC13F92A15006200964A84 /* AccountSettingsSwitchCell.swift */; };
 		05CC13FC2A15EE4300964A84 /* Notification+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CC13FB2A15EE4300964A84 /* Notification+Ext.swift */; };
 		05D1C5D729548008000039D0 /* MDMangaAggregatedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1C5D629548008000039D0 /* MDMangaAggregatedModel.swift */; };
 		05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */; };
 		05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */; };
-		05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */; };
+		05FC8A2B2766F858009BB857 /* AccountSettingsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FC8A2A2766F858009BB857 /* AccountSettingsPickerView.swift */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E73D01E67642D26A2255E /* ShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* ShortTapGestureRecognizer.swift */; };
-		390E743C931911C7A8789480 /* UIAlertController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E71822C0B2EA3E7321523 /* UIAlertController+Ext.swift */; };
 		390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */; };
 		390E74A989CA31FE56F6481C /* UINavigationController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */; };
-		390E771BF2B5495044099B8F /* UIScrollView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E79A2381EB022968AF13C /* UIScrollView+Ext.swift */; };
 		390E78B738C1AC7F9AE9B4B4 /* UILabel+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7FB625ED52EC42C2BC05 /* UILabel+Ext.swift */; };
-		390E79239F2BFBF545059C38 /* NSString+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7EBF79AD8DB19C02F3E0 /* NSString+Ext.swift */; };
 		390E7A55E702F87DC4EAB257 /* MDKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E756BDFB0EA839C22FD01 /* MDKeychain.swift */; };
-		390E7AF4BBB6925DAE7FEC3A /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E77D76060F0B415020713 /* UIView+Ext.swift */; };
 		390E7B8FC16D467464DB04B6 /* Image+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E70BADCF568FE4B44094B /* Image+Ext.swift */; };
 		390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */; };
 		390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E79EFFFCD328DAEC9D3FE /* UIColor+Ext.swift */; };
@@ -79,8 +83,7 @@
 		7A75446C26885FFA00467EF1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A75446E26885FFA00467EF1 /* Localizable.strings */; };
 		7A89D9C5267DD28A00E41147 /* MangaListDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A89D9C4267DD28A00E41147 /* MangaListDataModel.swift */; };
 		7A9A5FF126C76F9B00196953 /* AccountSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF026C76F9B00196953 /* AccountSettingsSection.swift */; };
-		7A9A5FF426C76FD400196953 /* MDAccountSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */; };
-		7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF526C7743A00196953 /* CustomOperator.swift */; };
+		7A9A5FF426C76FD400196953 /* AccountSettingsPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF326C76FD400196953 /* AccountSettingsPickerCell.swift */; };
 		7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9A5FF726C8CF7700196953 /* MDRouter.swift */; };
 		7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */; };
 		7AACACAE267EFD6B00232166 /* MangaChapterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACACAD267EFD6B00232166 /* MangaChapterCollectionCell.swift */; };
@@ -93,13 +96,8 @@
 		B83B5607278863D000453E26 /* MDFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B5606278863CF00453E26 /* MDFormatter.swift */; };
 		B86D2A7A278C31E00062F818 /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */; };
 		B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2461278BEA6500344EE3 /* MDButton.swift */; };
-		B89F2464278BF34C00344EE3 /* MDColorSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */; };
-		B89F2466278C17F000344EE3 /* MDColorSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */; };
-		B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */; };
-		B8E39736278E905700B42760 /* MDBaseSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */; };
+		B89F2466278C17F000344EE3 /* AccountSettingsColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2465278C17F000344EE3 /* AccountSettingsColorPickerView.swift */; };
 		B8E39738278EAF1100B42760 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39737278EAF1100B42760 /* SettingsManager.swift */; };
-		B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */; };
-		B8E3973C278ED0D000B42760 /* MDLangSettingCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E3973B278ED0D000B42760 /* MDLangSettingCollectionCell.swift */; };
 		B8F33B4A279946B000DF9002 /* MDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8F33B49279946B000DF9002 /* MDView.swift */; };
 /* End PBXBuildFile section */
 
@@ -163,31 +161,35 @@
 		05610BF12A0D291300668C62 /* LocalMangaModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMangaModel.swift; sourceTree = "<group>"; };
 		05610BF32A0F722700668C62 /* DownloadedChaptersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadedChaptersViewController.swift; sourceTree = "<group>"; };
 		0564F0AF2889830A00222504 /* MDRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRequests.swift; sourceTree = "<group>"; };
+		056B8C3C2A1C86AC0006DE23 /* AccountSettingsActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsActionCell.swift; sourceTree = "<group>"; };
+		056B8C402A1DE0C10006DE23 /* FileManager+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Ext.swift"; sourceTree = "<group>"; };
+		056B8C432A1DFC910006DE23 /* AccountSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsCell.swift; sourceTree = "<group>"; };
+		056B8C452A1E05B40006DE23 /* AccountSettingsTappableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsTappableCell.swift; sourceTree = "<group>"; };
+		056B8C472A1E0FFE0006DE23 /* AccountSettingsPushCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsPushCell.swift; sourceTree = "<group>"; };
+		056B8C492A1E44D30006DE23 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
+		056B8C4E2A1F887C0006DE23 /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
+		056B8C502A1F88CE0006DE23 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
 		05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailHeaderView.swift; sourceTree = "<group>"; };
 		05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		05B4FB0E29516C2400E6C0B4 /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
 		05BDF3022A19DC93009D25DC /* MangaViewerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaViewerCollectionView.swift; sourceTree = "<group>"; };
 		05BDF3042A1A399D009D25DC /* MangaViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaViewer.swift; sourceTree = "<group>"; };
 		05C7A9B929C1EF0C00B8401E /* TaggedMangaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedMangaViewController.swift; sourceTree = "<group>"; };
-		05CC13F92A15006200964A84 /* AccountSettingsSwitchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsSwitchItem.swift; sourceTree = "<group>"; };
+		05CC13F92A15006200964A84 /* AccountSettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsSwitchCell.swift; sourceTree = "<group>"; };
 		05CC13FB2A15EE4300964A84 /* Notification+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Ext.swift"; sourceTree = "<group>"; };
 		05D1C5D629548008000039D0 /* MDMangaAggregatedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaAggregatedModel.swift; sourceTree = "<group>"; };
 		05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Ext.swift"; sourceTree = "<group>"; };
 		05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDChapterStatisticsModel.swift; sourceTree = "<group>"; };
-		05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDSettingsPopupView.swift; sourceTree = "<group>"; };
+		05FC8A2A2766F858009BB857 /* AccountSettingsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsPickerView.swift; sourceTree = "<group>"; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* Image+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+Ext.swift"; sourceTree = "<group>"; };
-		390E71822C0B2EA3E7321523 /* UIAlertController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Ext.swift"; sourceTree = "<group>"; };
 		390E72DD8A45C476DD5ACBF5 /* ShortTapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortTapGestureRecognizer.swift; sourceTree = "<group>"; };
 		390E756BDFB0EA839C22FD01 /* MDKeychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDKeychain.swift; sourceTree = "<group>"; };
 		390E765B11ECA5FCB12E29D5 /* MDLocale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDLocale.swift; sourceTree = "<group>"; };
-		390E77D76060F0B415020713 /* UIView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		390E78A18602BCF1EAB6BADA /* MDMangaTagDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDMangaTagDataModel.swift; sourceTree = "<group>"; };
-		390E79A2381EB022968AF13C /* UIScrollView+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Ext.swift"; sourceTree = "<group>"; };
 		390E79EFFFCD328DAEC9D3FE /* UIColor+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		390E7D7536444595F3789E40 /* UIButton+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDPreLoginViewController.swift; sourceTree = "<group>"; };
-		390E7EBF79AD8DB19C02F3E0 /* NSString+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Ext.swift"; sourceTree = "<group>"; };
 		390E7FB625ED52EC42C2BC05 /* UILabel+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Ext.swift"; sourceTree = "<group>"; };
 		568E50184ADB4B940CA123EC /* MDRequests+Manga.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MDRequests+Manga.swift"; sourceTree = "<group>"; };
 		568E5D6DD46FA5AB23B18B9E /* MDTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDTextField.swift; sourceTree = "<group>"; };
@@ -202,8 +204,7 @@
 		7A75993F26901AC700A20E64 /* Mangadex.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mangadex.entitlements; sourceTree = "<group>"; };
 		7A89D9C4267DD28A00E41147 /* MangaListDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaListDataModel.swift; sourceTree = "<group>"; };
 		7A9A5FF026C76F9B00196953 /* AccountSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsSection.swift; sourceTree = "<group>"; };
-		7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDAccountSettingsCell.swift; sourceTree = "<group>"; };
-		7A9A5FF526C7743A00196953 /* CustomOperator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOperator.swift; sourceTree = "<group>"; };
+		7A9A5FF326C76FD400196953 /* AccountSettingsPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsPickerCell.swift; sourceTree = "<group>"; };
 		7A9A5FF726C8CF7700196953 /* MDRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDRouter.swift; sourceTree = "<group>"; };
 		7AACACA9267EE2E600232166 /* MDMangaVolumesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaVolumesDataModel.swift; sourceTree = "<group>"; };
 		7AACACAD267EFD6B00232166 /* MangaChapterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaChapterCollectionCell.swift; sourceTree = "<group>"; };
@@ -218,13 +219,8 @@
 		B83B5606278863CF00453E26 /* MDFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDFormatter.swift; sourceTree = "<group>"; };
 		B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		B89F2461278BEA6500344EE3 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
-		B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingCollectionCell.swift; sourceTree = "<group>"; };
-		B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDColorSettingsPopupView.swift; sourceTree = "<group>"; };
-		B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Ext.swift"; sourceTree = "<group>"; };
-		B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDBaseSettingCollectionCell.swift; sourceTree = "<group>"; };
+		B89F2465278C17F000344EE3 /* AccountSettingsColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsColorPickerView.swift; sourceTree = "<group>"; };
 		B8E39737278EAF1100B42760 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
-		B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLangSettingsPopupView.swift; sourceTree = "<group>"; };
-		B8E3973B278ED0D000B42760 /* MDLangSettingCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDLangSettingCollectionCell.swift; sourceTree = "<group>"; };
 		B8F33B49279946B000DF9002 /* MDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -440,6 +436,27 @@
 			path = MangaList;
 			sourceTree = "<group>";
 		};
+		056B8C4C2A1E456D0006DE23 /* Variants */ = {
+			isa = PBXGroup;
+			children = (
+				056B8C4D2A1F37D20006DE23 /* Picker */,
+				05CC13F92A15006200964A84 /* AccountSettingsSwitchCell.swift */,
+				056B8C3C2A1C86AC0006DE23 /* AccountSettingsActionCell.swift */,
+				056B8C472A1E0FFE0006DE23 /* AccountSettingsPushCell.swift */,
+			);
+			path = Variants;
+			sourceTree = "<group>";
+		};
+		056B8C4D2A1F37D20006DE23 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				7A9A5FF326C76FD400196953 /* AccountSettingsPickerCell.swift */,
+				05FC8A2A2766F858009BB857 /* AccountSettingsPickerView.swift */,
+				B89F2465278C17F000344EE3 /* AccountSettingsColorPickerView.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
 		05BDF3062A1A4977009D25DC /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				05610BF02A0D28E900668C62 /* Downloads */,
+				056B8C402A1DE0C10006DE23 /* FileManager+Ext.swift */,
 				7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */,
 				7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */,
 				B8E39737278EAF1100B42760 /* SettingsManager.swift */,
@@ -513,15 +531,11 @@
 		7A9A5FF226C76FC400196953 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				056B8C4C2A1E456D0006DE23 /* Variants */,
+				056B8C432A1DFC910006DE23 /* AccountSettingsCell.swift */,
+				056B8C452A1E05B40006DE23 /* AccountSettingsTappableCell.swift */,
 				7A9A5FF026C76F9B00196953 /* AccountSettingsSection.swift */,
-				7A9A5FF326C76FD400196953 /* MDAccountSettingsCell.swift */,
-				05FC8A2A2766F858009BB857 /* MDSettingsPopupView.swift */,
-				B89F2465278C17F000344EE3 /* MDColorSettingsPopupView.swift */,
-				B8E39739278ECFE100B42760 /* MDLangSettingsPopupView.swift */,
-				B89F2463278BF34C00344EE3 /* MDColorSettingCollectionCell.swift */,
-				B8E3973B278ED0D000B42760 /* MDLangSettingCollectionCell.swift */,
-				B8E39735278E905700B42760 /* MDBaseSettingCollectionCell.swift */,
-				05CC13F92A15006200964A84 /* AccountSettingsSwitchItem.swift */,
+				056B8C492A1E44D30006DE23 /* AccountSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -534,6 +548,8 @@
 				B8F33B49279946B000DF9002 /* MDView.swift */,
 				568E5D6DD46FA5AB23B18B9E /* MDTextField.swift */,
 				0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */,
+				056B8C4E2A1F887C0006DE23 /* LineView.swift */,
+				056B8C502A1F88CE0006DE23 /* ImageButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -574,20 +590,14 @@
 		7AFFAB09267F56CA003D7C75 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				390E71822C0B2EA3E7321523 /* UIAlertController+Ext.swift */,
 				390E7FB625ED52EC42C2BC05 /* UILabel+Ext.swift */,
 				390E70BADCF568FE4B44094B /* Image+Ext.swift */,
 				390E7D7536444595F3789E40 /* UIButton+Ext.swift */,
-				390E7EBF79AD8DB19C02F3E0 /* NSString+Ext.swift */,
-				390E79A2381EB022968AF13C /* UIScrollView+Ext.swift */,
 				B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */,
 				390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */,
 				7AB4219326BF7907003A38BB /* NSObject+Ext.swift */,
 				7AE229BD26C1170D00DA9C83 /* String+Ext.swift */,
-				390E77D76060F0B415020713 /* UIView+Ext.swift */,
-				7A9A5FF526C7743A00196953 /* CustomOperator.swift */,
 				05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */,
-				B8AA0F3D27983D7400F40A88 /* CGFloat+Ext.swift */,
 				05D1E063294F1CF5006E6F52 /* Dictionary+Ext.swift */,
 				05B4FB0E29516C2400E6C0B4 /* Array+Ext.swift */,
 				05CC13FB2A15EE4300964A84 /* Notification+Ext.swift */,
@@ -821,50 +831,49 @@
 			buildActionMask = 2147483647;
 			files = (
 				7A89D9C5267DD28A00E41147 /* MangaListDataModel.swift in Sources */,
+				056B8C412A1DE0C10006DE23 /* FileManager+Ext.swift in Sources */,
 				0530A89228C1F92C00B4702B /* MDMangaAuthor.swift in Sources */,
 				00363096266F5BD80058BE25 /* BaseViewController.swift in Sources */,
 				00170964264FA3E6005BEE67 /* UserManager.swift in Sources */,
 				7A3319DC26AD36130015D9D1 /* MDPlistStoreManager.swift in Sources */,
 				7ABB61BB2678D77500BF2860 /* AccountViewController.swift in Sources */,
 				B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */,
-				B8E3973C278ED0D000B42760 /* MDLangSettingCollectionCell.swift in Sources */,
 				05B4FB0F29516C2400E6C0B4 /* Array+Ext.swift in Sources */,
 				0008100F2661F681009C1005 /* MDLayout.swift in Sources */,
 				05BDF3052A1A399D009D25DC /* MangaViewer.swift in Sources */,
-				B8E3973A278ECFE100B42760 /* MDLangSettingsPopupView.swift in Sources */,
 				051BE391288ACF6800FE172A /* MDRequests+Auth.swift in Sources */,
 				055DB92929534E3A0077B836 /* MDScanlationGroupModel.swift in Sources */,
 				05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */,
 				00170966264FC9CB005BEE67 /* MDHomeTabViewController.swift in Sources */,
 				000810172662125B009C1005 /* FollowedMangaViewController.swift in Sources */,
 				05610BED2A0CA0FF00668C62 /* DownloadsViewController.swift in Sources */,
+				056B8C462A1E05B40006DE23 /* AccountSettingsTappableCell.swift in Sources */,
 				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
 				0008101226621229009C1005 /* BrowseMangaViewController.swift in Sources */,
 				7AACACAE267EFD6B00232166 /* MangaChapterCollectionCell.swift in Sources */,
 				05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */,
-				7A9A5FF626C7743A00196953 /* CustomOperator.swift in Sources */,
+				056B8C4A2A1E44D30006DE23 /* AccountSettingsView.swift in Sources */,
 				05BDF3032A19DC93009D25DC /* MangaViewerCollectionView.swift in Sources */,
 				004F718E264BF8EB00D61AEB /* MDLoginViewController.swift in Sources */,
 				05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */,
 				7AB4219426BF7907003A38BB /* NSObject+Ext.swift in Sources */,
+				056B8C4F2A1F887C0006DE23 /* LineView.swift in Sources */,
 				0507060729BC540B0051CF8B /* MDCollectionLoaderCell.swift in Sources */,
+				056B8C482A1E0FFE0006DE23 /* AccountSettingsPushCell.swift in Sources */,
 				0530A89028C1F8DD00B4702B /* MDRequests+Author.swift in Sources */,
-				B89F2464278BF34C00344EE3 /* MDColorSettingCollectionCell.swift in Sources */,
-				7A9A5FF426C76FD400196953 /* MDAccountSettingsCell.swift in Sources */,
+				7A9A5FF426C76FD400196953 /* AccountSettingsPickerCell.swift in Sources */,
 				7A7544642686FC3D00467EF1 /* MDMangaChapterDataModel.swift in Sources */,
 				7AACACAA267EE2E600232166 /* MDMangaVolumesDataModel.swift in Sources */,
 				004F718A264BF8EB00D61AEB /* AppDelegate.swift in Sources */,
 				004F7194264BF8EB00D61AEB /* Mangadex.xcdatamodeld in Sources */,
-				B8AA0F3E27983D7400F40A88 /* CGFloat+Ext.swift in Sources */,
 				7A754466268709D900467EF1 /* MangaViewerCollectionCell.swift in Sources */,
 				051BE38A288A49AF00FE172A /* MDRequests+User.swift in Sources */,
 				05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */,
 				004F718C264BF8EB00D61AEB /* SceneDelegate.swift in Sources */,
 				00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */,
 				7A9A5FF126C76F9B00196953 /* AccountSettingsSection.swift in Sources */,
-				B89F2466278C17F000344EE3 /* MDColorSettingsPopupView.swift in Sources */,
+				B89F2466278C17F000344EE3 /* AccountSettingsColorPickerView.swift in Sources */,
 				0036309B266F74AF0058BE25 /* AppBar.swift in Sources */,
-				B8E39736278E905700B42760 /* MDBaseSettingCollectionCell.swift in Sources */,
 				7A9A5FF826C8CF7700196953 /* MDRouter.swift in Sources */,
 				05610BEF2A0CB09700668C62 /* DownloadsMangaCollectionCell.swift in Sources */,
 				7AFFAB08267F41F3003D7C75 /* OnlineMangaViewer.swift in Sources */,
@@ -875,18 +884,17 @@
 				390E7C573DFA5DFDCBD2A368 /* MDMangaTagDataModel.swift in Sources */,
 				05610BEA2A0B6E4500668C62 /* DownloadsManager.swift in Sources */,
 				7A3319DF26AD3C0B0015D9D1 /* MDMangaProgressManager.swift in Sources */,
-				05CC13FA2A15006200964A84 /* AccountSettingsSwitchItem.swift in Sources */,
+				05CC13FA2A15006200964A84 /* AccountSettingsSwitchCell.swift in Sources */,
 				390E73D01E67642D26A2255E /* ShortTapGestureRecognizer.swift in Sources */,
 				390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */,
 				B83B5607278863D000453E26 /* MDFormatter.swift in Sources */,
 				05179A18279280EE0019D656 /* MangaListViewController.swift in Sources */,
 				7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */,
-				390E743C931911C7A8789480 /* UIAlertController+Ext.swift in Sources */,
 				0564F0B02889830A00222504 /* MDRequests.swift in Sources */,
 				B8F33B4A279946B000DF9002 /* MDView.swift in Sources */,
 				B86D2A7A278C31E00062F818 /* UICollectionView+Ext.swift in Sources */,
 				390E78B738C1AC7F9AE9B4B4 /* UILabel+Ext.swift in Sources */,
-				05FC8A2B2766F858009BB857 /* MDSettingsPopupView.swift in Sources */,
+				05FC8A2B2766F858009BB857 /* AccountSettingsPickerView.swift in Sources */,
 				390E7D1693D2AB7EFB4E0551 /* UIColor+Ext.swift in Sources */,
 				051BE38E288A770000FE172A /* MDRequests+Chapter.swift in Sources */,
 				0530A89428C22BF400B4702B /* MDRelationshipModel.swift in Sources */,
@@ -895,13 +903,13 @@
 				390E7B8FC16D467464DB04B6 /* Image+Ext.swift in Sources */,
 				05CC13FC2A15EE4300964A84 /* Notification+Ext.swift in Sources */,
 				390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */,
-				390E79239F2BFBF545059C38 /* NSString+Ext.swift in Sources */,
 				05179A1A27928E630019D656 /* MangaListCollectionCell.swift in Sources */,
-				390E771BF2B5495044099B8F /* UIScrollView+Ext.swift in Sources */,
-				390E7AF4BBB6925DAE7FEC3A /* UIView+Ext.swift in Sources */,
+				056B8C3D2A1C86AC0006DE23 /* AccountSettingsActionCell.swift in Sources */,
 				390E74A989CA31FE56F6481C /* UINavigationController+Ext.swift in Sources */,
+				056B8C442A1DFC910006DE23 /* AccountSettingsCell.swift in Sources */,
 				AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */,
 				05610BF42A0F722700668C62 /* DownloadedChaptersViewController.swift in Sources */,
+				056B8C512A1F88CE0006DE23 /* ImageButton.swift in Sources */,
 				568E5C38BF07F884A177FD31 /* MDRequests+Manga.swift in Sources */,
 				05C7A9BA29C1EF0C00B8401E /* TaggedMangaViewController.swift in Sources */,
 				568E56F46CFE27A0F48558F9 /* MDTextField.swift in Sources */,

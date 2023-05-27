@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 import SwiftTheme
 import SnapKit
+import ProgressHUD
 
 class AccountViewController: BaseViewController {
     
     private lazy var vTopArea = UIView()
-    private lazy var ivAvatar = UIImageView(imageNamed: "icon_avatar_round")
+    private lazy var ivAvatar = UIImageView(named: "icon_avatar_round")
     private lazy var lblUsername = UILabel(fontSize: 20, fontWeight: .semibold, color: .white, numberOfLines: 2, scalable: true)
     private lazy var btnLogout: UIButton = {
         let button = UIButton()
@@ -24,47 +25,34 @@ class AccountViewController: BaseViewController {
         return button
     }()
     
-    private lazy var cellDataSaving = AccountSettingsSwitchItem(
-        icon: .init(named: "icon_signal_cellular"),
-        title: "kSettingsDataSaving".localized(),
-        key: .isDataSaving
+    private lazy var cellDataSaving = AccountSettingsSwitchCell(key: .isDataSaving).apply { cell in
+        cell.icon = .init(named: "icon_signal_cellular")
+        cell.title = "kSettingsDataSaving".localized()
+    }
+    
+    private lazy var cellColorPicker = AccountSettingsPickerCell(identifier: "colorPicker").apply { cell in
+        cell.icon = .init(named: "icon_palette")
+        cell.title = "kSettingsThemeColor".localized()
+        cell.delegate = self
+    }
+    
+    private lazy var cellDownloads = AccountSettingsPushCell(identifier: "downloads").apply { cell in
+        cell.icon = .init(named: "icon_download")
+        cell.title = "kSettingsDownloads".localized()
+        cell.delegate = self
+    }
+    
+    private lazy var cellDeleteDownloads = AccountSettingsActionCell(identifier: "deleteDownloads").apply { cell in
+        cell.icon = .init(named: "icon_delete")
+        cell.title = "kSettingsDeleteDownloads".localized()
+        cell.delegate = self
+    }
+    
+    private lazy var settingsView = AccountSettingsView(
+        sections: .init(cells: cellDataSaving),
+            .init(cells: cellDownloads, cellColorPicker),
+            .init(cells: cellDeleteDownloads)
     )
-    
-    private lazy var colorCell: MDAccountSettingsCell = {
-        let cell = MDAccountSettingsCell(
-            icon: .init(named: "icon_palette"), title: "kPrefThemeColor".localized()
-        )
-        cell.setActionType(.popUp, withId: "colorSelector")
-        cell.delegate = self
-        return cell
-    }()
-    private lazy var langCell: MDAccountSettingsCell = {
-        let cell = MDAccountSettingsCell(
-            icon: .init(named: "icon_language"),
-            title: "kPrefMangaLang".localized(),
-            subtitle: "kPrefMangaLangCur".localizedFormat(
-                MDLocale.languages[SettingsManager.mangaLangIndex]
-            )
-        )
-        cell.setActionType(.popUp, withId: "langSelector")
-        cell.delegate = self
-        return cell
-    }()
-    private lazy var downloadsCell = MDAccountSettingsCell(
-        icon: .init(named: "icon_download"), title: "kPrefDownloads".localized()
-    ).apply { cell in
-        cell.setActionType(.newPage, withId: "downloads")
-        cell.delegate = self
-    }
-    
-    private lazy var configSection1 = AccountSettingsSection(cells: [cellDataSaving])
-    private lazy var configSection2 = AccountSettingsSection(cells: [downloadsCell, colorCell, langCell])
-    private lazy var vConfigStack = UIStackView(
-        arrangedSubviews: [configSection1, configSection2]
-    ).apply { vStack in
-        vStack.axis = .vertical
-        vStack.spacing = 16
-    }
     
     override func setupUI() {
         view.backgroundColor = .lightestGrayF5F5F5
@@ -99,8 +87,8 @@ class AccountViewController: BaseViewController {
         lblUsername.isUserInteractionEnabled = !UserManager.shared.userIsLoggedIn
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
-        view.addSubview(vConfigStack)
-        vConfigStack.snp.makeConstraints { make in
+        view.addSubview(settingsView)
+        settingsView.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(15)
             make.top.equalTo(vTopArea.snp.bottom).offset(15)
         }
@@ -110,9 +98,18 @@ class AccountViewController: BaseViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didUpdateSetting),
-            name: NSNotification.Name(SettingsDidUpdateNotification),
+            name: .MangadexDidChangeSettings,
             object: nil
         )
+    }
+    
+    let fileSizeFormatter = ByteCountFormatter().apply { formatter in
+        formatter.allowedUnits = [.useMB, .useGB]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateDownloadsSize()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -132,31 +129,65 @@ class AccountViewController: BaseViewController {
         }
     }
     
-    @objc private func didUpdateSetting() {
-        langCell.lblSubtitle.text = "kPrefMangaLangCur".localizedFormat(
-            MDLocale.languages[SettingsManager.mangaLangIndex]
-        )
+    @objc private func didUpdateSetting() {}
+    
+    @objc private func deleteDownloads() {
+        ProgressHUD.show()
+        DownloadsManager.default.deleteAllChapters()
+        ProgressHUD.showSuccess()
+        updateDownloadsSize()
+    }
+    
+    private func updateDownloadsSize() {
+        if let downloadsSize = DownloadsManager.default.sizeUsed {
+            // The smallest value required to be shown as "1 MB"
+            if downloadsSize < 950000 {
+                cellDeleteDownloads.isEnabled = false
+            } else {
+                cellDeleteDownloads.isEnabled = true
+            }
+            cellDeleteDownloads.subTitle = "kSettingsCurrentDownloadsSize".localizedFormat(
+                fileSizeFormatter.string(fromByteCount: Int64(downloadsSize))
+            )
+        }
     }
 }
 
-extension AccountViewController: MDAccountSettingsCellDelegate {
-    func viewControllerToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> UIViewController? {
-        switch id {
-        case "downloads":
-            return DownloadsViewController()
+extension AccountViewController: AccountSettingsCellDelegate {
+    func didSelectCell(_ cell: AccountSettingsCell, with identifier: String) {
+        switch identifier {
+        case "deleteDownloads":
+            let vc = UIAlertController(
+                title: "kWarning".localized(),
+                message: "kSettingsDeleteDownloadsAlertMessage".localized(),
+                preferredStyle: .alert
+            )
+            vc.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
+            vc.addAction(UIAlertAction(title: "kOk".localized(), style: .destructive, handler: { _ in
+                self.deleteDownloads()
+            }))
+            present(vc, animated: true)
+            break
         default:
-            return nil
+            break
         }
     }
     
-    func viewToDisplay(forCell cell: MDAccountSettingsCell, withId id: String) -> MDSettingsPopupView? {
-        switch id {
-        case "colorSelector":
-            return MDColorSettingsPopupView()
-        case "langSelector":
-            return MDLangSettingsPopupView()
+    func viewControllerToPush(for cell: AccountSettingsCell, with identifier: String) -> UIViewController {
+        switch identifier {
+        case "downloads":
+            return DownloadsViewController()
         default:
-            return nil
+            return UIViewController()
+        }
+    }
+    
+    func viewToDisplay(for cell: AccountSettingsCell, with identifier: String) -> UIView {
+        switch identifier {
+        case "colorPicker":
+            return AccountSettingsColorPickerView()
+        default:
+            return UIView()
         }
     }
 }

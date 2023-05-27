@@ -7,7 +7,7 @@ import UIKit
 import SnapKit
 
 class MDPreLoginAccountView: UICollectionViewCell {
-    private var ivAvatar = UIImageView(imageNamed: "icon_avatar_round")
+    private var ivAvatar = UIImageView(named: "icon_avatar_round")
     private var lblName = UILabel(fontSize: 18, fontWeight: .light).apply { label in
         label.numberOfLines = 2
         label.textAlignment = .center

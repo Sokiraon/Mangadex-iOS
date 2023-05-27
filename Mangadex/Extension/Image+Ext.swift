@@ -20,11 +20,9 @@ extension UIImage {
 }
 
 extension UIImageView {
-    convenience init(imageNamed: String, color: UIColor? = nil) {
+    convenience init(named name: String, color: UIColor? = nil) {
         self.init()
-        image = UIImage.init(named: imageNamed)
-        if (color != nil) {
-            tintColor = color
-        }
+        image = UIImage.init(named: name)
+        tintColor = color
     }
 }

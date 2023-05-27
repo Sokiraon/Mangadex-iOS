@@ -23,12 +23,12 @@ class MangaChapterCollectionCell: UICollectionViewCell {
     
     private let lblChapter = UILabel(fontSize: 16, fontWeight: .medium)
     private let lblUpdate = UILabel(fontSize: 15, color: .secondaryText)
-    private let vDivider = UIView(backgroundColor: .grayDFDFDF)
+    private let vDivider = LineView()
     
-    private lazy var ivGroup = UIImageView(imageNamed: "icon_group", color: .secondaryText)
+    private lazy var ivGroup = UIImageView(named: "icon_group", color: .secondaryText)
     private lazy var lblGroup = UILabel(fontSize: 15, color: .secondaryText)
     
-    private lazy var ivOpenInNew = UIImageView(imageNamed: "icon_open_in_new", color: .themeDark)
+    private lazy var ivOpenInNew = UIImageView(named: "icon_open_in_new", color: .themeDark)
     
     private func setupUI() {
         contentView.snp.makeConstraints { make in

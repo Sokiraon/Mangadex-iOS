@@ -62,7 +62,9 @@ class MangaListCollectionCell: UICollectionViewCell {
     private let infoRate = MangaListCellInfoItem(icon: .init(named: "icon_grade"))
     private let infoFollow = MangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
     
-    private let statusView = UIView(backgroundColor: .fromHex("219653"))
+    private let statusView = UIView().apply { view in
+        view.backgroundColor = .fromHex("219653")
+    }
     private let statusLabel = UILabel(
         fontSize: 15, fontWeight: .medium, color: .black2D2E2F
     ).apply { label in
@@ -83,6 +85,8 @@ class MangaListCollectionCell: UICollectionViewCell {
         layer.shadowOffset = CGSize(width: 0, height: 1)
         layer.shadowOpacity = 0.5
         layer.shadowRadius = 1
+        layer.shouldRasterize = true
+        layer.rasterizationScale = MDLayout.scale
         
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 8

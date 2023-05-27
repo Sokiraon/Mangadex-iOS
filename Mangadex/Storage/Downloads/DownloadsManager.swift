@@ -122,4 +122,17 @@ class DownloadsManager {
         }
         return mangaModels
     }
+    
+    func deleteAllChapters() {
+        let enumerator = FileManager.default.enumerator(
+            at: mangaDir, includingPropertiesForKeys: nil
+        )
+        for case let fileURL as URL in enumerator! {
+            try? FileManager.default.removeItem(at: fileURL)
+        }
+    }
+    
+    var sizeUsed: UInt64? {
+        return try? FileManager.default.allocatedSizeOfDirectory(at: baseDir)
+    }
 }

@@ -8,7 +8,7 @@ class MDLocale {
     static let defaultLocale = "en"
     
     static let languages = [
-        "English", "日本語", "简体中文", "正體中文"
+        "English", "日本語", "正體中文", "简体中文"
     ]
     
     static let availableLanguages = [
@@ -20,8 +20,8 @@ class MDLocale {
     
     static let availableRegions = [
         "简体中文": "CN",
-        "正體中文": "HK/TW",
-        "English": "GB/US",
+        "正體中文": "TW",
+        "English": "GB",
         "日本語": "JP",
     ]
     

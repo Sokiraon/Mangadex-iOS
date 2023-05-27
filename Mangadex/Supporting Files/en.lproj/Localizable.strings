@@ -59,12 +59,14 @@
 
 "kDefaultUsername" = "Not Logged In";
 
-"kPrefThemeColor" = "Set Theme Color";
-"kPrefMangaLang" = "Change Manga Language";
-"kPrefMangaLangCur" = "Current: %@";
-"kPrefPopupSave" = "Save";
-"kPrefDownloads" = "Downloads";
+"kSettingsThemeColor" = "Set Theme Color";
+"kSettingsDownloads" = "Downloads";
 "kSettingsDataSaving" = "Data-saving Mode";
+"kSettingsDeleteDownloads" = "Delete All Downloads";
+"kSettingsDeleteDownloadsAlertMessage" = "All the chapters you have downloaded will be deleted.
+This operation is irreversible.
+Are you sure to continue?";
+"kSettingsCurrentDownloadsSize" = "Current Size: %@";
 
 "kMangaTagTypeFormat" = "Format";
 "kMangaTagTypeGenre" = "Genre";

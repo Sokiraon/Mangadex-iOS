@@ -30,7 +30,7 @@ class DownloadsViewController: BaseViewController {
     }()
     
     override func setupUI() {
-        setupNavBar(title: "kPrefDownloads".localized())
+        setupNavBar(title: "kSettingsDownloads".localized())
         
         view.insertSubview(vCollection, belowSubview: appBar)
         vCollection.snp.makeConstraints { make in

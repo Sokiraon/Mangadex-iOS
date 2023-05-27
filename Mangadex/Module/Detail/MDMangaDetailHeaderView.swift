@@ -13,13 +13,13 @@ import SafariServices
 import PromiseKit
 
 class MDMangaDetailHeaderView: UIView {
-    private let ivCover = UIImageView(imageNamed: "manga_cover_default")
+    private let ivCover = UIImageView(named: "manga_cover_default")
     private let lblTitle = UILabel(
         fontSize: 18,
         fontWeight: .medium,
         numberOfLines: 2
     )
-    private let ivAuthor = UIImageView(imageNamed: "icon_person", color: .black2D2E2F)
+    private let ivAuthor = UIImageView(named: "icon_person", color: .black2D2E2F)
     private lazy var btnAuthor = UIButton(type: .system).apply { (button: UIButton) in
         button.titleLabel?.font = .systemFont(ofSize: 15)
         button.theme_setTitleColor(UIColor.themeDarkPicker, forState: .normal)

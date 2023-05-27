@@ -118,12 +118,13 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
                     ProgressHUD.dismiss()
                     self.view.isUserInteractionEnabled = true
                     if (!self.shouldAutoLogin) {
-                        let saveAlert = UIAlertController.initWithTitle(
-                            "kKeychainSaveTitle".localized(),
+                        let vc = UIAlertController(
+                            title: "kKeychainSaveTitle".localized(),
                             message: "kKeychainSaveMessage".localized(),
-                            style: .actionSheet,
-                            actions:
-                            AlertViewAction(title: "kOk".localized(), style: .default) { action in
+                            preferredStyle: .actionSheet
+                        )
+                        vc.addAction(
+                            UIAlertAction(title: "kOk".localized(), style: .default) { action in
                                 MDKeychain.add(username: username, password: password, onSuccess: {
                                     Loaf(
                                         "kSaveSuccess".localized(),
@@ -143,12 +144,14 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
                                             .pushViewController(vc, animated: true)
                                     }
                                 })
-                            },
-                            AlertViewAction(title: "kNo".localized(), style: .cancel) { action in
+                            }
+                        )
+                        vc.addAction(
+                            UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
                                 self.navigationController?.pushViewController(vc, animated: true)
                             }
                         )
-                        self.present(saveAlert, animated: true)
+                        self.present(vc, animated: true)
                     } else {
                         self.navigationController?.pushViewController(vc, animated: true)
                     }

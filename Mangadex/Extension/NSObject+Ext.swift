@@ -19,7 +19,7 @@ extension NSObject {
 protocol HasApply { }
 
 extension HasApply {
-    func apply(closure: (Self) -> ()) -> Self {
+    func apply(closure: (Self) -> Void) -> Self {
         closure(self)
         return self
     }

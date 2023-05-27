@@ -24,6 +24,7 @@ class MDLayout {
     
     static var isNotchScreen = safeInsetBottom > 0
     
+    static var scale = keyWindow.screen.scale
     static var nativeScale = keyWindow.screen.nativeScale
     static var native1px = 1.0 / nativeScale
     

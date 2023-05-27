@@ -51,7 +51,9 @@ class MangaViewer: BaseViewController,
         }
     }
     
-    internal let vBottomControl = UIView(backgroundColor: .black)
+    internal let vBottomControl = UIView().apply { view in
+        view.backgroundColor = .black
+    }
     internal lazy var vSlider = UISlider().apply { slider in
         slider.addTarget(self, action: #selector(handleSliderChange(_:)), for: .valueChanged)
     }

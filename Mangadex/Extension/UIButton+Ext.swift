@@ -20,10 +20,4 @@ extension UIButton {
             addAction(action, for: .touchUpInside)
         }
     }
-    
-    convenience init(imgNormal: UIImage?, imgDisabled: UIImage? = nil) {
-        self.init()
-        setImage(imgNormal, for: .normal)
-        setImage(imgDisabled, for: .disabled)
-    }
 }

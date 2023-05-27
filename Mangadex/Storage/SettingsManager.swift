@@ -21,6 +21,7 @@ class SettingsManager {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.themeColorIndex.rawValue)
+            ThemeManager.setTheme(index: newValue)
         }
     }
     

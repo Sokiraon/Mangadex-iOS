@@ -5,17 +5,14 @@
 import Foundation
 import UIKit
 
-fileprivate let kCATransitionDurationShort = 0.3
-
-enum UIViewControllerTransitionAnimation {
-    case leftIn
-    case rightIn
-}
-
 extension UINavigationController {
-    func setTransitionAnimation(_ animation: UIViewControllerTransitionAnimation) {
+    enum TransitionAnimation {
+        case leftIn, rightIn
+    }
+    
+    func setTransitionAnimation(_ animation: TransitionAnimation, duration: CFTimeInterval = 0.3) {
         let transition = CATransition()
-        transition.duration = kCATransitionDurationShort
+        transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         transition.type = .push
         switch animation {
@@ -35,7 +32,7 @@ extension UINavigationController {
     
     func replaceTopViewController(
         with viewController: UIViewController,
-        using animation: UIViewControllerTransitionAnimation
+        using animation: TransitionAnimation
     ) {
         var vcs = viewControllers
         vcs[vcs.count - 1] = viewController
@@ -45,7 +42,7 @@ extension UINavigationController {
     
     func pushViewController(
         _ viewController: UIViewController,
-        using animation: UIViewControllerTransitionAnimation
+        using animation: TransitionAnimation
     ) {
         setTransitionAnimation(animation)
         pushViewController(viewController, animated: false)

@@ -57,15 +57,17 @@ class FollowedMangaViewController: MangaListViewController {
     }
     
     private func alertForLogin() {
-        let alert = UIAlertController.initWithTitle(
-            "kWarning".localized(),
-            message: "kLoginRequired".localized(), style: .alert,
-            actions:
-                AlertViewAction(title: "kOk".localized(), style: .default) { action in
-                    MDRouter.goToLogin()
-                },
-            AlertViewAction(title: "kNo".localized(), style: .default, handler: nil)
+        let vc = UIAlertController(
+            title: "kWarning".localized(),
+            message: "kLoginRequired".localized(),
+            preferredStyle: .alert
         )
-        present(alert, animated: true)
+        vc.addAction(
+            UIAlertAction(title: "kOk".localized(), style: .default) { action in
+                MDRouter.goToLogin()
+            }
+        )
+        vc.addAction(UIAlertAction(title: "kNo".localized(), style: .cancel))
+        present(vc, animated: true)
     }
 }

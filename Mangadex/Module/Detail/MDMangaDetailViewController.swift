@@ -38,8 +38,8 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     private lazy var vHeader = MDMangaDetailHeaderView(mangaModel: mangaModel)
     private let lblDescr = TTTAttributedLabel()
     
-    private let vDivider = UIView(backgroundColor: .grayDFDFDF)
-    private let vDivider2 = UIView(backgroundColor: .grayDFDFDF)
+    private let vDivider = LineView()
+    private let vDivider2 = LineView()
     
     private let lblChapters = UILabel(fontSize: 18, fontWeight: .medium)
     private let vChaptersHeader = UIView()
