@@ -1,5 +1,5 @@
 //
-//  MDMangaChapterDataModel.swift
+//  MDMangaChapterModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/26.
@@ -7,6 +7,7 @@
 
 import Foundation
 import YYModel
+import FlagKit
 
 // MARK: - Chapter Info
 
@@ -45,6 +46,12 @@ class MDMangaChapterAttrs: NSObject {
         } else {
             return "kMangaChapterNameNull".localized()
         }
+    }
+    
+    var languageFlag: UIImage? {
+        let countryCode = MDLocale.languageToCountryCode[translatedLanguage] ?? "GB"
+        let flag = Flag(countryCode: countryCode)
+        return flag?.originalImage
     }
 }
 

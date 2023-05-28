@@ -24,6 +24,7 @@ target "Mangadex" do
   pod 'TTTAttributedLabel'
   pod "MarkdownKit"
   pod 'SkeletonView'
+  pod 'Tabman'
   
 end
 

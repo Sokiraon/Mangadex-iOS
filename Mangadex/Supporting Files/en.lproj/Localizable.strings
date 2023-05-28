@@ -106,3 +106,6 @@ Are you sure to continue?";
 "kNoChapterAlertMsg" = "You have reached the end of chapters.\nClick OK to return.";
 
 "kDownloadedMangaChapterCount" = "%d Chapter(s)";
+
+"followed.bar.library.title" = "Library";
+"followed.bar.updates.title" = "Updates";

@@ -9,6 +9,8 @@ import Foundation
 import PromiseKit
 
 extension MDRequests {
+    
+    /// Includes methods that require user authorization.
     enum User {
         /// Get logged User followed Manga list, requires authorization.
         ///
@@ -35,6 +37,27 @@ extension MDRequests {
                 }.catch { error in
                     seal.reject(error)
                 }
+            }
+        }
+        
+        static func getFollowedMangaFeed(params: [String: Any] = [:]) -> Promise<MangaFeedModel> {
+            let defaultParams: [String: Any] = [
+                "includes[]": ["user", "scanlation_group"],
+                "order[readableAt]": "desc"
+            ]
+            let newParams = defaultParams + params
+            return Promise { seal in
+                MDRequests.get(path: "/user/follows/manga/feed", params: newParams, requireAuth: true)
+                    .done { json in
+                        guard let model = MangaFeedModel.yy_model(withJSON: json) else {
+                            seal.reject(Errors.IllegalData)
+                            return
+                        }
+                        seal.fulfill(model)
+                    }
+                    .catch { error in
+                        seal.reject(error)
+                    }
             }
         }
         

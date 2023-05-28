@@ -17,11 +17,6 @@ extension MDRequests {
             case desc = "desc"
         }
         
-        struct MangaChapterList {
-            let total: Int
-            let data: [MDMangaChapterModel]
-        }
-        
         /// Get list of chapters for a specific manga.
         ///
         /// API defination available at:
@@ -38,7 +33,7 @@ extension MDRequests {
             offset: Int,
             locale: String,
             order: Order
-        ) -> Promise<MangaChapterList> {
+        ) -> Promise<MangaFeedModel> {
             Promise { seal in
                 firstly {
                     MDRequests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
@@ -49,18 +44,23 @@ extension MDRequests {
                     ])
                 }
                     .done { json in
-                        let json = JSON(json)
-                        let total = json["total"].intValue
-                        let results = json["data"].arrayObject
-                        let models = NSArray.yy_modelArray(
-                            with: MDMangaChapterModel.classForCoder(),
-                            json: results ?? []
-                        )
-                        if let data = models as? [MDMangaChapterModel] {
-                            seal.fulfill(MangaChapterList(total: total, data: data))
-                        } else {
+                        guard let model = MangaFeedModel.yy_model(withJSON: json) else {
                             seal.reject(Errors.IllegalData)
+                            return
                         }
+                        seal.fulfill(model)
+//                        let json = JSON(json)
+//                        let total = json["total"].intValue
+//                        let results = json["data"].arrayObject
+//                        let models = NSArray.yy_modelArray(
+//                            with: MDMangaChapterModel.classForCoder(),
+//                            json: results ?? []
+//                        )
+//                        if let data = models as? [MDMangaChapterModel] {
+//                            seal.fulfill(MangaChapterList(total: total, data: data))
+//                        } else {
+//                            seal.reject(Errors.IllegalData)
+//                        }
                     }
                     .catch { error in
                         seal.reject(error)

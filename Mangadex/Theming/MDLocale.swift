@@ -29,6 +29,19 @@ class MDLocale {
         availableLanguages[languages[SettingsManager.mangaLangIndex]]!
     }
     
+    static let languageToCountryCode = [
+        "pt-br": "BR",
+        "en": "GB",
+        "jp": "JP",
+        "zh": "CN",
+        "zh-hk": "HK",
+        "uk": "UA",
+        "es-la": "MX",
+        "fr": "FR",
+        "id": "ID",
+        "vi": "VN"
+    ]
+    
     /// Get current locale, similar to NSLocale.current but slightly modified
     static var current: String {
         // The language that the user set, but not necessarily provided by the App

@@ -194,3 +194,6 @@
 "kNoChapterAlertMsg" = "你已经看完了所有的章节。\n点击确定来退出。";
 
 "kDownloadedMangaChapterCount" = "共 %d 话";
+
+"followed.bar.library.title" = "列表";
+"followed.bar.updates.title" = "更新";

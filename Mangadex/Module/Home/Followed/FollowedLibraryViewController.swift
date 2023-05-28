@@ -1,18 +1,14 @@
 //
-//  FollowedMangaViewController.swift
+//  FollowedLibraryViewController.swift
 //  Mangadex
 //
-//  Created by edz on 2021/5/29.
+//  Created by John Rion on 2023/05/27.
 //
 
 import Foundation
 import UIKit
-import ProgressHUD
-import PromiseKit
-import MJRefresh
 
-class FollowedMangaViewController: MangaListViewController {
-    
+class FollowedLibraryViewController: MangaListViewController {
     override func setupUI() {
         super.setupUI()
         
