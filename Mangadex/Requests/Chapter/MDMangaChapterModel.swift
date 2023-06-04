@@ -49,8 +49,9 @@ class MDMangaChapterAttrs: NSObject {
     }
     
     var languageFlag: UIImage? {
-        let countryCode = MDLocale.languageToCountryCode[translatedLanguage] ?? "GB"
-        let flag = Flag(countryCode: countryCode)
+        var countryCode = MDLocale.languageToCountryCode[translatedLanguage]
+        countryCode = countryCode ?? translatedLanguage.prefix(2).uppercased()
+        let flag = Flag(countryCode: countryCode!)
         return flag?.originalImage
     }
 }

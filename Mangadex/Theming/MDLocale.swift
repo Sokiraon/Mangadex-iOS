@@ -35,11 +35,15 @@ class MDLocale {
         "jp": "JP",
         "zh": "CN",
         "zh-hk": "HK",
-        "uk": "UA",
-        "es-la": "MX",
+        "uk": "UA",     // Ukraine
+        "es-la": "MX",  // Mexico
         "fr": "FR",
         "id": "ID",
-        "vi": "VN"
+        "vi": "VN",
+        "it": "IT",
+        "de": "DE",
+        "fa": "IR",     // Farsi
+        "th": "TH",
     ]
     
     /// Get current locale, similar to NSLocale.current but slightly modified
