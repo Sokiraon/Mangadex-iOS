@@ -164,32 +164,18 @@ class MangaListCollectionCell: UICollectionViewCell {
         }
         infoAuthor.text = model.primaryAuthorName
         
-        infoRate.showAnimatedSkeleton()
-        infoFollow.showAnimatedSkeleton()
-        _ = MDRequests.Manga.getStatistics(mangaId: model.id)
-            .done { statistics in
-                if statistics.follows != nil {
-                    let num = statistics.follows!.intValue
-                    if num > 1000000 {
-                        self.infoFollow.text = "\(num / 1000000)M"
-                    } else if num > 1000 {
-                        self.infoFollow.text = "\(num / 1000)K"
-                    } else {
-                        self.infoFollow.text = "\(num)"
-                    }
+        if let statistics = model.statistics {
+            infoFollow.text = statistics.followsString
+            infoRate.text = statistics.ratingString
+        } else {
+            infoRate.showAnimatedSkeleton()
+            infoFollow.showAnimatedSkeleton()
+            _ = MDRequests.Manga.getStatistics(mangaId: model.id)
+                .done { statistics in
+                    model.statistics = statistics
+                    self.infoFollow.text = statistics.followsString
+                    self.infoRate.text = statistics.ratingString
                 }
-                if statistics.rating != nil {
-                    let nf = NumberFormatter().apply { formatter in
-                        formatter.numberStyle = .decimal
-                        formatter.minimumFractionDigits = 2
-                        formatter.maximumFractionDigits = 2
-                    }
-                    if statistics.rating?.bayesian != nil {
-                        self.infoRate.text = nf.string(from: statistics.rating!.bayesian!)
-                    } else if statistics.rating?.average != nil {
-                        self.infoRate.text = nf.string(from: statistics.rating!.average!)
-                    }
-                }
-            }
+        }
     }
 }

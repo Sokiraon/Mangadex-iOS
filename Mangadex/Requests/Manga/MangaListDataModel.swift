@@ -164,6 +164,8 @@ class MangaItemDataModel: NSObject, YYModel {
         let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).256.jpg"
         return URL(string: urlStr)
     }
+    
+    var statistics: MangaStatisticsModel?
 }
 
 class MangaListDataModel: NSObject, YYModel {
