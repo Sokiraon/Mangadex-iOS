@@ -57,7 +57,7 @@ class UserManager {
     func login(username: String, password: String) -> Promise<Bool> {
         Promise { seal in
             firstly {
-                MDRequests.Auth.login(username: username, password: password)
+                Requests.Auth.login(username: username, password: password)
             }.done { token in
                 self.session = token.session
                 self.refresh = token.refresh
@@ -94,20 +94,20 @@ class UserManager {
         Promise { seal in
             // verify token
             firstly {
-                MDRequests.Auth.verifyToken(token: self.session)
+                Requests.Auth.verifyToken(token: self.session)
             }.done { res in
                 seal.fulfill(self.session)
             }.catch { error in
                 // if verification failed, try to refresh token
                 firstly {
-                    MDRequests.Auth.refreshToken(refresh: self.refresh)
+                    Requests.Auth.refreshToken(refresh: self.refresh)
                 }.done { token in
                     self.session = token.session
                     self.refresh = token.refresh
                     seal.fulfill(self.session)
                 }.catch { error in
                     // if refresh failed, throw an Error
-                    seal.reject(MDRequests.ErrorResponse(code: .UnAuthenticated, message: "Authentication Expired"))
+                    seal.reject(Requests.ErrorResponse(code: .UnAuthenticated, message: "Authentication Expired"))
                 }
             }
         }

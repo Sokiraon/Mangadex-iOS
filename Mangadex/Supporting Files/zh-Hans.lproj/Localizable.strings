@@ -19,6 +19,7 @@
 
 "kHomeTabBrowse" = "浏览";
 "kHomeTabFollowed" = "追漫";
+"kHomeTabSearch" = "搜索";
 "kHomeTabAccount" = "个人中心";
 
 "kMangaDetailChapters" = "章节";
@@ -197,3 +198,12 @@
 
 "followed.bar.library.title" = "列表";
 "followed.bar.updates.title" = "更新";
+
+"search.target.manga" = "漫画";
+"search.target.author" = "作者";
+"search.target.group" = "翻译组";
+
+"search.author.titleCount.single" = "1 部";
+"search.author.titleCount.multiple" = "%d 部";
+"search.group.leader" = "组长：%@";
+"search.group.noLeader" = "没有组长";

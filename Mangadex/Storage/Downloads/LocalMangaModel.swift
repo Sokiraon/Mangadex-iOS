@@ -8,13 +8,13 @@
 import Foundation
 
 class LocalChapterModel: Equatable {
-    let info: MDMangaChapterModel
+    let info: ChapterModel
     var pageURLs: [URL] = []
     
     init(baseURL: URL) {
         let infoURL = baseURL.appendingPathComponent("info.json")
         let infoData = FileManager.default.contents(atPath: infoURL.path)
-        self.info = MDMangaChapterModel.yy_model(withJSON: infoData!)!
+        self.info = ChapterModel.yy_model(withJSON: infoData!)!
         
         let pagesDir = baseURL.appendingPathComponent("data")
         let pagesDirAlt = baseURL.appendingPathComponent("data-saver")
@@ -55,9 +55,9 @@ class LocalMangaModel {
     let baseURL: URL
     let coverURL: URL
     let chapterURLs: [URL]
-    let info: MangaItemDataModel
+    let info: MangaModel
     
-    init(baseURL: URL, coverURL: URL, chapterURLs: [URL], info: MangaItemDataModel) {
+    init(baseURL: URL, coverURL: URL, chapterURLs: [URL], info: MangaModel) {
         self.baseURL = baseURL
         self.coverURL = coverURL
         self.chapterURLs = chapterURLs

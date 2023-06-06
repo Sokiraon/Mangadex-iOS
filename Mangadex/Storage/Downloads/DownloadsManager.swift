@@ -26,8 +26,8 @@ class DownloadsManager {
     }
     
     func downloadChapter(
-        mangaModel: MangaItemDataModel,
-        chapterModel: MDMangaChapterModel,
+        mangaModel: MangaModel,
+        chapterModel: ChapterModel,
         pageURLs: [URL]
     ) async {
         do {
@@ -94,7 +94,7 @@ class DownloadsManager {
             let coverURL = fileURL.appendingPathComponent("cover.jpg")
             let infoURL = fileURL.appendingPathComponent("info.json")
             guard let infoData = FileManager.default.contents(atPath: infoURL.path),
-                  let infoModel = MangaItemDataModel.yy_model(withJSON: infoData)
+                  let infoModel = MangaModel.yy_model(withJSON: infoData)
             else {
                 continue
             }

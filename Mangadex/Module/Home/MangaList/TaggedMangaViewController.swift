@@ -20,20 +20,17 @@ class TaggedMangaViewController: MangaListViewController {
     }
     
     override func setupUI() {
-        super.setupUI()
+        setupNavBar()
         
-        vTopArea.theme_backgroundColor = UIColor.themePrimaryPicker
-        
-        vTopArea.addSubview(appBar)
-        appBar.snp.makeConstraints { make in
+        view.insertSubview(vCollection, belowSubview: appBar)
+        vCollection.snp.makeConstraints { make in
+            make.top.equalTo(appBar.snp.bottom)
             make.left.right.bottom.equalToSuperview()
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
-            make.height.equalTo(44)
         }
     }
     
     override func fetchData() {
-        MDRequests.Manga.query(params: queryOptions)
+        Requests.Manga.query(params: queryOptions)
             .done { model in
                 self.setData(with: model)
             }
@@ -46,7 +43,7 @@ class TaggedMangaViewController: MangaListViewController {
     }
     
     override func loadMoreData() {
-        MDRequests.Manga.query(params: queryOptions + ["offset": mangaList.count])
+        Requests.Manga.query(params: queryOptions + ["offset": mangaList.count])
             .done { model in
                 self.updateData(with: model)
             }

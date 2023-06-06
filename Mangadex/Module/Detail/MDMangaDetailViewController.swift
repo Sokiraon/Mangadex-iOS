@@ -28,7 +28,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
 
 class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
     
-    private var mangaModel: MangaItemDataModel!
+    private var mangaModel: MangaModel!
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
         self.fetchData()
@@ -45,11 +45,11 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     private let vChaptersHeader = UIView()
     private var vChapters: MyCollectionView!
     
-    private var chapterModels = [MDMangaChapterModel]()
+    private var chapterModels = [ChapterModel]()
     private var totalChapters = 0
     
     // MARK: - Lifecycle
-    convenience init(mangaModel: MangaItemDataModel) {
+    convenience init(mangaModel: MangaModel) {
         self.init()
         self.mangaModel = mangaModel
     }
@@ -304,7 +304,7 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     
     // MARK: - Fetch Data
     
-    private var chapterOrder = MDRequests.Chapter.Order.desc
+    private var chapterOrder = Requests.Chapter.Order.desc
     private var chapterLocale = MDLocale.currentMangaLanguage
     
     private lazy var btnOrder: UIButton = {
@@ -346,8 +346,8 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     
     private func fetchData() {
         _ = firstly {
-            when(fulfilled: MDRequests.Manga.getReadingStatus(mangaId: mangaModel.id),
-                 MDRequests.Chapter.getListForManga(
+            when(fulfilled: Requests.Manga.getReadingStatus(mangaId: mangaModel.id),
+                 Requests.Chapter.getListForManga(
                      mangaId: mangaModel.id,
                      offset: 0,
                      locale: chapterLocale,
@@ -375,7 +375,7 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     
     private func loadMoreChapters() {
         _ = firstly {
-            MDRequests.Chapter.getListForManga(
+            Requests.Chapter.getListForManga(
                 mangaId: mangaModel.id,
                 offset: chapterModels.count,
                 locale: chapterLocale,

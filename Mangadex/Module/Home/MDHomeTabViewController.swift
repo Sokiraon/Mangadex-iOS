@@ -7,61 +7,72 @@
 
 import UIKit
 import Localize_Swift
-import SwiftTheme
+import Tabman
+import Pageboy
 
-class MDHomeTabViewController: UITabBarController, UITabBarControllerDelegate {
+class MDHomeTabViewController: TabmanViewController {
+    
+    private var viewControllers = [
+        BrowseMangaViewController(),
+        FollowedMangaViewController(),
+        SearchViewController(),
+        AccountViewController()
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
-        
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(didChangeTheme),
-//            name: NSNotification.Name(rawValue: ThemeUpdateNotification),
-//            object: nil
-//        )
     }
     
     private func setupTabBar() {
-        delegate = self
+        dataSource = self
         
-        let browse = BrowseMangaViewController()
-        browse.tabBarItem.title = "kHomeTabBrowse".localized()
-        browse.tabBarItem.image = .init(systemName: "books.vertical.fill")
-        
-        let followed = FollowedMangaViewController()
-        followed.tabBarItem.title = "kHomeTabFollowed".localized()
-        followed.tabBarItem.image = .init(systemName: "bookmark.fill")
-        
-        let account = AccountViewController()
-        account.tabBarItem.title = "kHomeTabAccount".localized()
-        account.tabBarItem.image = .init(systemName: "person.fill")
-        
-        viewControllers = [browse, followed, account]
-        previousViewController = browse
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // Leave some space above UITabBarButton
-        tabBar.frame.size.height += 4
-        tabBar.frame.origin.y -= 4
-    }
-    
-    // MARK: - UITabBarDelegate Methods
-    
-    private var previousViewController: UIViewController!
-    
-    func tabBarController(
-        _ tabBarController: UITabBarController,
-        didSelect viewController: UIViewController
-    ) {
-        if let vc = viewController as? MangaListViewController,
-           viewController == previousViewController {
-            vc.scrollToTop()
+        let bar = TMBar.TabBar()
+        bar.layout.contentInset = .bottom(.rectScreenOnly(5))
+        bar.buttons.customize { button in
+            button.font = .systemFont(ofSize: 13)
+            button.imageViewSize = .init(width: 32, height: 32)
         }
-        previousViewController = viewController
+        
+        addBar(bar.systemBar(), dataSource: self, at: .bottom)
+    }
+}
+
+extension MDHomeTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
+    func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
+        viewControllers.count
+    }
+    
+    func viewController(for pageboyViewController: PageboyViewController, at index: PageboyViewController.PageIndex) -> UIViewController? {
+        viewControllers[index]
+    }
+    
+    func defaultPage(for pageboyViewController: Pageboy.PageboyViewController) -> Pageboy.PageboyViewController.Page? {
+        nil
+    }
+    
+    func barItem(for bar: Tabman.TMBar, at index: Int) -> Tabman.TMBarItemable {
+        let item = TMBarItem(title: "")
+        switch index {
+        case 0:
+            item.title = "kHomeTabBrowse".localized()
+            item.image = .init(systemName: "books.vertical.fill")
+            break
+        case 1:
+            item.title = "kHomeTabFollowed".localized()
+            item.image = .init(systemName: "bookmark.fill")
+            break
+        case 2:
+            item.title = "kHomeTabSearch".localized()
+            item.image = .init(systemName: "magnifyingglass")
+            break
+        case 3:
+            item.title = "kHomeTabAccount".localized()
+            item.image = .init(systemName: "person.fill")
+            break
+        default:
+            break
+        }
+        return item
     }
 }

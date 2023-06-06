@@ -1,5 +1,5 @@
 //
-//  MDRequests+User.swift
+//  Requests+User.swift
 //  Mangadex
 //
 //  Created by John Rion on 7/22/22.
@@ -8,7 +8,7 @@
 import Foundation
 import PromiseKit
 
-extension MDRequests {
+extension Requests {
     
     /// Includes methods that require user authorization.
     enum User {
@@ -19,7 +19,7 @@ extension MDRequests {
         /// 
         /// - Parameter params: Query parameters, **Dict**
         /// - Returns: Promise fulfilled by Array of MangaItem
-        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<MangaListDataModel> {
+        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<MangaCollection> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
                 "limit": 20,
@@ -27,9 +27,9 @@ extension MDRequests {
             let newParams = defaultParams + params
             return Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/user/follows/manga", params: newParams, requireAuth: true)
+                    Requests.get(path: "/user/follows/manga", params: newParams, requireAuth: true)
                 }.done { json in
-                    guard let model = MangaListDataModel.yy_model(withJSON: json) else {
+                    guard let model = MangaCollection.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }
@@ -47,7 +47,7 @@ extension MDRequests {
             ]
             let newParams = defaultParams + params
             return Promise { seal in
-                MDRequests.get(path: "/user/follows/manga/feed", params: newParams, requireAuth: true)
+                Requests.get(path: "/user/follows/manga/feed", params: newParams, requireAuth: true)
                     .done { json in
                         guard let model = MangaFeedModel.yy_model(withJSON: json) else {
                             seal.reject(Errors.IllegalData)
@@ -64,7 +64,7 @@ extension MDRequests {
         static func ifFollowsManga(mangaId: String) -> Promise<Bool> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/user/follows/manga/\(mangaId)", requireAuth: true)
+                    Requests.get(path: "/user/follows/manga/\(mangaId)", requireAuth: true)
                 }.done { json in
                     seal.fulfill(true)
                 }.catch { error in

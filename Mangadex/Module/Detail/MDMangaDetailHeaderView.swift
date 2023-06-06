@@ -27,7 +27,7 @@ class MDMangaDetailHeaderView: UIView {
     }
     private let lblAbout = UILabel(fontWeight: .medium)
     
-    private var mangaModel: MangaItemDataModel!
+    private var mangaModel: MangaModel!
     
     private var btnFollow: UIButton!
     private lazy var btnFollowConfFollowed = {
@@ -68,7 +68,7 @@ class MDMangaDetailHeaderView: UIView {
         return conf
     }()
     
-    convenience init(mangaModel: MangaItemDataModel) {
+    convenience init(mangaModel: MangaModel) {
         self.init()
         
         self.mangaModel = mangaModel
@@ -163,10 +163,10 @@ class MDMangaDetailHeaderView: UIView {
         var promise: Promise<Bool>
         var newStatus: MangaReadingStatus
         if readingStatus == .reading {
-            promise = MDRequests.Manga.unFollow(mangaId: mangaModel.id)
+            promise = Requests.Manga.unFollow(mangaId: mangaModel.id)
             newStatus = .null
         } else {
-            promise = MDRequests.Manga.follow(mangaId: mangaModel.id)
+            promise = Requests.Manga.follow(mangaId: mangaModel.id)
             newStatus = .reading
         }
         _ = promise.done { result in

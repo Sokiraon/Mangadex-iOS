@@ -1,5 +1,5 @@
 //
-//  MDRequests.swift
+//  Requests.swift
 //  Mangadex
 //
 //  Created by John Rion on 7/21/22.
@@ -15,7 +15,7 @@ enum HostUrl: String {
     case uploads = "https://uploads.mangadex.org"
 }
 
-enum MDRequests {
+enum Requests {
     enum ErrorCode: Int {
         case BadRequest = 400
         case UnAuthenticated = 401

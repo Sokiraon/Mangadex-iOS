@@ -1,5 +1,5 @@
 //
-//  MDMangaChapterModel.swift
+//  ChapterModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/26.
@@ -11,7 +11,7 @@ import FlagKit
 
 // MARK: - Chapter Info
 
-class MDMangaChapterAttrs: NSObject {
+class ChapterAttributes: NSObject {
     var pages: Int = 0
     @objc var volume: String?
     /// No. of chapter
@@ -56,19 +56,19 @@ class MDMangaChapterAttrs: NSObject {
     }
 }
 
-class MDMangaChapterModel: NSObject, YYModel {
+class ChapterModel: NSObject, YYModel {
     @objc var id: String!
-    @objc var attributes: MDMangaChapterAttrs!
+    @objc var attributes: ChapterAttributes!
     @objc var relationships: [MDRelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "relationships": MDRelationshipModel.self ]
     }
     
-    var scanlationGroup: MDScanlationGroupModel? {
+    var scanlationGroup: ScanGroupModel? {
         for relationship in relationships {
             if relationship.type == "scanlation_group" {
-                return MDScanlationGroupModel(superModel: relationship)
+                return ScanGroupModel(superModel: relationship)
             }
         }
         return nil
@@ -86,7 +86,7 @@ class MDMangaChapterModel: NSObject, YYModel {
 
 // MARK: - Chapter Pages Data
 
-class MDMangaChapterPages: NSObject, YYModel {
+class ChapterPages: NSObject, YYModel {
     @objc var chapterHash: String!
     @objc var data: [String]!
     @objc var dataSaver: [String]!
@@ -100,9 +100,9 @@ class MDMangaChapterPages: NSObject, YYModel {
     }
 }
 
-class MDMangaChapterPagesModel: NSObject {
+class ChapterPagesModel: NSObject {
     @objc private var baseUrl: String!
-    @objc private var chapter: MDMangaChapterPages!
+    @objc private var chapter: ChapterPages!
     
     var pageURLs: [URL] {
         if SettingsManager.isDataSavingMode {

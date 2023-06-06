@@ -12,29 +12,25 @@ class AccountSettingsTappableCell: AccountSettingsCell {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCell)))
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(didPressView))
+        recognizer.minimumPressDuration = 0
+        addGestureRecognizer(recognizer)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc internal func didTapCell() {}
-}
-
-extension AccountSettingsTappableCell {
-    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        backgroundColor = .grayDFDFDF
-        super.touchesBegan(touches, with: event)
-    }
-
-    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        backgroundColor = .white
-        super.touchesEnded(touches, with: event)
-    }
-
-    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        backgroundColor = .white
-        super.touchesCancelled(touches, with: event)
+    internal func didTapCell() {}
+    
+    @objc private func didPressView(recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            backgroundColor = .grayDFDFDF
+        } else if recognizer.state == .ended || recognizer.state == .cancelled {
+            backgroundColor = .white
+        }
+        if recognizer.state == .ended {
+            didTapCell()
+        }
     }
 }

@@ -65,14 +65,14 @@ class OnlineMangaViewer: MangaViewer {
     
     // MARK: - Lifecycle methods
     
-    convenience init(mangaModel: MangaItemDataModel, chapterId: String) {
+    convenience init(mangaModel: MangaModel, chapterId: String) {
         self.init()
         self.mangaModel = mangaModel
         self.chapterId = chapterId
     }
     
     convenience init(
-        mangaModel: MangaItemDataModel,
+        mangaModel: MangaModel,
         chapterId: String,
         aggregatedModel: MDMangaAggregatedModel
     ) {
@@ -119,10 +119,10 @@ class OnlineMangaViewer: MangaViewer {
     
     // MARK: - Model
     
-    private var mangaModel: MangaItemDataModel!
+    private var mangaModel: MangaModel!
     
     private var chapterId: String!
-    private var chapterModel: MDMangaChapterModel!
+    private var chapterModel: ChapterModel!
     private var statistics: MDChapterStatistics!
     
     private var aggregatedModel: MDMangaAggregatedModel!
@@ -139,25 +139,25 @@ class OnlineMangaViewer: MangaViewer {
     private func fetchData(withAggregate: Bool) {
         ProgressHUD.show()
         firstly {
-            when(fulfilled: MDRequests.Chapter.get(id: chapterId),
-                 MDRequests.Chapter.getStatistics(id: chapterId)
+            when(fulfilled: Requests.Chapter.get(id: chapterId),
+                 Requests.Chapter.getStatistics(id: chapterId)
             )
-        }.then { (chapterModel: MDMangaChapterModel, statistics: MDChapterStatistics) in
+        }.then { (chapterModel: ChapterModel, statistics: MDChapterStatistics) in
             self.statistics = statistics
             self.chapterModel = chapterModel
             self.appBar.title = chapterModel.attributes.chapterName
             self.updateReadingStatus()
             if withAggregate {
-                return when(fulfilled: MDRequests.Chapter.getPageData(chapterId: chapterModel.id),
-                            MDRequests.Manga.getVolumesAndChapters(
+                return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
+                            Requests.Manga.getVolumesAndChapters(
                                mangaId: chapterModel.mangaId ?? "",
                                groupId: chapterModel.scanlationGroup?.id ?? "",
                                language: chapterModel.attributes.translatedLanguage
                             )
                        )
             } else {
-                return when(fulfilled: MDRequests.Chapter.getPageData(chapterId: chapterModel.id),
-                            MDRequests.Placeholder(self.aggregatedModel)
+                return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
+                            Requests.Placeholder(self.aggregatedModel)
                 )
             }
         }.done { pagesModel, aggregatedModel in
@@ -215,7 +215,7 @@ class OnlineMangaViewer: MangaViewer {
     /// and save the status in MDMangaProgressManager so that users can return to their last read chapter.
     private func updateReadingStatus() {
         if let mangaId = chapterModel?.mangaId {
-            _ = MDRequests.Chapter.markAsRead(mangaId: mangaId, chapterId: chapterId)
+            _ = Requests.Chapter.markAsRead(mangaId: mangaId, chapterId: chapterId)
             MDMangaProgressManager.saveProgress(forMangaId: mangaId, chapterId: chapterId)
         }
     }
@@ -240,7 +240,7 @@ class OnlineMangaViewer: MangaViewer {
             )
             alert.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
             alert.addAction(UIAlertAction(title: "kOk".localized(), style: .default, handler: { action in
-                _ = MDRequests.Chapter.createForumThread(chapterId: self.chapterId)
+                _ = Requests.Chapter.createForumThread(chapterId: self.chapterId)
                     .done { statistics in
                         self.statistics = statistics
                         self.openForum()

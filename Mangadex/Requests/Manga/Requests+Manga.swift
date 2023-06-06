@@ -7,20 +7,20 @@ import PromiseKit
 import SwiftyJSON
 import YYModel
 
-extension MDRequests {
+extension Requests {
     enum Manga {
-        static func query(params: [String: Any] = [:]) -> Promise<MangaListDataModel> {
+        static func query(params: [String: Any] = [:]) -> Promise<MangaCollection> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
-                "limit": 10,
+                "limit": 15,
             ]
             let newParams = defaultParams + params
             return Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/manga", host: .main, params: newParams)
+                    Requests.get(path: "/manga", host: .main, params: newParams)
                 }
                 .done { json in
-                    guard let model = MangaListDataModel.yy_model(withJSON: json) else {
+                    guard let model = MangaCollection.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }
@@ -35,7 +35,7 @@ extension MDRequests {
         static func getCoverUrl(coverId: String, mangaId: String) -> Promise<URL> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/cover/\(coverId)", host: .main)
+                    Requests.get(path: "/cover/\(coverId)", host: .main)
                 }
                 .done { json in
                     let data = JSON(json)
@@ -55,7 +55,7 @@ extension MDRequests {
         static func getStatistics(mangaId: String) -> Promise<MangaStatisticsModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/statistics/manga/\(mangaId)", host: .main)
+                    Requests.get(path: "/statistics/manga/\(mangaId)", host: .main)
                 }
                 .done { json in
                     let data = JSON(json)
@@ -76,7 +76,7 @@ extension MDRequests {
         static func getReadingStatus(mangaId: String) -> Promise<MangaReadingStatus> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/manga/\(mangaId)/status", requireAuth: true)
+                    Requests.get(path: "/manga/\(mangaId)/status", requireAuth: true)
                 }
                 .done { json in
                     let data = JSON(json)
@@ -103,7 +103,7 @@ extension MDRequests {
             let status = newStatus == .null ? nil : newStatus.rawValue
             return Promise { seal in
                 firstly {
-                    MDRequests.post(
+                    Requests.post(
                         path: "/manga/\(mangaId)/status",
                         data: ["status": status],
                         requireAuth: true
@@ -122,7 +122,7 @@ extension MDRequests {
             Promise { seal in
                 firstly {
                     when(fulfilled: updateReadingStatus(mangaId: mangaId, newStatus: .reading),
-                         MDRequests.post(path: "/manga/\(mangaId)/follow", requireAuth: true)
+                         Requests.post(path: "/manga/\(mangaId)/follow", requireAuth: true)
                     )
                 }
                 .done { _ in
@@ -138,7 +138,7 @@ extension MDRequests {
             Promise { seal in
                 firstly {
                     when(fulfilled: updateReadingStatus(mangaId: mangaId, newStatus: .null),
-                         MDRequests.delete(path: "/manga/\(mangaId)/follow", requireAuth: true)
+                         Requests.delete(path: "/manga/\(mangaId)/follow", requireAuth: true)
                     )
                 }
                 .done { _ in
@@ -155,7 +155,7 @@ extension MDRequests {
         ) -> Promise<MDMangaAggregatedModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(
+                    Requests.get(
                         path: "/manga/\(mangaId)/aggregate",
                         params: [
                             "groups[]": groupId,

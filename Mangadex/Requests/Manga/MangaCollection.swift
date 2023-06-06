@@ -1,5 +1,5 @@
 //
-//  MangaListDataModel.swift
+//  MangaCollection.swift
 //  Mangadex
 //
 //  Created by John Rion on 2021/6/19.
@@ -47,7 +47,7 @@ class MangaMultiLanguageObject: NSObject, YYModel {
     }
 }
 
-class MangaItemAttributes: NSObject, YYModel {
+class MangaAttributes: NSObject, YYModel {
     @objc var title: [String: String]!
     @objc var altTitles: [[String: String]]!
     @objc var descript: [String: String]?
@@ -113,25 +113,25 @@ class MangaItemAttributes: NSObject, YYModel {
     }
 }
 
-class MangaItemDataModel: NSObject, YYModel {
+class MangaModel: NSObject, YYModel {
     @objc var id: String! = ""
-    @objc var attributes: MangaItemAttributes!
+    @objc var attributes: MangaAttributes!
     @objc var relationships: [MDRelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         ["relationships": MDRelationshipModel.classForCoder()]
     }
     
-    var authors: [MDMangaAuthor] {
+    var authors: [MangaAuthorModel] {
         let items = relationships.filter { relationship in
             relationship.type == "author"
         }
         return items.map { item in
-            MDMangaAuthor(relationshipItem: item)
+            MangaAuthorModel(relationshipItem: item)
         }
     }
     
-    var primaryAuthor: MDMangaAuthor? {
+    var primaryAuthor: MangaAuthorModel? {
         authors.first
     }
     
@@ -139,12 +139,12 @@ class MangaItemDataModel: NSObject, YYModel {
         primaryAuthor?.attributes.name ?? "kAuthorUnknown".localized()
     }
     
-    var artists: [MDMangaAuthor] {
+    var artists: [MangaAuthorModel] {
         let items = relationships.filter { relationship in
             relationship.type == "artists"
         }
         return items.map { item in
-            MDMangaAuthor(relationshipItem: item)
+            MangaAuthorModel(relationshipItem: item)
         }
     }
     
@@ -168,13 +168,13 @@ class MangaItemDataModel: NSObject, YYModel {
     var statistics: MangaStatisticsModel?
 }
 
-class MangaListDataModel: NSObject, YYModel {
-    @objc var data: [MangaItemDataModel]!
+class MangaCollection: NSObject, YYModel {
+    @objc var data: [MangaModel]!
     @objc var limit = 0
     @objc var offset = 0
     @objc var total = 0
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": MangaItemDataModel.self ]
+        [ "data": MangaModel.self ]
     }
 }

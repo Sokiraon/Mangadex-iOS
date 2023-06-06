@@ -12,14 +12,14 @@ class MangaFeedModel: NSObject, YYModel {
     var limit = 0
     var offset = 0
     var total = 0
-    @objc var data: [MDMangaChapterModel]!
+    @objc var data: [ChapterModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["data": MDMangaChapterModel.self]
+        ["data": ChapterModel.self]
     }
     
-    lazy var aggregated: [String: [MDMangaChapterModel]] = {
-        var result: [String: [MDMangaChapterModel]] = [:]
+    lazy var aggregated: [String: [ChapterModel]] = {
+        var result: [String: [ChapterModel]] = [:]
         for chapterModel in data {
             let mangaId = chapterModel.mangaId!
             if result.contains(mangaId) {

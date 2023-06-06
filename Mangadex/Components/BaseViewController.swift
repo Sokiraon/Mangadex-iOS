@@ -53,7 +53,9 @@ class BaseViewController: UIViewController {
     ///
     /// Used for setting up top navigation bar.
     internal func setupNavBar(title: String? = nil, backgroundColor: UIColor = .themePrimary) {
-        appBar.title = title
+        if title != nil {
+            appBar.title = title
+        }
         appBar.backgroundColor = backgroundColor
         statusBarStyle = .lightContent
         

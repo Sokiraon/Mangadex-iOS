@@ -19,6 +19,7 @@
 
 "kHomeTabBrowse" = "Browse";
 "kHomeTabFollowed" = "Followed";
+"kHomeTabSearch" = "Search";
 "kHomeTabAccount" = "Account";
 
 "kMangaDetailChapters" = "Chapters";
@@ -109,3 +110,12 @@ Are you sure to continue?";
 
 "followed.bar.library.title" = "Library";
 "followed.bar.updates.title" = "Updates";
+
+"search.target.manga" = "Manga";
+"search.target.author" = "Author";
+"search.target.group" = "Group";
+
+"search.author.titleCount.single" = "1 title";
+"search.author.titleCount.multiple" = "%d titles";
+"search.group.leader" = "Leader: %@";
+"search.group.noLeader" = "No Leader";

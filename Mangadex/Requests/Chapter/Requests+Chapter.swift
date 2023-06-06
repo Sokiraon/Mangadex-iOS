@@ -1,5 +1,5 @@
 //
-//  MDRequests+Chapter.swift
+//  Requests+Chapter.swift
 //  Mangadex
 //
 //  Created by John Rion on 7/22/22.
@@ -10,7 +10,7 @@ import PromiseKit
 import SwiftyJSON
 import YYModel
 
-extension MDRequests {
+extension Requests {
     enum Chapter {
         enum Order: String {
             case asc = "asc"
@@ -36,7 +36,7 @@ extension MDRequests {
         ) -> Promise<MangaFeedModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
+                    Requests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
                         "offset": offset,
                         "includes[]": [ "scanlation_group", "user" ],
                         "translatedLanguage[]": locale,
@@ -49,18 +49,6 @@ extension MDRequests {
                             return
                         }
                         seal.fulfill(model)
-//                        let json = JSON(json)
-//                        let total = json["total"].intValue
-//                        let results = json["data"].arrayObject
-//                        let models = NSArray.yy_modelArray(
-//                            with: MDMangaChapterModel.classForCoder(),
-//                            json: results ?? []
-//                        )
-//                        if let data = models as? [MDMangaChapterModel] {
-//                            seal.fulfill(MangaChapterList(total: total, data: data))
-//                        } else {
-//                            seal.reject(Errors.IllegalData)
-//                        }
                     }
                     .catch { error in
                         seal.reject(error)
@@ -68,17 +56,17 @@ extension MDRequests {
             }
         }
         
-        static func get(id: String) -> Promise<MDMangaChapterModel> {
+        static func get(id: String) -> Promise<ChapterModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(
+                    Requests.get(
                         path: "/chapter/\(id)",
                         params: [
                             "includes[]": ["scanlation_group", "manga", "user"]
                         ]
                     )
                 }.done { json in
-                    if json.contains("data"), let model = MDMangaChapterModel.yy_model(withJSON: json["data"]!) {
+                    if json.contains("data"), let model = ChapterModel.yy_model(withJSON: json["data"]!) {
                         seal.fulfill(model)
                     } else {
                         seal.reject(Errors.IllegalData)
@@ -92,7 +80,7 @@ extension MDRequests {
         static func getStatistics(id: String) -> Promise<MDChapterStatistics> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/statistics/chapter/\(id)")
+                    Requests.get(path: "/statistics/chapter/\(id)")
                 }.done { json in
                     let json = JSON(json)
                     if let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
@@ -107,14 +95,14 @@ extension MDRequests {
             }
         }
         
-        static func getPageData(chapterId: String) -> Promise<MDMangaChapterPagesModel> {
+        static func getPageData(chapterId: String) -> Promise<ChapterPagesModel> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(path: "/at-home/server/\(chapterId)")
+                    Requests.get(path: "/at-home/server/\(chapterId)")
                 }
                     .done { result in
                         let json = JSON(result)
-                        if let data = MDMangaChapterPagesModel.yy_model(withJSON: json.rawValue) {
+                        if let data = ChapterPagesModel.yy_model(withJSON: json.rawValue) {
                             seal.fulfill(data)
                         } else {
                             seal.reject(Errors.IllegalData)
@@ -128,7 +116,7 @@ extension MDRequests {
         
         static func createForumThread(chapterId: String) -> Promise<MDChapterStatistics> {
             Promise { seal in
-                MDRequests.post(
+                Requests.post(
                     path: "/forums/thread",
                     data: ["type": "chapter", "id": chapterId],
                     requireAuth: true
@@ -148,7 +136,7 @@ extension MDRequests {
         
         static func markAsRead(mangaId: String, chapterId: String) -> Promise<Void> {
             Promise { seal in
-                MDRequests.post(
+                Requests.post(
                     path: "/manga/\(mangaId)/read",
                     data: ["chapterIdsRead": [chapterId]],
                     requireAuth: true

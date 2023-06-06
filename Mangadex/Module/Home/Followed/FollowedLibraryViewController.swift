@@ -9,13 +9,6 @@ import Foundation
 import UIKit
 
 class FollowedLibraryViewController: MangaListViewController {
-    override func setupUI() {
-        super.setupUI()
-        
-        vTopArea.snp.makeConstraints { make in
-            make.height.equalTo(MDLayout.safeInsetTop)
-        }
-    }
     
     override func didSetupUI() {
         super.didSetupUI()
@@ -26,7 +19,7 @@ class FollowedLibraryViewController: MangaListViewController {
     }
     
     override func fetchData() {
-        MDRequests.User.getFollowedMangas()
+        Requests.User.getFollowedMangas()
             .done { model in
                 self.setData(with: model)
             }
@@ -41,7 +34,7 @@ class FollowedLibraryViewController: MangaListViewController {
     }
     
     override func loadMoreData() {
-        MDRequests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
+        Requests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
             .done { model in
                 self.updateData(with: model)
             }

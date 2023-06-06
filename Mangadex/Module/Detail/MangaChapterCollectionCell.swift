@@ -56,7 +56,7 @@ class MangaChapterCollectionCell: UICollectionViewCell {
         }
     }
     
-    func update(with model: MDMangaChapterModel) {
+    func update(with model: ChapterModel) {
         lblChapter.text = model.attributes.fullChapterName
         lblUpdate.text = MDFormatter.dateStringFromNow(
             isoDateString: model.attributes.updatedAt

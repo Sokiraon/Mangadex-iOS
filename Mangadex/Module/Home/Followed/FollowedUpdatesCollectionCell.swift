@@ -11,12 +11,12 @@ import SnapKit
 
 class FollowedUpdatesChapterView: UIView {
     
-    private var mangaModel: MangaItemDataModel
-    private var chapterModel: MDMangaChapterModel
+    private var mangaModel: MangaModel
+    private var chapterModel: ChapterModel
     
     init(
-        mangaModel: MangaItemDataModel,
-        chapterModel: MDMangaChapterModel
+        mangaModel: MangaModel,
+        chapterModel: ChapterModel
     ) {
         self.mangaModel = mangaModel
         self.chapterModel = chapterModel
@@ -141,11 +141,11 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         }
     }
     
-    private var mangaModel: MangaItemDataModel!
+    private var mangaModel: MangaModel!
     
     func setContent(
-        mangaModel: MangaItemDataModel,
-        chapters: [MDMangaChapterModel]
+        mangaModel: MangaModel,
+        chapters: [ChapterModel]
     ) {
         self.mangaModel = mangaModel
         lblTitle.text = mangaModel.attributes.localizedTitle

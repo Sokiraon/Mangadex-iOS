@@ -1,5 +1,5 @@
 //
-//  MDRequests+Auth.swift
+//  Requests+Auth.swift
 //  Mangadex
 //
 //  Created by John Rion on 7/22/22.
@@ -9,7 +9,7 @@ import Foundation
 import PromiseKit
 import SwiftyJSON
 
-extension MDRequests {
+extension Requests {
     enum Auth {
         struct Token {
             let session: String
@@ -19,7 +19,7 @@ extension MDRequests {
         static func login(username: String, password: String) -> Promise<Token> {
             Promise { seal in
                 firstly {
-                    MDRequests.post(
+                    Requests.post(
                         path: "/auth/login",
                         host: .main,
                         data: [
@@ -44,7 +44,7 @@ extension MDRequests {
         static func verifyToken(token: String) -> Promise<Bool> {
             Promise { seal in
                 firstly {
-                    MDRequests.get(
+                    Requests.get(
                         path: "/auth/check",
                         host: .main,
                         headers: ["Authorization": "Bearer \(token)"]
@@ -65,7 +65,7 @@ extension MDRequests {
         static func refreshToken(refresh: String) -> Promise<Token> {
             Promise { seal in
                 firstly {
-                    MDRequests.post(
+                    Requests.post(
                         path: "/auth/refresh",
                         host: .main,
                         data: ["token": refresh]

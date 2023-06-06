@@ -149,7 +149,7 @@ class MangaListCollectionCell: UICollectionViewCell {
         }
     }
     
-    func update(mangaModel model: MangaItemDataModel) {
+    func update(mangaModel model: MangaModel) {
         lblTitle.text = model.attributes.localizedTitle
         if model.attributes.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
@@ -170,7 +170,7 @@ class MangaListCollectionCell: UICollectionViewCell {
         } else {
             infoRate.showAnimatedSkeleton()
             infoFollow.showAnimatedSkeleton()
-            _ = MDRequests.Manga.getStatistics(mangaId: model.id)
+            _ = Requests.Manga.getStatistics(mangaId: model.id)
                 .done { statistics in
                     model.statistics = statistics
                     self.infoFollow.text = statistics.followsString

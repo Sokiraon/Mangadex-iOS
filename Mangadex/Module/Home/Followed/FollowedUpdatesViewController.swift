@@ -12,8 +12,8 @@ import MJRefresh
 
 class FollowedUpdatesViewController: BaseViewController {
     
-    private var aggregatedChapters: [String: [MDMangaChapterModel]] = [:]
-    private var mangaListModel: [String: MangaItemDataModel] = [:]
+    private var aggregatedChapters: [String: [ChapterModel]] = [:]
+    private var mangaListModel: [String: MangaModel] = [:]
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -44,11 +44,11 @@ class FollowedUpdatesViewController: BaseViewController {
     
     private func fetchData() {
         firstly {
-            MDRequests.User.getFollowedMangaFeed()
+            Requests.User.getFollowedMangaFeed()
         }.then { feedModel in
             self.aggregatedChapters = feedModel.aggregated
             let mangaIds = Array(feedModel.aggregated.keys)
-            return MDRequests.Manga.query(
+            return Requests.Manga.query(
                 params: ["limit": mangaIds.count, "ids[]": mangaIds])
         }.done { mangaList in
             for mangaModel in mangaList.data {

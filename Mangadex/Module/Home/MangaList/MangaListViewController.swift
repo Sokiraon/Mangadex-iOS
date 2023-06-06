@@ -12,10 +12,8 @@ import MJRefresh
 import SnapKit
 
 class MangaListViewController: BaseViewController {
-
-    final let vTopArea = UIView()
     
-    internal var mangaList = [MangaItemDataModel]()
+    internal var mangaList = [MangaModel]()
     
     internal lazy var vCollection = UICollectionView(
         frame: .zero,
@@ -44,14 +42,9 @@ class MangaListViewController: BaseViewController {
     }
     
     override func setupUI() {
-        view.addSubview(vTopArea)
-        vTopArea.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
-        }
-
-        view.insertSubview(vCollection, belowSubview: vTopArea)
+        view.addSubview(vCollection)
         vCollection.snp.makeConstraints { make in
-            make.top.equalTo(vTopArea.snp.bottom)
+            make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
             make.left.right.bottom.equalToSuperview()
         }
     }
@@ -63,7 +56,7 @@ class MangaListViewController: BaseViewController {
     
     // MARK: - Actions
     
-    private var dataSource: UICollectionViewDiffableDataSource<CollectionSection, MangaItemDataModel>!
+    private var dataSource: UICollectionViewDiffableDataSource<CollectionSection, MangaModel>!
     
     private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource(
@@ -73,11 +66,11 @@ class MangaListViewController: BaseViewController {
         }
     }
     
-    private let loaderModel = MangaItemDataModel()
+    private let loaderModel = MangaModel()
     
-    internal func setData(with model: MangaListDataModel) {
+    internal func setData(with model: MangaCollection) {
         mangaList = model.data
-        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, MangaItemDataModel>()
+        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, MangaModel>()
         snapshot.appendSections([.mangaList, .loader])
         snapshot.appendItems(model.data, toSection: .mangaList)
         if model.data.count < model.total {
@@ -86,7 +79,7 @@ class MangaListViewController: BaseViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    internal func updateData(with model: MangaListDataModel) {
+    internal func updateData(with model: MangaCollection) {
         mangaList.append(contentsOf: model.data)
         var snapshot = self.dataSource.snapshot()
         snapshot.appendItems(model.data, toSection: .mangaList)
