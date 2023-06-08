@@ -61,7 +61,7 @@ class FollowedUpdatesChapterView: UIView {
         }
         
         addSubview(lblUpdate)
-        lblUpdate.text = MDFormatter.dateStringFromNow(
+        lblUpdate.text = DateHelper.dateStringFromNow(
             isoDateString: chapterModel.attributes.updatedAt)
         lblUpdate.snp.makeConstraints { make in
             make.top.equalTo(ivFlag.snp.bottom).offset(8)

@@ -1,5 +1,5 @@
 //
-//  MDFormatter.swift
+//  DateHelper.swift
 //  Mangadex
 //
 //  Created by John Rion on 2022/1/7.
@@ -8,10 +8,9 @@
 import Foundation
 import Localize_Swift
 
-class MDFormatter {
+class DateHelper {
     
-    static private var isoFormatter = ISO8601DateFormatter()
-        .apply { formatter in
+    static private var isoFormatter = ISO8601DateFormatter().apply { formatter in
         formatter.formatOptions = [.withInternetDateTime]
     }
     
@@ -80,5 +79,11 @@ class MDFormatter {
         } else {
             return "kTimeDeltaLatest".localized()
         }
+    }
+    
+    static func dateStringFromNow(year: Int = 0, month: Int = 0, day: Int = 0) -> String {
+        let date = Calendar.current.date(byAdding: DateComponents(year: year, month: month, day: day),
+                                         to: Date())
+        return isoFormatter.string(from: date!)
     }
 }

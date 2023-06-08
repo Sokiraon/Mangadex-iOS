@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         var rootVC: UIViewController
         if !UserManager.shared.shouldDisplayLoginAtLaunch {
-            rootVC = MDHomeTabViewController()
+            rootVC = HomeTabViewController()
         } else if MDKeychain.read().isEmpty {
             rootVC = MDLoginViewController()
         } else {

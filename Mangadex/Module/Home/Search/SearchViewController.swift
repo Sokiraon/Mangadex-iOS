@@ -206,7 +206,7 @@ class SearchViewController: BaseViewController {
                 let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: "manga", for: indexPath)
                     as? MangaListCollectionCell
-                cell?.update(mangaModel: self.mangaList[indexPath.item])
+                cell?.setContent(mangaModel: self.mangaList[indexPath.item])
                 return cell
             case .author:
                 let cell = collectionView.dequeueReusableCell(

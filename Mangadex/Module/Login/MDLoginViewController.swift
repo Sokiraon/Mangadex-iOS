@@ -114,7 +114,7 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
             .done { res in
                 UserManager.logOutAsGuest()
                 DispatchQueue.main.async {
-                    let vc = MDHomeTabViewController()
+                    let vc = HomeTabViewController()
                     ProgressHUD.dismiss()
                     self.view.isUserInteractionEnabled = true
                     if (!self.shouldAutoLogin) {
@@ -168,7 +168,7 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     
     @objc func didTapGuest() {
         UserManager.shared.loginAsGuest()
-        let vc = MDHomeTabViewController()
+        let vc = HomeTabViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
     

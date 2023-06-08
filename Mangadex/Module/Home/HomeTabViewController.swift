@@ -1,5 +1,5 @@
 //
-//  MDHomeTabViewController.swift
+//  HomeTabViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/5/15.
@@ -10,7 +10,7 @@ import Localize_Swift
 import Tabman
 import Pageboy
 
-class MDHomeTabViewController: TabmanViewController {
+class HomeTabViewController: TabmanViewController {
     
     private var viewControllers = [
         BrowseMangaViewController(),
@@ -26,19 +26,20 @@ class MDHomeTabViewController: TabmanViewController {
     
     private func setupTabBar() {
         dataSource = self
+        isScrollEnabled = false
         
         let bar = TMBar.TabBar()
         bar.layout.contentInset = .bottom(.rectScreenOnly(5))
         bar.buttons.customize { button in
-            button.font = .systemFont(ofSize: 13)
-            button.imageViewSize = .init(width: 32, height: 32)
+            button.font = .systemFont(ofSize: 12)
+            button.imageViewSize = .init(width: 28, height: 28)
         }
         
         addBar(bar.systemBar(), dataSource: self, at: .bottom)
     }
 }
 
-extension MDHomeTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
+extension HomeTabViewController: PageboyViewControllerDataSource, TMBarDataSource {
     func numberOfViewControllers(in pageboyViewController: PageboyViewController) -> Int {
         viewControllers.count
     }

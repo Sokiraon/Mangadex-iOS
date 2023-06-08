@@ -119,3 +119,6 @@ Are you sure to continue?";
 "search.author.titleCount.multiple" = "%d titles";
 "search.group.leader" = "Leader: %@";
 "search.group.noLeader" = "No Leader";
+
+"browse.section.popular" = "Popular New Titles";
+"browse.section.recent" = "Recently Added";

@@ -58,7 +58,7 @@ class MangaChapterCollectionCell: UICollectionViewCell {
     
     func update(with model: ChapterModel) {
         lblChapter.text = model.attributes.fullChapterName
-        lblUpdate.text = MDFormatter.dateStringFromNow(
+        lblUpdate.text = DateHelper.dateStringFromNow(
             isoDateString: model.attributes.updatedAt
         )
         if let group = model.scanlationGroup {

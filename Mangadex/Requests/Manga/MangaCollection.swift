@@ -165,6 +165,14 @@ class MangaModel: NSObject, YYModel {
         return URL(string: urlStr)
     }
     
+    var coverURLOriginal: URL? {
+        guard let attr = coverArts.first else {
+            return nil
+        }
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).512.jpg"
+        return URL(string: urlStr)
+    }
+    
     var statistics: MangaStatisticsModel?
 }
 

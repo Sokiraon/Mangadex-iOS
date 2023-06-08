@@ -113,7 +113,7 @@ class MangaListViewController: BaseViewController {
                 withReuseIdentifier: "mangaCell",
                 for: indexPath
             )
-            (cell as! MangaListCollectionCell).update(mangaModel: mangaList[indexPath.row])
+            (cell as! MangaListCollectionCell).setContent(mangaModel: mangaList[indexPath.row])
             return cell
         case .loader:
             let cell = collectionView.dequeueReusableCell(

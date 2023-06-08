@@ -149,7 +149,7 @@ class MangaListCollectionCell: UICollectionViewCell {
         }
     }
     
-    func update(mangaModel model: MangaModel) {
+    func setContent(mangaModel model: MangaModel) {
         lblTitle.text = model.attributes.localizedTitle
         if model.attributes.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
