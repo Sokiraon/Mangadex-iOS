@@ -120,5 +120,6 @@ Are you sure to continue?";
 "search.group.leader" = "Leader: %@";
 "search.group.noLeader" = "No Leader";
 
+"browse.header.refresh" = "Refresh";
 "browse.section.popular" = "Popular New Titles";
 "browse.section.recent" = "Recently Added";

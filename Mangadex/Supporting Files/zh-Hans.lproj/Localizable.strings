@@ -208,5 +208,6 @@
 "search.group.leader" = "组长：%@";
 "search.group.noLeader" = "没有组长";
 
+"browse.header.refresh" = "刷新";
 "browse.section.popular" = "近期热门";
 "browse.section.recent" = "新添加";

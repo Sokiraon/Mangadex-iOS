@@ -67,17 +67,29 @@ class BrowseMangaViewController: BaseViewController {
         frame: .zero,
         collectionViewLayout: makeCompositionalLayout()
     ).apply { view in
-        view.contentInset = .bottom(12)
         view.backgroundColor = .systemBackground
         view.delegate = self
     }
     
+    private lazy var collectionHeaderView = BrowseMangaHeaderView() { view in
+        view.setRefreshing(true)
+        self.fetchData()
+    }
+    
     override func setupUI() {
-        
         view.addSubview(collectionView)
+        collectionView.contentInset = .init(top: 56, left: 0, bottom: 12, right: 0)
         collectionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
             make.left.right.bottom.equalToSuperview()
+        }
+        
+        collectionView.addSubview(collectionHeaderView)
+        collectionHeaderView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(-56)
+            make.left.equalToSuperview()
+            make.width.equalTo(MDLayout.screenWidth)
+            make.height.equalTo(56)
         }
     }
     
@@ -157,6 +169,7 @@ class BrowseMangaViewController: BaseViewController {
             snapshot.appendItems(self.recentTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .recent)
             self.dataSource.apply(snapshot, animatingDifferences: true)
+            self.collectionHeaderView.setRefreshing(false)
         }.catch { error in
             ProgressHUD.showError()
         }
