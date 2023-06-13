@@ -9,6 +9,25 @@ import YYModel
 
 extension Requests {
     enum Manga {
+        static func get(id: String) -> Promise<MangaModel> {
+            Promise { seal in
+                firstly {
+                    Requests.get(path: "/manga/\(id)",
+                                 params: [
+                                    "includes[]": ["author", "artist", "cover_art"],
+                                 ])
+                }.done { json in
+                    guard let data = json["data"], let model = MangaModel.yy_model(withJSON: data) else {
+                        seal.reject(Errors.IllegalData)
+                        return
+                    }
+                    seal.fulfill(model)
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
         static func query(params: [String: Any] = [:]) -> Promise<MangaCollection> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],

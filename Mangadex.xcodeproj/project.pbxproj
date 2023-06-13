@@ -12,7 +12,7 @@
 		000810172662125B009C1005 /* FollowedMangaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000810162662125B009C1005 /* FollowedMangaViewController.swift */; };
 		00170964264FA3E6005BEE67 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170963264FA3E6005BEE67 /* UserManager.swift */; };
 		00170966264FC9CB005BEE67 /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00170965264FC9CB005BEE67 /* HomeTabViewController.swift */; };
-		0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */; };
+		0025DADF2665D202006C6701 /* MangaDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0025DADE2665D202006C6701 /* MangaDetailViewController.swift */; };
 		00363096266F5BD80058BE25 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363095266F5BD80058BE25 /* BaseViewController.swift */; };
 		00363099266F676A0058BE25 /* MDNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00363098266F676A0058BE25 /* MDNavigationController.swift */; };
 		0036309B266F74AF0058BE25 /* AppBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0036309A266F74AF0058BE25 /* AppBar.swift */; };
@@ -62,7 +62,12 @@
 		056B8C4A2A1E44D30006DE23 /* AccountSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C492A1E44D30006DE23 /* AccountSettingsView.swift */; };
 		056B8C4F2A1F887C0006DE23 /* LineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C4E2A1F887C0006DE23 /* LineView.swift */; };
 		056B8C512A1F88CE0006DE23 /* ImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056B8C502A1F88CE0006DE23 /* ImageButton.swift */; };
-		05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */; };
+		05719BFD294D759E004183BE /* MangaDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05719BFC294D759E004183BE /* MangaDetailHeaderView.swift */; };
+		0585EC3B2A381640002CF2BD /* MangaCollectionCellMinimal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EC3A2A381640002CF2BD /* MangaCollectionCellMinimal.swift */; };
+		0585EC3E2A382BEB002CF2BD /* Requests+CustomList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EC3D2A382BEB002CF2BD /* Requests+CustomList.swift */; };
+		0585EC402A382E16002CF2BD /* CustomListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EC3F2A382E16002CF2BD /* CustomListModel.swift */; };
+		0585EC422A385A63002CF2BD /* LatestUpdateCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EC412A385A63002CF2BD /* LatestUpdateCollectionCell.swift */; };
+		0585EC442A386AEF002CF2BD /* BackgroundDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0585EC432A386AEF002CF2BD /* BackgroundDecorationView.swift */; };
 		058B6F392A2243960093E9BE /* FollowedLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058B6F382A2243960093E9BE /* FollowedLibraryViewController.swift */; };
 		058B6F3B2A2243A40093E9BE /* FollowedUpdatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058B6F3A2A2243A40093E9BE /* FollowedUpdatesViewController.swift */; };
 		05AE0ECC28B51B2500FE4107 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */; };
@@ -139,7 +144,7 @@
 		000810162662125B009C1005 /* FollowedMangaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedMangaViewController.swift; sourceTree = "<group>"; };
 		00170963264FA3E6005BEE67 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		00170965264FC9CB005BEE67 /* HomeTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabViewController.swift; sourceTree = "<group>"; };
-		0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailViewController.swift; sourceTree = "<group>"; };
+		0025DADE2665D202006C6701 /* MangaDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailViewController.swift; sourceTree = "<group>"; };
 		00363095266F5BD80058BE25 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		00363098266F676A0058BE25 /* MDNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDNavigationController.swift; sourceTree = "<group>"; };
 		0036309A266F74AF0058BE25 /* AppBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBar.swift; sourceTree = "<group>"; };
@@ -195,7 +200,12 @@
 		056B8C492A1E44D30006DE23 /* AccountSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsView.swift; sourceTree = "<group>"; };
 		056B8C4E2A1F887C0006DE23 /* LineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineView.swift; sourceTree = "<group>"; };
 		056B8C502A1F88CE0006DE23 /* ImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageButton.swift; sourceTree = "<group>"; };
-		05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaDetailHeaderView.swift; sourceTree = "<group>"; };
+		05719BFC294D759E004183BE /* MangaDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaDetailHeaderView.swift; sourceTree = "<group>"; };
+		0585EC3A2A381640002CF2BD /* MangaCollectionCellMinimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaCollectionCellMinimal.swift; sourceTree = "<group>"; };
+		0585EC3D2A382BEB002CF2BD /* Requests+CustomList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Requests+CustomList.swift"; sourceTree = "<group>"; };
+		0585EC3F2A382E16002CF2BD /* CustomListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListModel.swift; sourceTree = "<group>"; };
+		0585EC412A385A63002CF2BD /* LatestUpdateCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestUpdateCollectionCell.swift; sourceTree = "<group>"; };
+		0585EC432A386AEF002CF2BD /* BackgroundDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDecorationView.swift; sourceTree = "<group>"; };
 		058B6F382A2243960093E9BE /* FollowedLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedLibraryViewController.swift; sourceTree = "<group>"; };
 		058B6F3A2A2243A40093E9BE /* FollowedUpdatesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowedUpdatesViewController.swift; sourceTree = "<group>"; };
 		05AE0ECB28B51B2500FE4107 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -315,6 +325,7 @@
 		00170962264FA3A9005BEE67 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				0585EC3C2A382BDE002CF2BD /* CustomList */,
 				055DB92729534E0D0077B836 /* Group */,
 				0530A88E28C1F8CC00B4702B /* Author */,
 				051BE38F288ACF5900FE172A /* Auth */,
@@ -329,9 +340,9 @@
 		0025DADD2665D1F0006C6701 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				0025DADE2665D202006C6701 /* MDMangaDetailViewController.swift */,
+				0025DADE2665D202006C6701 /* MangaDetailViewController.swift */,
 				7AACACAD267EFD6B00232166 /* MangaChapterCollectionCell.swift */,
-				05719BFC294D759E004183BE /* MDMangaDetailHeaderView.swift */,
+				05719BFC294D759E004183BE /* MangaDetailHeaderView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -417,6 +428,9 @@
 				0519268C2A31C62B00AE6BC7 /* BrowseMangaTitleSupplementaryView.swift */,
 				051926B52A3215CF00AE6BC7 /* BrowseMangaHeaderView.swift */,
 				051926902A31D4FA00AE6BC7 /* PopularMangaCollectionCell.swift */,
+				0585EC3A2A381640002CF2BD /* MangaCollectionCellMinimal.swift */,
+				0585EC412A385A63002CF2BD /* LatestUpdateCollectionCell.swift */,
+				0585EC432A386AEF002CF2BD /* BackgroundDecorationView.swift */,
 			);
 			path = Browse;
 			sourceTree = "<group>";
@@ -505,6 +519,15 @@
 				B89F2465278C17F000344EE3 /* AccountSettingsColorPickerView.swift */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		0585EC3C2A382BDE002CF2BD /* CustomList */ = {
+			isa = PBXGroup;
+			children = (
+				0585EC3D2A382BEB002CF2BD /* Requests+CustomList.swift */,
+				0585EC3F2A382E16002CF2BD /* CustomListModel.swift */,
+			);
+			path = CustomList;
 			sourceTree = "<group>";
 		};
 		058B6F372A22435F0093E9BE /* Followed */ = {
@@ -915,17 +938,21 @@
 				05BDF3052A1A399D009D25DC /* MangaViewer.swift in Sources */,
 				051BE391288ACF6800FE172A /* Requests+Auth.swift in Sources */,
 				055DB92929534E3A0077B836 /* ScanGroupModel.swift in Sources */,
-				05719BFD294D759E004183BE /* MDMangaDetailHeaderView.swift in Sources */,
+				05719BFD294D759E004183BE /* MangaDetailHeaderView.swift in Sources */,
 				00170966264FC9CB005BEE67 /* HomeTabViewController.swift in Sources */,
 				000810172662125B009C1005 /* FollowedMangaViewController.swift in Sources */,
 				0519268B2A31A1C100AE6BC7 /* SubString.swift in Sources */,
+				0585EC3B2A381640002CF2BD /* MangaCollectionCellMinimal.swift in Sources */,
 				05610BED2A0CA0FF00668C62 /* DownloadsViewController.swift in Sources */,
 				056B8C462A1E05B40006DE23 /* AccountSettingsTappableCell.swift in Sources */,
+				0585EC422A385A63002CF2BD /* LatestUpdateCollectionCell.swift in Sources */,
 				0557E7982A2324B100337C23 /* FollowedUpdatesCollectionCell.swift in Sources */,
-				0025DADF2665D202006C6701 /* MDMangaDetailViewController.swift in Sources */,
+				0025DADF2665D202006C6701 /* MangaDetailViewController.swift in Sources */,
 				05335AC12A2DC271008BAAC1 /* SafeArea.swift in Sources */,
 				0008101226621229009C1005 /* BrowseMangaViewController.swift in Sources */,
+				0585EC442A386AEF002CF2BD /* BackgroundDecorationView.swift in Sources */,
 				05335AC32A2DE791008BAAC1 /* Requests+Group.swift in Sources */,
+				0585EC402A382E16002CF2BD /* CustomListModel.swift in Sources */,
 				7AACACAE267EFD6B00232166 /* MangaChapterCollectionCell.swift in Sources */,
 				05D1E064294F1CF5006E6F52 /* Dictionary+Ext.swift in Sources */,
 				056B8C4A2A1E44D30006DE23 /* AccountSettingsView.swift in Sources */,
@@ -991,6 +1018,7 @@
 				056B8C3D2A1C86AC0006DE23 /* AccountSettingsActionCell.swift in Sources */,
 				390E74A989CA31FE56F6481C /* UINavigationController+Ext.swift in Sources */,
 				056B8C442A1DFC910006DE23 /* AccountSettingsCell.swift in Sources */,
+				0585EC3E2A382BEB002CF2BD /* Requests+CustomList.swift in Sources */,
 				AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */,
 				05610BF42A0F722700668C62 /* DownloadedChaptersViewController.swift in Sources */,
 				056B8C512A1F88CE0006DE23 /* ImageButton.swift in Sources */,

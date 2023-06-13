@@ -56,6 +56,23 @@ extension Requests {
             }
         }
         
+        static func query(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
+            let defaultParams: [String: Any] = [ "includes[]": "scanlation_group" ]
+            return Promise { seal in
+                firstly {
+                    Requests.get(path: "/chapter", params: defaultParams + params)
+                }.done { json in
+                    guard let collection = ChapterCollection.yy_model(withJSON: json) else {
+                        seal.reject(Errors.IllegalData)
+                        return
+                    }
+                    seal.fulfill(collection)
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
         static func get(id: String) -> Promise<ChapterModel> {
             Promise { seal in
                 firstly {

@@ -69,7 +69,8 @@ class FollowedUpdatesViewController: BaseViewController {
     private var dataSource: UICollectionViewDiffableDataSource<CollectionSection, String>!
     
     private func setupDataSource() {
-        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView)
+        { collectionView, indexPath, itemIdentifier in
             guard let mangaModel = self.mangaListModel[itemIdentifier],
                   let chapters = self.aggregatedChapters[itemIdentifier]
                    else {

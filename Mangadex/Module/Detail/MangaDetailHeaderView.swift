@@ -1,5 +1,5 @@
 //
-//  MDMangaDetailHeaderView.swift
+//  MangaDetailHeaderView.swift
 //  Mangadex
 //
 //  Created by John Rion on 12/17/22.
@@ -12,7 +12,7 @@ import SnapKit
 import SafariServices
 import PromiseKit
 
-class MDMangaDetailHeaderView: UIView {
+class MangaDetailHeaderView: UIView {
     private let ivCover = UIImageView(named: "manga_cover_default")
     private let lblTitle = UILabel(
         fontSize: 18,

@@ -74,6 +74,10 @@ class ChapterModel: NSObject, YYModel {
         return nil
     }
     
+    var groupName: String {
+        scanlationGroup?.attributes.name ?? "manga.group.noName".localized()
+    }
+    
     var mangaId: String? {
         for relationship in relationships {
             if relationship.type == "manga" {
@@ -81,6 +85,19 @@ class ChapterModel: NSObject, YYModel {
             }
         }
         return nil
+    }
+    
+    var mangaModel: MangaModel?
+}
+
+class ChapterCollection: NSObject, YYModel {
+    @objc var limit = 0
+    @objc var offset = 0
+    @objc var total = 0
+    @objc var data = [ChapterModel]()
+    
+    static func modelContainerPropertyGenericClass() -> [String : Any]? {
+        [ "data": ChapterModel.self ]
     }
 }
 

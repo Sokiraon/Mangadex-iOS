@@ -1,5 +1,5 @@
 //
-//  MDMangaDetailViewController.swift
+//  MangaDetailViewController.swift
 //  Mangadex
 //
 //  Created by edz on 2021/6/1.
@@ -26,7 +26,7 @@ private class MyCollectionView: UICollectionView, UIGestureRecognizerDelegate {
     }
 }
 
-class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
+class MangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate, UIScrollViewDelegate {
     
     private var mangaModel: MangaModel!
     
@@ -35,7 +35,7 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
     }
     private let vScroll = UIScrollView()
     
-    private lazy var vHeader = MDMangaDetailHeaderView(mangaModel: mangaModel)
+    private lazy var vHeader = MangaDetailHeaderView(mangaModel: mangaModel)
     private let lblDescr = TTTAttributedLabel()
     
     private let vDivider = LineView()
@@ -437,7 +437,7 @@ class MDMangaDetailViewController: BaseViewController, TTTAttributedLabelDelegat
 }
 
 // MARK: - CollectionViewDelegate
-extension MDMangaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MangaDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     enum CollectionSection: Int {
         case chapterList

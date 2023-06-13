@@ -24,7 +24,7 @@ class BrowseMangaTitleSupplementaryView: UICollectionReusableView {
     private func setupUI() {
         addSubview(label)
         label.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(12)
+            make.left.right.equalToSuperview()
             make.top.bottom.equalToSuperview().inset(8)
         }
     }

@@ -316,7 +316,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDelega
         switch section {
         case .manga:
             let mangaModel = mangaList[indexPath.item]
-            let vc = MDMangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaDetailViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         default:

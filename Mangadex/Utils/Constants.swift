@@ -9,4 +9,5 @@ import Foundation
 
 extension String {
     static let sectionHeaderElementKind = "elementKind.sectionHeader"
+    static let backgroundDecorationElementKind = "elementKind.backgroundDecoration"
 }

@@ -210,4 +210,8 @@
 
 "browse.header.refresh" = "刷新";
 "browse.section.popular" = "近期热门";
+"browse.section.updates" = "刚刚更新";
+"browse.section.seasonal" = "当季";
 "browse.section.recent" = "新添加";
+
+"manga.group.noName" = "[无小组]";

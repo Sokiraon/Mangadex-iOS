@@ -122,4 +122,8 @@ Are you sure to continue?";
 
 "browse.header.refresh" = "Refresh";
 "browse.section.popular" = "Popular New Titles";
+"browse.section.updates" = "Latest Updates";
+"browse.section.seasonal" = "Seasonal";
 "browse.section.recent" = "Recently Added";
+
+"manga.group.noName" = "[No Group]";

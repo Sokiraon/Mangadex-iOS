@@ -15,7 +15,9 @@ class BrowseMangaViewController: BaseViewController {
     
     enum SectionLayoutKind: Int {
         case popular
-        case recent
+        case updates
+        case seasonal
+        case added
     }
     
     private var dataSource: UICollectionViewDiffableDataSource<SectionLayoutKind, String>!
@@ -26,7 +28,7 @@ class BrowseMangaViewController: BaseViewController {
                 return nil
             }
             let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                           heightDimension: .estimated(44))
+                                                           heightDimension: .absolute(44))
             let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: sectionHeaderSize, elementKind: .sectionHeaderElementKind, alignment: .top)
             switch sectionKind {
@@ -38,28 +40,55 @@ class BrowseMangaViewController: BaseViewController {
                                                        heightDimension: .absolute(256))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                                subitems: [item])
-                group.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 0)
                 let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 12)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.boundarySupplementaryItems = [sectionHeader]
                 return section
-            case .recent:
+            case .updates:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                      heightDimension: .absolute(105))
+                                                      heightDimension: .absolute(96))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(MDLayout.screenWidth - 24),
-                                                       heightDimension: .estimated(351))
+                                                       heightDimension: .absolute(328))
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize,
                                                              repeatingSubitem: item,
                                                              count: 3)
-                group.interItemSpacing = .fixed(10)
-                group.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 0)
+                group.interItemSpacing = .fixed(12)
+                group.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+                
                 let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 12)
                 section.orthogonalScrollingBehavior = .groupPaging
+                section.boundarySupplementaryItems = [sectionHeader]
+                
+                let sectionBackground = NSCollectionLayoutDecorationItem.background(
+                    elementKind: .backgroundDecorationElementKind)
+                sectionBackground.contentInsets = .init(top: 44 + 8, leading: 12, bottom: 8, trailing: 12)
+                section.decorationItems = [sectionBackground]
+                return section
+            case .seasonal, .added:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                      heightDimension: .fractionalHeight(1))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(96),
+                                                       heightDimension: .estimated(190))
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize,
+                                                             repeatingSubitem: item,
+                                                             count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 12)
+                section.orthogonalScrollingBehavior = .continuous
                 section.boundarySupplementaryItems = [sectionHeader]
                 return section
             }
         }
+        layout.register(BackgroundDecorationView.self,
+                        forDecorationViewOfKind: .backgroundDecorationElementKind)
+        
         return layout
     }
     
@@ -99,7 +128,9 @@ class BrowseMangaViewController: BaseViewController {
     }
     
     private var popularTitles = [MangaModel]()
+    private var seasonalTitles = [MangaModel]()
     private var recentTitles = [MangaModel]()
+    private var latestChapters = [ChapterModel]()
     
     private func configureDataSource() {
         let popularCellRegistration = UICollectionView.CellRegistration<PopularMangaCollectionCell, String>
@@ -107,7 +138,17 @@ class BrowseMangaViewController: BaseViewController {
             cell.setContent(mangaModel: self.popularTitles[indexPath.item])
         }
         
-        let recentCellRegistration = UICollectionView.CellRegistration<MangaListCollectionCell, String>
+        let updatesCellRegistration = UICollectionView.CellRegistration<LatestUpdateCollectionCell, String>
+        { cell, indexPath, identifier in
+            cell.setContent(chapterModel: self.latestChapters[indexPath.item])
+        }
+        
+        let seasonalCellRegistration = UICollectionView.CellRegistration<MangaCollectionCellMinimal, String>
+        { cell, indexPath, identifier in
+            cell.setContent(mangaModel: self.seasonalTitles[indexPath.item])
+        }
+        
+        let recentCellRegistration = UICollectionView.CellRegistration<MangaCollectionCellMinimal, String>
         { cell, indexPath, identifier in
             cell.setContent(mangaModel: self.recentTitles[indexPath.item])
         }
@@ -118,7 +159,13 @@ class BrowseMangaViewController: BaseViewController {
             case .popular:
                 supplementaryView.label.text = "browse.section.popular".localized()
                 break
-            case .recent:
+            case .updates:
+                supplementaryView.label.text = "browse.section.updates".localized()
+                break
+            case .seasonal:
+                supplementaryView.label.text = "browse.section.seasonal".localized()
+                break
+            case .added:
                 supplementaryView.label.text = "browse.section.recent".localized()
                 break
             }
@@ -130,7 +177,13 @@ class BrowseMangaViewController: BaseViewController {
             case .popular:
                 return collectionView.dequeueConfiguredReusableCell(
                     using: popularCellRegistration, for: indexPath, item: itemIdentifier)
-            case .recent:
+            case .updates:
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: updatesCellRegistration, for: indexPath, item: itemIdentifier)
+            case .seasonal:
+                return collectionView.dequeueConfiguredReusableCell(
+                    using: seasonalCellRegistration, for: indexPath, item: itemIdentifier)
+            case .added:
                 return collectionView.dequeueConfiguredReusableCell(
                     using: recentCellRegistration, for: indexPath, item: itemIdentifier)
             }
@@ -152,24 +205,41 @@ class BrowseMangaViewController: BaseViewController {
                 "createdAtSince": oneMonthBefore,
                 "limit": 10
             ])
+        let fetchLatest = Requests.Chapter.query(
+            params: [
+                "order[readableAt]": "desc",
+                "limit": 21
+            ])
+        let fetchSeasonal = Requests.CustomList.get(id: "77430796-6625-4684-b673-ffae5140f337")
         let fetchRecentlyAdded = Requests.Manga.query(
             params: [
                 "order[createdAt]": "desc",
+                "hasAvailableChapters": true,
                 "limit": 15
             ])
         firstly {
-            when(fulfilled: fetchPopularTitles, fetchRecentlyAdded)
-        }.done { popularCollection, recentCollection in
+            when(fulfilled: fetchPopularTitles, fetchLatest, fetchSeasonal, fetchRecentlyAdded)
+        }.done { popularCollection, updatesCollection, seasonalListModel, recentCollection in
             self.popularTitles = popularCollection.data
             self.recentTitles = recentCollection.data
+            self.latestChapters = updatesCollection.data
             var snapshot = NSDiffableDataSourceSnapshot<SectionLayoutKind, String>()
-            snapshot.appendSections([.popular, .recent])
+            snapshot.appendSections([.popular, .updates, .seasonal, .added])
             snapshot.appendItems(self.popularTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .popular)
+            snapshot.appendItems(self.latestChapters.map({ chapterModel in chapterModel.id }),
+                                 toSection: .updates)
             snapshot.appendItems(self.recentTitles.map({ mangaModel in mangaModel.id }),
-                                 toSection: .recent)
-            self.dataSource.apply(snapshot, animatingDifferences: true)
-            self.collectionHeaderView.setRefreshing(false)
+                                 toSection: .added)
+            _ = Requests.Manga.query(params: ["ids[]": seasonalListModel.mangaIds])
+                .done { seasonalCollection in
+                    self.seasonalTitles = seasonalCollection.data
+                    snapshot.appendItems(
+                        self.seasonalTitles.map({ mangaModel in mangaModel.id }),
+                        toSection: .seasonal)
+                    self.dataSource.apply(snapshot, animatingDifferences: true)
+                    self.collectionHeaderView.setRefreshing(false)
+                }
         }.catch { error in
             ProgressHUD.showError()
         }
@@ -181,12 +251,24 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
         switch SectionLayoutKind(rawValue: indexPath.section)! {
         case .popular:
             let mangaModel = popularTitles[indexPath.item]
-            let vc = MDMangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaDetailViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
-        case .recent:
+        case .updates:
+            let chapterModel = latestChapters[indexPath.item]
+            if let mangaModel = chapterModel.mangaModel {
+                let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
+                navigationController?.pushViewController(vc, animated: true)
+            }
+            break
+        case .seasonal:
+            let mangaModel = seasonalTitles[indexPath.item]
+            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            navigationController?.pushViewController(vc, animated: true)
+            break
+        case .added:
             let mangaModel = recentTitles[indexPath.item]
-            let vc = MDMangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaDetailViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         }
