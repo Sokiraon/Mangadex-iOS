@@ -22,36 +22,45 @@ class PopularMangaCollectionCell: UICollectionViewCell {
     }
     
     private let coverImageView = UIImageView()
-    private let bottomArea = UIVisualEffectView(
-        effect: UIBlurEffect(style: .systemUltraThinMaterialLight))
     private let titleLabel = UILabel(fontSize: 20, fontWeight: .medium,
-                                     color: .white, numberOfLines: 1)
+                                     numberOfLines: 2)
+    private let descrLabel = UILabel(fontSize: 17, color: .secondaryText,
+                                     numberOfLines: 0)
     
     private func setupUI() {
         clipsToBounds = true
         layer.cornerRadius = 8
+        backgroundColor = .lightestGrayF5F5F5
         
         contentView.addSubview(coverImageView)
+        coverImageView.clipsToBounds = true
+        coverImageView.layer.cornerRadius = 8
         coverImageView.contentMode = .scaleAspectFill
         coverImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        contentView.addSubview(bottomArea)
-        bottomArea.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview()
-            make.height.equalTo(48)
+            make.top.left.equalToSuperview().inset(8)
+            make.width.equalTo(96)
+            make.height.equalTo(144)
         }
         
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(16)
-            make.centerY.equalTo(bottomArea)
+            make.top.equalToSuperview().inset(8)
+            make.left.equalTo(coverImageView.snp.right).offset(8)
+            make.right.equalToSuperview().inset(8)
+        }
+        
+        contentView.addSubview(descrLabel)
+        descrLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.left.equalTo(coverImageView.snp.right).offset(8)
+            make.right.equalToSuperview().inset(8)
+            make.bottom.lessThanOrEqualToSuperview().inset(8)
         }
     }
     
     func setContent(mangaModel: MangaModel) {
         coverImageView.kf.setImage(with: mangaModel.coverURLOriginal)
         titleLabel.text = mangaModel.attributes.localizedTitle
+        descrLabel.text = mangaModel.attributes.localizedDescription
     }
 }
