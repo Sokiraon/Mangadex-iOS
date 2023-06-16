@@ -12,7 +12,7 @@ import FlagKit
 // MARK: - Chapter Info
 
 class ChapterAttributes: NSObject {
-    var pages: Int = 0
+    @objc var pages: Int = 0
     @objc var volume: String?
     /// No. of chapter
     @objc var chapter: String?

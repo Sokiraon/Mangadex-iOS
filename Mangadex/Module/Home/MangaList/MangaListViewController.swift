@@ -22,7 +22,7 @@ class MangaListViewController: BaseViewController {
         view.delegate = self
         view.register(MangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
         view.register(MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
-        view.contentInset = .all(10)
+        view.contentInset = .cssStyle(5, 10, 10)
         view.mj_header = refreshHeader
     }
     

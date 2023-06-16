@@ -49,16 +49,17 @@ class LatestUpdateCollectionCell: UICollectionViewCell {
             make.left.equalTo(coverView.snp.right).offset(8)
         }
         
-        contentView.addSubview(groupLabel)
-        groupLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(groupIcon)
-            make.left.equalTo(groupIcon.snp.right).offset(8)
-        }
-        
         contentView.addSubview(updateLabel)
         updateLabel.snp.makeConstraints { make in
             make.centerY.equalTo(groupIcon)
             make.right.equalToSuperview().inset(8)
+        }
+        
+        contentView.addSubview(groupLabel)
+        groupLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(groupIcon)
+            make.left.equalTo(groupIcon.snp.right).offset(8)
+            make.right.lessThanOrEqualTo(updateLabel.snp.left).offset(-8)
         }
         
         contentView.addSubview(flagView)

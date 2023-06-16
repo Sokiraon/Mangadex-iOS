@@ -9,9 +9,9 @@ import Foundation
 import YYModel
 
 class MangaFeedModel: NSObject, YYModel {
-    var limit = 0
-    var offset = 0
-    var total = 0
+    @objc var limit = 0
+    @objc var offset = 0
+    @objc var total = 0
     @objc var data: [ChapterModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {

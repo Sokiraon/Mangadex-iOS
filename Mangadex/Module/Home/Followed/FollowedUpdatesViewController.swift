@@ -23,7 +23,7 @@ class FollowedUpdatesViewController: BaseViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.register(FollowedUpdatesCollectionCell.self, forCellWithReuseIdentifier: "cell")
-        view.contentInset = .all(10)
+        view.contentInset = .cssStyle(5, 10, 10)
         view.mj_header = refreshHeader
         return view
     }()

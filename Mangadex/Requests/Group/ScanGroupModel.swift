@@ -68,9 +68,9 @@ class ScanGroupAttributes: NSObject, YYModel {
     @objc var focusedLanguage: [String]?
     @objc var createdAt: String!
     @objc var updatedAt: String!
-    var locked: Bool!
-    var official: Bool!
-    var inactive: Bool!
+    @objc var locked: Bool = false
+    @objc var official: Bool = false
+    @objc var inactive: Bool = false
     
     static func modelCustomPropertyMapper() -> [String : Any]? {
         [ "descr": "description" ]
