@@ -11,7 +11,7 @@ import SwiftTheme
 class SettingsManager {
     enum Keys: String {
         case themeColorIndex = "com.sokiraon.Mangadex.themeColorIndex"
-        case mangaLangIndex = "com.sokiraon.Mangadex.mangaLangIndex"
+        case chapterLanguages = "com.sokiraon.Mangadex.chapterLanguages"
         case isDataSaving = "com.sokiraon.Mangadex.isDataSaving"
     }
     
@@ -25,12 +25,13 @@ class SettingsManager {
         }
     }
     
-    static var mangaLangIndex: Int {
+    static var chapterLanguages: [String] {
         get {
-            UserDefaults.standard.integer(forKey: Keys.mangaLangIndex.rawValue)
+            UserDefaults.standard.object(forKey: Keys.chapterLanguages.rawValue) as? [String]
+            ?? MDLocale.defaultLanguages
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Keys.mangaLangIndex.rawValue)
+            UserDefaults.standard.set(newValue, forKey: Keys.chapterLanguages.rawValue)
         }
     }
     

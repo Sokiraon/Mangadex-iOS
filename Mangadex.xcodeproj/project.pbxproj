@@ -26,6 +26,8 @@
 		004F71A4264BF8ED00D61AEB /* MangadexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71A3264BF8ED00D61AEB /* MangadexTests.swift */; };
 		004F71AF264BF8ED00D61AEB /* MangadexUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */; };
 		0507060729BC540B0051CF8B /* MDCollectionLoaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */; };
+		0515938B2A3B2C240092C994 /* AccountSettingsMultiChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515938A2A3B2C240092C994 /* AccountSettingsMultiChoiceCell.swift */; };
+		0515938D2A3B3AF30092C994 /* AccountSettingsMultiChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0515938C2A3B3AF30092C994 /* AccountSettingsMultiChoiceView.swift */; };
 		05179A18279280EE0019D656 /* MangaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A17279280EE0019D656 /* MangaListViewController.swift */; };
 		05179A1A27928E630019D656 /* MangaListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1927928E630019D656 /* MangaListCollectionCell.swift */; };
 		05179A1C2792AFD40019D656 /* UIEdgeInsets+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */; };
@@ -164,6 +166,8 @@
 		004F71AE264BF8ED00D61AEB /* MangadexUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangadexUITests.swift; sourceTree = "<group>"; };
 		004F71B0264BF8ED00D61AEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0507060629BC540B0051CF8B /* MDCollectionLoaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDCollectionLoaderCell.swift; sourceTree = "<group>"; };
+		0515938A2A3B2C240092C994 /* AccountSettingsMultiChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsMultiChoiceCell.swift; sourceTree = "<group>"; };
+		0515938C2A3B3AF30092C994 /* AccountSettingsMultiChoiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettingsMultiChoiceView.swift; sourceTree = "<group>"; };
 		05179A17279280EE0019D656 /* MangaListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaListViewController.swift; sourceTree = "<group>"; };
 		05179A1927928E630019D656 /* MangaListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MangaListCollectionCell.swift; sourceTree = "<group>"; };
 		05179A1B2792AFD40019D656 /* UIEdgeInsets+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Ext.swift"; sourceTree = "<group>"; };
@@ -507,6 +511,8 @@
 				05CC13F92A15006200964A84 /* AccountSettingsSwitchCell.swift */,
 				056B8C3C2A1C86AC0006DE23 /* AccountSettingsActionCell.swift */,
 				056B8C472A1E0FFE0006DE23 /* AccountSettingsPushCell.swift */,
+				0515938A2A3B2C240092C994 /* AccountSettingsMultiChoiceCell.swift */,
+				0515938C2A3B3AF30092C994 /* AccountSettingsMultiChoiceView.swift */,
 			);
 			path = Variants;
 			sourceTree = "<group>";
@@ -1000,6 +1006,7 @@
 				390E7D504E76E74C243BEE18 /* MDLocale.swift in Sources */,
 				B83B5607278863D000453E26 /* DateHelper.swift in Sources */,
 				05179A18279280EE0019D656 /* MangaListViewController.swift in Sources */,
+				0515938D2A3B3AF30092C994 /* AccountSettingsMultiChoiceView.swift in Sources */,
 				7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */,
 				0564F0B02889830A00222504 /* Requests.swift in Sources */,
 				B8F33B4A279946B000DF9002 /* MDView.swift in Sources */,
@@ -1026,6 +1033,7 @@
 				05C7A9BA29C1EF0C00B8401E /* TaggedMangaViewController.swift in Sources */,
 				568E56F46CFE27A0F48558F9 /* MDTextField.swift in Sources */,
 				568E58BADCE8ECC78FCC9657 /* MangaStatisticsModel.swift in Sources */,
+				0515938B2A3B2C240092C994 /* AccountSettingsMultiChoiceCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

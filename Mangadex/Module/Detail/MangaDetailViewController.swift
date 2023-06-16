@@ -305,7 +305,6 @@ class MangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate,
     // MARK: - Fetch Data
     
     private var chapterOrder = Requests.Chapter.Order.desc
-    private var chapterLocale = MDLocale.currentMangaLanguage
     
     private lazy var btnOrder: UIButton = {
         var conf = UIButton.Configuration.plain()
@@ -350,7 +349,6 @@ class MangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate,
                  Requests.Chapter.getListForManga(
                      mangaId: mangaModel.id,
                      offset: 0,
-                     locale: chapterLocale,
                      order: chapterOrder
                  )
             )
@@ -378,7 +376,6 @@ class MangaDetailViewController: BaseViewController, TTTAttributedLabelDelegate,
             Requests.Chapter.getListForManga(
                 mangaId: mangaModel.id,
                 offset: chapterModels.count,
-                locale: chapterLocale,
                 order: chapterOrder
             )
         }.done { result in

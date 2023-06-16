@@ -151,6 +151,7 @@
 "kMangaTagTypeContent" = "内容警告";
 
 "kSettingsThemeColor" = "设置主题色";
+"kSettingsChapterLanguage" = "章节语言";
 "kSettingsDownloads" = "下载项";
 "kSettingsDataSaving" = "低数据模式";
 "kSettingsDeleteDownloads" = "删除所有下载项";
@@ -162,7 +163,7 @@
 "kMangaDetailDescr" = "漫画简介";
 "kMangaDetailDescrMore" = "展开";
 "kMangaDetailDescrLess" = "收起";
-"kMangaDetailNoDescr" = "暂无";
+"kMangaDetailNoDescr" = "[无简介]";
 "kMangaDetailChapters" = "章节";
 
 "kMangaChapterNameSimple" = "%@ 话";
@@ -215,3 +216,5 @@
 "browse.section.recent" = "新添加";
 
 "manga.group.noName" = "[无小组]";
+
+"settings.chapterLanguage.popUp.title" = "设置章节语言";

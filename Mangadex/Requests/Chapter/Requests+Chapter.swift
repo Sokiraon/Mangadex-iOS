@@ -31,7 +31,6 @@ extension Requests {
         static func getListForManga(
             mangaId: String,
             offset: Int,
-            locale: String,
             order: Order
         ) -> Promise<MangaFeedModel> {
             Promise { seal in
@@ -39,7 +38,7 @@ extension Requests {
                     Requests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
                         "offset": offset,
                         "includes[]": [ "scanlation_group", "user" ],
-                        "translatedLanguage[]": locale,
+                        "translatedLanguage[]": MDLocale.chapterLanguages,
                         "order[chapter]": order.rawValue
                     ])
                 }
@@ -57,7 +56,10 @@ extension Requests {
         }
         
         static func query(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
-            let defaultParams: [String: Any] = [ "includes[]": "scanlation_group" ]
+            let defaultParams: [String: Any] = [
+                "includes[]": "scanlation_group",
+                "translatedLanguage[]": MDLocale.chapterLanguages
+            ]
             return Promise { seal in
                 firstly {
                     Requests.get(path: "/chapter", params: defaultParams + params)

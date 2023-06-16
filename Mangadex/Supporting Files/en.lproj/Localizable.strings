@@ -61,6 +61,7 @@
 "kDefaultUsername" = "Not Logged In";
 
 "kSettingsThemeColor" = "Set Theme Color";
+"kSettingsChapterLanguage" = "Chapter Languages";
 "kSettingsDownloads" = "Downloads";
 "kSettingsDataSaving" = "Data-saving Mode";
 "kSettingsDeleteDownloads" = "Delete All Downloads";
@@ -77,7 +78,7 @@ Are you sure to continue?";
 "kMangaDetailDescr" = "About this manga";
 "kMangaDetailDescrMore" = "More";
 "kMangaDetailDescrLess" = "Less";
-"kMangaDetailNoDescr" = "Not available";
+"kMangaDetailNoDescr" = "[No Description]";
 "kMangaDetailChapters" = "Chapters";
 
 "kMangaChapterNameSimple" = "Ch. %@";
@@ -127,3 +128,5 @@ Are you sure to continue?";
 "browse.section.recent" = "Recently Added";
 
 "manga.group.noName" = "[No Group]";
+
+"settings.chapterLanguage.popUp.title" = "Set Chapter Language";

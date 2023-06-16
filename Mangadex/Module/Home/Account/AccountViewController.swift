@@ -10,6 +10,7 @@ import UIKit
 import SwiftTheme
 import SnapKit
 import ProgressHUD
+import FlagKit
 
 class AccountViewController: BaseViewController {
     
@@ -36,6 +37,23 @@ class AccountViewController: BaseViewController {
         cell.delegate = self
     }
     
+    private lazy var cellLangChoice = AccountSettingsMultiChoiceCell().apply { cell in
+        cell.icon = .init(named: "icon_language")
+        cell.title = "kSettingsChapterLanguage".localized()
+        cell.popUpTitle = "settings.chapterLanguage.popUp.title".localized()
+        cell.keys = MDLocale.availableLanguages
+        cell.selectedKeysProvider = { Set(MDLocale.chapterLanguages) }
+        cell.choiceItemUpdater = { choiceCell, indexPath, key in
+            var content = choiceCell.defaultContentConfiguration()
+            content.image = Flag(countryCode: MDLocale.languageToCountryCode[key]!)!.originalImage
+            content.text = MDLocale.languageToName[key]
+            choiceCell.contentConfiguration = content
+        }
+        cell.onSubmit = { selectedKeys in
+            SettingsManager.chapterLanguages = Array(selectedKeys)
+        }
+    }
+    
     private lazy var cellDownloads = AccountSettingsPushCell(identifier: "downloads").apply { cell in
         cell.icon = .init(named: "icon_download")
         cell.title = "kSettingsDownloads".localized()
@@ -50,7 +68,7 @@ class AccountViewController: BaseViewController {
     
     private lazy var settingsView = AccountSettingsView(
         sections: .init(cells: cellDataSaving),
-            .init(cells: cellDownloads, cellColorPicker),
+            .init(cells: cellDownloads, cellColorPicker, cellLangChoice),
             .init(cells: cellDeleteDownloads)
     )
     

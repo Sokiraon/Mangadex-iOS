@@ -5,46 +5,44 @@
 import Foundation
 
 class MDLocale {
-    static let defaultLocale = "en"
     
-    static let languages = [
-        "English", "日本語", "正體中文", "简体中文"
-    ]
+    static let defaultLanguages = ["en"]
     
-    static let availableLanguages = [
-        "简体中文": "zh",
-        "正體中文": "zh-hk", // For Mangadex, there are no zh-tw translations available.
-        "English": "en",
-        "日本語": "jp"
-    ]
-    
-    static let availableRegions = [
-        "简体中文": "CN",
-        "正體中文": "TW",
-        "English": "GB",
-        "日本語": "JP",
-    ]
-    
-    static var currentMangaLanguage: String {
-        availableLanguages[languages[SettingsManager.mangaLangIndex]]!
-    }
+    static let availableLanguages = [ "en", "jp", "zh", "zh-hk" ]
     
     static let languageToCountryCode = [
-        "pt-br": "BR",
+//        "pt-br": "BR",
         "en": "GB",
         "jp": "JP",
         "zh": "CN",
         "zh-hk": "HK",
-        "uk": "UA",     // Ukraine
-        "es-la": "MX",  // Mexico
-        "fr": "FR",
-        "id": "ID",
-        "vi": "VN",
-        "it": "IT",
-        "de": "DE",
-        "fa": "IR",     // Farsi
-        "th": "TH",
+//        "uk": "UA",     // Ukraine
+//        "es-la": "MX",  // Mexico
+//        "fr": "FR",
+//        "id": "ID",
+//        "vi": "VN",
+//        "it": "IT",
+//        "de": "DE",
+//        "fa": "IR",     // Farsi
+//        "th": "TH",
+//        "sq": "AL",     // Albanian
+//        "ar": "SA",     // Saudi Arabia
+//        "az": "AZ",
+//        "bn": "BD",     // Bangladesh
+//        "bg": "BG",
+//        "my": "MM",
     ]
+    
+    static let languageToName = [
+        "en": "English",
+        "jp": "日本語",
+        "zh": "中文（简体）",
+        "zh-hk": "中文（繁體）"
+    ]
+    
+    static var chapterLanguages: [String] {
+        SettingsManager.chapterLanguages
+    }
     
     /// Get current locale, similar to NSLocale.current but slightly modified
     static var current: String {

@@ -43,7 +43,8 @@ extension Requests {
         static func getFollowedMangaFeed(params: [String: Any] = [:]) -> Promise<MangaFeedModel> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["user", "scanlation_group"],
-                "order[readableAt]": "desc"
+                "order[readableAt]": "desc",
+                "translatedLanguage[]": MDLocale.chapterLanguages
             ]
             let newParams = defaultParams + params
             return Promise { seal in
