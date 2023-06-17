@@ -12,7 +12,7 @@ import SnapKit
 class AccountSettingsSwitchCell: AccountSettingsCell {
     
     private lazy var vSwitch = UISwitch().apply { view in
-        view.onTintColor = UIColor.themePrimary
+        view.theme_onTintColor = UIColor.themePrimaryPicker
         view.addTarget(self, action: #selector(onValueChanged), for: .valueChanged)
     }
     

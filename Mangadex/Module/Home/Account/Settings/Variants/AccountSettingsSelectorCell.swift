@@ -1,39 +1,38 @@
 //
-//  AccountSettingsPickerCell.swift
+//  AccountSettingsSelectorCell.swift
 //  Mangadex
 //
-//  Created by John Rion on 2021/8/14.
+//  Created by John Rion on 2023/06/17.
 //
 
 import Foundation
+import UIKit
 import SwiftEntryKit
 
-class AccountSettingsPickerCell: AccountSettingsTappableCell {
+class AccountSettingsSelectorCell: AccountSettingsTappableCell {
     
-    private lazy var ivArrow = UIImageView(
-        named: "icon_chevron_right", color: .darkerGray565656
-    )
+    var popupTitle = ""
+    var allowMultiple = false
+    var keys = [String]()
+    var selectedKeysProvider: () -> [String] = { [] }
+    var itemDecorator: (_ cell: UICollectionViewListCell,
+                        _ indexPath: IndexPath,
+                        _ key: String) -> Void = { _, _, _ in }
+    var onSubmit: (_ selectedKeys: [String]) -> Void = { _ in }
+    
+    let arrowView = UIImageView(named: "icon_chevron_right", color: .darkerGray565656)
     
     init() {
         super.init(frame: .zero)
         
-        contentView.addSubview(ivArrow)
-        ivArrow.snp.makeConstraints { make in
+        contentView.addSubview(arrowView)
+        arrowView.snp.makeConstraints { make in
             make.width.height.equalTo(24)
             make.centerY.right.equalToSuperview()
         }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var popupView: UIView?
-    
     override func didSelectCell() {
-        guard popupView != nil else {
-            return
-        }
         var attrs = EKAttributes.centerFloat
         attrs.name = "Settings Popup"
         attrs.displayDuration = .infinity
@@ -49,6 +48,12 @@ class AccountSettingsPickerCell: AccountSettingsTappableCell {
             fade: nil
         )
         
-        SwiftEntryKit.display(entry: popupView!, using: attrs)
+        let view = AccountSettingsSelectorView()
+        view.delegate = self
+        SwiftEntryKit.display(entry: view, using: attrs)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 }

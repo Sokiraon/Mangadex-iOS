@@ -44,6 +44,8 @@ extension UIColor {
     static let coral100 = fromHex("fed0c1")
     static let coral50 = fromHex("faebe9")
     
+    static let availableColors = ["Cerulean", "Teal", "Coral"]
+    
     static let themePrimaryPicker = ThemeColorPicker(
         colors: cerulean400, teal300, coral400
     )

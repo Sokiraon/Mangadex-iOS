@@ -129,4 +129,5 @@ Are you sure to continue?";
 
 "manga.group.noName" = "[No Group]";
 
+"settings.themeColor.popup.title" = "Set Theme Color";
 "settings.chapterLanguage.popup.title" = "Set Chapter Language";

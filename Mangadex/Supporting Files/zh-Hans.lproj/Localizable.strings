@@ -217,4 +217,5 @@
 
 "manga.group.noName" = "[无小组]";
 
+"settings.themeColor.popup.title" = "设置主题色";
 "settings.chapterLanguage.popup.title" = "设置章节语言";

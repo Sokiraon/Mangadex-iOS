@@ -1,8 +1,8 @@
 //
-//  AccountSettingsMultiChoiceView.swift
+//  AccountSettingsSelectorView.swift
 //  Mangadex
 //
-//  Created by John Rion on 2023/06/15.
+//  Created by John Rion on 2023/06/17.
 //
 
 import Foundation
@@ -10,17 +10,14 @@ import UIKit
 import SnapKit
 import SwiftEntryKit
 
-class AccountSettingsMultiChoiceView: UIView {
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-    }
+class AccountSettingsSelectorView: UIView {
     
-    lazy var dismissButton: UIButton = {
+    let dismissButton: UIButton = {
         let button = ImageButton(image: .init(named: "icon_dismiss"))
         button.tintColor = .darkGray808080
-        button.addTarget(self,
-                         action: #selector(didTapDismiss),
-                         for: .touchUpInside)
+        button.addAction(UIAction { _ in
+            SwiftEntryKit.dismiss()
+        }, for: .touchUpInside)
         return button
     }()
     lazy var submitButton: UIButton = {
@@ -31,23 +28,22 @@ class AccountSettingsMultiChoiceView: UIView {
         config.baseBackgroundColor = .themePrimary
         config.baseForegroundColor = .white
         let button = UIButton(configuration: config,
-                              primaryAction: UIAction { _ in self.didTapSubmit() })
+                              primaryAction: UIAction { _ in
+            self.delegate?.onSubmit(Array(self._selectedKeys))
+            SwiftEntryKit.dismiss()
+        })
         return button
     }()
     
     let title = UILabel(fontSize: 21, alignment: .center, scalable: true)
     
-    var delegate: AccountSettingsMultiChoiceCell? {
+    weak var delegate: AccountSettingsSelectorCell? {
         didSet {
-            title.text = delegate?.popupTitle
             setupDataSource()
         }
     }
     
-    enum Section: Int {
-        case main
-    }
-    var dataSource: UICollectionViewDiffableDataSource<Section, String>!
+    var dataSource: UICollectionViewDiffableDataSource<Int, String>!
     var collectionView: UICollectionView!
     
     override init(frame: CGRect) {
@@ -66,12 +62,7 @@ class AccountSettingsMultiChoiceView: UIView {
         title.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalTo(dismissButton)
-            make.right.equalTo(dismissButton.snp.left).offset(-16)
-        }
-        
-        addSubview(submitButton)
-        submitButton.snp.makeConstraints { make in
-            make.left.right.bottom.equalToSuperview().inset(12)
+            make.right.equalTo(dismissButton.snp.left).offset(-8)
         }
         
         let listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
@@ -84,63 +75,55 @@ class AccountSettingsMultiChoiceView: UIView {
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(200)
             make.left.right.equalToSuperview()
-            make.top.equalTo(title.snp.bottom).offset(12)
-            make.bottom.equalTo(submitButton.snp.top).offset(-12)
+            make.top.equalTo(title.snp.bottom).offset(16)
+        }
+        
+        addSubview(submitButton)
+        submitButton.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
+            make.left.right.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().inset(16)
         }
     }
     
+    private var _keys: [String] {
+        delegate?.keys ?? []
+    }
+    private var _selectedKeys = Set<String>()
+    private var allowMultiple = false
+    
     func setupDataSource() {
-        _selectedKeys = delegate?.selectedKeysProvider() ?? []
+        title.text = delegate?.popupTitle
+        allowMultiple = delegate?.allowMultiple ?? false
+        _selectedKeys = Set(delegate?.selectedKeysProvider() ?? [])
         
         let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, String>
         { cell, indexPath, key in
-            self.delegate?.choiceItemUpdater(cell, indexPath, key)
+            self.delegate?.itemDecorator(cell, indexPath, key)
             cell.backgroundConfiguration = .clear()
             if self._selectedKeys.contains(key) {
                 cell.accessories = [.checkmark()]
             }
         }
         
-        dataSource = UICollectionViewDiffableDataSource<Section, String>(collectionView: collectionView)
+        dataSource = UICollectionViewDiffableDataSource<Int, String>(collectionView: collectionView)
         { collectionView, indexPath, itemIdentifier in
             collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
         }
         
-        var snapshot = NSDiffableDataSourceSnapshot<Section, String>()
-        snapshot.appendSections([.main])
-        snapshot.appendItems(_keys, toSection: .main)
-        dataSource.apply(snapshot, animatingDifferences: true)
+        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(_keys, toSection: 0)
+        dataSource.apply(snapshot)
     }
     
-    private var _keys: [String] {
-        delegate?.keys ?? []
-    }
-    private var _selectedKeys: Set<String> = []
-    
-    @objc func didTapSubmit() {
-        delegate?.onSubmit(_selectedKeys)
-        SwiftEntryKit.dismiss()
-    }
-    
-    @objc func didTapDismiss() {
-        SwiftEntryKit.dismiss()
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 }
 
-extension AccountSettingsMultiChoiceView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
-        let key = _keys[indexPath.item]
-        if _selectedKeys.contains(key) {
-            _selectedKeys.remove(key)
-            cell.accessories = []
-        } else {
-            _selectedKeys.insert(key)
-            cell.accessories = [.checkmark()]
-        }
-    }
-    
+extension AccountSettingsSelectorView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
         cell.backgroundColor = .grayDFDFDF
@@ -150,6 +133,30 @@ extension AccountSettingsMultiChoiceView: UICollectionViewDelegate {
         let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
         UIView.animate(withDuration: 0.2) {
             cell.backgroundColor = .clear
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
+        let key = _keys[indexPath.item]
+        if _selectedKeys.contains(key),
+           _selectedKeys.count > 1,
+           allowMultiple {
+            _selectedKeys.remove(key)
+            cell.accessories = []
+        }
+        else if !_selectedKeys.contains(key) {
+            if allowMultiple {
+                _selectedKeys.insert(key)
+            } else {
+                let previousKey = _selectedKeys.first!
+                let previousIndex = _keys.firstIndex(of: previousKey)!
+                let previousIndexPath = IndexPath(item: previousIndex, section: 0)
+                let previousCell = collectionView.cellForItem(at: previousIndexPath) as! UICollectionViewListCell
+                previousCell.accessories = []
+                _selectedKeys = [key]
+            }
+            cell.accessories = [.checkmark()]
         }
     }
 }

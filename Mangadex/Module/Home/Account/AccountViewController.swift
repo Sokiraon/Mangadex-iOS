@@ -32,26 +32,37 @@ class AccountViewController: BaseViewController {
         cell.title = "kSettingsDataSaving".localized()
     }
     
-    private lazy var cellColorPicker = AccountSettingsPickerCell().apply { cell in
+    private lazy var cellColorSelector = AccountSettingsSelectorCell().apply { cell in
         cell.icon = .init(named: "icon_palette")
         cell.title = "kSettingsThemeColor".localized()
-        cell.popupView = AccountSettingsColorPickerView()
+        cell.popupTitle = "settings.themeColor.popup.title".localized()
+        cell.keys = UIColor.availableColors
+        cell.selectedKeysProvider = { [UIColor.availableColors[ThemeManager.currentThemeIndex]] }
+        cell.itemDecorator = { item, indexPath, key in
+            var content = item.defaultContentConfiguration()
+            content.text = key.localized()
+            item.contentConfiguration = content
+        }
+        cell.onSubmit = { selectedKeys in
+            SettingsManager.themeColorIndex = UIColor.availableColors.firstIndex(of: selectedKeys[0])!
+        }
     }
     
-    private lazy var cellLangChoice = AccountSettingsMultiChoiceCell().apply { cell in
+    private lazy var cellLangSelector = AccountSettingsSelectorCell().apply { cell in
         cell.icon = .init(named: "icon_language")
         cell.title = "kSettingsChapterLanguage".localized()
-        cell.popupTitle = "settings.chapterLanguage.popUp.title".localized()
+        cell.popupTitle = "settings.chapterLanguage.popup.title".localized()
         cell.keys = MDLocale.availableLanguages
-        cell.selectedKeysProvider = { Set(MDLocale.chapterLanguages) }
-        cell.choiceItemUpdater = { choiceCell, indexPath, key in
+        cell.selectedKeysProvider = { MDLocale.chapterLanguages }
+        cell.allowMultiple = true
+        cell.itemDecorator = { choiceCell, indexPath, key in
             var content = choiceCell.defaultContentConfiguration()
             content.image = Flag(countryCode: MDLocale.languageToCountryCode[key]!)!.originalImage
             content.text = MDLocale.languageToName[key]
             choiceCell.contentConfiguration = content
         }
         cell.onSubmit = { selectedKeys in
-            SettingsManager.chapterLanguages = Array(selectedKeys)
+            SettingsManager.chapterLanguages = selectedKeys
         }
     }
     
@@ -80,7 +91,7 @@ class AccountViewController: BaseViewController {
     
     private lazy var settingsView = AccountSettingsView(
         sections: .init(cells: cellDataSaving),
-            .init(cells: cellDownloads, cellColorPicker, cellLangChoice),
+            .init(cells: cellDownloads, cellColorSelector, cellLangSelector),
             .init(cells: cellDeleteDownloads)
     )
     
