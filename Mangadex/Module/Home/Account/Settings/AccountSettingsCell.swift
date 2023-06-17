@@ -9,12 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 
-protocol AccountSettingsCellDelegate {
-    func viewToDisplay(for cell: AccountSettingsCell, with identifier: String) -> UIView
-    func viewControllerToPush(for cell: AccountSettingsCell, with identifier: String) -> UIViewController
-    func didSelectCell(_ cell: AccountSettingsCell, with identifier: String)
-}
-
 class AccountSettingsCell: UIView {
     
     internal let contentView = UIView()
@@ -28,8 +22,6 @@ class AccountSettingsCell: UIView {
     internal lazy var lblSubtitle = UILabel(
         fontSize: 11, fontWeight: .medium, color: .darkerGray565656
     )
-    
-    internal var delegate: AccountSettingsCellDelegate?
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

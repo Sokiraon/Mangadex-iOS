@@ -10,19 +10,9 @@ import UIKit
 import SnapKit
 
 class AccountSettingsActionCell: AccountSettingsTappableCell {
+    var onSelect: (() -> Void)?
     
-    private var identifier: String
-    
-    init(identifier: String) {
-        self.identifier = identifier
-        super.init(frame: .zero)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func didTapCell() {
-        delegate?.didSelectCell(self, with: identifier)
+    override func didSelectCell() {
+        onSelect?()
     }
 }

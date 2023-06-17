@@ -469,7 +469,7 @@ extension MangaDetailViewController: UICollectionViewDelegate, UICollectionViewD
             ) as! MangaChapterCollectionCell
             
             let model = chapterModels[indexPath.row]
-            cell.update(with: model)
+            cell.chapterView.setContent(with: model)
             return cell
             
         case .loader:

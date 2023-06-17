@@ -39,7 +39,7 @@ class AccountSettingsMultiChoiceView: UIView {
     
     var delegate: AccountSettingsMultiChoiceCell? {
         didSet {
-            title.text = delegate?.popUpTitle
+            title.text = delegate?.popupTitle
             setupDataSource()
         }
     }

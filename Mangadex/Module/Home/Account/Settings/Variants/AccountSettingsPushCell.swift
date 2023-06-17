@@ -11,10 +11,9 @@ import UIKit
 class AccountSettingsPushCell: AccountSettingsTappableCell {
     private let ivArrow = UIImageView(named: "icon_chevron_right", color: .darkerGray565656)
     
-    private var identifier: String
+    var targetViewController: UIViewController?
     
-    init(identifier: String) {
-        self.identifier = identifier
+    init() {
         super.init(frame: .zero)
         
         contentView.addSubview(ivArrow)
@@ -24,8 +23,8 @@ class AccountSettingsPushCell: AccountSettingsTappableCell {
         }
     }
     
-    override func didTapCell() {
-        if let vc = delegate?.viewControllerToPush(for: self, with: identifier) {
+    override func didSelectCell() {
+        if let vc = targetViewController {
             MDRouter.navigationController?.pushViewController(vc, animated: true)
         }
     }

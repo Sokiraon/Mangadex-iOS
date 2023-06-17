@@ -16,7 +16,8 @@ class AccountViewController: BaseViewController {
     
     private lazy var vTopArea = UIView()
     private lazy var ivAvatar = UIImageView(named: "icon_avatar_round")
-    private lazy var lblUsername = UILabel(fontSize: 20, fontWeight: .semibold, color: .white, numberOfLines: 2, scalable: true)
+    private lazy var lblUsername = UILabel(fontSize: 20, fontWeight: .semibold, color: .white,
+                                           numberOfLines: 2, scalable: true)
     private lazy var btnLogout: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "icon_logout"), for: .normal)
@@ -31,16 +32,16 @@ class AccountViewController: BaseViewController {
         cell.title = "kSettingsDataSaving".localized()
     }
     
-    private lazy var cellColorPicker = AccountSettingsPickerCell(identifier: "colorPicker").apply { cell in
+    private lazy var cellColorPicker = AccountSettingsPickerCell().apply { cell in
         cell.icon = .init(named: "icon_palette")
         cell.title = "kSettingsThemeColor".localized()
-        cell.delegate = self
+        cell.popupView = AccountSettingsColorPickerView()
     }
     
     private lazy var cellLangChoice = AccountSettingsMultiChoiceCell().apply { cell in
         cell.icon = .init(named: "icon_language")
         cell.title = "kSettingsChapterLanguage".localized()
-        cell.popUpTitle = "settings.chapterLanguage.popUp.title".localized()
+        cell.popupTitle = "settings.chapterLanguage.popUp.title".localized()
         cell.keys = MDLocale.availableLanguages
         cell.selectedKeysProvider = { Set(MDLocale.chapterLanguages) }
         cell.choiceItemUpdater = { choiceCell, indexPath, key in
@@ -54,16 +55,27 @@ class AccountViewController: BaseViewController {
         }
     }
     
-    private lazy var cellDownloads = AccountSettingsPushCell(identifier: "downloads").apply { cell in
+    private lazy var cellDownloads = AccountSettingsPushCell().apply { cell in
         cell.icon = .init(named: "icon_download")
         cell.title = "kSettingsDownloads".localized()
-        cell.delegate = self
+        cell.targetViewController = DownloadsViewController()
     }
     
-    private lazy var cellDeleteDownloads = AccountSettingsActionCell(identifier: "deleteDownloads").apply { cell in
+    private lazy var cellDeleteDownloads = AccountSettingsActionCell().apply { cell in
         cell.icon = .init(named: "icon_delete")
         cell.title = "kSettingsDeleteDownloads".localized()
-        cell.delegate = self
+        cell.onSelect = {
+            let vc = UIAlertController(
+                title: "kWarning".localized(),
+                message: "kSettingsDeleteDownloadsAlertMessage".localized(),
+                preferredStyle: .alert
+            )
+            vc.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
+            vc.addAction(UIAlertAction(title: "kOk".localized(), style: .destructive, handler: { _ in
+                self.deleteDownloads()
+            }))
+            self.present(vc, animated: true)
+        }
     }
     
     private lazy var settingsView = AccountSettingsView(
@@ -167,45 +179,6 @@ class AccountViewController: BaseViewController {
             cellDeleteDownloads.subTitle = "kSettingsCurrentDownloadsSize".localizedFormat(
                 fileSizeFormatter.string(fromByteCount: Int64(downloadsSize))
             )
-        }
-    }
-}
-
-extension AccountViewController: AccountSettingsCellDelegate {
-    func didSelectCell(_ cell: AccountSettingsCell, with identifier: String) {
-        switch identifier {
-        case "deleteDownloads":
-            let vc = UIAlertController(
-                title: "kWarning".localized(),
-                message: "kSettingsDeleteDownloadsAlertMessage".localized(),
-                preferredStyle: .alert
-            )
-            vc.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
-            vc.addAction(UIAlertAction(title: "kOk".localized(), style: .destructive, handler: { _ in
-                self.deleteDownloads()
-            }))
-            present(vc, animated: true)
-            break
-        default:
-            break
-        }
-    }
-    
-    func viewControllerToPush(for cell: AccountSettingsCell, with identifier: String) -> UIViewController {
-        switch identifier {
-        case "downloads":
-            return DownloadsViewController()
-        default:
-            return UIViewController()
-        }
-    }
-    
-    func viewToDisplay(for cell: AccountSettingsCell, with identifier: String) -> UIView {
-        switch identifier {
-        case "colorPicker":
-            return AccountSettingsColorPickerView()
-        default:
-            return UIView()
         }
     }
 }

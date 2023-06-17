@@ -8,88 +8,43 @@
 import Foundation
 import UIKit
 import SnapKit
+import SafariServices
 
 class FollowedUpdatesChapterView: UIView {
     
     private var mangaModel: MangaModel
     private var chapterModel: ChapterModel
     
-    init(
-        mangaModel: MangaModel,
-        chapterModel: ChapterModel
-    ) {
+    let chapterView = ChapterView()
+    
+    init(mangaModel: MangaModel, chapterModel: ChapterModel) {
         self.mangaModel = mangaModel
         self.chapterModel = chapterModel
         
         super.init(frame: .zero)
-        setupUI()
+        
+        addSubview(chapterView)
+        chapterView.setContent(with: chapterModel)
+        chapterView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView)))
     }
     
+    @objc private func didTapView() {
+        if let externUrl = chapterModel.attributes.externalUrl,
+           let url = URL(string: externUrl) {
+            let vc = SFSafariViewController(url: url)
+            MDRouter.topViewController?.present(vc, animated: true)
+        } else {
+            let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
+            MDRouter.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private let ivFlag = UIImageView()
-    private let lblTitle = UILabel(
-        fontSize: 16,
-        fontWeight: .medium,
-        scalable: false
-    )
-    
-    private let ivGroup = UIImageView(named: "icon_group", color: .secondaryText)
-    private let lblGroup = UILabel(fontSize: 15, color: .secondaryText)
-    
-    private let lblUpdate = UILabel(fontSize: 15, color: .secondaryText)
-    
-    private func setupUI() {
-        addSubview(ivFlag)
-        ivFlag.image = chapterModel.attributes.languageFlag
-        ivFlag.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.width.equalTo(24)
-        }
-        
-        addSubview(lblTitle)
-        lblTitle.text = chapterModel.attributes.fullChapterName
-        lblTitle.snp.makeConstraints { make in
-            make.centerY.equalTo(ivFlag)
-            make.top.equalToSuperview().inset(6)
-            make.left.equalTo(ivFlag.snp.right).offset(6)
-            make.right.equalToSuperview()
-        }
-        
-        addSubview(lblUpdate)
-        lblUpdate.text = DateHelper.dateStringFromNow(
-            isoDateString: chapterModel.attributes.updatedAt)
-        lblUpdate.snp.makeConstraints { make in
-            make.top.equalTo(ivFlag.snp.bottom).offset(8)
-            make.left.equalToSuperview()
-            make.bottom.equalToSuperview().inset(6)
-        }
-        
-        if let group = chapterModel.scanlationGroup {
-            addSubview(lblGroup)
-            lblGroup.text = group.attributes.name
-            lblGroup.snp.makeConstraints { make in
-                make.centerY.equalTo(lblUpdate)
-                make.right.equalToSuperview()
-            }
-            
-            addSubview(ivGroup)
-            ivGroup.snp.makeConstraints { make in
-                make.centerY.equalTo(lblUpdate)
-                make.width.height.equalTo(18)
-                make.right.equalTo(lblGroup.snp.left).offset(-4)
-                make.left.greaterThanOrEqualTo(lblUpdate.snp.right).offset(32)
-            }
-        }
-    }
-    
-    @objc private func didTapView() {
-        let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
-        MDRouter.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -136,8 +91,8 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         chapterStack.axis = .vertical
         chapterStack.snp.makeConstraints { make in
             make.left.right.equalTo(lblTitle)
-            make.top.equalTo(divider.snp.bottom).offset(4)
-            make.bottom.equalToSuperview().inset(8)
+            make.top.equalTo(divider.snp.bottom)
+            make.bottom.equalToSuperview()
         }
     }
     

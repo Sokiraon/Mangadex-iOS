@@ -165,9 +165,12 @@ class MangaModel: NSObject, YYModel {
         return URL(string: urlStr)
     }
     
-    var coverURLOriginal: URL? {
+    var coverURLHD: URL? {
         guard let attr = coverArts.first else {
             return nil
+        }
+        if SettingsManager.isDataSavingMode {
+            return coverURL
         }
         let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).512.jpg"
         return URL(string: urlStr)

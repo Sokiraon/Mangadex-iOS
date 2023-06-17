@@ -1,5 +1,5 @@
 //
-//  MangaCollectionCellMinimal.swift
+//  BrowseMangaMinimalCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2023/06/13.
@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 import Kingfisher
+import SkeletonView
 
-class MangaCollectionCellMinimal: UICollectionViewCell {
+class BrowseMangaMinimalCell: UICollectionViewCell {
     let coverView = UIImageView()
     let titleLabel = UILabel(fontSize: 17, numberOfLines: 2)
     
@@ -19,6 +20,7 @@ class MangaCollectionCellMinimal: UICollectionViewCell {
         
         coverView.clipsToBounds = true
         coverView.layer.cornerRadius = 4
+        coverView.isSkeletonable = true
         contentView.addSubview(coverView)
         coverView.snp.makeConstraints { make in
             make.top.left.right.equalToSuperview()
@@ -38,7 +40,10 @@ class MangaCollectionCellMinimal: UICollectionViewCell {
     }
     
     func setContent(mangaModel: MangaModel) {
-        coverView.kf.setImage(with: mangaModel.coverURL)
+        coverView.showAnimatedSkeleton()
+        coverView.kf.setImage(with: mangaModel.coverURL) { _ in
+            self.coverView.hideSkeleton()
+        }
         titleLabel.text = mangaModel.attributes.localizedTitle
     }
 }

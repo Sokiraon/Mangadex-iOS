@@ -28,14 +28,14 @@ class AccountSettingsMultiChoiceCell: AccountSettingsTappableCell {
         super.init(coder: coder)
     }
     
-    var popUpTitle = ""
+    var popupTitle = ""
     var keys = [String]()
     var selectedKeysProvider: () -> Set<String> = { [] }
     var choiceItemUpdater: (_ cell: UICollectionViewListCell, _ indexPath: IndexPath, _ key: String) -> Void
         = { _, _, _ in }
     var onSubmit: (_ selectedKeys: Set<String>) -> Void = { _ in }
     
-    override func didTapCell() {
+    override func didSelectCell() {
         var attrs = EKAttributes.centerFloat
         attrs.name = "Settings Popup"
         attrs.displayDuration = .infinity

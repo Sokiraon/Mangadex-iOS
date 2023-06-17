@@ -21,7 +21,7 @@ class AccountSettingsTappableCell: AccountSettingsCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal func didTapCell() {}
+    internal func didSelectCell() {}
     
     @objc private func didPressView(recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
@@ -30,7 +30,7 @@ class AccountSettingsTappableCell: AccountSettingsCell {
             backgroundColor = .white
         }
         if recognizer.state == .ended {
-            didTapCell()
+            didSelectCell()
         }
     }
 }

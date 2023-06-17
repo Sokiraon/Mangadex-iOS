@@ -73,7 +73,7 @@ class MangaViewer: BaseViewController,
         backgroundColor: nil,
         action: UIAction { _ in
             if let vc = self.nextViewController {
-                self.navigationController?.replaceTopViewController(with: vc, using: .leftIn)
+                self.navigationController?.replaceTopViewController(with: vc, using: .rightIn)
             }
         }
     )

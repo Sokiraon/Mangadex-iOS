@@ -129,4 +129,4 @@ Are you sure to continue?";
 
 "manga.group.noName" = "[No Group]";
 
-"settings.chapterLanguage.popUp.title" = "Set Chapter Language";
+"settings.chapterLanguage.popup.title" = "Set Chapter Language";

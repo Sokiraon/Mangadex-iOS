@@ -10,6 +10,7 @@ import UIKit
 import ProgressHUD
 import PromiseKit
 import SnapKit
+import SafariServices
 
 class BrowseMangaViewController: BaseViewController {
     
@@ -133,22 +134,22 @@ class BrowseMangaViewController: BaseViewController {
     private var latestChapters = [ChapterModel]()
     
     private func configureDataSource() {
-        let popularCellRegistration = UICollectionView.CellRegistration<PopularMangaCollectionCell, String>
+        let popularCellRegistration = UICollectionView.CellRegistration<BrowseMangaPopularCell, String>
         { cell, indexPath, identifier in
             cell.setContent(mangaModel: self.popularTitles[indexPath.item])
         }
         
-        let updatesCellRegistration = UICollectionView.CellRegistration<LatestUpdateCollectionCell, String>
+        let updatesCellRegistration = UICollectionView.CellRegistration<BrowseMangaUpdatesCell, String>
         { cell, indexPath, identifier in
-            cell.setContent(chapterModel: self.latestChapters[indexPath.item])
+            cell.setContent(with: self.latestChapters[indexPath.item])
         }
         
-        let seasonalCellRegistration = UICollectionView.CellRegistration<MangaCollectionCellMinimal, String>
+        let seasonalCellRegistration = UICollectionView.CellRegistration<BrowseMangaMinimalCell, String>
         { cell, indexPath, identifier in
             cell.setContent(mangaModel: self.seasonalTitles[indexPath.item])
         }
         
-        let recentCellRegistration = UICollectionView.CellRegistration<MangaCollectionCellMinimal, String>
+        let recentCellRegistration = UICollectionView.CellRegistration<BrowseMangaMinimalCell, String>
         { cell, indexPath, identifier in
             cell.setContent(mangaModel: self.recentTitles[indexPath.item])
         }
@@ -256,7 +257,12 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
             break
         case .updates:
             let chapterModel = latestChapters[indexPath.item]
-            if let mangaModel = chapterModel.mangaModel {
+            if let externUrl = chapterModel.attributes.externalUrl,
+               let url = URL(string: externUrl) {
+                let vc = SFSafariViewController(url: url)
+                present(vc, animated: true)
+            }
+            else if let mangaModel = chapterModel.mangaModel {
                 let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
                 navigationController?.pushViewController(vc, animated: true)
             }

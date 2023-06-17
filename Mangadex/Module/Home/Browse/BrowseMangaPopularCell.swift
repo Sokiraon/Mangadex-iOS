@@ -1,5 +1,5 @@
 //
-//  PopularMangaCollectionCell.swift
+//  BrowseMangaPopularCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2023/06/08.
@@ -9,8 +9,9 @@ import Foundation
 import UIKit
 import SnapKit
 import Kingfisher
+import SkeletonView
 
-class PopularMangaCollectionCell: UICollectionViewCell {
+class BrowseMangaPopularCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +37,7 @@ class PopularMangaCollectionCell: UICollectionViewCell {
         coverImageView.clipsToBounds = true
         coverImageView.layer.cornerRadius = 8
         coverImageView.contentMode = .scaleAspectFill
+        coverImageView.isSkeletonable = true
         coverImageView.snp.makeConstraints { make in
             make.top.left.equalToSuperview().inset(8)
             make.width.equalTo(96)
@@ -59,7 +61,10 @@ class PopularMangaCollectionCell: UICollectionViewCell {
     }
     
     func setContent(mangaModel: MangaModel) {
-        coverImageView.kf.setImage(with: mangaModel.coverURLOriginal)
+        coverImageView.showAnimatedSkeleton()
+        coverImageView.kf.setImage(with: mangaModel.coverURLHD) { _ in
+            self.coverImageView.hideSkeleton()
+        }
         titleLabel.text = mangaModel.attributes.localizedTitle
         descrLabel.text = mangaModel.attributes.localizedDescription
     }

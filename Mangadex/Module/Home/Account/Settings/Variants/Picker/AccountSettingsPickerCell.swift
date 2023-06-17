@@ -14,8 +14,7 @@ class AccountSettingsPickerCell: AccountSettingsTappableCell {
         named: "icon_chevron_right", color: .darkerGray565656
     )
     
-    init(identifier: String) {
-        self.identifier = identifier
+    init() {
         super.init(frame: .zero)
         
         contentView.addSubview(ivArrow)
@@ -29,10 +28,10 @@ class AccountSettingsPickerCell: AccountSettingsTappableCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var identifier: String
+    var popupView: UIView?
     
-    override func didTapCell() {
-        guard let view = delegate?.viewToDisplay(for: self, with: identifier) else {
+    override func didSelectCell() {
+        guard popupView != nil else {
             return
         }
         var attrs = EKAttributes.centerFloat
@@ -50,6 +49,6 @@ class AccountSettingsPickerCell: AccountSettingsTappableCell {
             fade: nil
         )
         
-        SwiftEntryKit.display(entry: view, using: attrs)
+        SwiftEntryKit.display(entry: popupView!, using: attrs)
     }
 }
