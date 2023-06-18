@@ -39,8 +39,12 @@ class AccountViewController: BaseViewController {
         cell.keys = UIColor.availableColors
         cell.selectedKeysProvider = { [UIColor.availableColors[ThemeManager.currentThemeIndex]] }
         cell.itemDecorator = { item, indexPath, key in
+            let color = UIColor.primaryColors[UIColor.availableColors.firstIndex(of: key)!]
             var content = item.defaultContentConfiguration()
             content.text = key.localized()
+            content.textProperties.color = color
+            content.image = UIImage(named: "dot")
+            content.imageProperties.tintColor = color
             item.contentConfiguration = content
         }
         cell.onSubmit = { selectedKeys in
