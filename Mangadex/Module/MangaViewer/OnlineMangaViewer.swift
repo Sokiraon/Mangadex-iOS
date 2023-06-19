@@ -56,7 +56,7 @@ class OnlineMangaViewer: MangaViewer {
     private lazy var btnChapters = bottomButtonBuilder(
         image: .init(systemName: "list.bullet.circle.fill"),
         titleKey: "kMangaViewerChapters",
-        action: UIAction { _ in }
+        action: UIAction { _ in self.showHideChapterList() }
     )
     
     private lazy var vBottomActions = UIStackView(
@@ -111,6 +111,25 @@ class OnlineMangaViewer: MangaViewer {
             make.left.right.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(MDLayout.adjustedSafeInsetBottom)
         }
+        
+        var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
+        listConfig.showsSeparators = true
+        listConfig.separatorConfiguration.color = .darkerGray565656
+        listConfig.headerMode = .supplementary
+        listConfig.headerTopPadding = 0
+        listConfig.backgroundColor = .fromHex("1c1c1e")
+        let layout = UICollectionViewCompositionalLayout.list(using: listConfig)
+        chapterListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        chapterListView.delegate = self
+        
+        view.addSubview(chapterListView)
+        view.layoutIfNeeded()
+        chapterListView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(appBar.frame.height)
+            make.bottom.equalToSuperview().inset(vBottomControl.frame.height)
+            make.left.equalTo(view.snp.right)
+            make.width.equalTo(240)
+        }
     }
     
     override func didSetupUI() {
@@ -150,8 +169,8 @@ class OnlineMangaViewer: MangaViewer {
             if withAggregate {
                 return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
                             Requests.Manga.getVolumesAndChapters(
-                               mangaId: chapterModel.mangaId ?? "",
-                               groupId: chapterModel.scanlationGroup?.id ?? "",
+                               mangaId: chapterModel.mangaId!,
+                               groupId: chapterModel.scanlationGroup?.id,
                                language: chapterModel.attributes.translatedLanguage
                             )
                        )
@@ -174,6 +193,8 @@ class OnlineMangaViewer: MangaViewer {
                 self.btnNext.isEnabled = false
                 self.btnNext.setTitleColor(.darkGray808080, for: .normal)
             }
+            
+            self.setupChapterList()
 
             DispatchQueue.main.async {
                 self.vPages.reloadData()
@@ -207,6 +228,54 @@ class OnlineMangaViewer: MangaViewer {
             chapterId: chapterInfo.id,
             aggregatedModel: self.aggregatedModel
         )
+    }
+    
+    private func setupChapterList() {
+        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MDMangaAggregatedVolumeChapter>
+        { cell, indexPath, itemIdentifier in
+            var content = cell.defaultContentConfiguration()
+            content.text = "mangaViewer.chapterList.chapterName"
+                .localizedFormat(itemIdentifier.chapter)
+            content.textProperties.color = .white
+            cell.contentConfiguration = content
+            cell.backgroundConfiguration = .clear()
+        }
+        
+        let headerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(
+            elementKind: UICollectionView.elementKindSectionHeader)
+        { supplementaryView, elementKind, indexPath in
+            var content = UIListContentConfiguration.sidebarHeader()
+            if let volumeNumber = Int(self.aggregatedModel.volumeNames[indexPath.section]) {
+                content.text = "mangaViewer.chapterList.volumeName".localizedFormat(volumeNumber)
+            } else {
+                content.text = "mangaViewer.chapterList.noVolume".localized()
+            }
+            content.textProperties.color = .white
+            supplementaryView.contentConfiguration = content
+            var background = UIBackgroundConfiguration.listSidebarHeader()
+            background.cornerRadius = 0
+            background.backgroundColor = .fromHex("3d3d3d")
+            supplementaryView.backgroundConfiguration = background
+        }
+        
+        chapterListDataSource = UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>(
+            collectionView: chapterListView) { collectionView, indexPath, itemIdentifier in
+            collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration, for: indexPath, item: itemIdentifier)
+        }
+        
+        chapterListDataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            collectionView.dequeueConfiguredReusableSupplementary(
+                using: headerRegistration, for: indexPath)
+        }
+        
+        var snapshot = NSDiffableDataSourceSnapshot<String, MDMangaAggregatedVolumeChapter>()
+        snapshot.appendSections(aggregatedModel.volumeNames)
+        for volume in aggregatedModel.volumeNames {
+            snapshot.appendItems(aggregatedModel.volumes[volume]!.sortedChapters,
+                                 toSection: volume)
+        }
+        chapterListDataSource.apply(snapshot)
     }
     
     // MARK: - Actions
@@ -256,6 +325,34 @@ class OnlineMangaViewer: MangaViewer {
                 let vc = SFSafariViewController(url: url)
                 self.present(vc, animated: true)
             }
+        }
+    }
+}
+
+extension OnlineMangaViewer {
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if collectionView == chapterListView {
+            let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
+            cell.backgroundColor = .darkerGray565656
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        if collectionView == chapterListView {
+            let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
+            UIView.animate(withDuration: 0.2) {
+                cell.backgroundColor = .clear
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == chapterListView {
+            let volumeName = aggregatedModel.volumeNames[indexPath.section]
+            let chapter = aggregatedModel.volumes[volumeName]!.sortedChapters[indexPath.item]
+            let vc = OnlineMangaViewer(
+                mangaModel: mangaModel, chapterId: chapter.id, aggregatedModel: aggregatedModel)
+            navigationController?.replaceTopViewController(with: vc, animated: true)
         }
     }
 }

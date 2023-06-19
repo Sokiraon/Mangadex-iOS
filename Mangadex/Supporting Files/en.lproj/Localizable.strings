@@ -131,3 +131,7 @@ Are you sure to continue?";
 
 "settings.themeColor.popup.title" = "Set Theme Color";
 "settings.chapterLanguage.popup.title" = "Set Chapter Language";
+
+"mangaViewer.chapterList.noVolume" = "No Volume";
+"mangaViewer.chapterList.volumeName" = "Volume %d";
+"mangaViewer.chapterList.chapterName" = "Chapter %@";

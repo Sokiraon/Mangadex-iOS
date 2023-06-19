@@ -123,12 +123,7 @@ class MangaModel: NSObject, YYModel {
     }
     
     var authors: [MangaAuthorModel] {
-        let items = relationships.filter { relationship in
-            relationship.type == "author"
-        }
-        return items.map { item in
-            MangaAuthorModel(relationshipItem: item)
-        }
+        relationships.authors
     }
     
     var primaryAuthor: MangaAuthorModel? {
@@ -136,24 +131,20 @@ class MangaModel: NSObject, YYModel {
     }
     
     var primaryAuthorName: String {
-        primaryAuthor?.attributes.name ?? "kAuthorUnknown".localized()
+        primaryAuthor?.attributes?.name ?? "kAuthorUnknown".localized()
     }
     
     var artists: [MangaAuthorModel] {
-        let items = relationships.filter { relationship in
-            relationship.type == "artists"
-        }
-        return items.map { item in
-            MangaAuthorModel(relationshipItem: item)
-        }
+        relationships.artists
     }
     
     var coverArts: [MDMangaCoverAttributes] {
         let items = relationships.filter { relationship in
-            relationship.type == "cover_art"
+            relationship.type == "cover_art" &&
+            relationship.attributes != nil
         }
         return items.map { item in
-            MDMangaCoverAttributes.yy_model(with: item.attributes)!
+            MDMangaCoverAttributes.yy_model(with: item.attributes!)!
         }
     }
     

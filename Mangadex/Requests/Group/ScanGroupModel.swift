@@ -23,14 +23,7 @@ class ScanGroupModel: NSObject, YYModel {
     @objc var id: String!
     @objc var type: String!
     @objc var attributes: ScanGroupAttributes!
-    @objc var relationships: [ScanGroupRelationship]!
-    
-    convenience init(superModel: MDRelationshipModel) {
-        self.init()
-        id = superModel.id
-        type = superModel.type
-        attributes = ScanGroupAttributes.yy_model(with: superModel.attributes)
-    }
+    @objc var relationships: [ScanGroupRelationship] = []
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "relationships": ScanGroupRelationship.self ]
@@ -65,7 +58,7 @@ class ScanGroupAttributes: NSObject, YYModel {
     @objc var contactEmail: String?
     @objc var descr: String?
     @objc var twitter: String?
-    @objc var focusedLanguage: [String]?
+    @objc var focusedLanguages: [String]?
     @objc var createdAt: String!
     @objc var updatedAt: String!
     @objc var locked: Bool = false
@@ -77,6 +70,6 @@ class ScanGroupAttributes: NSObject, YYModel {
     }
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "focusedLanguage": String.self ]
+        [ "focusedLanguages": String.self ]
     }
 }

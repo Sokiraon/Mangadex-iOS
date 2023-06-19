@@ -8,12 +8,12 @@ class MDLocale {
     
     static let defaultLanguages = ["en"]
     
-    static let availableLanguages = [ "en", "jp", "zh", "zh-hk" ]
+    static let availableLanguages = [ "en", "ja", "zh", "zh-hk" ]
     
     static let languageToCountryCode = [
 //        "pt-br": "BR",
         "en": "GB",
-        "jp": "JP",
+        "ja": "JP",
         "zh": "CN",
         "zh-hk": "HK",
 //        "uk": "UA",     // Ukraine
@@ -35,7 +35,7 @@ class MDLocale {
     
     static let languageToName = [
         "en": "English",
-        "jp": "日本語",
+        "ja": "日本語",
         "zh": "中文（简体）",
         "zh-hk": "中文（繁體）"
     ]

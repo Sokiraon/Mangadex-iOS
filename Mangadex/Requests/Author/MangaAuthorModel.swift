@@ -37,14 +37,7 @@ class MangaAuthorModel: NSObject, YYModel {
     @objc var id: String!
     @objc var type: String!
     @objc var attributes: MangaAuthorAttributes!
-    @objc var relationships: [MangaAuthorRelationship]!
-    
-    convenience init(relationshipItem: MDRelationshipModel) {
-        self.init()
-        id = relationshipItem.id
-        type = relationshipItem.type
-        attributes = MangaAuthorAttributes.yy_model(with: relationshipItem.attributes)
-    }
+    @objc var relationships: [MangaAuthorRelationship] = []
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "relationships": MangaAuthorRelationship.self ]

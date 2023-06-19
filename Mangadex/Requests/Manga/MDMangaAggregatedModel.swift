@@ -21,6 +21,13 @@ class MDMangaAggregatedVolume: NSObject, YYModel {
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "chapters": MDMangaAggregatedVolumeChapter.self ]
     }
+    
+    lazy var sortedChapters: [MDMangaAggregatedVolumeChapter] = {
+        let chapters = Array(chapters.values)
+        return chapters.sorted { chapter1, chapter2 in
+            chapter1.chapter.localizedStandardCompare(chapter2.chapter) == .orderedDescending
+        }
+    }()
 }
 
 class MDMangaAggregatedModel: NSObject, YYModel {
@@ -30,7 +37,14 @@ class MDMangaAggregatedModel: NSObject, YYModel {
         [ "volumes": MDMangaAggregatedVolume.self ]
     }
     
-    var chapters: [MDMangaAggregatedChapter] {
+    lazy var volumeNames: [String] = {
+        let names = Array(volumes.keys)
+        return names.sorted { name1, name2 in
+            name1.localizedStandardCompare(name2) == .orderedDescending
+        }
+    }()
+    
+    lazy var chapters: [MDMangaAggregatedChapter] = {
         let mapped = volumes.compactMap { _, volumeModel in
             volumeModel.chapters.compactMap { _, chapterModel in
                 MDMangaAggregatedChapter(
@@ -41,10 +55,10 @@ class MDMangaAggregatedModel: NSObject, YYModel {
         return Array(mapped.joined()).sorted { chapter1, chapter2 in
             chapter1.chapter.localizedStandardCompare(chapter2.chapter) == .orderedAscending
         }
-    }
+    }()
 }
 
-class MDMangaAggregatedChapter {
+class MDMangaAggregatedChapter: Hashable {
     let id: String
     let volume: String
     let chapter: String
@@ -53,5 +67,13 @@ class MDMangaAggregatedChapter {
         self.id = id
         self.volume = volume
         self.chapter = chapter
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: MDMangaAggregatedChapter, rhs: MDMangaAggregatedChapter) -> Bool {
+        lhs.id == rhs.id
     }
 }

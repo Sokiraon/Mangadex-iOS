@@ -42,9 +42,7 @@ class LocalChapterModel: Equatable {
         }
         
         pageURLs.sort { url1, url2 in
-            let filename1 = url1.deletingPathExtension().lastPathComponent
-            let filename2 = url2.deletingPathExtension().lastPathComponent
-            return Int(filename1)! < Int(filename2)!
+            url1.lastPathComponent.localizedStandardCompare(url2.lastPathComponent) == .orderedAscending
         }
     }
     

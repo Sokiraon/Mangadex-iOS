@@ -66,12 +66,7 @@ class ChapterModel: NSObject, YYModel {
     }
     
     var scanlationGroup: ScanGroupModel? {
-        for relationship in relationships {
-            if relationship.type == "scanlation_group" {
-                return ScanGroupModel(superModel: relationship)
-            }
-        }
-        return nil
+        relationships.groups.first
     }
     
     var groupName: String {

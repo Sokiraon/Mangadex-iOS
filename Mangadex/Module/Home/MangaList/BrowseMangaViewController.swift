@@ -12,6 +12,10 @@ import PromiseKit
 import SnapKit
 import SafariServices
 
+extension UICollectionView {
+    public static let elementKindBackground = "background-element-kind"
+}
+
 class BrowseMangaViewController: BaseViewController {
     
     enum SectionLayoutKind: Int {
@@ -31,7 +35,7 @@ class BrowseMangaViewController: BaseViewController {
             let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                            heightDimension: .absolute(44))
             let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-                layoutSize: sectionHeaderSize, elementKind: .sectionHeaderElementKind, alignment: .top)
+                layoutSize: sectionHeaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
             switch sectionKind {
             case .popular:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -66,7 +70,7 @@ class BrowseMangaViewController: BaseViewController {
                 section.boundarySupplementaryItems = [sectionHeader]
                 
                 let sectionBackground = NSCollectionLayoutDecorationItem.background(
-                    elementKind: .backgroundDecorationElementKind)
+                    elementKind: UICollectionView.elementKindBackground)
                 sectionBackground.contentInsets = .init(top: 44 + 8, leading: 12, bottom: 8, trailing: 12)
                 section.decorationItems = [sectionBackground]
                 return section
@@ -88,7 +92,7 @@ class BrowseMangaViewController: BaseViewController {
             }
         }
         layout.register(BackgroundDecorationView.self,
-                        forDecorationViewOfKind: .backgroundDecorationElementKind)
+                        forDecorationViewOfKind: UICollectionView.elementKindBackground)
         
         return layout
     }
@@ -155,7 +159,8 @@ class BrowseMangaViewController: BaseViewController {
         }
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<BrowseMangaTitleSupplementaryView>(
-            elementKind: .sectionHeaderElementKind) { supplementaryView, elementKind, indexPath in
+            elementKind: UICollectionView.elementKindSectionHeader)
+        { supplementaryView, elementKind, indexPath in
             switch SectionLayoutKind(rawValue: indexPath.section)! {
             case .popular:
                 supplementaryView.label.text = "browse.section.popular".localized()

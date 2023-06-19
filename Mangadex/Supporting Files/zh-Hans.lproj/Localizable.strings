@@ -219,3 +219,7 @@
 
 "settings.themeColor.popup.title" = "设置主题色";
 "settings.chapterLanguage.popup.title" = "设置章节语言";
+
+"mangaViewer.chapterList.noVolume" = "连载";
+"mangaViewer.chapterList.volumeName" = "%d 卷";
+"mangaViewer.chapterList.chapterName" = "%@ 话";

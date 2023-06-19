@@ -94,6 +94,27 @@ class MangaViewer: BaseViewController,
         }
     }
     
+    // MARK: - Chapter List
+    
+    internal var chapterListView: UICollectionView!
+    internal var chapterListDataSource: UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>!
+    
+    private var showsChapterList = false
+    internal func showHideChapterList() {
+        if showsChapterList {
+            UIView.animate(withDuration: 0.25) {
+                self.chapterListView.transform = self.chapterListView.transform
+                    .translatedBy(x: self.chapterListView.frame.width, y: 0)
+            }
+        } else {
+            UIView.animate(withDuration: 0.25) {
+                self.chapterListView.transform = self.chapterListView.transform
+                    .translatedBy(x: -self.chapterListView.frame.width, y: 0)
+            }
+        }
+        self.showsChapterList = !self.showsChapterList
+    }
+    
     // MARK: - Properties
     
     var pageURLs: [URL] = []
@@ -108,6 +129,12 @@ class MangaViewer: BaseViewController,
     // MARK: - Handlers
     
     @objc private func handleSingleTap(_ recognizer: ShortTapGestureRecognizer) {
+        if showsChapterList {
+            showHideChapterList()
+            toggleControlArea()
+            return
+        }
+        
         let touchPointX = recognizer.location(in: view).x
         let leftEdge = MDLayout.vw(35)
         let rightEdge = MDLayout.vw(65)
@@ -161,7 +188,7 @@ class MangaViewer: BaseViewController,
     internal func toggleControlArea() {
         if isControlVisible {
             isControlVisible = false
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.25) {
                 self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: -self.appBar.frame.height)
                 self.vBottomControl.transform = self.vBottomControl.transform
                     .translatedBy(x: 0, y: self.vBottomControl.frame.height)
@@ -169,7 +196,7 @@ class MangaViewer: BaseViewController,
             }
         } else {
             isControlVisible = true
-            UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut) {
+            UIView.animate(withDuration: 0.25) {
                 self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: self.appBar.frame.height)
                 self.vBottomControl.transform = self.vBottomControl.transform
                     .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
@@ -198,9 +225,11 @@ class MangaViewer: BaseViewController,
     // MARK: - Delegate Methods
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! MangaViewerCollectionCell).resetScale()
-        // update slider value when scrolled to a new page
-        vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth))
+        if collectionView == vPages {
+            (cell as? MangaViewerCollectionCell)?.resetScale()
+            // update slider value when scrolled to a new page
+            vSlider.value = Float(ceil(collectionView.contentOffset.x / MDLayout.screenWidth))
+        }
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
