@@ -54,13 +54,12 @@ enum Requests {
                 firstly {
                     UserManager.shared.getValidatedToken()
                 }.done { token in
-                    var newHeaders = headers
-                    if !newHeaders.contains("Authorization") {
-                        newHeaders["Authorization"] = "Bearer \(token)"
-                    }
+                    let headers = headers + [
+                        "Authorization": "Bearer \(token)"
+                    ]
                     Just.get(hostUrl.appendingPathComponent(path),
                              params: params,
-                             headers: newHeaders,
+                             headers: headers,
                              asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)

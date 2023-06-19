@@ -170,14 +170,16 @@ extension Requests {
         }
         
         static func getVolumesAndChapters(
-            mangaId: String, groupId: String, language: String
+            mangaId: String, groupId: String?, language: String
         ) -> Promise<MDMangaAggregatedModel> {
             Promise { seal in
                 firstly {
                     Requests.get(
                         path: "/manga/\(mangaId)/aggregate",
-                        params: [
-                            "groups[]": groupId,
+                        params: groupId == nil ? [
+                            "translatedLanguage[]": language
+                        ] : [
+                            "groups[]": groupId!,
                             "translatedLanguage[]": language
                         ]
                     )
