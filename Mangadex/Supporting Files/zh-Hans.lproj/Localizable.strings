@@ -219,7 +219,14 @@
 
 "settings.themeColor.popup.title" = "设置主题色";
 "settings.chapterLanguage.popup.title" = "设置章节语言";
+"settings.contentFilter.title" = "内容限制";
+"settings.contentFilter.popup.title" = "设置内容限制";
 
 "mangaViewer.chapterList.noVolume" = "连载";
 "mangaViewer.chapterList.volumeName" = "%d 卷";
 "mangaViewer.chapterList.chapterName" = "%@ 话";
+
+"safe" = "全年龄";
+"suggestive" = "性暗示";
+"erotica" = "情色";
+"pornographic" = "色情";

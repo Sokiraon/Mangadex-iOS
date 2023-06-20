@@ -84,6 +84,7 @@
 		05DE11DA29A9F06D000DC9EC /* MDChapterStatisticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */; };
 		05E84D462A2ED787004F7472 /* SearchAuthorCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E84D452A2ED787004F7472 /* SearchAuthorCollectionCell.swift */; };
 		05E84D4A2A2EE4B3004F7472 /* SearchGroupCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05E84D492A2EE4B3004F7472 /* SearchGroupCollectionCell.swift */; };
+		31ED0A1D6701B6AE1F5F042A /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B8F2073F6FCC24DE331B3B /* Pods_Mangadex.framework */; };
 		390E727070B51E1DD65FF1CD /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7D7536444595F3789E40 /* UIButton+Ext.swift */; };
 		390E73D01E67642D26A2255E /* ShortTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E72DD8A45C476DD5ACBF5 /* ShortTapGestureRecognizer.swift */; };
 		390E7465241B692337FBC2C4 /* MDPreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390E7E9CF5A4AFBA1EA03F7E /* MDPreLoginViewController.swift */; };
@@ -112,7 +113,6 @@
 		7AE229BE26C1170D00DA9C83 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE229BD26C1170D00DA9C83 /* String+Ext.swift */; };
 		7AFFAB08267F41F3003D7C75 /* OnlineMangaViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFFAB07267F41F3003D7C75 /* OnlineMangaViewer.swift */; };
 		AACBCD357D406D58359E00F0 /* MDTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */; };
-		AB5540A768BA11335C919BE1 /* Pods_Mangadex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F208231B3EA90B1A3C0FBD6 /* Pods_Mangadex.framework */; };
 		B83B5607278863D000453E26 /* DateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83B5606278863CF00453E26 /* DateHelper.swift */; };
 		B86D2A7A278C31E00062F818 /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */; };
 		B89F2462278BEA6500344EE3 /* MDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B89F2461278BEA6500344EE3 /* MDButton.swift */; };
@@ -220,6 +220,7 @@
 		05DE11D929A9F06D000DC9EC /* MDChapterStatisticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDChapterStatisticsModel.swift; sourceTree = "<group>"; };
 		05E84D452A2ED787004F7472 /* SearchAuthorCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAuthorCollectionCell.swift; sourceTree = "<group>"; };
 		05E84D492A2EE4B3004F7472 /* SearchGroupCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupCollectionCell.swift; sourceTree = "<group>"; };
+		07B8F2073F6FCC24DE331B3B /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		390E700F646A32DAFDAE432C /* UINavigationController+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Ext.swift"; sourceTree = "<group>"; };
 		390E70BADCF568FE4B44094B /* Image+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Image+Ext.swift"; sourceTree = "<group>"; };
 		390E72DD8A45C476DD5ACBF5 /* ShortTapGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortTapGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -233,6 +234,7 @@
 		568E50184ADB4B940CA123EC /* Requests+Manga.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Requests+Manga.swift"; sourceTree = "<group>"; };
 		568E5D6DD46FA5AB23B18B9E /* MDTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDTextField.swift; sourceTree = "<group>"; };
 		568E5F3082DC8D4E34F1C632 /* MangaStatisticsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MangaStatisticsModel.swift; sourceTree = "<group>"; };
+		651723CEE2575945F17A2FED /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
 		7A16E01D26A42D080012C786 /* Mangadex-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mangadex-Bridging-Header.h"; sourceTree = "<group>"; };
 		7A3319DB26AD36130015D9D1 /* MDPlistStoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDPlistStoreManager.swift; sourceTree = "<group>"; };
 		7A3319DE26AD3C0B0015D9D1 /* MDMangaProgressManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDMangaProgressManager.swift; sourceTree = "<group>"; };
@@ -250,14 +252,12 @@
 		7ABB61BA2678D77500BF2860 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		7AE229BD26C1170D00DA9C83 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		7AFFAB07267F41F3003D7C75 /* OnlineMangaViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMangaViewer.swift; sourceTree = "<group>"; };
-		8F208231B3EA90B1A3C0FBD6 /* Pods_Mangadex.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mangadex.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A5027535CA0B41D6CB79D68 /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
-		A1CAF871AA33F6AF4B27F902 /* Pods-Mangadex.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.debug.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.debug.xcconfig"; sourceTree = "<group>"; };
 		AACBCC807A77747F8ACBA43D /* MDTriangleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MDTriangleView.swift; sourceTree = "<group>"; };
 		B83B5606278863CF00453E26 /* DateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelper.swift; sourceTree = "<group>"; };
 		B86D2A79278C31E00062F818 /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 		B89F2461278BEA6500344EE3 /* MDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDButton.swift; sourceTree = "<group>"; };
 		B8E39737278EAF1100B42760 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		D7849CB690B649A13C5706CF /* Pods-Mangadex.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mangadex.release.xcconfig"; path = "Target Support Files/Pods-Mangadex/Pods-Mangadex.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,7 +265,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB5540A768BA11335C919BE1 /* Pods_Mangadex.framework in Frameworks */,
+				31ED0A1D6701B6AE1F5F042A /* Pods_Mangadex.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +361,7 @@
 				004F71AD264BF8ED00D61AEB /* MangadexUITests */,
 				004F7187264BF8EB00D61AEB /* Products */,
 				C7DFFD547A9BED2B8A6310A8 /* Pods */,
-				FEE73340A344D69F9E965413 /* Frameworks */,
+				D8DB207AFB38929DF5AA3D3A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -694,16 +694,16 @@
 		C7DFFD547A9BED2B8A6310A8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A1CAF871AA33F6AF4B27F902 /* Pods-Mangadex.debug.xcconfig */,
-				9A5027535CA0B41D6CB79D68 /* Pods-Mangadex.release.xcconfig */,
+				651723CEE2575945F17A2FED /* Pods-Mangadex.debug.xcconfig */,
+				D7849CB690B649A13C5706CF /* Pods-Mangadex.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		FEE73340A344D69F9E965413 /* Frameworks */ = {
+		D8DB207AFB38929DF5AA3D3A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8F208231B3EA90B1A3C0FBD6 /* Pods_Mangadex.framework */,
+				07B8F2073F6FCC24DE331B3B /* Pods_Mangadex.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -715,12 +715,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 004F71B3264BF8ED00D61AEB /* Build configuration list for PBXNativeTarget "Mangadex" */;
 			buildPhases = (
-				9784B753DF10883C4176992E /* [CP] Check Pods Manifest.lock */,
+				F0CC334B1F00150B2C99D24E /* [CP] Check Pods Manifest.lock */,
 				004F7182264BF8EB00D61AEB /* Sources */,
 				004F7183264BF8EB00D61AEB /* Frameworks */,
 				004F7184264BF8EB00D61AEB /* Resources */,
-				273DD3772FFE09B3EC8DFF38 /* [CP] Embed Pods Frameworks */,
 				05AE0ECD28B51C2300FE4107 /* Run Script [FirebaseCrashlytics] */,
+				3E2F8F765C482134869F26D3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -862,7 +862,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
-		273DD3772FFE09B3EC8DFF38 /* [CP] Embed Pods Frameworks */ = {
+		3E2F8F765C482134869F26D3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -879,7 +879,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mangadex/Pods-Mangadex-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9784B753DF10883C4176992E /* [CP] Check Pods Manifest.lock */ = {
+		F0CC334B1F00150B2C99D24E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1195,7 +1195,7 @@
 		};
 		004F71B4264BF8ED00D61AEB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1CAF871AA33F6AF4B27F902 /* Pods-Mangadex.debug.xcconfig */;
+			baseConfigurationReference = 651723CEE2575945F17A2FED /* Pods-Mangadex.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1238,7 +1238,7 @@
 		};
 		004F71B5264BF8ED00D61AEB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A5027535CA0B41D6CB79D68 /* Pods-Mangadex.release.xcconfig */;
+			baseConfigurationReference = D7849CB690B649A13C5706CF /* Pods-Mangadex.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

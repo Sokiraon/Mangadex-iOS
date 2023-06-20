@@ -62,11 +62,29 @@ class AccountViewController: BaseViewController {
         cell.itemDecorator = { choiceCell, indexPath, key in
             var content = choiceCell.defaultContentConfiguration()
             content.image = Flag(countryCode: MDLocale.languageToCountryCode[key]!)!.originalImage
-            content.text = MDLocale.languageToName[key]
+            let locale = Locale(identifier: key)
+            content.text = locale.localizedString(forIdentifier: key)
             choiceCell.contentConfiguration = content
         }
         cell.onSubmit = { selectedKeys in
             SettingsManager.chapterLanguages = selectedKeys
+        }
+    }
+    
+    private lazy var cellContentSelector = AccountSettingsSelectorCell().apply { cell in
+        cell.icon = .init(named: "icon_18_up")
+        cell.title = "settings.contentFilter.title".localized()
+        cell.popupTitle = "settings.contentFilter.popup.title".localized()
+        cell.keys = SettingsManager.contentFilterOptions
+        cell.selectedKeysProvider = { SettingsManager.contentFilter }
+        cell.allowMultiple = true
+        cell.itemDecorator = { choiceCell, indexPath, key in
+            var content = choiceCell.defaultContentConfiguration()
+            content.text = key.localized()
+            choiceCell.contentConfiguration = content
+        }
+        cell.onSubmit = { selectedKeys in
+            SettingsManager.contentFilter = selectedKeys
         }
     }
     
@@ -95,7 +113,7 @@ class AccountViewController: BaseViewController {
     
     private lazy var settingsView = AccountSettingsView(
         sections: .init(cells: cellDataSaving),
-            .init(cells: cellDownloads, cellColorSelector, cellLangSelector),
+            .init(cells: cellDownloads, cellColorSelector, cellLangSelector, cellContentSelector),
             .init(cells: cellDeleteDownloads)
     )
     

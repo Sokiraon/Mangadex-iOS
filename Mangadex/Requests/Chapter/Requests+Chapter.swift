@@ -58,7 +58,8 @@ extension Requests {
         static func query(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
             let defaultParams: [String: Any] = [
                 "includes[]": "scanlation_group",
-                "translatedLanguage[]": MDLocale.chapterLanguages
+                "translatedLanguage[]": MDLocale.chapterLanguages,
+                "contentRating[]": SettingsManager.contentFilter
             ]
             return Promise { seal in
                 firstly {

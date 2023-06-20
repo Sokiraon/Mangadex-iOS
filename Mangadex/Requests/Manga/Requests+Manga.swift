@@ -32,6 +32,7 @@ extension Requests {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
                 "limit": 15,
+                "contentRating[]": SettingsManager.contentFilter
             ]
             let newParams = defaultParams + params
             return Promise { seal in

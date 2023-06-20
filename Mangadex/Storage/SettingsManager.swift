@@ -12,6 +12,7 @@ class SettingsManager {
     enum Keys: String {
         case themeColorIndex = "com.sokiraon.Mangadex.themeColorIndex"
         case chapterLanguages = "com.sokiraon.Mangadex.chapterLanguages"
+        case contentFilter = "com.sokiraon.Mangadex.contentFilter"
         case isDataSaving = "com.sokiraon.Mangadex.isDataSaving"
     }
     
@@ -41,6 +42,23 @@ class SettingsManager {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.isDataSaving.rawValue)
+        }
+    }
+    
+    static let contentFilterOptions = [
+        "safe", "suggestive", "erotica", "pornographic"
+    ]
+    static let defaultContentFilter = [
+        "safe", "suggestive", "erotica"
+    ]
+    
+    static var contentFilter: [String] {
+        get {
+            UserDefaults.standard.object(forKey: Keys.contentFilter.rawValue) as? [String]
+            ?? defaultContentFilter
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.contentFilter.rawValue)
         }
     }
     

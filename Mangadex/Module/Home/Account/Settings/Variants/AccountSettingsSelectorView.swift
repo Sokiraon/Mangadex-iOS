@@ -73,14 +73,14 @@ class AccountSettingsSelectorView: UIView {
         
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.height.equalTo(200)
+            make.height.equalTo(4 * 44 + 24)
             make.left.right.equalToSuperview()
             make.top.equalTo(title.snp.bottom).offset(16)
         }
         
         addSubview(submitButton)
         submitButton.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
+            make.top.equalTo(collectionView.snp.bottom).offset(16)
             make.left.right.equalToSuperview().inset(12)
             make.bottom.equalToSuperview().inset(16)
         }
@@ -103,6 +103,8 @@ class AccountSettingsSelectorView: UIView {
             cell.backgroundConfiguration = .clear()
             if self._selectedKeys.contains(key) {
                 cell.accessories = [.checkmark()]
+            } else {
+                cell.accessories = []
             }
         }
         
@@ -116,6 +118,12 @@ class AccountSettingsSelectorView: UIView {
         snapshot.appendSections([0])
         snapshot.appendItems(_keys, toSection: 0)
         dataSource.apply(snapshot)
+        
+        if _keys.count < 4 {
+            collectionView.snp.updateConstraints { make in
+                make.height.equalTo(_keys.count * 44 + 24)
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

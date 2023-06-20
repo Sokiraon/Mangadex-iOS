@@ -8,36 +8,34 @@ class MDLocale {
     
     static let defaultLanguages = ["en"]
     
-    static let availableLanguages = [ "en", "ja", "zh", "zh-hk" ]
+    static let availableLanguages = [
+        "en", "ja", "ko", "zh", "zh-hk",
+        "hi", "es", "es-la", "fr", "ar",
+        "bn", "ru", "pt", "pt-br", "de",
+        "tr", "vi", "it", "th", "uk",
+    ]
     
     static let languageToCountryCode = [
-//        "pt-br": "BR",
+        "pt": "PT",
+        "pt-br": "BR",
         "en": "GB",
         "ja": "JP",
         "zh": "CN",
         "zh-hk": "HK",
-//        "uk": "UA",     // Ukraine
-//        "es-la": "MX",  // Mexico
-//        "fr": "FR",
-//        "id": "ID",
-//        "vi": "VN",
-//        "it": "IT",
-//        "de": "DE",
-//        "fa": "IR",     // Farsi
-//        "th": "TH",
-//        "sq": "AL",     // Albanian
-//        "ar": "SA",     // Saudi Arabia
-//        "az": "AZ",
-//        "bn": "BD",     // Bangladesh
-//        "bg": "BG",
-//        "my": "MM",
-    ]
-    
-    static let languageToName = [
-        "en": "English",
-        "ja": "日本語",
-        "zh": "中文（简体）",
-        "zh-hk": "中文（繁體）"
+        "uk": "UA",     // Ukraine
+        "es": "ES",
+        "es-la": "MX",  // Mexico
+        "ar": "SA",
+        "fr": "FR",
+        "vi": "VN",
+        "it": "IT",
+        "de": "DE",
+        "ru": "RU",
+        "hi": "IN",
+        "bn": "BD",
+        "tr": "TR",
+        "ko": "KR",
+        "th": "TH",
     ]
     
     static var chapterLanguages: [String] {

@@ -131,7 +131,14 @@ Are you sure to continue?";
 
 "settings.themeColor.popup.title" = "Set Theme Color";
 "settings.chapterLanguage.popup.title" = "Set Chapter Language";
+"settings.contentFilter.title" = "Content Filter";
+"settings.contentFilter.popup.title" = "Set Content Level";
 
 "mangaViewer.chapterList.noVolume" = "No Volume";
 "mangaViewer.chapterList.volumeName" = "Volume %d";
 "mangaViewer.chapterList.chapterName" = "Chapter %@";
+
+"safe" = "Safe";
+"suggestive" = "Suggestive";
+"erotica" = "Erotica";
+"pornographic" = "Pornographic";
