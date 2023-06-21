@@ -11,13 +11,13 @@ import SwiftyJSON
 
 extension Requests {
     enum Author {
-        static func get(id: String) -> Promise<MangaAuthorModel> {
+        static func get(id: String) -> Promise<AuthorModel> {
             Promise { seal in
                 firstly {
                     Requests.get(path: "/author/\(id)")
                 }.done { json in
                     let json = JSON(json)
-                    if let model = MangaAuthorModel.yy_model(withJSON: json["data"].rawValue) {
+                    if let model = AuthorModel.yy_model(withJSON: json["data"].rawValue) {
                         seal.fulfill(model)
                     } else {
                         seal.reject(Errors.IllegalData)
@@ -28,14 +28,14 @@ extension Requests {
             }
         }
         
-        static func query(params: [String: Any] = [:]) -> Promise<MangaAuthorCollection> {
+        static func query(params: [String: Any] = [:]) -> Promise<AuthorCollection> {
             let defaultParams: [String: Any] = [ "limit": 20 ]
             let params = defaultParams + params
             return Promise { seal in
                 firstly {
                     Requests.get(path: "/author", params: params)
                 }.done { json in
-                    guard let model = MangaAuthorCollection.yy_model(withJSON: json) else {
+                    guard let model = AuthorCollection.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }

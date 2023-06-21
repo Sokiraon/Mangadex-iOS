@@ -142,7 +142,7 @@ class OnlineMangaViewer: MangaViewer {
     
     private var chapterId: String!
     private var chapterModel: ChapterModel!
-    private var statistics: MDChapterStatistics!
+    private var statistics: ChapterStatisticsModel!
     
     private var aggregatedModel: MDMangaAggregatedModel!
     private var chaptersInfo: [MDMangaAggregatedChapter] {
@@ -161,7 +161,7 @@ class OnlineMangaViewer: MangaViewer {
             when(fulfilled: Requests.Chapter.get(id: chapterId),
                  Requests.Chapter.getStatistics(id: chapterId)
             )
-        }.then { (chapterModel: ChapterModel, statistics: MDChapterStatistics) in
+        }.then { (chapterModel: ChapterModel, statistics: ChapterStatisticsModel) in
             self.statistics = statistics
             self.chapterModel = chapterModel
             self.appBar.title = chapterModel.attributes.chapterName
@@ -170,7 +170,7 @@ class OnlineMangaViewer: MangaViewer {
                 return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
                             Requests.Manga.getVolumesAndChapters(
                                mangaId: chapterModel.mangaId!,
-                               groupId: chapterModel.scanlationGroup?.id,
+                               groupId: chapterModel.relationships.group?.id,
                                language: chapterModel.attributes.translatedLanguage
                             )
                        )

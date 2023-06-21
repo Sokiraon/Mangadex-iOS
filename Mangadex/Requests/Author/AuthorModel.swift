@@ -1,5 +1,5 @@
 //
-//  MangaAuthorModel.swift
+//  AuthorModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 9/2/22.
@@ -8,7 +8,7 @@
 import Foundation
 import YYModel
 
-class MangaAuthorAttributes: NSObject, YYModel {
+class AuthorAttributes: NSObject, YYModel {
     @objc var name: String!
     @objc var imageUrl: String?
     @objc var createdAt: String!
@@ -28,29 +28,32 @@ class MangaAuthorAttributes: NSObject, YYModel {
     @objc var website: String?
 }
 
-class MangaAuthorRelationship: NSObject {
+class AuthorRelationship: NSObject {
     @objc var id: String!
     @objc var type: String!
 }
 
-class MangaAuthorModel: NSObject, YYModel {
+class AuthorModelEssential: NSObject {
     @objc var id: String!
     @objc var type: String!
-    @objc var attributes: MangaAuthorAttributes!
-    @objc var relationships: [MangaAuthorRelationship] = []
+    @objc var attributes: AuthorAttributes!
+}
+
+class AuthorModel: AuthorModelEssential, YYModel {
+    @objc var relationships: [AuthorRelationship] = []
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": MangaAuthorRelationship.self ]
+        [ "relationships": AuthorRelationship.self ]
     }
 }
 
-class MangaAuthorCollection: NSObject, YYModel {
+class AuthorCollection: NSObject, YYModel {
     @objc var limit = 0
     @objc var offset = 0
     @objc var total = 0
-    @objc var data: [MangaAuthorModel]!
+    @objc var data: [AuthorModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": MangaAuthorModel.self ]
+        [ "data": AuthorModel.self ]
     }
 }

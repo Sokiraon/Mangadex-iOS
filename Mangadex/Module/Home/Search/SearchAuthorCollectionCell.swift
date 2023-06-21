@@ -39,7 +39,7 @@ class SearchAuthorCollectionCell: UICollectionViewCell, Highlightable {
         }
     }
     
-    func setContent(authorModel: MangaAuthorModel) {
+    func setContent(authorModel: AuthorModel) {
         lblName.text = authorModel.attributes.name
         if authorModel.relationships.count == 1 {
             lblTitleCount.text = "search.author.titleCount.single".localized()

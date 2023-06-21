@@ -46,8 +46,8 @@ class FollowedUpdatesViewController: BaseViewController {
         firstly {
             Requests.User.getFollowedMangaFeed()
         }.then { feedModel in
-            self.aggregatedChapters = feedModel.aggregated
-            let mangaIds = Array(feedModel.aggregated.keys)
+            self.aggregatedChapters = feedModel.aggregatedByManga
+            let mangaIds = Array(feedModel.aggregatedByManga.keys)
             return Requests.Manga.query(
                 params: ["limit": mangaIds.count, "ids[]": mangaIds])
         }.done { mangaList in

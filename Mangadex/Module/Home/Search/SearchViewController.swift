@@ -230,8 +230,8 @@ class SearchViewController: BaseViewController {
     private let collectionLoaderIdentifier = "0"
     
     private var mangaList = [MangaModel]()
-    private var authorList = [MangaAuthorModel]()
-    private var groupList = [ScanGroupModel]()
+    private var authorList = [AuthorModel]()
+    private var groupList = [GroupModel]()
 }
 
 extension SearchViewController: UISearchBarDelegate {

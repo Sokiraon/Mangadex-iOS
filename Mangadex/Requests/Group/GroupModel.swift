@@ -1,5 +1,5 @@
 //
-//  ScanGroupModel.swift
+//  GroupModel.swift
 //  Mangadex
 //
 //  Created by John Rion on 12/21/22.
@@ -8,50 +8,38 @@
 import Foundation
 import YYModel
 
-class ScanGroupCollection: NSObject, YYModel {
+class GroupCollection: NSObject, YYModel {
     @objc var limit = 0
     @objc var offset = 0
     @objc var total = 0
-    @objc var data: [ScanGroupModel]!
+    @objc var data: [GroupModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": ScanGroupModel.self ]
+        [ "data": GroupModel.self ]
     }
 }
 
-class ScanGroupModel: NSObject, YYModel {
+class GroupModelEssential: NSObject {
     @objc var id: String!
     @objc var type: String!
-    @objc var attributes: ScanGroupAttributes!
-    @objc var relationships: [ScanGroupRelationship] = []
+    @objc var attributes: GroupAttributes!
+}
+
+class GroupModel: GroupModelEssential, YYModel {
+    @objc var relationships: [UserModelEssential] = []
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": ScanGroupRelationship.self ]
+        [ "relationships": UserModelEssential.self ]
     }
     
-    var leader: ScanGroupRelationship? {
+    var leader: UserModelEssential? {
         relationships.first { model in
             model.type == "leader"
         }
     }
 }
 
-class ScanGroupRelationship: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: ScanGroupRelationshipAttrs?
-}
-
-class ScanGroupRelationshipAttrs: NSObject, YYModel {
-    @objc var roles: [String]!
-    @objc var username: String!
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "roles": String.self ]
-    }
-}
-
-class ScanGroupAttributes: NSObject, YYModel {
+class GroupAttributes: NSObject, YYModel {
     @objc var name: String!
     @objc var website: String?
     @objc var discord: String?

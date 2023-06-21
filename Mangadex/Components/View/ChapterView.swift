@@ -71,7 +71,13 @@ class ChapterView: UIView {
     func setContent(with model: ChapterModel) {
         flagView.image = model.attributes.languageFlag
         titleLabel.text = model.attributes.fullChapterName
-        groupLabel.text = model.groupName
+        if let group = model.relationships.group {
+            groupLabel.text = group.attributes.name
+        }
+        else if let user = model.relationships.user {
+            groupIcon.image = .init(named: "icon_person_outlined")
+            groupLabel.text = user.attributes?.username
+        }
         updateLabel.text = DateHelper.dateStringFromNow(
             isoDateString: model.attributes.readableAt)
         if model.attributes.externalUrl == nil {

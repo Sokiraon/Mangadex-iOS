@@ -32,18 +32,18 @@ extension Requests {
             mangaId: String,
             offset: Int,
             order: Order
-        ) -> Promise<MangaFeedModel> {
+        ) -> Promise<ChapterCollection> {
             Promise { seal in
                 firstly {
                     Requests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
                         "offset": offset,
-                        "includes[]": [ "scanlation_group", "user" ],
+                        "includes[]": [ "scanlation_group", "user", "manga" ],
                         "translatedLanguage[]": MDLocale.chapterLanguages,
                         "order[chapter]": order.rawValue
                     ])
                 }
                     .done { json in
-                        guard let model = MangaFeedModel.yy_model(withJSON: json) else {
+                        guard let model = ChapterCollection.yy_model(withJSON: json) else {
                             seal.reject(Errors.IllegalData)
                             return
                         }
@@ -57,7 +57,7 @@ extension Requests {
         
         static func query(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
             let defaultParams: [String: Any] = [
-                "includes[]": "scanlation_group",
+                "includes[]": ["scanlation_group", "manga", "user"],
                 "translatedLanguage[]": MDLocale.chapterLanguages,
                 "contentRating[]": SettingsManager.contentFilter
             ]
@@ -97,14 +97,14 @@ extension Requests {
             }
         }
         
-        static func getStatistics(id: String) -> Promise<MDChapterStatistics> {
+        static func getStatistics(id: String) -> Promise<ChapterStatisticsModel> {
             Promise { seal in
                 firstly {
                     Requests.get(path: "/statistics/chapter/\(id)")
                 }.done { json in
                     let json = JSON(json)
                     if let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
-                       let model = MDChapterStatistics.yy_model(withJSON: dict) {
+                       let model = ChapterStatisticsModel.yy_model(withJSON: dict) {
                         seal.fulfill(model)
                     } else {
                         seal.reject(Errors.IllegalData)
@@ -134,7 +134,7 @@ extension Requests {
             }
         }
         
-        static func createForumThread(chapterId: String) -> Promise<MDChapterStatistics> {
+        static func createForumThread(chapterId: String) -> Promise<ChapterStatisticsModel> {
             Promise { seal in
                 Requests.post(
                     path: "/forums/thread",
@@ -144,7 +144,7 @@ extension Requests {
                     let data = JSON(result)["data"]
                     if let id = data["id"].int,
                        let repliesCount = data["attributes"]["repliesCount"].int {
-                        seal.fulfill(MDChapterStatistics(threadId: id, repliesCount: repliesCount))
+                        seal.fulfill(ChapterStatisticsModel(threadId: id, repliesCount: repliesCount))
                     } else {
                         seal.reject(Errors.IllegalData)
                     }

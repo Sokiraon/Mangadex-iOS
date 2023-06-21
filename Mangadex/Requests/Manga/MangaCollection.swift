@@ -113,20 +113,23 @@ class MangaAttributes: NSObject, YYModel {
     }
 }
 
-class MangaModel: NSObject, YYModel {
-    @objc var id: String! = ""
+class MangaModelEssential: NSObject {
+    @objc var id: String!
     @objc var attributes: MangaAttributes!
-    @objc var relationships: [MDRelationshipModel]!
+}
+
+class MangaModel: MangaModelEssential, YYModel {
+    @objc var relationships: [RelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["relationships": MDRelationshipModel.classForCoder()]
+        ["relationships": RelationshipModel.classForCoder()]
     }
     
-    var authors: [MangaAuthorModel] {
+    var authors: [AuthorModelEssential] {
         relationships.authors
     }
     
-    var primaryAuthor: MangaAuthorModel? {
+    var primaryAuthor: AuthorModelEssential? {
         authors.first
     }
     
@@ -134,36 +137,30 @@ class MangaModel: NSObject, YYModel {
         primaryAuthor?.attributes?.name ?? "kAuthorUnknown".localized()
     }
     
-    var artists: [MangaAuthorModel] {
+    var artists: [AuthorModelEssential] {
         relationships.artists
     }
     
-    var coverArts: [MDMangaCoverAttributes] {
-        let items = relationships.filter { relationship in
-            relationship.type == "cover_art" &&
-            relationship.attributes != nil
-        }
-        return items.map { item in
-            MDMangaCoverAttributes.yy_model(with: item.attributes!)!
-        }
+    var coverArts: [CoverArtModelEssential] {
+        relationships.coverArts
     }
     
     var coverURL: URL? {
-        guard let attr = coverArts.first else {
+        guard let model = coverArts.first else {
             return nil
         }
-        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).256.jpg"
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(model.attributes.fileName!).256.jpg"
         return URL(string: urlStr)
     }
     
     var coverURLHD: URL? {
-        guard let attr = coverArts.first else {
-            return nil
-        }
         if SettingsManager.isDataSavingMode {
             return coverURL
         }
-        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(attr.fileName!).512.jpg"
+        guard let model = coverArts.first else {
+            return nil
+        }
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(model.attributes.fileName!).512.jpg"
         return URL(string: urlStr)
     }
     

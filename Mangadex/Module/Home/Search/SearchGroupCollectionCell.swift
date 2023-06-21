@@ -39,7 +39,7 @@ class SearchGroupCollectionCell: UICollectionViewCell, Highlightable {
         }
     }
     
-    func setContent(groupModel: ScanGroupModel) {
+    func setContent(groupModel: GroupModel) {
         lblName.text = groupModel.attributes.name
         if let leaderName = groupModel.leader?.attributes?.username {
             lblLeader.text = "search.group.leader".localizedFormat(leaderName)

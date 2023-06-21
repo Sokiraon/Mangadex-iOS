@@ -59,18 +59,10 @@ class ChapterAttributes: NSObject {
 class ChapterModel: NSObject, YYModel {
     @objc var id: String!
     @objc var attributes: ChapterAttributes!
-    @objc var relationships: [MDRelationshipModel]!
+    @objc var relationships: [RelationshipModel]!
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": MDRelationshipModel.self ]
-    }
-    
-    var scanlationGroup: ScanGroupModel? {
-        relationships.groups.first
-    }
-    
-    var groupName: String {
-        scanlationGroup?.attributes.name ?? "manga.group.noName".localized()
+        [ "relationships": RelationshipModel.self ]
     }
     
     var mangaId: String? {
@@ -94,37 +86,17 @@ class ChapterCollection: NSObject, YYModel {
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "data": ChapterModel.self ]
     }
-}
-
-// MARK: - Chapter Pages Data
-
-class ChapterPages: NSObject, YYModel {
-    @objc var chapterHash: String!
-    @objc var data: [String]!
-    @objc var dataSaver: [String]!
     
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["data": String.self, "dataSaver": String.self]
-    }
-    
-    static func modelCustomPropertyMapper() -> [String : Any]? {
-        ["chapterHash": "hash"]
-    }
-}
-
-class ChapterPagesModel: NSObject {
-    @objc private var baseUrl: String!
-    @objc private var chapter: ChapterPages!
-    
-    var pageURLs: [URL] {
-        if SettingsManager.isDataSavingMode {
-            return chapter.dataSaver.map { fileName in
-                URL(string: "\(baseUrl!)/data-saver/\(chapter.chapterHash!)/\(fileName)")!
-            }
-        } else {
-            return chapter.data.map { fileName in
-                URL(string: "\(baseUrl!)/data/\(chapter.chapterHash!)/\(fileName)")!
+    lazy var aggregatedByManga: [String: [ChapterModel]] = {
+        var result: [String: [ChapterModel]] = [:]
+        for chapterModel in data {
+            let mangaId = chapterModel.mangaId!
+            if result.contains(mangaId) {
+                result[mangaId]?.append(chapterModel)
+            } else {
+                result[mangaId] = [chapterModel]
             }
         }
-    }
+        return result
+    }()
 }

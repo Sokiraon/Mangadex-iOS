@@ -10,7 +10,7 @@ import PromiseKit
 
 extension Requests {
     enum Group {
-        static func query(params: [String: Any] = [:]) -> Promise<ScanGroupCollection> {
+        static func query(params: [String: Any] = [:]) -> Promise<GroupCollection> {
             let defaultParams: [String: Any] = [
                 "limit": 15,
                 "includes[]": "leader"
@@ -20,7 +20,7 @@ extension Requests {
                 firstly {
                     Requests.get(path: "/group", params: params)
                 }.done { json in
-                    guard let model = ScanGroupCollection.yy_model(withJSON: json) else {
+                    guard let model = GroupCollection.yy_model(withJSON: json) else {
                         seal.reject(Errors.IllegalData)
                         return
                     }

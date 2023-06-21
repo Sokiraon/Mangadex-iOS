@@ -85,10 +85,7 @@ class MangaDetailHeaderView: UIView {
             make.width.equalTo(100)
             make.height.equalTo(150)
         }
-        if let coverArt = mangaModel.coverArts.first {
-            let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(mangaModel.id!)/\(coverArt.fileName!).256.jpg"
-            ivCover.kf.setImage(with: URL(string: urlStr))
-        }
+        ivCover.kf.setImage(with: mangaModel.coverURL)
         
         addSubview(lblTitle)
         lblTitle.text = mangaModel.attributes.localizedTitle
