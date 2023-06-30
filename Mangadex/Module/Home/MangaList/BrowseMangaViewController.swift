@@ -237,13 +237,17 @@ class BrowseMangaViewController: BaseViewController {
                                  toSection: .updates)
             snapshot.appendItems(self.recentTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .added)
-            _ = Requests.Manga.query(params: ["ids[]": seasonalListModel.mangaIds])
+            Requests.Manga
+                .query(params: ["ids[]": seasonalListModel.mangaIds])
                 .done { seasonalCollection in
                     self.seasonalTitles = seasonalCollection.data
                     snapshot.appendItems(
                         self.seasonalTitles.map({ mangaModel in mangaModel.id }),
                         toSection: .seasonal)
                     self.dataSource.apply(snapshot, animatingDifferences: true)
+                    self.collectionHeaderView.setRefreshing(false)
+                }
+                .catch { error in
                     self.collectionHeaderView.setRefreshing(false)
                 }
         }.catch { error in
@@ -257,7 +261,8 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
         switch SectionLayoutKind(rawValue: indexPath.section)! {
         case .popular:
             let mangaModel = popularTitles[indexPath.item]
-            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaTitleViewController(mangaModel: mangaModel)
+//            let vc = MangaDetailViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         case .updates:
@@ -274,12 +279,12 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
             break
         case .seasonal:
             let mangaModel = seasonalTitles[indexPath.item]
-            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaTitleViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         case .added:
             let mangaModel = recentTitles[indexPath.item]
-            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaTitleViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         }

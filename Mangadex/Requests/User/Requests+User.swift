@@ -7,6 +7,7 @@
 
 import Foundation
 import PromiseKit
+import SwiftyJSON
 
 extension Requests {
     
@@ -70,6 +71,41 @@ extension Requests {
                     seal.fulfill(true)
                 }.catch { error in
                     seal.fulfill(false)
+                }
+            }
+        }
+        
+        static func getMangaRating(for mangaId: String) -> Promise<Int> {
+            Promise { seal in
+                firstly {
+                    Requests.get(path: "/rating",
+                                 params: [ "manga[]": mangaId ],
+                                 requireAuth: true)
+                }.done { json in
+                    let json = JSON(json)
+                    if let rating = json["ratings"][mangaId]["rating"].int {
+                        seal.fulfill(rating)
+                    } else {
+                        seal.fulfill(0)
+                    }
+                }.catch { error in
+                    seal.reject(error)
+                }
+            }
+        }
+        
+        static func setMangaRating(for mangaId: String,
+                                   to value: Int) -> Promise<Bool> {
+            let request = value == 0 ?
+                Requests.delete(path: "/rating/\(mangaId)", requireAuth: true) :
+                Requests.post(path: "/rating/\(mangaId)",
+                              data: ["rating": value],
+                              requireAuth: true)
+            return Promise { seal in
+                request.done { json in
+                    seal.fulfill(true)
+                }.catch { error in
+                    seal.reject(error)
                 }
             }
         }

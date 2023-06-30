@@ -45,6 +45,8 @@ class BaseViewController: UIViewController {
         isStatusBarHidden
     }
     
+    internal lazy var appBarHeight = MDLayout.safeInsetTop + 44
+    
     /// Default AppBar of the viewController. Loaded on-demand.
     internal lazy var appBar = AppBar().apply { _ in
         self.statusBarStyle = .lightContent
@@ -52,18 +54,32 @@ class BaseViewController: UIViewController {
     
     ///
     /// Used for setting up top navigation bar.
-    internal func setupNavBar(title: String? = nil, backgroundColor: UIColor = .themePrimary) {
+    internal func setupNavBar(title: String? = nil,
+                              backgroundColor: UIColor = .themePrimary,
+                              style: AppBar.Style = .filled) {
         if title != nil {
             appBar.title = title
         }
-        appBar.backgroundColor = backgroundColor
-        statusBarStyle = .lightContent
+        if style == .blur {
+            statusBarStyle = .darkContent
+            appBar.backgroundColor = .clear
+            appBar.lblTitle.textColor = .black
+            appBar.btnBack.configuration?.baseForegroundColor = .black
+            
+            appBar.insertSubview(appBar.blurView, at: 0)
+            appBar.blurView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+        } else {
+            appBar.backgroundColor = backgroundColor
+            statusBarStyle = .lightContent
+        }
         
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
             make.top.equalTo(view)
             make.width.equalTo(MDLayout.screenWidth)
-            make.height.equalTo(MDLayout.safeInsetTop + 44)
+            make.height.equalTo(appBarHeight)
         }
     }
     

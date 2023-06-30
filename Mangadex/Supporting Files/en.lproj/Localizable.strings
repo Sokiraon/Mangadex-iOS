@@ -142,3 +142,27 @@ Are you sure to continue?";
 "suggestive" = "Suggestive";
 "erotica" = "Erotica";
 "pornographic" = "Pornographic";
+
+"manga.detail.rate" = "Rate Manga";
+"manga.detail.tab.chapters" = "Chapters";
+"manga.detail.tab.info" = "Info";
+"manga.detail.tab.covers" = "Covers";
+"manga.detail.info.descr" = "Description";
+"manga.detail.info.author" = "Author & Artist";
+"manga.detail.info.genre" = "Genres";
+"manga.detail.info.theme" = "Themes";
+"manga.detail.info.tag" = "Tags";
+"manga.detail.cover.volume" = "Volume %@";
+"manga.detail.cover.noVolume" = "No Volume";
+
+"manga.rate.0" = "No Rating";
+"manga.rate.1" = "1: Appalling";
+"manga.rate.2" = "2: Horrible";
+"manga.rate.3" = "3: Very Bad";
+"manga.rate.4" = "4: Bad";
+"manga.rate.5" = "5: Average";
+"manga.rate.6" = "6: Fine";
+"manga.rate.7" = "7: Good";
+"manga.rate.8" = "8: Very Good";
+"manga.rate.9" = "9: Great";
+"manga.rate.10" = "10: Masterpiece";

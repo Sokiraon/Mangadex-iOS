@@ -52,7 +52,7 @@ class MangaAttributes: NSObject, YYModel {
     @objc var altTitles: [[String: String]]!
     @objc var descript: [String: String]?
     @objc var status: String!
-    @objc var tags: [MDMangaTagDataModel]!
+    @objc var tags: [MangaTagModel]!
     @objc var lastVolume: String?
     @objc var lastChapter: String?
     @objc var updatedAt: String!
@@ -63,7 +63,7 @@ class MangaAttributes: NSObject, YYModel {
 
     class func modelContainerPropertyGenericClass() -> [String: Any]? {
         [
-            "tags": MDMangaTagDataModel.classForCoder(),
+            "tags": MangaTagModel.classForCoder(),
             "title": Any.self,
             "altTitles": Any.self,
         ]
@@ -141,12 +141,8 @@ class MangaModel: MangaModelEssential, YYModel {
         relationships.artists
     }
     
-    var coverArts: [CoverArtModelEssential] {
-        relationships.coverArts
-    }
-    
     var coverURL: URL? {
-        guard let model = coverArts.first else {
+        guard let model = relationships.coverArt else {
             return nil
         }
         let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(model.attributes.fileName!).256.jpg"
@@ -157,10 +153,18 @@ class MangaModel: MangaModelEssential, YYModel {
         if SettingsManager.isDataSavingMode {
             return coverURL
         }
-        guard let model = coverArts.first else {
+        guard let model = relationships.coverArt else {
             return nil
         }
         let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(model.attributes.fileName!).512.jpg"
+        return URL(string: urlStr)
+    }
+    
+    var coverURLOriginal: URL? {
+        guard let model = relationships.coverArt else {
+            return nil
+        }
+        let urlStr = "\(HostUrl.uploads.rawValue)/covers/\(id!)/\(model.attributes.fileName!)"
         return URL(string: urlStr)
     }
     

@@ -28,10 +28,10 @@ extension Requests {
         ///   - locale: filter by a specific language
         ///   - order: chapter order, either ascending or descending
         /// - Returns: Promise fulfilled by MangaChapterList
-        static func getListForManga(
+        static func getMangaFeed(
             mangaId: String,
             offset: Int,
-            order: Order
+            order: Order = .desc
         ) -> Promise<ChapterCollection> {
             Promise { seal in
                 firstly {

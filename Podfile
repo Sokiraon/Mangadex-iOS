@@ -25,6 +25,8 @@ target "Mangadex" do
   pod "MarkdownKit"
   pod 'SkeletonView'
   pod 'Tabman'
+  pod "Agrume"
+  pod 'Cosmos', '~> 23.0'
   
 end
 

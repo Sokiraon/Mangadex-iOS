@@ -12,6 +12,8 @@ class CoverArtAttributes: NSObject {
     @objc var fileName: String!
     @objc var createdAt: String!
     @objc var updatedAt: String!
+    @objc var volume: String?
+    @objc var locale: String!
 }
 
 class CoverArtModelEssential: NSObject {
@@ -25,5 +27,16 @@ class CoverArtModel: CoverArtModelEssential, YYModel {
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "relationships": RelationshipModel.self ]
+    }
+}
+
+class CoverArtCollection: NSObject, YYModel {
+    @objc var data = [CoverArtModel]()
+    @objc var limit = 0
+    @objc var offset = 0
+    @objc var total = 0
+    
+    static func modelContainerPropertyGenericClass() -> [String : Any]? {
+        [ "data": CoverArtModel.self ]
     }
 }

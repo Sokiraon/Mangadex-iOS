@@ -49,8 +49,8 @@ extension Array where Element: RelationshipModel {
         }
     }
     
-    var coverArts: [CoverArtModelEssential] {
-        filter { relationship in
+    var coverArt: CoverArtModelEssential? {
+        first { relationship in
             relationship.type == "cover_art" &&
             relationship.attributes != nil
         }.map { relationship in

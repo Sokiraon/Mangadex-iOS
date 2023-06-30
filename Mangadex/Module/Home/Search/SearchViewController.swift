@@ -36,7 +36,7 @@ class SearchViewController: BaseViewController {
         view.register(MangaListCollectionCell.self, forCellWithReuseIdentifier: "manga")
         view.register(SearchAuthorCollectionCell.self, forCellWithReuseIdentifier: "author")
         view.register(SearchGroupCollectionCell.self, forCellWithReuseIdentifier: "group")
-        view.register(MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
+        view.register(CollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
         return view
     }()
     
@@ -316,7 +316,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDelega
         switch section {
         case .manga:
             let mangaModel = mangaList[indexPath.item]
-            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaTitleViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         default:

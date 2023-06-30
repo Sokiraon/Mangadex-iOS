@@ -8,7 +8,29 @@
 import Foundation
 import UIKit
 
+class DynamicIntensityVisualEffectView: UIVisualEffectView {
+    
+    private var animator: UIViewPropertyAnimator!
+    
+    init(effect: UIVisualEffect?, intensity: CGFloat = 1) {
+        super.init(effect: nil)
+        animator = UIViewPropertyAnimator(duration: 1, curve: .linear) {
+            self.effect = effect
+        }
+        animator.fractionComplete = intensity
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+}
+
 class AppBar: UIView {
+    
+    enum Style {
+        case filled
+        case blur
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,7 +42,10 @@ class AppBar: UIView {
         setupUI()
     }
     
-    private lazy var btnBack: UIButton = {
+    let blurView = DynamicIntensityVisualEffectView(
+        effect: UIBlurEffect(style: .extraLight), intensity: 0.6)
+    
+    lazy var btnBack: UIButton = {
         var conf = UIButton.Configuration.plain()
         conf.image = .init(named: "icon_arrow_back")
         conf.baseForegroundColor = .white
@@ -34,7 +59,7 @@ class AppBar: UIView {
         return button
     }()
     
-    private lazy var lblTitle = UILabel(fontSize: 17, fontWeight: .medium, color: .white)
+    lazy var lblTitle = UILabel(fontSize: 17, fontWeight: .medium, color: .white)
     var title: String? = nil {
         didSet {
             lblTitle.text = title

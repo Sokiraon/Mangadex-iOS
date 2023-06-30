@@ -79,7 +79,7 @@ class BrowseMangaUpdatesCell: UICollectionViewCell {
     
     @objc func showMangaDetail() {
         if let mangaModel = chapterModel.mangaModel {
-            let vc = MangaDetailViewController(mangaModel: mangaModel)
+            let vc = MangaTitleViewController(mangaModel: mangaModel)
             MDRouter.navigationController?.pushViewController(vc, animated: true)
         }
     }

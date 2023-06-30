@@ -230,3 +230,27 @@
 "suggestive" = "性暗示";
 "erotica" = "情色";
 "pornographic" = "色情";
+
+"manga.detail.rate" = "评价漫画";
+"manga.detail.tab.chapters" = "章节";
+"manga.detail.tab.info" = "信息";
+"manga.detail.tab.covers" = "封面";
+"manga.detail.info.descr" = "简介";
+"manga.detail.info.author" = "作者 & 绘者";
+"manga.detail.info.genre" = "体裁";
+"manga.detail.info.theme" = "主题";
+"manga.detail.info.tag" = "标签";
+"manga.detail.cover.volume" = "%@ 卷";
+"manga.detail.cover.noVolume" = "未标记";
+
+"manga.rate.0" = "未评分";
+"manga.rate.1" = "1：粪作";
+"manga.rate.2" = "2：臭作";
+"manga.rate.3" = "3：烂作";
+"manga.rate.4" = "4：较差";
+"manga.rate.5" = "5：能看";
+"manga.rate.6" = "6：还行";
+"manga.rate.7" = "7：不错";
+"manga.rate.8" = "8：佳作";
+"manga.rate.9" = "9：名作";
+"manga.rate.10" = "10：神作";

@@ -1,5 +1,5 @@
 //
-//  MDCollectionLoaderCell.swift
+//  CollectionLoaderCell.swift
 //  Mangadex
 //
 //  Created by John Rion on 2023/3/11.
@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A loader cell used in collectionView to represent the **loading** state.
-class MDCollectionLoaderCell: UICollectionViewCell {
+class CollectionLoaderCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)

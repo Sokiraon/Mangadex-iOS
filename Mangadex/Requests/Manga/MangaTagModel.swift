@@ -10,11 +10,25 @@ class MDMangaTagAttributes: NSObject {
     @objc var group: String!
 }
 
-class MDMangaTagDataModel: NSObject {
+class MangaTagModel: NSObject {
     @objc var id: String!
     @objc var attributes: MDMangaTagAttributes!
     
     func localizedName() -> String? {
         return attributes.name.en?.localized()
+    }
+}
+
+extension Array where Element: MangaTagModel {
+    var genres: Self {
+        filter { tagModel in
+            tagModel.attributes.group == "genre"
+        }
+    }
+    
+    var themes: Self {
+        filter { tagModel in
+            tagModel.attributes.group == "theme"
+        }
     }
 }

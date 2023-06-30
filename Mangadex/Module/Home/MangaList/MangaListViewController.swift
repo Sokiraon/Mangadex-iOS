@@ -21,7 +21,7 @@ class MangaListViewController: BaseViewController {
     ).apply { view in
         view.delegate = self
         view.register(MangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
-        view.register(MDCollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
+        view.register(CollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
         view.contentInset = .cssStyle(5, 10, 10)
         view.mj_header = refreshHeader
     }
@@ -162,7 +162,7 @@ extension MangaListViewController: UICollectionViewDelegate, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = MangaDetailViewController(mangaModel: mangaList[indexPath.row])
+        let vc = MangaTitleViewController(mangaModel: mangaList[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
 }
