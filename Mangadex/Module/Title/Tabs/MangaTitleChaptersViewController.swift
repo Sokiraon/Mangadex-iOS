@@ -125,4 +125,10 @@ class MangaTitleChaptersViewController: BaseViewController {
                 self.dataSource.apply(snapshot)
             }
     }
+    
+    func viewChapter(at indexPath: IndexPath) {
+        let chapterModel = chapterModels[indexPath.item]
+        let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

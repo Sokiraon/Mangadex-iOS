@@ -242,11 +242,9 @@ class MangaTitleViewController: BaseViewController {
         var request: Promise<Bool>
         if readingStatus == .null {
             newStatus = .reading
-//            followButton.spinner.color = .darkerGray565656
             request = Requests.Manga.follow(mangaId: mangaModel.id)
         } else {
             newStatus = .null
-//            followButton.spinner.color = .white
             request = Requests.Manga.unFollow(mangaId: mangaModel.id)
         }
         followButton.isLoading = true
@@ -353,6 +351,14 @@ extension MangaTitleViewController: UICollectionViewDelegate {
         if collectionView == tabVC.chaptersTab.collectionView,
            cell is CollectionLoaderCell {
             tabVC.chaptersTab.loadMoreChapters()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        if collectionView == tabVC.chaptersTab.collectionView,
+           indexPath.section == 0 {
+            tabVC.chaptersTab.viewChapter(at: indexPath)
         }
     }
 }
