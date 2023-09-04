@@ -560,8 +560,8 @@
 			isa = PBXGroup;
 			children = (
 				05D939612A4D93B00097432B /* Tabs */,
-				05DB5D782A49C65700C52DCA /* MangaTitleViewController.swift */,
 				059B1C342A4E80B500BFC445 /* MangaTitleRatingView.swift */,
+				05DB5D782A49C65700C52DCA /* MangaTitleViewController.swift */,
 				05AD8A6D2A4A89D0008D0657 /* MangaTitleTabViewController.swift */,
 			);
 			path = Title;

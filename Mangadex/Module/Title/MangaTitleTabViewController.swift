@@ -13,6 +13,7 @@ import Pageboy
 class MangaTitleTabViewController: TabmanViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        bounces = false
         setupTabBar()
     }
     

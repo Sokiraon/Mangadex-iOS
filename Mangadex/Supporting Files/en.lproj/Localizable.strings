@@ -52,8 +52,8 @@
 "kReleaseNextChapter" = "Release to show next chapter";
 "kLoading" = "Loading ...";
 
-"kMangaActionStartOver" = "Start reading";
-"kMangaActionContinue" = "Continue from last viewed";
+"kMangaActionStartOver" = "Start Reading";
+"kMangaActionContinue" = "Continue Reading";
 "kMangaActionToFollow" = "Follow";
 "kMangaActionFollowed" = "Followed";
 "kMangaActionFollowLoading" = "Loading...";

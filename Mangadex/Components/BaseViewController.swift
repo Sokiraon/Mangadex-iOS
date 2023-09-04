@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class BaseViewController: UIViewController {
     
@@ -45,7 +46,7 @@ class BaseViewController: UIViewController {
         isStatusBarHidden
     }
     
-    internal lazy var appBarHeight = MDLayout.safeInsetTop + 44
+    internal lazy var AppBarHeight = MDLayout.safeInsetTop + 44
     
     /// Default AppBar of the viewController. Loaded on-demand.
     internal lazy var appBar = AppBar().apply { _ in
@@ -77,9 +78,8 @@ class BaseViewController: UIViewController {
         
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
-            make.top.equalTo(view)
-            make.width.equalTo(MDLayout.screenWidth)
-            make.height.equalTo(appBarHeight)
+            make.top.left.right.equalTo(view)
+            make.height.equalTo(AppBarHeight)
         }
     }
     

@@ -69,6 +69,8 @@ class MangaTitleViewController: BaseViewController {
         self.mangaModel = mangaModel
     }
     
+    private lazy var BackgroundViewHeight = AppBarHeight + 16 + 180 + 16
+    
     override func setupUI() {
         view.addSubview(scrollView)
         scrollView.delegate = self
@@ -83,7 +85,8 @@ class MangaTitleViewController: BaseViewController {
         backgroundView.contentMode = .scaleAspectFill
         backgroundView.kf.setImage(with: mangaModel.coverURLOriginal,
                                    options: [.transition(.fade(0.2))])
-        backgroundView.frame = .init(x: 0, y: 0, width: MDLayout.screenWidth, height: 303)
+        backgroundView.frame = .init(x: 0, y: 0, width: MDLayout.screenWidth,
+                                     height: BackgroundViewHeight)
         
         setupNavBar(title: mangaModel.attributes.localizedTitle, style: .blur)
         appBar.blurView.alpha = 0
@@ -102,7 +105,7 @@ class MangaTitleViewController: BaseViewController {
         }
         
         coverImage.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(appBarHeight + 16)
+            make.top.equalToSuperview().inset(AppBarHeight + 16)
             make.left.equalToSuperview().inset(16)
             make.width.equalTo(120)
             make.height.equalTo(180)
@@ -207,13 +210,9 @@ class MangaTitleViewController: BaseViewController {
     }
     
     var parentScrollViewHasReachedMax = false
-    let parentScrollViewMaxOffsetY = 303.0 - (MDLayout.safeInsetTop + 44)
-    lazy var titleLabelScrollInOffsetY: CGFloat = {
-        titleLabel.frame.origin.y - (MDLayout.safeInsetTop + 44)
-    }()
-    lazy var titleLabelScrollOutOffsetY: CGFloat = {
-        titleLabelScrollInOffsetY + titleLabel.frame.height
-    }()
+    lazy var parentScrollViewMaxOffsetY = BackgroundViewHeight - AppBarHeight
+    lazy var titleLabelScrollInOffsetY = titleLabel.frame.origin.y - AppBarHeight
+    lazy var titleLabelScrollOutOffsetY = titleLabelScrollInOffsetY + titleLabel.frame.height
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -328,7 +327,7 @@ extension MangaTitleViewController: UICollectionViewDelegate {
         if parentOffsetY < 0 {
             backgroundView.frame = .init(x: 0, y: parentOffsetY,
                                          width: MDLayout.screenWidth,
-                                         height: 303 - parentOffsetY)
+                                         height: BackgroundViewHeight - parentOffsetY)
         }
         var delta = (parentOffsetY - titleLabelScrollInOffsetY) / titleLabel.frame.height
         delta = max(delta, 0)
