@@ -68,7 +68,8 @@
 "kSettingsDeleteDownloadsAlertMessage" = "All the chapters you have downloaded will be deleted.
 This operation is irreversible.
 Are you sure to continue?";
-"kSettingsCurrentDownloadsSize" = "Current Size: %@";
+"kSettingsDownloadsSizeZero" = "Current Size: 0";
+"kSettingsDownloadsSizeCurrent" = "Current Size: %@";
 
 "kMangaTagTypeFormat" = "Format";
 "kMangaTagTypeGenre" = "Genre";

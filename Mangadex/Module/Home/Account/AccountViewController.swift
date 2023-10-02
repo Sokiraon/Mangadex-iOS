@@ -206,12 +206,13 @@ class AccountViewController: BaseViewController {
             // The smallest value required to be shown as "1 MB"
             if downloadsSize < 950000 {
                 cellDeleteDownloads.isEnabled = false
+                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeZero".localized()
             } else {
                 cellDeleteDownloads.isEnabled = true
+                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeCurrent".localizedFormat(
+                    fileSizeFormatter.string(fromByteCount: Int64(downloadsSize))
+                )
             }
-            cellDeleteDownloads.subTitle = "kSettingsCurrentDownloadsSize".localizedFormat(
-                fileSizeFormatter.string(fromByteCount: Int64(downloadsSize))
-            )
         }
     }
 }

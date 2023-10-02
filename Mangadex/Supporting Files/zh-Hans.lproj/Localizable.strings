@@ -158,7 +158,8 @@
 "kSettingsDeleteDownloadsAlertMessage" = "所有已下载的章节都将被移除。
 此操作不可逆。
 确定要继续吗？";
-"kSettingsCurrentDownloadsSize" = "已占用：%@";
+"kSettingsDownloadsSizeZero" = "当前占用：0";
+"kSettingsDownloadsSizeCurrent" = "当前占用：%@";
 
 "kMangaDetailDescr" = "漫画简介";
 "kMangaDetailDescrMore" = "展开";
