@@ -70,7 +70,7 @@ extension DownloadsViewController: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mangaModel = mangaModels[indexPath.row]
-        let vc = DownloadedChaptersViewController(mangaModel: mangaModel)
+        let vc = DownloadsChaptersViewController(mangaModel: mangaModel)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

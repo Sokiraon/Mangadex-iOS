@@ -26,7 +26,7 @@ class MangaTitleChaptersViewController: BaseViewController {
             heightDimension: .absolute(60))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
-        group.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
+        group.contentInsets = .zero
         let section = NSCollectionLayoutSection(group: group)
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout

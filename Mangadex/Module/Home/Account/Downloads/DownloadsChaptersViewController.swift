@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class DownloadedChaptersViewController: BaseViewController {
+class DownloadsChaptersViewController: BaseViewController {
     private var mangaModel: LocalMangaModel!
     private lazy var vChapters: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -42,7 +42,7 @@ class DownloadedChaptersViewController: BaseViewController {
     }
 }
 
-extension DownloadedChaptersViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DownloadsChaptersViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         mangaModel.chapters.count
     }
