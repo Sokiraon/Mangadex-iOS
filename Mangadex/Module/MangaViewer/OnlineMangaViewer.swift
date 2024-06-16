@@ -156,7 +156,7 @@ class OnlineMangaViewer: MangaViewer {
     }()
     
     private func fetchData(withAggregate: Bool) {
-        ProgressHUD.show()
+        ProgressHUD.animate()
         firstly {
             when(fulfilled: Requests.Chapter.get(id: chapterId),
                  Requests.Chapter.getStatistics(id: chapterId)
@@ -203,7 +203,7 @@ class OnlineMangaViewer: MangaViewer {
             }
         }.catch { error in
             DispatchQueue.main.async {
-                ProgressHUD.showError()
+                ProgressHUD.failed()
             }
         }
     }
@@ -295,7 +295,7 @@ class OnlineMangaViewer: MangaViewer {
                 mangaModel: mangaModel, chapterModel: chapterModel, pageURLs: pageURLs
             )
         }
-        ProgressHUD.showSuccess("kInfoMessageAddedDownload".localized())
+        ProgressHUD.succeed("kInfoMessageAddedDownload".localized())
     }
     
     /// A method to open forum thread safely.

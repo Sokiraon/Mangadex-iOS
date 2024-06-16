@@ -35,7 +35,7 @@ class TaggedMangaViewController: MangaListViewController {
                 self.setData(with: model)
             }
             .catch { error in
-                ProgressHUD.showError()
+                ProgressHUD.failed()
             }
             .finally {
                 self.vCollection.mj_header?.endRefreshing()
@@ -48,7 +48,7 @@ class TaggedMangaViewController: MangaListViewController {
                 self.updateData(with: model)
             }
             .catch { error in
-                ProgressHUD.showError()
+                ProgressHUD.failed()
             }
             .finally {
                 self.vCollection.mj_header?.endRefreshing()

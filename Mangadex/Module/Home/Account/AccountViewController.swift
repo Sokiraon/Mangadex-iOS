@@ -195,9 +195,9 @@ class AccountViewController: BaseViewController {
     @objc private func didUpdateSetting() {}
     
     @objc private func deleteDownloads() {
-        ProgressHUD.show()
+        ProgressHUD.animate()
         DownloadsManager.default.deleteAllChapters()
-        ProgressHUD.showSuccess()
+        ProgressHUD.succeed()
         updateDownloadsSize()
     }
     

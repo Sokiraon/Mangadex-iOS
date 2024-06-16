@@ -28,6 +28,14 @@ class CoverArtModel: CoverArtModelEssential, YYModel {
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "relationships": RelationshipModel.self ]
     }
+    
+    func getHDUrl(mangaId: String) -> URL? {
+        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName!).512.jpg")
+    }
+    
+    func getOriginalUrl(mangaId: String) -> URL? {
+        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName!)")
+    }
 }
 
 class CoverArtCollection: NSObject, YYModel {

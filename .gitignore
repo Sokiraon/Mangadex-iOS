@@ -1,5 +1,4 @@
 # CocoaPods
-Podfile.lock
 Pods/
 # CocoaPods END
 
@@ -10,3 +9,4 @@ Mangadex.xcodeproj/xcshareddata/xcschemes/Mangadex.xcscheme
 
 *.DS_Store
 .idea/
+

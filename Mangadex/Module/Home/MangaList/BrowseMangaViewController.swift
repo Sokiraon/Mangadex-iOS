@@ -251,7 +251,7 @@ class BrowseMangaViewController: BaseViewController {
                     self.collectionHeaderView.setRefreshing(false)
                 }
         }.catch { error in
-            ProgressHUD.showError()
+            ProgressHUD.failed()
         }
     }
 }

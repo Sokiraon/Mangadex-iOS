@@ -8,10 +8,9 @@
 import Foundation
 import UIKit
 import PromiseKit
+import Agrume
 
 class MangaTitleCoversViewController: BaseViewController {
-    
-    var mangaModel: MangaModel!
     
     let cellWidth = (MDLayout.screenWidth - 16 * 3) / 2
     
@@ -37,6 +36,7 @@ class MangaTitleCoversViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.contentInset = .cssStyle(8, 0, MDLayout.adjustedSafeInsetBottom)
+        collectionView.delegate = self
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
@@ -53,7 +53,9 @@ class MangaTitleCoversViewController: BaseViewController {
     }
     
     var dataSource: UICollectionViewDiffableDataSource<Int, String>!
+    var mangaModel: MangaModel!
     var coverList = [CoverArtModel]()
+    var coverURLs = [URL]()
     
     func setupDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<MangaTitleCoverCell, String>
@@ -72,13 +74,30 @@ class MangaTitleCoversViewController: BaseViewController {
     func fetchData() {
         _ = Requests.CoverArt
             .getMangaCoverList(mangaId: mangaModel.id)
-            .done { collection in
+            .done { [weak self] collection in
+                guard let self else { return }
                 self.coverList = collection.data
+                self.coverURLs = collection.data.map {
+                    $0.getOriginalUrl(mangaId: self.mangaModel.id)!
+                }
                 var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
                 snapshot.appendSections([0])
                 snapshot.appendItems(collection.data.map({ $0.id }),
                                      toSection: 0)
                 self.dataSource.apply(snapshot)
             }
+    }
+}
+
+extension MangaTitleCoversViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let agrume = Agrume(urls: coverURLs, startIndex: indexPath.row)
+        agrume.didScroll = { [unowned self] index in
+            self.collectionView.scrollToItem(
+                at: IndexPath(row: index, section: 0),
+                at: .top,
+                animated: false)
+        }
+        agrume.show(from: self)
     }
 }

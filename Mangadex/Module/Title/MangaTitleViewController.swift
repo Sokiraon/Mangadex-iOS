@@ -250,7 +250,7 @@ class MangaTitleViewController: BaseViewController {
         request.done { success in
             self.readingStatus = newStatus
         }.catch { error in
-            ProgressHUD.showError()
+            ProgressHUD.failed()
         }.finally {
             self.followButton.isLoading = false
         }

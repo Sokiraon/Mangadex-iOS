@@ -102,7 +102,7 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     @objc func didTapLogin() {
         view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
-            ProgressHUD.show()
+            ProgressHUD.animate()
         }
         
         let username = fieldUsername.text!
@@ -160,7 +160,7 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
             .catch { error in
                 self.shouldAutoLogin = false
                 DispatchQueue.main.async {
-                    ProgressHUD.showError()
+                    ProgressHUD.failed()
                     self.view.isUserInteractionEnabled = true
                 }
             }
