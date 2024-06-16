@@ -241,21 +241,16 @@ class OnlineMangaViewer: MangaViewer {
             cell.backgroundConfiguration = .clear()
         }
         
-        let headerRegistration = UICollectionView.SupplementaryRegistration<UICollectionViewListCell>(
+        let headerRegistration = UICollectionView.SupplementaryRegistration<MangaViewerChapterListHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader)
         { supplementaryView, elementKind, indexPath in
-            var content = UIListContentConfiguration.sidebarHeader()
+            let title: String
             if let volumeNumber = Int(self.aggregatedModel.volumeNames[indexPath.section]) {
-                content.text = "mangaViewer.chapterList.volumeName".localizedFormat(volumeNumber)
+                title = "mangaViewer.chapterList.volumeName".localizedFormat(volumeNumber)
             } else {
-                content.text = "mangaViewer.chapterList.noVolume".localized()
+                title = "mangaViewer.chapterList.noVolume".localized()
             }
-            content.textProperties.color = .white
-            supplementaryView.contentConfiguration = content
-            var background = UIBackgroundConfiguration.listSidebarHeader()
-            background.cornerRadius = 0
-            background.backgroundColor = .fromHex("3d3d3d")
-            supplementaryView.backgroundConfiguration = background
+            supplementaryView.setTitle(title)
         }
         
         chapterListDataSource = UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>(
