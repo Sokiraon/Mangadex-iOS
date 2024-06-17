@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class MangaViewerChapterListHeaderView: UICollectionReusableView {
-    private let titleLabel = UILabel(fontSize: 14, fontWeight: .bold, color: .lightGrayE5E5E5)
+    private let titleLabel = UILabel(fontSize: 17, fontWeight: .bold, color: .grayDFDFDF)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

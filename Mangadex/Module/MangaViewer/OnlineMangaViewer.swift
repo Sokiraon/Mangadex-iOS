@@ -231,14 +231,11 @@ class OnlineMangaViewer: MangaViewer {
     }
     
     private func setupChapterList() {
-        let cellRegistration = UICollectionView.CellRegistration<UICollectionViewListCell, MDMangaAggregatedVolumeChapter>
+        let cellRegistration = UICollectionView.CellRegistration<MangaViewerChapterListCell, MDMangaAggregatedVolumeChapter>
         { cell, indexPath, itemIdentifier in
-            var content = cell.defaultContentConfiguration()
-            content.text = "mangaViewer.chapterList.chapterName"
-                .localizedFormat(itemIdentifier.chapter)
-            content.textProperties.color = .white
-            cell.contentConfiguration = content
-            cell.backgroundConfiguration = .clear()
+            cell.setContent(
+                title: "mangaViewer.chapterList.chapterName".localizedFormat(itemIdentifier.chapter),
+                isCurrent: itemIdentifier.id == self.chapterId)
         }
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<MangaViewerChapterListHeaderView>(
@@ -326,18 +323,20 @@ class OnlineMangaViewer: MangaViewer {
 
 extension OnlineMangaViewer {
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        if collectionView == chapterListView {
-            let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
-            cell.backgroundColor = .darkerGray565656
+        if 
+            collectionView == chapterListView,
+            let cell = collectionView.cellForItem(at: indexPath) as? MangaViewerChapterListCell
+        {
+            cell.setHighlighted(true)
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        if collectionView == chapterListView {
-            let cell = collectionView.cellForItem(at: indexPath) as! UICollectionViewListCell
-            UIView.animate(withDuration: 0.2) {
-                cell.backgroundColor = .clear
-            }
+        if 
+            collectionView == chapterListView,
+            let cell = collectionView.cellForItem(at: indexPath) as? MangaViewerChapterListCell
+        {
+            cell.setHighlighted(false)
         }
     }
     
