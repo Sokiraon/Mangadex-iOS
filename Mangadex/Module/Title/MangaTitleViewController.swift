@@ -16,6 +16,8 @@ import SwiftEntryKit
 class MangaTitleViewController: BaseViewController {
     private var mangaModel: MangaModel!
     
+    private var downloadButton: UIButton!
+    
     private let tabVC = MangaTitleTabViewController()
     private let scrollView = UIScrollView()
     private let backgroundView = UIImageView()
@@ -91,6 +93,13 @@ class MangaTitleViewController: BaseViewController {
         setupNavBar(title: mangaModel.attributes.localizedTitle, style: .blur)
         appBar.blurView.alpha = 0
         appBar.lblTitle.alpha = 0
+        
+        var downloadButtonConfig = UIButton.Configuration.plain()
+        downloadButtonConfig.image = UIImage(named: "icon_download")
+        downloadButtonConfig.baseForegroundColor = .black
+        downloadButton = UIButton(configuration: downloadButtonConfig,
+                                  primaryAction: UIAction { _ in self.didTapDownload() })
+        appBar.addRightItem(downloadButton)
         
         scrollView.addSubview(coverImage)
         coverImage.contentMode = .scaleAspectFill
@@ -304,6 +313,11 @@ class MangaTitleViewController: BaseViewController {
             scale: nil,
             fade: nil)
         SwiftEntryKit.display(entry: rateView, using: attrs)
+    }
+    
+    func didTapDownload() {
+        let vc = MangaDownloadViewController(mangaModel: mangaModel)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

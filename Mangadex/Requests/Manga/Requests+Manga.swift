@@ -170,7 +170,7 @@ extension Requests {
             }
         }
         
-        static func getVolumesAndChapters(
+        static func getAggregatedChapters(
             mangaId: String, groupId: String?, language: String
         ) -> Promise<MDMangaAggregatedModel> {
             Promise { seal in

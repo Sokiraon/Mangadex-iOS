@@ -156,6 +156,9 @@ Are you sure to continue?";
 "manga.detail.cover.volume" = "Volume %@";
 "manga.detail.cover.noVolume" = "No Volume";
 
+"manga.download.title" = "Download";
+"manga.download.start" = "Start Download";
+
 "manga.rate.0" = "No Rating";
 "manga.rate.1" = "1: Appalling";
 "manga.rate.2" = "2: Horrible";

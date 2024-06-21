@@ -75,6 +75,19 @@ class ChapterModel: NSObject, YYModel {
     }
     
     var mangaModel: MangaModel?
+    
+    override var hash: Int {
+        get {
+            id.hashValue
+        }
+    }
+    
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let rhs = object as? ChapterModel else {
+            return false
+        }
+        return id == rhs.id
+    }
 }
 
 class ChapterCollection: NSObject, YYModel {

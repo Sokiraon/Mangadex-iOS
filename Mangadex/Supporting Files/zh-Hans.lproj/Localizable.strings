@@ -244,6 +244,9 @@
 "manga.detail.cover.volume" = "%@ 卷";
 "manga.detail.cover.noVolume" = "未标记";
 
+"manga.download.title" = "下载";
+"manga.download.start" = "开始下载";
+
 "manga.rate.0" = "未评分";
 "manga.rate.1" = "1：粪作";
 "manga.rate.2" = "2：臭作";

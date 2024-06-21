@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class DynamicIntensityVisualEffectView: UIVisualEffectView {
     
@@ -77,9 +78,18 @@ class AppBar: UIView {
         addSubview(lblTitle)
         lblTitle.textAlignment = .center
         lblTitle.snp.makeConstraints { make in
-            make.left.equalTo(self.btnBack.snp.right).offset(15)
+            make.left.equalTo(self.btnBack.snp.right).offset(24)
             make.centerY.equalTo(self.btnBack)
             make.centerX.equalTo(self)
+        }
+    }
+    
+    func addRightItem(_ view: UIView) {
+        addSubview(view)
+        view.snp.makeConstraints { make in
+            make.width.height.equalTo(24)
+            make.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(10)
         }
     }
 }

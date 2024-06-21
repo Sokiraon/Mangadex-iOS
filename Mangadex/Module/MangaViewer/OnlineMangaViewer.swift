@@ -168,7 +168,7 @@ class OnlineMangaViewer: MangaViewer {
             self.updateReadingStatus()
             if withAggregate {
                 return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
-                            Requests.Manga.getVolumesAndChapters(
+                            Requests.Manga.getAggregatedChapters(
                                mangaId: chapterModel.mangaId!,
                                groupId: chapterModel.relationships.group?.id,
                                language: chapterModel.attributes.translatedLanguage
