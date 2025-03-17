@@ -44,8 +44,10 @@ class MDPlistStoreManager {
         let encoder = PropertyListEncoder()
         encoder.outputFormat = .xml
         
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            .appendingPathComponent(file.rawValue)
+        let path = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)
+            .first!
+            .appending(path: file.rawValue)
         
         do {
             let data = try encoder.encode(dict)

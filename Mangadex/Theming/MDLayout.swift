@@ -45,3 +45,7 @@ class MDLayout {
         screenWidth * value / 100
     }
 }
+
+extension CGFloat {
+    public static var native1px = MDLayout.native1px
+}

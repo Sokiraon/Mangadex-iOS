@@ -9,6 +9,7 @@ import Foundation
 import PromiseKit
 import SwiftyJSON
 import YYModel
+import Combine
 
 extension Requests {
     enum Chapter {
@@ -130,6 +131,24 @@ extension Requests {
                     }
                     .catch { error in
                         seal.reject(error)
+                    }
+            }
+        }
+        
+        static func getPages(chapterId: String) -> Future<ChapterPagesModel, Error> {
+            Future() { promise in
+                Requests
+                    .get(path: "/at-home/server/\(chapterId)")
+                    .done { result in
+                        let json = JSON(result)
+                        if let data = ChapterPagesModel.yy_model(withJSON: json.rawValue) {
+                            promise(.success(data))
+                        } else {
+                            promise(.failure(Errors.IllegalData))
+                        }
+                    }
+                    .catch { error in
+                        promise(.failure(error))
                     }
             }
         }

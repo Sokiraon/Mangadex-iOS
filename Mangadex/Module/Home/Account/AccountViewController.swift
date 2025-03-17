@@ -88,9 +88,15 @@ class AccountViewController: BaseViewController {
         }
     }
     
+    private lazy var cellDownloading = AccountSettingsPushCell().apply { cell in
+        cell.icon = .init(named: "icon_downloading")
+        cell.title = "mypage.downloading.title".localized()
+        cell.targetViewController = DownloadingViewController()
+    }
+    
     private lazy var cellDownloads = AccountSettingsPushCell().apply { cell in
         cell.icon = .init(named: "icon_download")
-        cell.title = "kSettingsDownloads".localized()
+        cell.title = "mypage.downloaded.title".localized()
         cell.targetViewController = DownloadsViewController()
     }
     
@@ -112,9 +118,10 @@ class AccountViewController: BaseViewController {
     }
     
     private lazy var settingsView = AccountSettingsView(
-        sections: .init(cells: cellDataSaving),
-            .init(cells: cellDownloads, cellColorSelector, cellLangSelector, cellContentSelector),
-            .init(cells: cellDeleteDownloads)
+        sections:
+                .init(cells: cellDataSaving),
+                .init(cells: cellDownloading, cellDownloads, cellColorSelector, cellLangSelector, cellContentSelector),
+                .init(cells: cellDeleteDownloads)
     )
     
     override func setupUI() {
@@ -196,13 +203,13 @@ class AccountViewController: BaseViewController {
     
     @objc private func deleteDownloads() {
         ProgressHUD.animate()
-        DownloadsManager.default.deleteAllChapters()
+        DownloadManager.shared.deleteAllChapters()
         ProgressHUD.succeed()
         updateDownloadsSize()
     }
     
     private func updateDownloadsSize() {
-        if let downloadsSize = DownloadsManager.default.sizeUsed {
+        if let downloadsSize = DownloadManager.shared.sizeUsed {
             // The smallest value required to be shown as "1 MB"
             if downloadsSize < 950000 {
                 cellDeleteDownloads.isEnabled = false

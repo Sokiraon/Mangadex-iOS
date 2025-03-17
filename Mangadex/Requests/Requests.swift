@@ -7,12 +7,26 @@
 
 import Foundation
 import Just
+import Combine
 import SwiftyJSON
 import PromiseKit
 
 enum HostUrl: String {
     case main = "https://api.mangadex.org"
     case uploads = "https://uploads.mangadex.org"
+}
+
+extension URL {
+    private static let mainHost = URL(string: "https://api.mangadex.org")!
+    private static let uploadsHost = URL(string: "https://uploads.mangadex.org")!
+    
+    static func mainHost(_ path: String) -> URL {
+        mainHost.appending(component: path)
+    }
+    
+    static func uploadsHost(_ path: String) -> URL {
+        uploadsHost.appending(component: path)
+    }
 }
 
 enum Requests {
@@ -42,6 +56,27 @@ enum Requests {
     }
     
     static func get(
+        url: URL,
+        params: [String: Any] = [:],
+        headers: [String: String] = [:]
+    ) -> Future<[String: Any], Error> {
+        Future { promise in
+            Just.get(
+                url,
+                params: params,
+                headers: headers, 
+                asyncCompletionHandler:  { r in
+                    if r.ok, let json = r.json as? [String: Any] {
+                        promise(.success(json))
+                    } else if let error = r.error {
+                        promise(.failure(error))
+                    }
+                }
+            )
+        }
+    }
+    
+    static func get(
         path: String,
         host: HostUrl = .main,
         params: [String: Any] = [:],
@@ -57,7 +92,7 @@ enum Requests {
                     let headers = headers + [
                         "Authorization": "Bearer \(token)"
                     ]
-                    Just.get(hostUrl.appendingPathComponent(path),
+                    Just.get(hostUrl.appending(path: path),
                              params: params,
                              headers: headers,
                              asyncCompletionHandler:  { r in
@@ -74,7 +109,7 @@ enum Requests {
         } else {
             return Promise { seal in
                 Just.get(
-                    hostUrl.appendingPathComponent(path),
+                    hostUrl.appending(path: path),
                     params: params,
                     headers: headers,
                     asyncCompletionHandler:  { r in
@@ -101,7 +136,7 @@ enum Requests {
                     UserManager.shared.getValidatedToken()
                 }.done { token in
                     Just.post(
-                        hostUrl.appendingPathComponent(path),
+                        hostUrl.appending(path: path),
                         json: data,
                         headers: ["Authorization": "Bearer \(token)"],
                         asyncCompletionHandler: { r in
@@ -119,7 +154,7 @@ enum Requests {
         } else {
             return Promise { seal in
                 Just.post(
-                    hostUrl.appendingPathComponent(path),
+                    hostUrl.appending(path: path),
                     json: data,
                     asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
@@ -144,7 +179,7 @@ enum Requests {
                     UserManager.shared.getValidatedToken()
                 }.done { token in
                     Just.delete(
-                        hostUrl.appendingPathComponent(path),
+                        hostUrl.appending(path: path),
                         headers: ["Authorization": "Bearer \(token)"],
                         asyncCompletionHandler:  { r in
                             if r.ok, let json = r.json as? [String: Any] {
@@ -160,7 +195,7 @@ enum Requests {
         } else {
             return Promise { seal in
                 Just.delete(
-                    hostUrl.appendingPathComponent(path),
+                    hostUrl.appending(path: path),
                     asyncCompletionHandler:  { r in
                         if r.ok, let json = r.json as? [String: Any] {
                             seal.fulfill(json)

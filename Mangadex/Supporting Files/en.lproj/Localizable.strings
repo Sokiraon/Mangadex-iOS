@@ -158,6 +158,8 @@ Are you sure to continue?";
 
 "manga.download.title" = "Download";
 "manga.download.start" = "Start Download";
+"manga.download.current.title" = "Downloading";
+"manga.download.finished.title" = "Finished";
 
 "manga.rate.0" = "No Rating";
 "manga.rate.1" = "1: Appalling";
@@ -170,3 +172,6 @@ Are you sure to continue?";
 "manga.rate.8" = "8: Very Good";
 "manga.rate.9" = "9: Great";
 "manga.rate.10" = "10: Masterpiece";
+
+"mypage.downloading.title" = "Downloading";
+"mypage.downloaded.title" = "Downloaded";

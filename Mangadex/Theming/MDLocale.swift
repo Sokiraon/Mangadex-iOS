@@ -56,7 +56,7 @@ class MDLocale {
         } else {
             // The languageCode is the same as the language that the user set,
             // only when that language is provided by the App
-            return Locale.current.languageCode ?? "en"
+            return Locale.current.language.languageCode?.identifier ?? "en"
         }
     }
     

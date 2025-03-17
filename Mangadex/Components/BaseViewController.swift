@@ -83,16 +83,47 @@ class BaseViewController: UIViewController {
         }
     }
     
+    func makeNavigationBar(title: String?) {
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.configureWithOpaqueBackground()
+        barAppearance.shadowImage = nil
+        barAppearance.titleTextAttributes = [
+            .foregroundColor: UIColor.black2D2E2F,
+            .font: UIFont.systemFont(ofSize: 17, weight: .medium)
+        ]
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.standardAppearance = barAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = barAppearance
+        
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        titleLabel.textColor = .black2D2E2F
+        navigationItem.titleView = titleLabel
+        
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.tintColor = .darkerGray565656
+        
+        let backImage = UIImage(named: "icon_arrow_back")?.withRenderingMode(.alwaysTemplate)
+        let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(didTapBack))
+        backButton.tintColor = .darkerGray565656
+        navigationItem.leftBarButtonItem = backButton
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = true
-        navigationController?.isToolbarHidden = true
         
         willSetupUI()
         setupUI()
         didSetupUI()
+    }
+    
+    @objc
+    func didTapBack() {
+        navigationController?.popViewController(animated: true)
     }
     
 #if DEBUG

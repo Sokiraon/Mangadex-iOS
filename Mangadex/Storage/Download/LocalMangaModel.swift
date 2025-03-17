@@ -11,13 +11,13 @@ class LocalChapterModel: Equatable {
     let info: ChapterModel
     var pageURLs: [URL] = []
     
-    init(baseURL: URL) {
-        let infoURL = baseURL.appendingPathComponent("info.json")
+    init?(baseURL: URL) {
+        let infoURL = baseURL.appending(path: "info.json")
         let infoData = FileManager.default.contents(atPath: infoURL.path)
         self.info = ChapterModel.yy_model(withJSON: infoData!)!
         
-        let pagesDir = baseURL.appendingPathComponent("data")
-        let pagesDirAlt = baseURL.appendingPathComponent("data-saver")
+        let pagesDir = baseURL.appending(path: "data")
+        let pagesDirAlt = baseURL.appending(path: "data-saver")
         
         if FileManager.default.fileExists(atPath: pagesDir.path) {
             let enumerator = FileManager.default.enumerator(
@@ -25,9 +25,7 @@ class LocalChapterModel: Equatable {
                 includingPropertiesForKeys: nil
             )
             for case let fileURL as URL in enumerator! {
-                if fileURL.pathExtension == "png" {
-                    pageURLs.append(fileURL)
-                }
+                pageURLs.append(fileURL)
             }
         } else if FileManager.default.fileExists(atPath: pagesDirAlt.path) {
             let enumerator = FileManager.default.enumerator(
@@ -35,11 +33,11 @@ class LocalChapterModel: Equatable {
                 includingPropertiesForKeys: nil
             )
             for case let fileURL as URL in enumerator! {
-                if fileURL.pathExtension == "jpg" {
-                    pageURLs.append(fileURL)
-                }
+                pageURLs.append(fileURL)
             }
         }
+        
+        guard !pageURLs.isEmpty else { return nil }
         
         pageURLs.sort { url1, url2 in
             url1.lastPathComponent.localizedStandardCompare(url2.lastPathComponent) == .orderedAscending
@@ -65,7 +63,7 @@ class LocalMangaModel {
     }
     
     var chapters: [LocalChapterModel] {
-        var models = chapterURLs.map { chapterURL in
+        var models = chapterURLs.compactMap { chapterURL in
             LocalChapterModel(baseURL: chapterURL)
         }
         models.sort { model1, model2 in

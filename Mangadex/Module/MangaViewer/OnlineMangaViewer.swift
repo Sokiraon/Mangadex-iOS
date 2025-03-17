@@ -283,9 +283,8 @@ class OnlineMangaViewer: MangaViewer {
     
     @objc private func downloadChapter() {
         Task {
-            await DownloadsManager.default.downloadChapter(
-                mangaModel: mangaModel, chapterModel: chapterModel, pageURLs: pageURLs
-            )
+            await DownloadManager.shared
+                .downloadChapter(mangaModel: mangaModel, chapterModel: chapterModel, pageURLs: pageURLs)
         }
         ProgressHUD.succeed("kInfoMessageAddedDownload".localized())
     }

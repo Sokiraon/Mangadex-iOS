@@ -30,7 +30,7 @@ class DownloadsViewController: BaseViewController {
     }()
     
     override func setupUI() {
-        setupNavBar(title: "kSettingsDownloads".localized())
+        setupNavBar(title: "mypage.downloaded.title".localized())
         
         view.insertSubview(vCollection, belowSubview: appBar)
         vCollection.snp.makeConstraints { make in
@@ -46,7 +46,7 @@ class DownloadsViewController: BaseViewController {
     private var mangaModels: [LocalMangaModel] = []
     
     private func loadData() {
-        guard let mangaModels = DownloadsManager.default.retrieveChapters() else {
+        guard let mangaModels = DownloadManager.shared.retrieveChapters() else {
             return
         }
         self.mangaModels = mangaModels

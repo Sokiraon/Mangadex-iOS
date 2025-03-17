@@ -55,7 +55,8 @@ class MangaDownloadViewController: BaseViewController {
         buttonConfig.baseBackgroundColor = .themePrimary
         buttonConfig.buttonSize = .large
         buttonConfig.cornerStyle = .small
-        downloadButton = UIButton(configuration: buttonConfig)
+        downloadButton = UIButton(configuration: buttonConfig,
+                                  primaryAction: UIAction { _ in self.startDownload() })
         bottomView.addSubview(downloadButton)
         downloadButton.snp.makeConstraints { make in
             make.top.equalTo(bottomLineView.snp.bottom).offset(20)
@@ -157,6 +158,13 @@ class MangaDownloadViewController: BaseViewController {
                                      toSection: .chapters)
                 self.dataSource.apply(snapshot)
             }
+    }
+    
+    // MARK: - Actions
+    func startDownload() {
+        DownloadManager.shared.downloadManga(mangaModel: mangaModel, chapterModels: Array(checkedChapterModels))
+        let vc = DownloadingViewController()
+        self.navigationController?.replaceTopViewController(with: vc, animated: true)
     }
 }
 

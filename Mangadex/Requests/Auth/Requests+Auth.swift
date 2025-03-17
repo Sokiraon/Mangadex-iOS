@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import SwiftyJSON
+import Combine
 
 extension Requests {
     enum Auth {
@@ -37,6 +38,27 @@ extension Requests {
                     }
                 }.catch { error in
                     seal.reject(error)
+                }
+            }
+        }
+        
+        static func verifyToken(token: String) async -> Future<Bool, Error> {
+            Future { promise in
+                Task {
+                    do {
+                        let rawJson = try await get(
+                            url: .mainHost("/auth/check"),
+                            headers: ["Authorization": "Bearer \(token)"]
+                        ).value
+                        let json = JSON(rawJson)
+                        if json["isAuthenticated"].boolValue {
+                            promise(.success(true))
+                        } else {
+                            promise(.success(false))
+                        }
+                    } catch {
+                        promise(.failure(error))
+                    }
                 }
             }
         }

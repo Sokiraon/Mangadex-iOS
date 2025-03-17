@@ -161,6 +161,9 @@ class MangaModel: MangaModelEssential, YYModel {
     }
     
     var coverURLOriginal: URL? {
+        if SettingsManager.isDataSavingMode {
+            return coverURL
+        }
         guard let model = relationships.coverArt else {
             return nil
         }
