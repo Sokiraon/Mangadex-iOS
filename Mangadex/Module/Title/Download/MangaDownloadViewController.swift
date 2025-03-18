@@ -117,6 +117,8 @@ class MangaDownloadViewController: BaseViewController {
             let chapterModel = self.chapterModels[indexPath.item]
             cell.setTitle(chapterModel.attributes.chapter ?? "")
             cell.setChecked(self.checkedChapterModels.contains(chapterModel), animated: false)
+            cell.setIsDownloading(DownloadManager.shared.hasActiveDownload(for: chapterModel.id))
+            cell.setHasDownloaded(DownloadManager.shared.hasDownloaded(chapterID: chapterModel.id, for: self.mangaModel.id))
         }
         
 //        let headerRegistration = UICollectionView.SupplementaryRegistration<MangaDownloadVolumeHeaderView>(

@@ -45,6 +45,30 @@ class MangaDownloadChapterCell: UICollectionViewCell {
         }
     }
     
+    func setHasDownloaded(_ state: Bool) {
+        if state {
+            isUserInteractionEnabled = false
+            titleLabel.textColor = .black
+            contentView.backgroundColor = .green
+            contentView.layer.borderColor = UIColor.green.cgColor
+        } else {
+            isUserInteractionEnabled = true
+            setAppearanceForCheckedState()
+        }
+    }
+    
+    func setIsDownloading(_ state: Bool) {
+        if state {
+            isUserInteractionEnabled = false
+            titleLabel.textColor = .white
+            contentView.backgroundColor = .orange
+            contentView.layer.borderColor = UIColor.orange.cgColor
+        } else {
+            isUserInteractionEnabled = true
+            setAppearanceForCheckedState()
+        }
+    }
+    
     func setAppearanceForCheckedState() {
         if checked {
             titleLabel.textColor = .white

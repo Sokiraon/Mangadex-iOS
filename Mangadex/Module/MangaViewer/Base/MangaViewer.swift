@@ -185,27 +185,47 @@ class MangaViewer: BaseViewController,
     // MARK: - Actions
     
     private var isControlVisible = true
-    internal func toggleControlArea() {
+    func toggleControlArea() {
         if isControlVisible {
-            isControlVisible = false
+            self.appBar.snp.remakeConstraints { make in
+                make.left.right.equalToSuperview()
+                make.bottom.equalTo(self.view.snp.top)
+                make.height.equalTo(AppBarHeight)
+            }
+            self.vBottomControl.snp.remakeConstraints { make in
+                make.left.right.equalToSuperview()
+                make.top.equalTo(self.view.snp.bottom)
+            }
             UIView.animate(withDuration: 0.25) {
-                self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: -self.appBar.frame.height)
-                self.vBottomControl.transform = self.vBottomControl.transform
-                    .translatedBy(x: 0, y: self.vBottomControl.frame.height)
+                self.view.setNeedsLayout()
+                self.view.layoutIfNeeded()
                 self.isStatusBarHidden = true
+            } completion: { success in
+                if success {
+                    self.isControlVisible = false
+                }
             }
         } else {
-            isControlVisible = true
+            self.appBar.snp.remakeConstraints { make in
+                make.top.left.right.equalToSuperview()
+                make.height.equalTo(AppBarHeight)
+            }
+            self.vBottomControl.snp.remakeConstraints { make in
+                make.left.right.bottom.equalToSuperview()
+            }
             UIView.animate(withDuration: 0.25) {
-                self.appBar.transform = self.appBar.transform.translatedBy(x: 0, y: self.appBar.frame.height)
-                self.vBottomControl.transform = self.vBottomControl.transform
-                    .translatedBy(x: 0, y: -self.vBottomControl.frame.height)
+                self.view.setNeedsLayout()
+                self.view.layoutIfNeeded()
                 self.isStatusBarHidden = false
+            } completion: { success in
+                if success {
+                    self.isControlVisible = true
+                }
             }
         }
     }
     
-    internal func hideControlArea() {
+    func hideControlArea() {
         if isControlVisible {
             toggleControlArea()
         }

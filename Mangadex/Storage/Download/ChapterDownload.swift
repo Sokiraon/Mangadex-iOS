@@ -108,7 +108,7 @@ class ChapterDownload {
             mangaModel: mangaModel,
             chapterModel: chapterModel,
             pageURLs: data.pageURLs,
-            status: .paused)
+            status: data.status)
         download.pageQuality = data.pageQuality
         download.totalPages = data.totalPages
         download.completedPages = data.completedPages

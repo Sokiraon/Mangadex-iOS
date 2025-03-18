@@ -69,6 +69,11 @@ class DownloadManager: NSObject {
         return model
     }
     
+    func hasDownloaded(chapterID: String, for mangaID: String) -> Bool {
+        let chapterPath = mangaDir.appending(components: mangaID, chapterID).path()
+        return fileManager.fileExists(atPath: chapterPath)
+    }
+    
     func retrieveChapters() -> [LocalMangaModel]? {
         guard FileManager.default.fileExists(atPath: mangaDir.path) else {
             return nil
@@ -134,21 +139,13 @@ class DownloadManager: NSObject {
     }
     
     // MARK: - SwiftData
-    func saveDownloads() {
-        for download in activeDownloads.values {
-            let persistentData = download.toPersistentData()
-            context.insert(persistentData)
-        }
-        saveContext()
-    }
-    
-    func saveDownload(_ chapterDownload: ChapterDownload) {
+    private func saveDownload(_ chapterDownload: ChapterDownload) {
         let persistentData = chapterDownload.toPersistentData()
         context.insert(persistentData)
         saveContext()
     }
     
-    func restoreDownloads() {
+    private func restoreDownloads() {
         let fetchDescriptor = FetchDescriptor<ChapterDownloadData>()
         guard let savedDownloads = try? context.fetch(fetchDescriptor) else { return }
         
@@ -165,6 +162,7 @@ class DownloadManager: NSObject {
         if let downloadData = fetchDownloadData(chapterID: chapterID) {
             context.delete(downloadData)
         }
+        saveContext()
     }
     
     private func fetchDownloadData(chapterID: String) -> ChapterDownloadData? {
@@ -185,6 +183,10 @@ class DownloadManager: NSObject {
     
     func getActiveDownloads() -> [ChapterDownload] {
         return Array(activeDownloads.values)
+    }
+    
+    func hasActiveDownload(for chapterID: String) -> Bool {
+        return activeDownloads.values.contains { $0.id == chapterID }
     }
     
     func downloadManga(mangaModel: MangaModel, chapterModels: [ChapterModel]) {

@@ -43,6 +43,11 @@ class DownloadsViewController: BaseViewController {
         loadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadData()
+    }
+    
     private var mangaModels: [LocalMangaModel] = []
     
     private func loadData() {
