@@ -132,4 +132,8 @@ class BaseViewController: UIViewController {
         viewDidLoad()
     }
 #endif
+    
+    deinit {
+        print("deinited: \(self)")
+    }
 }

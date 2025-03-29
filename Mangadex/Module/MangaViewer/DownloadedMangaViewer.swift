@@ -65,7 +65,7 @@ class DownloadedMangaViewer: MangaViewer {
         }!
     }()
     
-    override var previousViewController: MangaViewer? {
+    override func getPreviousViewController() -> MangaViewer? {
         guard let nextChapterModel = mangaModel.chapters.get(currentIndex - 1) else {
             return nil
         }
@@ -74,7 +74,7 @@ class DownloadedMangaViewer: MangaViewer {
         )
     }
     
-    override var nextViewController: MangaViewer? {
+    override func getNextViewController() -> MangaViewer? {
         guard let nextChapterModel = mangaModel.chapters.get(currentIndex + 1) else {
             return nil
         }

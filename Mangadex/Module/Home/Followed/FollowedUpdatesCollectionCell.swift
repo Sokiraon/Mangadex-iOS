@@ -59,6 +59,7 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let ivCover = UIImageView()
     private let lblTitle = UILabel(
         fontSize: 17,
         fontWeight: .medium,
@@ -71,14 +72,25 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         layer.cornerRadius = 4
         backgroundColor = .lightestGrayF5F5F5
         
-        contentView.translatesAutoresizingMaskIntoConstraints = true
         contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
             make.width.equalTo(MDLayout.screenWidth - 20)
+        }
+        
+        contentView.addSubview(ivCover)
+        ivCover.clipsToBounds = true
+        ivCover.layer.cornerRadius = 4
+        ivCover.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(96)
+            make.top.left.equalToSuperview().inset(8)
+            make.bottom.lessThanOrEqualToSuperview().inset(8)
         }
         
         contentView.addSubview(lblTitle)
         lblTitle.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview().inset(8)
+            make.top.right.equalToSuperview().inset(8)
+            make.left.equalTo(ivCover.snp.right).offset(8)
         }
         
         contentView.addSubview(divider)
@@ -103,6 +115,7 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         chapters: [ChapterModel]
     ) {
         self.mangaModel = mangaModel
+        ivCover.kf.setImage(with: mangaModel.coverURL)
         lblTitle.text = mangaModel.attributes.localizedTitle
         for (index, chapterModel) in chapters.enumerated() {
             if index > 0 {

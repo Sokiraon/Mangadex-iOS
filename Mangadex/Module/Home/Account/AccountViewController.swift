@@ -91,13 +91,13 @@ class AccountViewController: BaseViewController {
     private lazy var cellDownloading = AccountSettingsPushCell().apply { cell in
         cell.icon = .init(named: "icon_downloading")
         cell.title = "mypage.downloading.title".localized()
-        cell.targetViewController = DownloadingViewController()
+        cell.viewControllerClass = DownloadingViewController.self
     }
     
     private lazy var cellDownloads = AccountSettingsPushCell().apply { cell in
         cell.icon = .init(named: "icon_download")
         cell.title = "mypage.downloaded.title".localized()
-        cell.targetViewController = DownloadsViewController()
+        cell.viewControllerClass = DownloadsViewController.self
     }
     
     private lazy var cellDeleteDownloads = AccountSettingsActionCell().apply { cell in

@@ -13,7 +13,7 @@ import PromiseKit
 
 class MangaTitleChaptersViewController: BaseViewController {
     
-    lazy var refreshHeader = MJRefreshNormalHeader {
+    lazy var refreshHeader = MJRefreshNormalHeader { [unowned self] in
         self.fetchChapters()
     }
     

@@ -9,6 +9,7 @@ import Foundation
 import Just
 import SwiftyJSON
 import PromiseKit
+import Combine
 
 class UserManager {
     static let shared = UserManager()
@@ -88,6 +89,17 @@ class UserManager {
     /// Determine whether the user should see login (or pre-login) page at launch
     var shouldDisplayLoginAtLaunch: Bool {
         !(userIsLoggedIn || userIsGuest)
+    }
+    
+    func getVerifiedToken() async throws -> String {
+        let isValid = try? await Requests.Auth.verifyToken(token: self.session)
+        if isValid == true {
+            return self.session
+        }
+        let newToken = try await Requests.Auth.refreshToken(refresh: self.refresh)
+        self.session = newToken.session
+        self.refresh = newToken.refresh
+        return newToken.session
     }
     
     func getValidatedToken() -> Promise<String> {

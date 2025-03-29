@@ -70,7 +70,8 @@ extension MangaTitleTabViewController: PageboyViewControllerDataSource, TMBarDat
         viewControllers[index]
     }
     
-    func defaultPage(for pageboyViewController: Pageboy.PageboyViewController
+    func defaultPage(
+        for pageboyViewController: Pageboy.PageboyViewController
     ) -> Pageboy.PageboyViewController.Page? {
         nil
     }

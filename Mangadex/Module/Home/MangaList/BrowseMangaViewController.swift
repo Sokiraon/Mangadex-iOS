@@ -262,7 +262,6 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
         case .popular:
             let mangaModel = popularTitles[indexPath.item]
             let vc = MangaTitleViewController(mangaModel: mangaModel)
-//            let vc = MangaDetailViewController(mangaModel: mangaModel)
             navigationController?.pushViewController(vc, animated: true)
             break
         case .updates:

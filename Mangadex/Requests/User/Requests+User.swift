@@ -41,26 +41,23 @@ extension Requests {
             }
         }
         
-        static func getFollowedMangaFeed(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
+        static func getFollowedMangaFeed(params: [String: Any] = [:]) async throws -> ChapterCollection {
             let defaultParams: [String: Any] = [
+                "limit": 32,
                 "includes[]": ["user", "scanlation_group"],
                 "order[readableAt]": "desc",
                 "translatedLanguage[]": MDLocale.chapterLanguages
             ]
             let newParams = defaultParams + params
-            return Promise { seal in
-                Requests.get(path: "/user/follows/manga/feed", params: newParams, requireAuth: true)
-                    .done { json in
-                        guard let model = ChapterCollection.yy_model(withJSON: json) else {
-                            seal.reject(Errors.IllegalData)
-                            return
-                        }
-                        seal.fulfill(model)
-                    }
-                    .catch { error in
-                        seal.reject(error)
-                    }
+            let rawJson = try await Requests.get(
+                url: .mainHost("/user/follows/manga/feed"),
+                params: newParams,
+                authenticated: true
+            )
+            guard let model = ChapterCollection.yy_model(withJSON: rawJson) else {
+                throw Errors.IllegalData
             }
+            return model
         }
         
         static func ifFollowsManga(mangaId: String) -> Promise<Bool> {

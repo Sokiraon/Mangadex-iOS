@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MJRefresh
 
-protocol MangaViewerCollectionViewProvider {
+protocol MangaViewerCollectionViewProvider: AnyObject {
     var pageURLs: [URL] { get set }
 }
 
@@ -23,7 +23,7 @@ class MangaViewerCollectionView: UICollectionView, UICollectionViewDataSource {
         leader.setTitle("kReleasePrevChapter".localized(), for: .pulling)
         leader.setTitle("kLoading".localized(), for: .refreshing)
         leader.setArrowImage(UIImage(named: "icon_arrow_forward")!)
-        leader.refreshingBlock = {
+        leader.refreshingBlock = { [unowned self] in
             self.refreshingBlockLeader?(leader)
         }
     }
@@ -33,12 +33,12 @@ class MangaViewerCollectionView: UICollectionView, UICollectionViewDataSource {
         trailer.setTitle("kReleaseNextChapter".localized(), for: .pulling)
         trailer.setTitle("kLoading".localized(), for: .refreshing)
         trailer.setArrowImage(UIImage(named: "icon_arrow_back")!)
-        trailer.refreshingBlock = {
+        trailer.refreshingBlock = { [unowned self] in
             self.refreshingBlockTrailer?(trailer)
         }
     }
     
-    var provider: MangaViewerCollectionViewProvider
+    weak var provider: MangaViewerCollectionViewProvider!
     
     init(provider: MangaViewerCollectionViewProvider) {
         self.provider = provider

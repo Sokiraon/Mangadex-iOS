@@ -28,6 +28,20 @@ extension Requests {
             }
         }
         
+        static func query(params: [String: Any] = [:]) async throws -> MangaCollection {
+            let defaultParams: [String: Any] = [
+                "includes[]": ["author", "artist", "cover_art"],
+                "limit": 15,
+                "contentRating[]": SettingsManager.contentFilter
+            ]
+            let newParams = defaultParams + params
+            let rawJson = try await Requests.get(url: .mainHost("manga"), params: newParams)
+            guard let model = MangaCollection.yy_model(withJSON: rawJson) else {
+                throw Errors.IllegalData
+            }
+            return model
+        }
+        
         static func query(params: [String: Any] = [:]) -> Promise<MangaCollection> {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],

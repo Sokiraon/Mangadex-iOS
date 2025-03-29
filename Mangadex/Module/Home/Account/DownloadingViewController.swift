@@ -17,7 +17,7 @@ class DownloadingViewController: BaseViewController {
     
     override func setupUI() {
         setupNavBar(title: "mypage.downloading.title".localized())
-        refreshHeader = MJRefreshNormalHeader {
+        refreshHeader = MJRefreshNormalHeader { [unowned self] in
             self.updateDownloads()
         }
         setupCollectionView()

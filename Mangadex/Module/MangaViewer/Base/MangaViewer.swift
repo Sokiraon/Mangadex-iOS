@@ -10,9 +10,15 @@ import UIKit
 import MJRefresh
 import SnapKit
 
+protocol MangaViewerRepresentable: AnyObject {
+    func getPreviousViewController() -> MangaViewer?
+    func getNextViewController() -> MangaViewer?
+}
+
 class MangaViewer: BaseViewController,
                    UIGestureRecognizerDelegate,
                    UICollectionViewDelegate,
+                   MangaViewerRepresentable,
                    MangaViewerCollectionViewProvider {
     
     private lazy var doubleTapRecognizer = ShortTapGestureRecognizer(
@@ -33,16 +39,16 @@ class MangaViewer: BaseViewController,
         view.delegate = self
         view.addGestureRecognizer(doubleTapRecognizer)
         view.addGestureRecognizer(singleTapRecognizer)
-        view.refreshingBlockLeader = { leader in
-            guard let vc = self.previousViewController else {
+        view.refreshingBlockLeader = { [unowned self] leader in
+            guard let vc = getPreviousViewController() else {
                 leader.endRefreshing()
                 self.showNoChapterAlert()
                 return
             }
             self.navigationController?.replaceTopViewController(with: vc, using: .leftIn)
         }
-        view.refreshingBlockTrailer = { trailer in
-            guard let vc = self.nextViewController else {
+        view.refreshingBlockTrailer = { [unowned self] trailer in
+            guard let vc = getNextViewController() else {
                 trailer.endRefreshing()
                 self.showNoChapterAlert()
                 return
@@ -61,8 +67,8 @@ class MangaViewer: BaseViewController,
         title: "kSliderActionPrevChapter".localized(),
         titleColor: .white,
         backgroundColor: nil,
-        action: UIAction { _ in
-            if let vc = self.previousViewController {
+        action: UIAction { [unowned self] _ in
+            if let vc = getPreviousViewController() {
                 self.navigationController?.replaceTopViewController(with: vc, using: .leftIn)
             }
         }
@@ -71,8 +77,8 @@ class MangaViewer: BaseViewController,
         title: "kSliderActionNextChapter".localized(),
         titleColor: .white,
         backgroundColor: nil,
-        action: UIAction { _ in
-            if let vc = self.nextViewController {
+        action: UIAction { [unowned self] _ in
+            if let vc = getNextViewController() {
                 self.navigationController?.replaceTopViewController(with: vc, using: .rightIn)
             }
         }
@@ -119,10 +125,11 @@ class MangaViewer: BaseViewController,
     
     var pageURLs: [URL] = []
     
-    internal var previousViewController: MangaViewer? {
+    func getPreviousViewController() -> MangaViewer? {
         nil
     }
-    internal var nextViewController: MangaViewer? {
+    
+    func getNextViewController() -> MangaViewer? {
         nil
     }
     

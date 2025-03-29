@@ -10,7 +10,7 @@ import UIKit
 import MJRefresh
 
 class DownloadsViewController: BaseViewController {
-    private lazy var refreshHeader = MJRefreshNormalHeader {
+    private lazy var refreshHeader = MJRefreshNormalHeader { [unowned self] in
         self.loadData()
     }
     

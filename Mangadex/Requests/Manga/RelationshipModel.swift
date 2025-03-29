@@ -12,6 +12,7 @@ class RelationshipModel: NSObject, YYModel {
     @objc var id: String!
     @objc var type: String!
     @objc var attributes: [String: Any]?
+    @objc var related: String?
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [
@@ -104,5 +105,19 @@ extension Array where Element: RelationshipModel {
             return model
         }
         return nil
+    }
+    
+    /// - Returns: Dictionary, where key is relatedType, element is array of mangaIDs.
+    var relatedManga: [String: [String]] {
+        var res = [String: [String]]()
+        filter { $0.related != nil }
+            .forEach { model in
+                if res.contains(model.related!) {
+                    res[model.related!]?.append(model.id)
+                } else {
+                    res[model.related!] = [model.id]
+                }
+            }
+        return res
     }
 }

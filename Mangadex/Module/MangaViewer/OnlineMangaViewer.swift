@@ -33,30 +33,30 @@ class OnlineMangaViewer: MangaViewer {
         return button
     }
     
-    private lazy var btnSettings = bottomButtonBuilder(
-        image: .init(systemName: "gearshape.fill"),
-        titleKey: "kMangaViewerSettings",
-        action: UIAction { _ in }
-    )
-    private lazy var btnInfo = bottomButtonBuilder(
-        image: .init(systemName: "info.circle.fill"),
-        titleKey: "kMangaViewerInfo",
-        action: UIAction { _ in }
-    )
+//    private lazy var btnSettings = bottomButtonBuilder(
+//        image: .init(systemName: "gearshape.fill"),
+//        titleKey: "kMangaViewerSettings",
+//        action: UIAction { _ in }
+//    )
+//    private lazy var btnInfo = bottomButtonBuilder(
+//        image: .init(systemName: "info.circle.fill"),
+//        titleKey: "kMangaViewerInfo",
+//        action: UIAction { _ in }
+//    )
     private lazy var btnComment = bottomButtonBuilder(
         image: .init(systemName: "bubble.left.and.bubble.right.fill"),
         titleKey: "kMangaViewerComment",
-        action: UIAction { _ in self.openForumSafe() }
+        action: UIAction { [unowned self] _ in self.openForumSafe() }
     )
     private lazy var btnDownload = bottomButtonBuilder(
         image: .init(systemName: "arrow.down.circle.fill"),
         titleKey: "kMangaViewerDownload",
-        action: UIAction { _ in self.downloadChapter() }
+        action: UIAction { [unowned self] _ in self.downloadChapter() }
     )
     private lazy var btnChapters = bottomButtonBuilder(
         image: .init(systemName: "list.bullet.circle.fill"),
         titleKey: "kMangaViewerChapters",
-        action: UIAction { _ in self.showHideChapterList() }
+        action: UIAction { [unowned self] _ in self.showHideChapterList() }
     )
     
     private lazy var vBottomActions = UIStackView(
@@ -208,7 +208,7 @@ class OnlineMangaViewer: MangaViewer {
         }
     }
     
-    override var previousViewController: MangaViewer? {
+    override func getPreviousViewController() -> MangaViewer? {
         guard let chapterInfo = self.chaptersInfo.get(self.currentIndex - 1) else {
             return nil
         }
@@ -219,7 +219,7 @@ class OnlineMangaViewer: MangaViewer {
         )
     }
     
-    override var nextViewController: MangaViewer? {
+    override func getNextViewController() -> MangaViewer? {
         guard let chapterInfo = self.chaptersInfo.get(self.currentIndex + 1) else {
             return nil
         }
@@ -311,11 +311,10 @@ class OnlineMangaViewer: MangaViewer {
     }
     
     private func openForum() {
-        if let threadId = self.statistics.comments?.threadId {
-            if let url = URL(string: "https://forums.mangadex.org/threads/\(threadId)") {
-                let vc = SFSafariViewController(url: url)
-                self.present(vc, animated: true)
-            }
+        if let threadId = self.statistics.comments?.threadId,
+           let url = URL(string: "https://forums.mangadex.org/threads/\(threadId)") {
+            let vc = SFSafariViewController(url: url)
+            self.present(vc, animated: true)
         }
     }
 }

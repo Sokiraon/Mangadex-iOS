@@ -21,11 +21,11 @@ extension URL {
     private static let uploadsHost = URL(string: "https://uploads.mangadex.org")!
     
     static func mainHost(_ path: String) -> URL {
-        mainHost.appending(component: path)
+        mainHost.appending(path: path)
     }
     
     static func uploadsHost(_ path: String) -> URL {
-        uploadsHost.appending(component: path)
+        uploadsHost.appending(path: path)
     }
 }
 
@@ -58,18 +58,25 @@ enum Requests {
     static func get(
         url: URL,
         params: [String: Any] = [:],
-        headers: [String: String] = [:]
-    ) -> Future<[String: Any], Error> {
-        Future { promise in
+        headers: [String: String] = [:],
+        authenticated: Bool = false
+    ) async throws -> [String: Any] {
+        var headers = headers
+        if authenticated {
+            let token = try await UserManager.shared.getVerifiedToken()
+            headers["Authorization"] = "Bearer \(token)"
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
             Just.get(
                 url,
                 params: params,
-                headers: headers, 
-                asyncCompletionHandler:  { r in
+                headers: headers,
+                asyncCompletionHandler: { r in
                     if r.ok, let json = r.json as? [String: Any] {
-                        promise(.success(json))
-                    } else if let error = r.error {
-                        promise(.failure(error))
+                        continuation.resume(returning: json)
+                    } else {
+                        continuation.resume(throwing: Errors.Default)
                     }
                 }
             )
@@ -120,6 +127,33 @@ enum Requests {
                         }
                     })
             }
+        }
+    }
+    
+    static func post(
+        url: URL,
+        data: Any? = nil,
+        authenticated: Bool = false
+    ) async throws -> [String: Any] {
+        var headers: [String: String] = [:]
+        if authenticated {
+            let token = try await UserManager.shared.getVerifiedToken()
+            headers["Authorization"] = "Bearer \(token)"
+        }
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            Just.post(
+                url,
+                json: data,
+                headers: headers,
+                asyncCompletionHandler: { r in
+                    if r.ok, let json = r.json as? [String: Any] {
+                        continuation.resume(returning: json)
+                    } else {
+                        continuation.resume(throwing: Errors.Default)
+                    }
+                }
+            )
         }
     }
     

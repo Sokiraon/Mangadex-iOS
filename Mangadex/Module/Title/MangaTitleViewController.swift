@@ -98,7 +98,7 @@ class MangaTitleViewController: BaseViewController {
         downloadButtonConfig.image = UIImage(named: "icon_download")
         downloadButtonConfig.baseForegroundColor = .black
         downloadButton = UIButton(configuration: downloadButtonConfig,
-                                  primaryAction: UIAction { _ in self.didTapDownload() })
+                                  primaryAction: UIAction { [unowned self] _ in self.didTapDownload() })
         appBar.addRightItem(downloadButton)
         
         scrollView.addSubview(coverImage)
@@ -133,8 +133,9 @@ class MangaTitleViewController: BaseViewController {
         }
         
         followButton = LoadableButton(configuration: followButtonConfigDefault,
-                                      primaryAction: UIAction { _ in self.changeFollowStatus() })
-        followButton.configurationUpdateHandler = { button in
+                                      primaryAction: UIAction { [unowned self] _ in self.changeFollowStatus() })
+        followButton.configurationUpdateHandler = { [weak self] button in
+            guard let self else { return }
             if self.readingStatus == .null {
                 button.configuration = self.followButtonConfigDefault
             } else {
@@ -149,8 +150,9 @@ class MangaTitleViewController: BaseViewController {
         }
         
         rateButton = LoadableButton(configuration: rateButtonConfigDefault,
-                                    primaryAction: UIAction { _ in self.showRatingView() })
-        rateButton.configurationUpdateHandler = { button in
+                                    primaryAction: UIAction { [unowned self] _ in self.showRatingView() })
+        rateButton.configurationUpdateHandler = { [weak self] button in
+            guard let self else { return }
             if self.rating == 0 {
                 button.configuration = self.rateButtonConfigDefault
             } else {
@@ -171,7 +173,7 @@ class MangaTitleViewController: BaseViewController {
         continueConfig.baseBackgroundColor = .themePrimary
         continueConfig.title = "kMangaActionStartOver".localized()
         continueButton = UIButton(configuration: continueConfig,
-                                  primaryAction: UIAction { _ in self.startReading() })
+                                  primaryAction: UIAction { [unowned self] _ in self.startReading() })
         
         scrollView.addSubview(continueButton)
         continueButton.snp.makeConstraints { make in
@@ -193,6 +195,10 @@ class MangaTitleViewController: BaseViewController {
             make.height.equalTo(tabVCHeight)
         }
         
+        rateView.onSubmit = { [unowned self] rating in
+            updateRating(to: rating)
+        }
+        
         fetchData()
     }
     
@@ -212,9 +218,6 @@ class MangaTitleViewController: BaseViewController {
             }
             .ensure {
                 self.rateButton.isLoading = false
-                self.rateView.onSubmit = { rating in
-                    self.updateRating(to: rating)
-                }
             }
     }
     
@@ -256,13 +259,16 @@ class MangaTitleViewController: BaseViewController {
             request = Requests.Manga.unFollow(mangaId: mangaModel.id)
         }
         followButton.isLoading = true
-        request.done { success in
-            self.readingStatus = newStatus
-        }.catch { error in
-            ProgressHUD.failed()
-        }.finally {
-            self.followButton.isLoading = false
-        }
+        request
+            .done { success in
+                self.readingStatus = newStatus
+            }
+            .catch { error in
+                ProgressHUD.failed()
+            }
+            .finally {
+                self.followButton.isLoading = false
+            }
     }
     
     func retrieveMangaProgress() {

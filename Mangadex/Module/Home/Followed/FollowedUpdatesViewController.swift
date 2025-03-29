@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import PromiseKit
 import MJRefresh
+import ProgressHUD
+import OSLog
 
 class FollowedUpdatesViewController: BaseViewController {
     
@@ -28,8 +30,10 @@ class FollowedUpdatesViewController: BaseViewController {
         return view
     }()
     
-    private lazy var refreshHeader = MJRefreshNormalHeader {
-        self.fetchData()
+    private lazy var refreshHeader = MJRefreshNormalHeader { [unowned self] in
+        Task {
+            await self.fetchData()
+        }
     }
     
     override func setupUI() {
@@ -42,23 +46,25 @@ class FollowedUpdatesViewController: BaseViewController {
         refreshHeader.beginRefreshing()
     }
     
-    private func fetchData() {
-        firstly {
-            Requests.User.getFollowedMangaFeed()
-        }.then { feedModel in
-            self.aggregatedChapters = feedModel.aggregatedByManga
-            let mangaIds = Array(feedModel.aggregatedByManga.keys)
-            return Requests.Manga.query(
-                params: ["limit": mangaIds.count, "ids[]": mangaIds])
-        }.done { mangaList in
+    private func fetchData() async {
+        do {
+            let feedModel = try await Requests.User.getFollowedMangaFeed()
+            aggregatedChapters = feedModel.aggregatedByManga
+            let mangaIDs = Array(aggregatedChapters.keys)
+            let mangaList = try await Requests.Manga.query(params: ["limit": mangaIDs.count, "ids[]": mangaIDs])
             for mangaModel in mangaList.data {
-                self.mangaListModel[mangaModel.id] = mangaModel
+                mangaListModel[mangaModel.id] = mangaModel
             }
-            self.setupDataSource()
-        }.catch { error in
-            
-        }.finally {
-            self.refreshHeader.endRefreshing()
+            setupDataSource()
+            await MainActor.run {
+                refreshHeader.endRefreshing()
+            }
+        } catch {
+            Logger().debug("error: \(error.localizedDescription)")
+            await MainActor.run {
+                ProgressHUD.failed("Network Error")
+                refreshHeader.endRefreshing()
+            }
         }
     }
     

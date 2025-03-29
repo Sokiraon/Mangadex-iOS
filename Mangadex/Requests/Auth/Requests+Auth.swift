@@ -42,25 +42,13 @@ extension Requests {
             }
         }
         
-        static func verifyToken(token: String) async -> Future<Bool, Error> {
-            Future { promise in
-                Task {
-                    do {
-                        let rawJson = try await get(
-                            url: .mainHost("/auth/check"),
-                            headers: ["Authorization": "Bearer \(token)"]
-                        ).value
-                        let json = JSON(rawJson)
-                        if json["isAuthenticated"].boolValue {
-                            promise(.success(true))
-                        } else {
-                            promise(.success(false))
-                        }
-                    } catch {
-                        promise(.failure(error))
-                    }
-                }
-            }
+        static func verifyToken(token: String) async throws -> Bool {
+            let rawJson = try await get(
+                url: .mainHost("/auth/check"),
+                headers: ["Authorization": "Bearer \(token)"]
+            )
+            let json = JSON(rawJson)
+            return json["isAuthenticated"].boolValue
         }
         
         static func verifyToken(token: String) -> Promise<Bool> {
@@ -82,6 +70,21 @@ extension Requests {
                     seal.reject(error)
                 }
             }
+        }
+        
+        static func refreshToken(refresh: String) async throws -> Token {
+            let rawJson = try await Requests.post(
+                url: .mainHost("/auth/refresh"),
+                data: ["token": refresh]
+            )
+            let token = JSON(rawJson)["token"]
+            
+            guard let session = token["session"].string,
+                  let refresh = token["refresh"].string else {
+                throw Errors.IllegalData
+            }
+            
+            return Token(session: session, refresh: refresh)
         }
         
         static func refreshToken(refresh: String) -> Promise<Token> {
