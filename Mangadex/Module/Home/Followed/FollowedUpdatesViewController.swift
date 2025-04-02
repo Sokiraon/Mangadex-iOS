@@ -42,7 +42,10 @@ class FollowedUpdatesViewController: BaseViewController {
             make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
             make.left.right.bottom.equalToSuperview()
         }
-        
+    }
+    
+    override func didSetupUI() {
+        setupDataSource()
         refreshHeader.beginRefreshing()
     }
     
@@ -55,7 +58,10 @@ class FollowedUpdatesViewController: BaseViewController {
             for mangaModel in mangaList.data {
                 mangaListModel[mangaModel.id] = mangaModel
             }
-            setupDataSource()
+            var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
+            snapshot.appendSections([.mangaList])
+            snapshot.appendItems(Array(mangaListModel.keys), toSection: .mangaList)
+            await dataSource.apply(snapshot, animatingDifferences: true)
             await MainActor.run {
                 refreshHeader.endRefreshing()
             }
@@ -88,13 +94,7 @@ class FollowedUpdatesViewController: BaseViewController {
             cell?.setContent(mangaModel: mangaModel, chapters: chapters)
             return cell
         }
-        
-        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
-        snapshot.appendSections([.mangaList])
-        snapshot.appendItems(Array(mangaListModel.keys), toSection: .mangaList)
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
-extension FollowedUpdatesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-}
+extension FollowedUpdatesViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {}

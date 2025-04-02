@@ -11,15 +11,16 @@ import SnapKit
 
 class MangaChapterCollectionCell: UICollectionViewCell {
     
-    let containerView = UIView()
-    let chapterView = ChapterView()
-    let divider = LineView()
+    private let containerView = UIView()
+    private let chapterView = ChapterView()
+    private let divider = LineView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.snp.makeConstraints { make in
             make.width.equalTo(MDLayout.screenWidth)
+            make.edges.equalToSuperview()
         }
         
         contentView.addSubview(containerView)
@@ -43,5 +44,9 @@ class MangaChapterCollectionCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func setContent(with chapterModel: ChapterModel, viewed: Bool? = nil) {
+        chapterView.setContent(with: chapterModel, viewed: viewed)
     }
 }

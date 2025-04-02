@@ -21,6 +21,7 @@ extension UIColor {
     
     static let primaryText = black2D2E2F
     static let secondaryText = darkerGray565656
+    static let lightText = fromHex("cccccc")
     
     // 蔚蓝
     static let cerulean700 = fromHex("0084ba")

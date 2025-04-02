@@ -18,6 +18,24 @@ extension Requests {
             case desc = "desc"
         }
         
+        static func getMangaFeed(
+            mangaID: String,
+            offset: Int = 0,
+            order: Order = .desc
+        ) async throws -> ChapterCollection {
+            let params: [String: Any] = [
+                "offset": offset,
+                "includes[]": [ "scanlation_group", "user", "manga" ],
+                "translatedLanguage[]": MDLocale.chapterLanguages,
+                "order[chapter]": order.rawValue
+            ]
+            let rawJson = try await Requests.get(url: .mainHost("/manga/\(mangaID)/feed"), params: params)
+            guard let model = ChapterCollection.yy_model(withJSON: rawJson) else {
+                throw Errors.IllegalData
+            }
+            return model
+        }
+        
         /// Get list of chapters for a specific manga.
         ///
         /// API defination available at:
@@ -173,18 +191,12 @@ extension Requests {
             }
         }
         
-        static func markAsRead(mangaId: String, chapterId: String) -> Promise<Void> {
-            Promise { seal in
-                Requests.post(
-                    path: "/manga/\(mangaId)/read",
-                    data: ["chapterIdsRead": [chapterId]],
-                    requireAuth: true
-                ).done { _ in
-                    seal.fulfill_()
-                }.catch { error in
-                    seal.reject(error)
-                }
-            }
+        static func markAsRead(mangaID: String, chapterID: String) async throws {
+            try await Requests.post(
+                url: .mainHost("/manga/\(mangaID)/read"),
+                data: ["chapterIdsRead": [chapterID]],
+                authenticated: true
+            )
         }
     }
 }

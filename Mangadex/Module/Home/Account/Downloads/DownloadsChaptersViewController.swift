@@ -54,7 +54,7 @@ extension DownloadsChaptersViewController: UICollectionViewDelegate, UICollectio
         ) as! MangaChapterCollectionCell
         
         let model = mangaModel.chapters[indexPath.row].info
-        cell.chapterView.setContent(with: model)
+        cell.setContent(with: model)
         return cell
     }
     

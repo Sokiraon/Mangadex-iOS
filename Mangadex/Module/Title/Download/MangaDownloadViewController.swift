@@ -67,7 +67,7 @@ class MangaDownloadViewController: BaseViewController {
     
     override func didSetupUI() {
         setupDataSource()
-        fetchData()
+        fetchChapters()
         
         $checkedChapterModels
             .sink { [weak self] models in
@@ -78,40 +78,52 @@ class MangaDownloadViewController: BaseViewController {
     }
     
     // MARK: - CollectionView
-    func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4),
-                                              heightDimension: .estimated(36))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .estimated(48))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
-                                                       subitems: [item])
-        group.interItemSpacing = .fixed(12)
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 12
-        section.contentInsets = NSDirectionalEdgeInsets(
-            top: 12, leading: 20, bottom: 16, trailing: 20)
-        
-//        let sectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-//                                                       heightDimension: .estimated(44))
-//        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-//            layoutSize: sectionHeaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//        section.boundarySupplementaryItems = [sectionHeader]
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
-    }
     
-    enum CollectionViewSection: Int {
+    private enum SectionLayoutKind: Int {
         case chapters
         case loader
     }
     
-    var dataSource: UICollectionViewDiffableDataSource<CollectionViewSection, String>!
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment in
+            guard let sectionKind = SectionLayoutKind(rawValue: sectionIndex) else {
+                return nil
+            }
+            switch sectionKind {
+            case .chapters:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4),
+                                                      heightDimension: .estimated(36))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                       heightDimension: .estimated(48))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                               subitems: [item])
+                group.interItemSpacing = .fixed(12)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.interGroupSpacing = 12
+                section.contentInsets = NSDirectionalEdgeInsets(
+                    top: 12, leading: 20, bottom: 16, trailing: 20)
+                return section
+            case .loader:
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                      heightDimension: .estimated(48))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                                       heightDimension: .estimated(48))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+            }
+        }
+        
+        return layout
+    }
     
-    func setupDataSource() {
+    private var dataSource: UICollectionViewDiffableDataSource<SectionLayoutKind, String>!
+    
+    private func setupDataSource() {
         let chapterCellRegistration = UICollectionView.CellRegistration<MangaDownloadChapterCell, String>
         { cell, indexPath, itemIdentifier in
             let chapterModel = self.chapterModels[indexPath.item]
@@ -121,6 +133,9 @@ class MangaDownloadViewController: BaseViewController {
             cell.setHasDownloaded(DownloadManager.shared.hasDownloaded(chapterID: chapterModel.id, for: self.mangaModel.id))
         }
         
+        let loaderCellRegistration = UICollectionView.CellRegistration<CollectionLoaderCell, String>
+        { _, _, _ in }
+        
 //        let headerRegistration = UICollectionView.SupplementaryRegistration<MangaDownloadVolumeHeaderView>(
 //            elementKind: UICollectionView.elementKindSectionHeader)
 //        { supplementaryView, elementKind, indexPath in
@@ -129,8 +144,14 @@ class MangaDownloadViewController: BaseViewController {
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView)
         { collectionView, indexPath, itemIdentifier in
-            collectionView.dequeueConfiguredReusableCell(
-                using: chapterCellRegistration, for: indexPath, item: itemIdentifier)
+            switch SectionLayoutKind(rawValue: indexPath.section)! {
+            case .chapters:
+                collectionView.dequeueConfiguredReusableCell(
+                    using: chapterCellRegistration, for: indexPath, item: itemIdentifier)
+            case .loader:
+                collectionView.dequeueConfiguredReusableCell(
+                    using: loaderCellRegistration, for: indexPath, item: itemIdentifier)
+            }
         }
 //        dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath in
 //            collectionView.dequeueConfiguredReusableSupplementary(
@@ -139,27 +160,44 @@ class MangaDownloadViewController: BaseViewController {
     }
     
     // MARK: - Data
-    var mangaModel: MangaModel!
+    private var mangaModel: MangaModel!
     private var chapterModels = [ChapterModel]()
     private var chaptersCount = 0
     
     @Published private var checkedChapterModels = Set<ChapterModel>()
     
-    func fetchData() {
-        _ = Requests.Chapter
-            .getMangaFeed(mangaId: mangaModel.id, offset: 0)
-            .done { [weak self] chapterCollection in
-                guard let self else { return }
-                
-                self.chapterModels = chapterCollection.data
-                self.chaptersCount = chapterCollection.total
-                
-                var snapshot = NSDiffableDataSourceSnapshot<CollectionViewSection, String>()
-                snapshot.appendSections([.chapters])
-                snapshot.appendItems(chapterCollection.data.map { $0.id },
-                                     toSection: .chapters)
-                self.dataSource.apply(snapshot)
+    private let loaderID = UUID().uuidString
+    
+    private func fetchChapters() {
+        Task {
+            let chapterCollection = try await Requests.Chapter.getMangaFeed(mangaID: mangaModel.id)
+            self.chapterModels = chapterCollection.data
+            self.chaptersCount = chapterCollection.total
+            
+            var snapshot = NSDiffableDataSourceSnapshot<SectionLayoutKind, String>()
+            snapshot.appendSections([.chapters, .loader])
+            snapshot.appendItems(chapterCollection.data.map { $0.id },
+                                 toSection: .chapters)
+            if chapterCollection.data.count < chapterCollection.total {
+                snapshot.appendItems([self.loaderID], toSection: .loader)
             }
+            await self.dataSource.apply(snapshot)
+        }
+    }
+    
+    private func loadMoreChapters() {
+        Task {
+            let chapterCollection = try await Requests.Chapter.getMangaFeed(mangaID: mangaModel.id, offset: chapterModels.count)
+            self.chapterModels.append(contentsOf: chapterCollection.data)
+            self.chaptersCount = chapterCollection.total
+            
+            var snapshot = self.dataSource.snapshot()
+            snapshot.appendItems(chapterCollection.data.map { $0.id }, toSection: .chapters)
+            if self.chapterModels.count >= self.chaptersCount {
+                snapshot.deleteItems([loaderID])
+            }
+            await self.dataSource.apply(snapshot)
+        }
     }
     
     // MARK: - Actions
@@ -171,6 +209,12 @@ class MangaDownloadViewController: BaseViewController {
 }
 
 extension MangaDownloadViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if cell is CollectionLoaderCell {
+            loadMoreChapters()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? MangaDownloadChapterCell else { return }
         if cell.checked {

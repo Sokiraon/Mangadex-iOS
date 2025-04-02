@@ -232,7 +232,8 @@ class OnlineMangaViewer: MangaViewer {
     
     private func setupChapterList() {
         let cellRegistration = UICollectionView.CellRegistration<MangaViewerChapterListCell, MDMangaAggregatedVolumeChapter>
-        { cell, indexPath, itemIdentifier in
+        { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
             cell.setContent(
                 title: "mangaViewer.chapterList.chapterName".localizedFormat(itemIdentifier.chapter),
                 isCurrent: itemIdentifier.id == self.chapterId)
@@ -240,7 +241,8 @@ class OnlineMangaViewer: MangaViewer {
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<MangaViewerChapterListHeaderView>(
             elementKind: UICollectionView.elementKindSectionHeader)
-        { supplementaryView, elementKind, indexPath in
+        { [weak self] supplementaryView, elementKind, indexPath in
+            guard let self else { return }
             let title: String
             if let volumeNumber = Int(self.aggregatedModel.volumeNames[indexPath.section]) {
                 title = "mangaViewer.chapterList.volumeName".localizedFormat(volumeNumber)
@@ -276,7 +278,9 @@ class OnlineMangaViewer: MangaViewer {
     /// and save the status in MDMangaProgressManager so that users can return to their last read chapter.
     private func updateReadingStatus() {
         if let mangaId = chapterModel?.mangaId {
-            _ = Requests.Chapter.markAsRead(mangaId: mangaId, chapterId: chapterId)
+            Task {
+                try await Requests.Chapter.markAsRead(mangaID: mangaId, chapterID: chapterId)
+            }
             MDMangaProgressManager.saveProgress(forMangaId: mangaId, chapterId: chapterId)
         }
     }

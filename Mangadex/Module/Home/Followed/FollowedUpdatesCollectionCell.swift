@@ -104,7 +104,7 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
         chapterStack.snp.makeConstraints { make in
             make.left.right.equalTo(lblTitle)
             make.top.equalTo(divider.snp.bottom)
-            make.bottom.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().inset(8)
         }
     }
     
@@ -133,6 +133,7 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
             NSLayoutConstraint.deactivate(view.constraints)
             view.removeFromSuperview()
         }
+        sizeToFit()
         super.prepareForReuse()
     }
 }

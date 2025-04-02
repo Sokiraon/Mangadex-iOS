@@ -47,6 +47,12 @@ class MangaTitleChaptersViewController: BaseViewController {
         }
         
         setupDataSource()
+        fetchChapters()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateReadChapters()
     }
     
     enum CollectionSection: Int {
@@ -58,15 +64,14 @@ class MangaTitleChaptersViewController: BaseViewController {
     
     func setupDataSource() {
         let chapterCellRegistration = UICollectionView.CellRegistration<MangaChapterCollectionCell, String>
-        { cell, indexPath, itemIdentifier in
+        { [weak self] cell, indexPath, itemIdentifier in
+            guard let self else { return }
             let chapterModel = self.chapterModels[indexPath.item]
-            cell.chapterView.setContent(with: chapterModel)
+            cell.setContent(with: chapterModel, viewed: self.readChapters.contains(chapterModel.id))
         }
         
         let loaderCellRegistration = UICollectionView.CellRegistration<CollectionLoaderCell, String>
-        { cell, indexPath, itemIdentifier in
-            
-        }
+        { _, _, _ in }
         
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView)
         { collectionView, indexPath, itemIdentifier in
@@ -79,51 +84,57 @@ class MangaTitleChaptersViewController: BaseViewController {
                     using: loaderCellRegistration, for: indexPath, item: itemIdentifier)
             }
         }
-        
-        fetchChapters()
     }
     
     var chapterModels = [ChapterModel]()
     var totalChapters = 0
+    var readChapters = [String]()
     
     var mangaModel: MangaModel!
     let loadingCellIdentifier = UUID().uuidString
     
     func fetchChapters() {
-        _ = Requests.Chapter
-            .getMangaFeed(mangaId: mangaModel.id, offset: 0)
-            .done { chapters in
-                self.chapterModels = chapters.data
-                self.totalChapters = chapters.total
-                
-                var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
-                snapshot.appendSections([.chapters, .loader])
-                snapshot.appendItems(chapters.data.map({ chapterModel in
-                    chapterModel.id
-                }), toSection: .chapters)
-                if chapters.data.count < chapters.total {
-                    snapshot.appendItems([self.loadingCellIdentifier],
-                                         toSection: .loader)
-                }
-                self.dataSource.apply(snapshot)
+        Task {
+            async let request1 = Requests.Chapter.getMangaFeed(mangaID: mangaModel.id)
+            async let request2 = Requests.Manga.getReadChapters(mangaID: mangaModel.id)
+            let (chapterCollection, readChapters) = try await (request1, request2)
+            
+            self.chapterModels = chapterCollection.data
+            self.totalChapters = chapterCollection.total
+            self.readChapters = readChapters
+            
+            var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
+            snapshot.appendSections([.chapters, .loader])
+            snapshot.appendItems(chapterCollection.data.map { $0.id }, toSection: .chapters)
+            if chapterCollection.data.count < chapterCollection.total {
+                snapshot.appendItems([self.loadingCellIdentifier],
+                                     toSection: .loader)
             }
+            await self.dataSource.apply(snapshot)
+        }
     }
     
     func loadMoreChapters() {
-        _ = Requests.Chapter
-            .getMangaFeed(mangaId: mangaModel.id, offset: chapterModels.count)
-            .done { chapters in
-                self.chapterModels.append(contentsOf: chapters.data)
-                self.totalChapters = chapters.total
-                var snapshot = self.dataSource.snapshot()
-                snapshot.appendItems(chapters.data.map({ chapterModel in
-                    chapterModel.id
-                }), toSection: .chapters)
-                if self.chapterModels.count >= chapters.total {
-                    snapshot.deleteItems([self.loadingCellIdentifier])
-                }
-                self.dataSource.apply(snapshot)
+        Task {
+            let chapterCollection = try await Requests.Chapter.getMangaFeed(mangaID: mangaModel.id, offset: chapterModels.count)
+            self.chapterModels.append(contentsOf: chapterCollection.data)
+            self.totalChapters = chapterCollection.total
+            
+            var snapshot = self.dataSource.snapshot()
+            snapshot.appendItems(chapterCollection.data.map { $0.id }, toSection: .chapters)
+            if self.chapterModels.count >= chapterCollection.total {
+                snapshot.deleteItems([self.loadingCellIdentifier])
             }
+            await self.dataSource.apply(snapshot)
+        }
+    }
+    
+    private func updateReadChapters() {
+        Task {
+            let readChapters = try await Requests.Manga.getReadChapters(mangaID: mangaModel.id)
+            self.readChapters = readChapters
+            await self.dataSource.applySnapshotUsingReloadData(self.dataSource.snapshot())
+        }
     }
     
     func viewChapter(at indexPath: IndexPath) {

@@ -66,6 +66,15 @@ extension Requests {
             }
         }
         
+        static func getReadChapters(mangaID: String) async throws -> [String] {
+            let rawJson = try await Requests.get(url: .mainHost("/manga/\(mangaID)/read"), authenticated: true)
+            let json = JSON(rawJson)
+            guard let data = json["data"].arrayObject as? [String] else {
+                throw Errors.IllegalData
+            }
+            return data
+        }
+        
         static func getCoverUrl(coverId: String, mangaId: String) -> Promise<URL> {
             Promise { seal in
                 firstly {

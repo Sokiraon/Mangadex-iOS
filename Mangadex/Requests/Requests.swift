@@ -130,8 +130,10 @@ enum Requests {
         }
     }
     
+    @discardableResult
     static func post(
         url: URL,
+        params: [String: Any] = [:],
         data: Any? = nil,
         authenticated: Bool = false
     ) async throws -> [String: Any] {
@@ -144,6 +146,7 @@ enum Requests {
         return try await withCheckedThrowingContinuation { continuation in
             Just.post(
                 url,
+                params: params,
                 json: data,
                 headers: headers,
                 asyncCompletionHandler: { r in
