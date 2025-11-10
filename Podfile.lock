@@ -2,7 +2,6 @@ PODS:
   - Agrume (5.8.10):
     - SwiftyGif
   - Alamofire (5.9.1)
-  - AsyncPlus (1.1.1)
   - Cosmos (23.0.0)
   - FirebaseABTesting (10.27.0):
     - FirebaseCore (~> 10.0)
@@ -149,15 +148,6 @@ PODS:
   - nanopb/encode (2.30910.0)
   - Pageboy (4.2.0)
   - ProgressHUD (14.1.1)
-  - PromiseKit (8.1.1):
-    - PromiseKit/CorePromise (= 8.1.1)
-    - PromiseKit/Foundation (= 8.1.1)
-    - PromiseKit/UIKit (= 8.1.1)
-  - PromiseKit/CorePromise (8.1.1)
-  - PromiseKit/Foundation (8.1.1):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (8.1.1):
-    - PromiseKit/CorePromise
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
     - PromisesObjC (= 2.4.0)
@@ -175,7 +165,6 @@ PODS:
 DEPENDENCIES:
   - Agrume
   - Alamofire
-  - AsyncPlus (~> 1.1)
   - Cosmos (~> 23.0)
   - FirebaseAnalytics
   - FirebaseCrashlytics
@@ -188,7 +177,6 @@ DEPENDENCIES:
   - MarkdownKit
   - MJRefresh (from `https://github.com/Sokiraon/MJRefresh.git`)
   - ProgressHUD
-  - PromiseKit (~> 8)
   - SkeletonView
   - SnapKit (~> 5.7.1)
   - SwiftEntryKit (= 2.0.0)
@@ -202,7 +190,6 @@ SPEC REPOS:
   trunk:
     - Agrume
     - Alamofire
-    - AsyncPlus
     - Cosmos
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -228,7 +215,6 @@ SPEC REPOS:
     - nanopb
     - Pageboy
     - ProgressHUD
-    - PromiseKit
     - PromisesObjC
     - PromisesSwift
     - SkeletonView
@@ -253,7 +239,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Agrume: 0cc49307b76e700cbe56490f74c655b50ed1b6eb
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
-  AsyncPlus: c0c4edc57841f35b21ce837e94f7827b66b3726e
   Cosmos: b5c6a9a637e28a061b54c8f8b1d8529d7d4db73f
   FirebaseABTesting: 038a7d5f1e36ba7208cf34f6f596946d8f70d6c3
   FirebaseAnalytics: f9211b719db260cc91aebee8bb539cb367d0dfd1
@@ -280,7 +265,6 @@ SPEC CHECKSUMS:
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
   Pageboy: 7f7886f61c76633df635861bf7839caf2cabdb3e
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
-  PromiseKit: d1be44b474e5acfa16adf007a1f49f104e10fead
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
@@ -293,6 +277,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 842d242da460ae153566c91327b01bfc673d22b9
+PODFILE CHECKSUM: ccc3b4405957e7f60121ec53b12518b5864e2a4b
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.16.2

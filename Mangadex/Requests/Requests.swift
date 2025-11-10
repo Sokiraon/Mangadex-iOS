@@ -7,9 +7,7 @@
 
 import Foundation
 import Just
-import Combine
 import SwiftyJSON
-import PromiseKit
 
 enum HostUrl: String {
     case main = "https://api.mangadex.org"
@@ -55,6 +53,7 @@ enum Requests {
         )
     }
     
+    @discardableResult
     static func get(
         url: URL,
         params: [String: Any] = [:],
@@ -80,53 +79,6 @@ enum Requests {
                     }
                 }
             )
-        }
-    }
-    
-    static func get(
-        path: String,
-        host: HostUrl = .main,
-        params: [String: Any] = [:],
-        headers: [String: String] = [:],
-        requireAuth: Bool = false
-    ) -> Promise<[String: Any]> {
-        let hostUrl = URL(string: host.rawValue)!
-        if requireAuth {
-            return Promise { seal in
-                firstly {
-                    UserManager.shared.getValidatedToken()
-                }.done { token in
-                    let headers = headers + [
-                        "Authorization": "Bearer \(token)"
-                    ]
-                    Just.get(hostUrl.appending(path: path),
-                             params: params,
-                             headers: headers,
-                             asyncCompletionHandler:  { r in
-                        if r.ok, let json = r.json as? [String: Any] {
-                            seal.fulfill(json)
-                        } else {
-                            seal.reject(Errors.Default)
-                        }
-                    })
-                }.catch { error in
-                    seal.reject(error)
-                }
-            }
-        } else {
-            return Promise { seal in
-                Just.get(
-                    hostUrl.appending(path: path),
-                    params: params,
-                    headers: headers,
-                    asyncCompletionHandler:  { r in
-                        if r.ok, let json = r.json as? [String: Any] {
-                            seal.fulfill(json)
-                        } else {
-                            seal.reject(Errors.Default)
-                        }
-                    })
-            }
         }
     }
     
@@ -160,94 +112,28 @@ enum Requests {
         }
     }
     
-    static func post(
-        path: String,
-        host: HostUrl = .main,
-        data: Any? = nil,
-        requireAuth: Bool = false
-    ) -> Promise<[String: Any]> {
-        let hostUrl = URL(string: host.rawValue)!
-        if requireAuth {
-            return Promise { seal in
-                firstly {
-                    UserManager.shared.getValidatedToken()
-                }.done { token in
-                    Just.post(
-                        hostUrl.appending(path: path),
-                        json: data,
-                        headers: ["Authorization": "Bearer \(token)"],
-                        asyncCompletionHandler: { r in
-                            if r.ok, let json = r.json as? [String: Any] {
-                                seal.fulfill(json)
-                            } else {
-                                seal.reject(Errors.Default)
-                            }
-                        }
-                    )
-                }.catch { error in
-                    seal.reject(error)
-                }
-            }
-        } else {
-            return Promise { seal in
-                Just.post(
-                    hostUrl.appending(path: path),
-                    json: data,
-                    asyncCompletionHandler:  { r in
-                        if r.ok, let json = r.json as? [String: Any] {
-                            seal.fulfill(json)
-                        } else {
-                            seal.reject(Errors.Default)
-                        }
-                    })
-            }
-        }
-    }
-    
+    @discardableResult
     static func delete(
-        path: String,
-        host: HostUrl = .main,
-        requireAuth: Bool = false
-    ) -> Promise<[String: Any]> {
-        let hostUrl = URL(string: host.rawValue)!
-        if requireAuth {
-            return Promise { seal in
-                firstly {
-                    UserManager.shared.getValidatedToken()
-                }.done { token in
-                    Just.delete(
-                        hostUrl.appending(path: path),
-                        headers: ["Authorization": "Bearer \(token)"],
-                        asyncCompletionHandler:  { r in
-                            if r.ok, let json = r.json as? [String: Any] {
-                                seal.fulfill(json)
-                            } else {
-                                seal.reject(Errors.Default)
-                            }
-                        })
-                }.catch { error in
-                    seal.reject(error)
-                }
-            }
-        } else {
-            return Promise { seal in
-                Just.delete(
-                    hostUrl.appending(path: path),
-                    asyncCompletionHandler:  { r in
-                        if r.ok, let json = r.json as? [String: Any] {
-                            seal.fulfill(json)
-                        } else {
-                            seal.reject(Errors.Default)
-                        }
-                    })
-            }
+        url: URL,
+        authenticated: Bool = false
+    ) async throws -> [String: Any] {
+        var headers: [String: String] = [:]
+        if authenticated {
+            let token = try await UserManager.shared.getVerifiedToken()
+            headers["Authorization"] = "Bearer \(token)"
         }
-    }
-    
-    /// - Returns: A placeholder Promise object that gets fulfilled immediately with the given value.
-    static func Placeholder<V>(_ value: V) -> Promise<V> {
-        Promise { seal in
-            seal.fulfill(value)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            Just.delete(
+                url,
+                headers: headers,
+                asyncCompletionHandler:  { r in
+                    if r.ok, let json = r.json as? [String: Any] {
+                        continuation.resume(returning: json)
+                    } else {
+                        continuation.resume(throwing: Errors.Default)
+                    }
+                })
         }
     }
 }

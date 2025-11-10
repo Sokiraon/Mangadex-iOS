@@ -6,24 +6,16 @@
 //
 
 import Foundation
-import PromiseKit
 
 extension Requests {
     enum CustomList {
-        static func get(id: String) -> Promise<CustomListModel> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/list/\(id)")
-                }.done { json in
-                    if let model = CustomListModel.yy_model(withJSON: json["data"]!) {
-                        seal.fulfill(model)
-                        return
-                    }
-                    seal.reject(Errors.IllegalData)
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func get(id: String) async throws -> CustomListModel {
+            let json = try await Requests.get(url: .mainHost("/list/\(id)"))
+            guard let data = json["data"],
+                  let model = CustomListModel.yy_model(withJSON: data) else {
+                throw Errors.IllegalData
             }
+            return model
         }
     }
 }

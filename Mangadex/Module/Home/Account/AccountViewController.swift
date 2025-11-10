@@ -22,8 +22,10 @@ class AccountViewController: BaseViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "icon_logout"), for: .normal)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(didTapLogout), for: .touchUpInside)
-        button.isHidden = !UserManager.shared.userIsLoggedIn
+        button.addAction(UIAction { [weak self] _ in
+            self?.didTapLogout()
+        }, for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     
@@ -153,8 +155,6 @@ class AccountViewController: BaseViewController {
             make.left.equalTo(ivAvatar.snp.right).offset(20)
             make.right.equalTo(btnLogout.snp.left).offset(-20)
         }
-        lblUsername.text = UserManager.shared.username
-        lblUsername.isUserInteractionEnabled = !UserManager.shared.userIsLoggedIn
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
         view.addSubview(settingsView)
@@ -165,6 +165,7 @@ class AccountViewController: BaseViewController {
     }
     
     override func didSetupUI() {
+        syncUserManagerStates()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didUpdateSetting),
@@ -180,6 +181,7 @@ class AccountViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateDownloadsSize()
+        syncUserManagerStates()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -188,18 +190,33 @@ class AccountViewController: BaseViewController {
     
     // MARK: - actions
     
-    @objc private func didTapLogout() {
-        UserManager.logOutAsUser()
-        MDRouter.goToLogin()
-    }
-    
-    @objc private func didTapUsername() {
-        if !UserManager.shared.userIsLoggedIn {
+    private func didTapLogout() {
+        Task { @MainActor in
+            await UserManager.shared.logout()
             MDRouter.goToLogin()
         }
     }
     
+    @objc private func didTapUsername() {
+        Task { @MainActor in
+            let isLoggedIn = await UserManager.shared.userIsLoggedIn
+            if !isLoggedIn {
+                MDRouter.goToLogin()
+            }
+        }
+    }
+    
     @objc private func didUpdateSetting() {}
+    
+    private func syncUserManagerStates() {
+        Task { @MainActor in
+            let isLoggedIn = await UserManager.shared.userIsLoggedIn
+            let username = await UserManager.shared.username
+            self.btnLogout.isHidden = !isLoggedIn
+            self.lblUsername.text = username
+            self.lblUsername.isUserInteractionEnabled = !isLoggedIn
+        }
+    }
     
     @objc private func deleteDownloads() {
         ProgressHUD.animate()

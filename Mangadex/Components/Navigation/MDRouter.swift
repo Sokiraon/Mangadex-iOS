@@ -12,6 +12,7 @@ enum MDShowVCActionType {
     case present, push
 }
 
+@MainActor
 class MDRouter {
     static let keyWindow = UIApplication.shared.connectedScenes
         .filter({ $0.activationState == .foregroundActive })

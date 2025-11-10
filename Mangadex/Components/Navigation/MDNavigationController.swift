@@ -12,6 +12,7 @@ class MDNavigationController: UINavigationController, UIGestureRecognizerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
+        isNavigationBarHidden = true
     }
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {

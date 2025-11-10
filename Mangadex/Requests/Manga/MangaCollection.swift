@@ -8,15 +8,13 @@
 import Foundation
 import YYModel
 
-enum MangaReadingStatus: String {
+enum MangaReadingStatus: String, Sendable {
     case reading = "reading"
     case onHold = "on_hold"
     case planToRead = "plan_to_read"
     case dropped = "dropped"
     case reReading = "re_reading"
     case completed = "completed"
-    /// Represents the "unfollowed" status.
-    case null = "null"
 }
 
 class MangaMultiLanguageObject: NSObject, YYModel {

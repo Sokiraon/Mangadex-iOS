@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import PromiseKit
 import SnapKit
 import Kingfisher
 import SkeletonView
@@ -170,12 +169,12 @@ class MangaListCollectionCell: UICollectionViewCell {
         } else {
             infoRate.showAnimatedSkeleton()
             infoFollow.showAnimatedSkeleton()
-            _ = Requests.Manga.getStatistics(mangaId: model.id)
-                .done { statistics in
-                    model.statistics = statistics
-                    self.infoFollow.text = statistics.followsString
-                    self.infoRate.text = statistics.ratingString
-                }
+            Task { @MainActor in
+                let data = try await Requests.Manga.getStatistics(mangaId: model.id)
+                model.statistics = data
+                self.infoFollow.text = data.followsString
+                self.infoRate.text = data.ratingString
+            }
         }
     }
 }

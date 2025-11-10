@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import ProgressHUD
-import PromiseKit
 
 class TaggedMangaViewController: MangaListViewController {
     private var queryOptions: [String: Any] = [:]
@@ -29,29 +28,23 @@ class TaggedMangaViewController: MangaListViewController {
         }
     }
     
-    override func fetchData() {
-        Requests.Manga.query(params: queryOptions)
-            .done { model in
-                self.setData(with: model)
-            }
-            .catch { error in
-                ProgressHUD.failed()
-            }
-            .finally {
-                self.vCollection.mj_header?.endRefreshing()
-            }
+    override func fetchData() async {
+        do {
+            let model = try await Requests.Manga.query(params: queryOptions)
+            self.setData(with: model)
+        } catch {
+            ProgressHUD.failed()
+        }
+        await self.vCollection.mj_header?.endRefreshing()
     }
     
-    override func loadMoreData() {
-        Requests.Manga.query(params: queryOptions + ["offset": mangaList.count])
-            .done { model in
-                self.updateData(with: model)
-            }
-            .catch { error in
-                ProgressHUD.failed()
-            }
-            .finally {
-                self.vCollection.mj_header?.endRefreshing()
-            }
+    override func loadMoreData() async {
+        do {
+            let model = try await Requests.Manga.query(params: queryOptions + ["offset": mangaList.count])
+            self.updateData(with: model)
+        } catch {
+            ProgressHUD.failed()
+        }
+        await self.vCollection.mj_header?.endRefreshing()
     }
 }

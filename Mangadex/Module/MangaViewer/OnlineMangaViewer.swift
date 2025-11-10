@@ -11,7 +11,6 @@ import ProgressHUD
 import Kingfisher
 import SnapKit
 import Darwin
-import PromiseKit
 import MJRefresh
 import SafariServices
 
@@ -133,7 +132,9 @@ class OnlineMangaViewer: MangaViewer {
     }
     
     override func didSetupUI() {
-        fetchData(withAggregate: aggregatedModel == nil)
+        Task {
+            await fetchData(withAggregate: aggregatedModel == nil)
+        }
     }
     
     // MARK: - Model
@@ -155,36 +156,39 @@ class OnlineMangaViewer: MangaViewer {
         }!
     }()
     
-    private func fetchData(withAggregate: Bool) {
+    private func fetchData(withAggregate: Bool) async {
         ProgressHUD.animate()
-        firstly {
-            when(fulfilled: Requests.Chapter.get(id: chapterId),
-                 Requests.Chapter.getStatistics(id: chapterId)
-            )
-        }.then { (chapterModel: ChapterModel, statistics: ChapterStatisticsModel) in
-            self.statistics = statistics
+        do {
+            // 1) Fetch chapter model and statistics concurrently
+            async let chapterModelTask = Requests.Chapter.get(id: chapterId)
+            async let statisticsTask = Requests.Chapter.getStatistics(id: chapterId)
+            let (chapterModel, statistics) = try await (chapterModelTask, statisticsTask)
+            
             self.chapterModel = chapterModel
+            self.statistics = statistics
             self.appBar.title = chapterModel.attributes.chapterName
             self.updateReadingStatus()
+            
+            // 2) Fetch page data and aggregated chapters concurrently depending on withAggregate
+            async let pagesTask = Requests.Chapter.getPageData(chapterId: chapterModel.id)
+            let aggregated: MDMangaAggregatedModel
             if withAggregate {
-                return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
-                            Requests.Manga.getAggregatedChapters(
-                               mangaId: chapterModel.mangaId!,
-                               groupId: chapterModel.relationships.group?.id,
-                               language: chapterModel.attributes.translatedLanguage
-                            )
-                       )
-            } else {
-                return when(fulfilled: Requests.Chapter.getPageData(chapterId: chapterModel.id),
-                            Requests.Placeholder(self.aggregatedModel)
+                let agg = try await Requests.Manga.getAggregatedChapters(
+                    mangaId: chapterModel.mangaId!,
+                    groupId: chapterModel.relationships.group?.id,
+                    language: chapterModel.attributes.translatedLanguage
                 )
+                aggregated = agg
+            } else {
+                aggregated = self.aggregatedModel
             }
-        }.done { pagesModel, aggregatedModel in
+            let pagesModel = try await pagesTask
+            
+            // 3) Apply model data to UI
             self.pageURLs = pagesModel.pageURLs
-            // Set slider range based on page count
-            self.vSlider.maximumValue = Float(self.pageURLs.count - 1)
-            self.aggregatedModel = aggregatedModel
-
+            self.vSlider.maximumValue = Float(max(0, self.pageURLs.count - 1))
+            self.aggregatedModel = aggregated
+            
             if self.currentIndex == 0 {
                 self.btnPrev.isEnabled = false
                 self.btnPrev.setTitleColor(.darkGray808080, for: .normal)
@@ -195,16 +199,12 @@ class OnlineMangaViewer: MangaViewer {
             }
             
             self.setupChapterList()
-
-            DispatchQueue.main.async {
-                self.vPages.reloadData()
-                self.toggleControlArea()
-                ProgressHUD.dismiss()
-            }
-        }.catch { error in
-            DispatchQueue.main.async {
-                ProgressHUD.failed()
-            }
+            
+            self.vPages.reloadData()
+            self.toggleControlArea()
+            ProgressHUD.dismiss()
+        } catch {
+            ProgressHUD.failed()
         }
     }
     
@@ -304,11 +304,11 @@ class OnlineMangaViewer: MangaViewer {
             )
             alert.addAction(UIAlertAction(title: "kCancel".localized(), style: .cancel))
             alert.addAction(UIAlertAction(title: "kOk".localized(), style: .default, handler: { action in
-                _ = Requests.Chapter.createForumThread(chapterId: self.chapterId)
-                    .done { statistics in
-                        self.statistics = statistics
-                        self.openForum()
-                    }
+                Task {
+                    let statistics = try await Requests.Chapter.createForumThread(chapterId: self.chapterId)
+                    self.statistics = statistics
+                    self.openForum()
+                }
             }))
             self.present(alert, animated: true)
         }

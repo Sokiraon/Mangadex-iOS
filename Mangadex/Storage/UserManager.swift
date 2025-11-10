@@ -8,10 +8,8 @@
 import Foundation
 import Just
 import SwiftyJSON
-import PromiseKit
-import Combine
 
-class UserManager {
+actor UserManager {
     static let shared = UserManager()
     
     private init() {}
@@ -55,19 +53,11 @@ class UserManager {
         }
     }
     
-    func login(username: String, password: String) -> Promise<Bool> {
-        Promise { seal in
-            firstly {
-                Requests.Auth.login(username: username, password: password)
-            }.done { token in
-                self.session = token.session
-                self.refresh = token.refresh
-                self.username = username
-                seal.fulfill(true)
-            }.catch { error in
-                seal.reject(error)
-            }
-        }
+    func login(username: String, password: String) async throws {
+        let token = try await Requests.Auth.login(username: username, password: password)
+        self.session = token.session
+        self.refresh = token.refresh
+        self.username = username
     }
     
     var userIsLoggedIn: Bool {
@@ -82,7 +72,7 @@ class UserManager {
         UserDefaults.standard.set(true, forKey: Keys.isGuestUser.rawValue)
     }
     
-    static func logOutAsGuest() {
+    static func logoutAsGuest() {
         UserDefaults.standard.set(false, forKey: Keys.isGuestUser.rawValue)
     }
     
@@ -102,32 +92,9 @@ class UserManager {
         return newToken.session
     }
     
-    func getValidatedToken() -> Promise<String> {
-        Promise { seal in
-            // verify token
-            firstly {
-                Requests.Auth.verifyToken(token: self.session)
-            }.done { res in
-                seal.fulfill(self.session)
-            }.catch { error in
-                // if verification failed, try to refresh token
-                firstly {
-                    Requests.Auth.refreshToken(refresh: self.refresh)
-                }.done { token in
-                    self.session = token.session
-                    self.refresh = token.refresh
-                    seal.fulfill(self.session)
-                }.catch { error in
-                    // if refresh failed, throw an Error
-                    seal.reject(Requests.ErrorResponse(code: .UnAuthenticated, message: "Authentication Expired"))
-                }
-            }
-        }
-    }
-    
-    static func logOutAsUser() {
-        shared.session = ""
-        shared.refresh = ""
-        shared.username = ""
+    func logout() {
+        session = ""
+        refresh = ""
+        username = ""
     }
 }

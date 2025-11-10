@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PromiseKit
 import SwiftyJSON
 
 extension Requests {
@@ -20,25 +19,21 @@ extension Requests {
         /// 
         /// - Parameter params: Query parameters, **Dict**
         /// - Returns: Promise fulfilled by Array of MangaItem
-        static func getFollowedMangas(params: [String: Any] = [:]) -> Promise<MangaCollection> {
+        static func getFollowedMangas(params: [String: Any] = [:]) async throws -> MangaCollection {
             let defaultParams: [String: Any] = [
                 "includes[]": ["author", "artist", "cover_art"],
                 "limit": 20,
             ]
             let newParams = defaultParams + params
-            return Promise { seal in
-                firstly {
-                    Requests.get(path: "/user/follows/manga", params: newParams, requireAuth: true)
-                }.done { json in
-                    guard let model = MangaCollection.yy_model(withJSON: json) else {
-                        seal.reject(Errors.IllegalData)
-                        return
-                    }
-                    seal.fulfill(model)
-                }.catch { error in
-                    seal.reject(error)
-                }
+            let json = try await Requests.get(
+                url: .mainHost("/user/follows/manga"),
+                params: newParams,
+                authenticated: true
+            )
+            guard let model = MangaCollection.yy_model(withJSON: json) else {
+                throw Errors.IllegalData
             }
+            return model
         }
         
         static func getFollowedMangaFeed(params: [String: Any] = [:]) async throws -> ChapterCollection {
@@ -60,50 +55,41 @@ extension Requests {
             return model
         }
         
-        static func ifFollowsManga(mangaId: String) -> Promise<Bool> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/user/follows/manga/\(mangaId)", requireAuth: true)
-                }.done { json in
-                    seal.fulfill(true)
-                }.catch { error in
-                    seal.fulfill(false)
-                }
+        static func isFollowingManga(mangaId: String) async -> Bool {
+            do {
+                _ = try await Requests.get(url: .mainHost("/user/follows/manga/\(mangaId)"), authenticated: true)
+                return true
+            } catch {
+                return false
             }
         }
         
-        static func getMangaRating(for mangaId: String) -> Promise<Int> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/rating",
-                                 params: [ "manga[]": mangaId ],
-                                 requireAuth: true)
-                }.done { json in
-                    let json = JSON(json)
-                    if let rating = json["ratings"][mangaId]["rating"].int {
-                        seal.fulfill(rating)
-                    } else {
-                        seal.fulfill(0)
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func getMangaRating(for mangaId: String) async throws -> Int {
+            let raw = try await Requests.get(
+                url: .mainHost("/rating"),
+                params: ["manga[]": mangaId],
+                authenticated: true
+            )
+            let json = JSON(raw)
+            if let rating = json["ratings"][mangaId]["rating"].int {
+                return rating
+            } else {
+                // Preserve prior behavior: fulfill 0 when missing
+                return 0
             }
         }
         
-        static func setMangaRating(for mangaId: String,
-                                   to value: Int) -> Promise<Bool> {
-            let request = value == 0 ?
-                Requests.delete(path: "/rating/\(mangaId)", requireAuth: true) :
-                Requests.post(path: "/rating/\(mangaId)",
-                              data: ["rating": value],
-                              requireAuth: true)
-            return Promise { seal in
-                request.done { json in
-                    seal.fulfill(true)
-                }.catch { error in
-                    seal.reject(error)
+        static func setMangaRating(for mangaId: String, to value: Int) async -> Bool {
+            do {
+                let url: URL = .mainHost("/rating/\(mangaId)")
+                if value == 0 {
+                    try await Requests.delete(url: url, authenticated: true)
+                } else {
+                    try await Requests.post(url: url, data: ["rating": value], authenticated: true)
                 }
+                return true
+            } catch {
+                return false
             }
         }
     }

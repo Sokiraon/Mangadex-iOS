@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import PromiseKit
 import Agrume
 
 class MangaTitleCoversViewController: BaseViewController {
@@ -72,20 +71,18 @@ class MangaTitleCoversViewController: BaseViewController {
     }
     
     func fetchData() {
-        _ = Requests.CoverArt
-            .getMangaCoverList(mangaId: mangaModel.id)
-            .done { [weak self] collection in
-                guard let self else { return }
-                self.coverList = collection.data
-                self.coverURLs = collection.data.map {
-                    $0.getOriginalUrl(mangaId: self.mangaModel.id)!
-                }
-                var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-                snapshot.appendSections([0])
-                snapshot.appendItems(collection.data.map({ $0.id }),
-                                     toSection: 0)
-                self.dataSource.apply(snapshot)
+        Task { @MainActor in
+            let collection = try await Requests.CoverArt.getMangaCoverList(mangaId: mangaModel.id)
+            self.coverList = collection.data
+            self.coverURLs = collection.data.compactMap {
+                $0.getOriginalUrl(mangaId: self.mangaModel.id)
             }
+            var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+            snapshot.appendSections([0])
+            snapshot.appendItems(collection.data.map({ $0.id }),
+                                 toSection: 0)
+            await self.dataSource.apply(snapshot)
+        }
     }
 }
 

@@ -8,6 +8,7 @@
 import Foundation
 import Localize_Swift
 
+@MainActor
 class DateHelper {
     
     static private var isoFormatter = ISO8601DateFormatter().apply { formatter in

@@ -61,11 +61,11 @@ class BrowseMangaUpdatesCell: UICollectionViewCell {
         if let mangaModel = model.mangaModel {
             updateContent(with: mangaModel)
         } else {
-            _ = Requests.Manga.get(id: model.mangaId ?? "")
-                .done { mangaModel in
-                    model.mangaModel = mangaModel
-                    self.updateContent(with: mangaModel)
-                }
+            Task { @MainActor in
+                let mangaModel = try await Requests.Manga.get(id: model.mangaId ?? "")
+                model.mangaModel = mangaModel
+                self.updateContent(with: mangaModel)
+            }
         }
     }
     

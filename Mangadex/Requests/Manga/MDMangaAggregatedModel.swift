@@ -14,16 +14,18 @@ class MDMangaAggregatedVolumeChapter: NSObject {
 }
 
 class MDMangaAggregatedVolume: NSObject, YYModel {
-    var count: Int!
+    var count: Int?
     @objc var volume: String!
-    @objc var chapters: [String: MDMangaAggregatedVolumeChapter]!
+    @objc var chapters: [String: MDMangaAggregatedVolumeChapter]?
     
     static func modelContainerPropertyGenericClass() -> [String : Any]? {
         [ "chapters": MDMangaAggregatedVolumeChapter.self ]
     }
     
     lazy var sortedChapters: [MDMangaAggregatedVolumeChapter] = {
-        let chapters = Array(chapters.values)
+        guard let chapters = chapters?.values else {
+            return []
+        }
         return chapters.sorted { chapter1, chapter2 in
             chapter1.chapter.localizedStandardCompare(chapter2.chapter) == .orderedDescending
         }
@@ -46,7 +48,7 @@ class MDMangaAggregatedModel: NSObject, YYModel {
     
     lazy var chapters: [MDMangaAggregatedChapter] = {
         let mapped = volumes.compactMap { _, volumeModel in
-            volumeModel.chapters.compactMap { _, chapterModel in
+            volumeModel.chapters?.compactMap { _, chapterModel in
                 MDMangaAggregatedChapter(
                     id: chapterModel.id, volume: volumeModel.volume, chapter: chapterModel.chapter
                 )

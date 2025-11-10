@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PromiseKit
 
 class ChapterDownload {
     enum Status: Int, Codable {
@@ -74,7 +73,7 @@ class ChapterDownload {
     func fetchPageUrlsIfNeeded() async {
         guard pageURLs.isEmpty else { return }
         do {
-            let pagesModel = try await Requests.Chapter.getPages(chapterId: id).value
+            let pagesModel = try await Requests.Chapter.getPageData(chapterId: id)
             pageURLs = pagesModel.pageURLs
             totalPages = pagesModel.pageURLs.count
         } catch {

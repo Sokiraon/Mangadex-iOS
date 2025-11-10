@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import PromiseKit
 import MJRefresh
 
 class SearchViewController: BaseViewController {
@@ -24,7 +23,9 @@ class SearchViewController: BaseViewController {
     ])
     
     private lazy var refreshHeader = MJRefreshNormalHeader {
-        self.performSearch()
+        Task {
+            await self.performSearch()
+        }
     }
     
     private lazy var collectionView: UICollectionView = {
@@ -67,123 +68,103 @@ class SearchViewController: BaseViewController {
         setupDataSource()
     }
     
-    @objc private func performSearch() {
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
-            snapshot.appendSections([.manga, .author, .group, .loader])
-            switch searchSegment.selectedSegmentIndex {
+    private var searchTask: Task<Void, Never>?
+    
+    private func performSearch() async {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let selectedIndex = searchSegment.selectedSegmentIndex
+        
+        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
+        snapshot.appendSections([.manga, .author, .group, .loader])
+        
+        do {
+            switch selectedIndex {
             case 0:
-                _ = Requests.Manga.query(params: ["title": searchText])
-                    .done { mangaCollection in
-                        self.mangaList = mangaCollection.data
-                        snapshot.appendItems(
-                            mangaCollection.data.map({ mangaModel in mangaModel.id }),
-                            toSection: .manga)
-                        if mangaCollection.limit < mangaCollection.total {
-                            snapshot.appendItems(
-                                [self.collectionLoaderIdentifier],
-                                toSection: .loader)
-                        }
-                        self.dataSource.apply(snapshot, animatingDifferences: true)
-                        self.refreshHeader.endRefreshing()
-                    }
-                break
+                let mangaCollection = try await Requests.Manga.query(params: ["title": searchText])
+                self.mangaList = mangaCollection.data
+                snapshot.appendItems(mangaCollection.data.map { $0.id }, toSection: .manga)
+                if mangaCollection.limit < mangaCollection.total {
+                    snapshot.appendItems([self.collectionLoaderIdentifier], toSection: .loader)
+                }
             case 1:
-                _ = Requests.Author.query(params: ["name": searchText])
-                    .done { authorCollection in
-                        self.authorList = authorCollection.data
-                        snapshot.appendItems(
-                            authorCollection.data.map({ authorModel in authorModel.id}),
-                            toSection: .author)
-                        if authorCollection.limit < authorCollection.total {
-                            snapshot.appendItems(
-                                [self.collectionLoaderIdentifier],
-                                toSection: .loader)
-                        }
-                        self.dataSource.apply(snapshot, animatingDifferences: true)
-                        self.refreshHeader.endRefreshing()
-                    }
-                break
+                let authorCollection = try await Requests.Author.query(params: ["name": searchText])
+                self.authorList = authorCollection.data
+                snapshot.appendItems(authorCollection.data.map { $0.id }, toSection: .author)
+                if authorCollection.limit < authorCollection.total {
+                    snapshot.appendItems([self.collectionLoaderIdentifier], toSection: .loader)
+                }
             case 2:
-                _ = Requests.Group.query(params: ["name": searchText])
-                    .done { groupCollection in
-                        self.groupList = groupCollection.data
-                        snapshot.appendItems(
-                            groupCollection.data.map({ groupModel in groupModel.id }),
-                            toSection: .group)
-                        if groupCollection.limit < groupCollection.total {
-                            snapshot.appendItems(
-                                [self.collectionLoaderIdentifier],
-                                toSection: .loader)
-                        }
-                        self.dataSource.apply(snapshot, animatingDifferences: true)
-                        self.refreshHeader.endRefreshing()
-                    }
-                break
+                let groupCollection = try await Requests.Group.query(params: ["name": searchText])
+                self.groupList = groupCollection.data
+                snapshot.appendItems(groupCollection.data.map { $0.id }, toSection: .group)
+                if groupCollection.limit < groupCollection.total {
+                    snapshot.appendItems([self.collectionLoaderIdentifier], toSection: .loader)
+                }
             default:
                 break
             }
+            
+            await self.dataSource.apply(snapshot, animatingDifferences: true)
+        } catch {
+            // Optionally show an error HUD/toast here
         }
+        await self.refreshHeader.endRefreshing()
     }
     
     @objc private func didChangeSearchTarget() {
         searchBar.resignFirstResponder()
         if !searchBar.text.isBlank {
-            performSearch()
+            Task {
+                await self.performSearch()
+            }
         }
     }
     
     @objc private func searchForMore() {
-        if let searchText = searchBar.text, !searchText.isEmpty {
-            var snapshot = dataSource.snapshot()
-            switch searchSegment.selectedSegmentIndex {
-            case 0:
-                _ = Requests.Manga.query(params: [
-                    "title": searchText,
-                    "offset": mangaList.count
-                ]).done { mangaListModel in
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        let selectedIndex = searchSegment.selectedSegmentIndex
+        
+        Task {
+            var snapshot = self.dataSource.snapshot()
+            do {
+                switch selectedIndex {
+                case 0:
+                    let mangaListModel = try await Requests.Manga.query(params: [
+                        "title": searchText,
+                        "offset": self.mangaList.count
+                    ])
                     self.mangaList.append(contentsOf: mangaListModel.data)
-                    snapshot.appendItems(
-                        mangaListModel.data.map({ mangaModel in mangaModel.id }),
-                        toSection: .manga)
+                    snapshot.appendItems(mangaListModel.data.map { $0.id }, toSection: .manga)
                     if self.mangaList.count == mangaListModel.total {
                         snapshot.deleteItems([self.collectionLoaderIdentifier])
                     }
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
-                }
-                break
-            case 1:
-                _ = Requests.Author.query(params: [
-                    "name": searchText,
-                    "offset": authorList.count
-                ]).done { authorCollection in
+                case 1:
+                    let authorCollection = try await Requests.Author.query(params: [
+                        "name": searchText,
+                        "offset": self.authorList.count
+                    ])
                     self.authorList.append(contentsOf: authorCollection.data)
-                    snapshot.appendItems(
-                        authorCollection.data.map({ authorModel in authorModel.id}),
-                        toSection: .author)
+                    snapshot.appendItems(authorCollection.data.map { $0.id }, toSection: .author)
                     if self.authorList.count == authorCollection.total {
                         snapshot.deleteItems([self.collectionLoaderIdentifier])
                     }
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
-                }
-                break
-            case 2:
-                _ = Requests.Group.query(params: [
-                    "name": searchText,
-                    "offset": groupList.count
-                ]).done { groupCollection in
+                case 2:
+                    let groupCollection = try await Requests.Group.query(params: [
+                        "name": searchText,
+                        "offset": self.groupList.count
+                    ])
                     self.groupList.append(contentsOf: groupCollection.data)
-                    snapshot.appendItems(
-                        groupCollection.data.map({ groupModel in groupModel.id }),
-                        toSection: .group)
+                    snapshot.appendItems(groupCollection.data.map { $0.id }, toSection: .group)
                     if self.groupList.count == groupCollection.total {
                         snapshot.deleteItems([self.collectionLoaderIdentifier])
                     }
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
+                default:
+                    break
                 }
-                break
-            default:
-                break
+                
+                await self.dataSource.apply(snapshot, animatingDifferences: true)
+            } catch {
+                // Optionally handle pagination fetch error
             }
         }
     }
@@ -257,9 +238,19 @@ extension SearchViewController: UISearchBarDelegate {
             var snapshot = dataSource.snapshot()
             snapshot.deleteAllItems()
             dataSource.apply(snapshot, animatingDifferences: true)
-        } else {
-            NSObject.cancelPreviousPerformRequests(withTarget: self)
-            self.perform(#selector(performSearch), with: nil, afterDelay: 0.5, inModes: [.default])
+            searchTask?.cancel()
+            return
+        }
+        searchTask?.cancel()
+        searchTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await Task.sleep(for: .milliseconds(500))
+                try Task.checkCancellation()
+                await self.performSearch()
+            } catch {
+                // Swallow — a newer keystroke will schedule another Task
+            }
         }
     }
 }

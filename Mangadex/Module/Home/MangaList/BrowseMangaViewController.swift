@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import ProgressHUD
-import PromiseKit
 import SnapKit
 import SafariServices
 
@@ -107,7 +106,9 @@ class BrowseMangaViewController: BaseViewController {
     
     private lazy var collectionHeaderView = BrowseMangaHeaderView() { view in
         view.setRefreshing(true)
-        self.fetchData()
+        Task { @MainActor in
+            await self.fetchData()
+        }
     }
     
     override func setupUI() {
@@ -129,7 +130,9 @@ class BrowseMangaViewController: BaseViewController {
     
     override func didSetupUI() {
         configureDataSource()
-        fetchData()
+        Task { @MainActor in
+            await fetchData()
+        }
     }
     
     private var popularTitles = [MangaModel]()
@@ -200,32 +203,30 @@ class BrowseMangaViewController: BaseViewController {
         }
     }
     
-    private func fetchData() {
+    private func fetchData() async {
         var oneMonthBefore = DateHelper.dateStringFromNow(month: -1)
         // Delete the 'Z' character in the end of string
         oneMonthBefore = oneMonthBefore[...(-1)]
-        let fetchPopularTitles = Requests.Manga.query(
-            params: [
+        do {
+            async let popularRequest = Requests.Manga.query(params: [
                 "order[followedCount]": "desc",
                 "hasAvailableChapters": true,
                 "createdAtSince": oneMonthBefore,
                 "limit": 10
             ])
-        let fetchLatest = Requests.Chapter.query(
-            params: [
+            async let updatesRequest = Requests.Chapter.query(params: [
                 "order[readableAt]": "desc",
                 "limit": 21
             ])
-        let fetchSeasonal = Requests.CustomList.get(id: "77430796-6625-4684-b673-ffae5140f337")
-        let fetchRecentlyAdded = Requests.Manga.query(
-            params: [
+            async let seasonalRequest = Requests.CustomList.get(id: "77430796-6625-4684-b673-ffae5140f337")
+            async let recentRequest = Requests.Manga.query(params: [
                 "order[createdAt]": "desc",
                 "hasAvailableChapters": true,
                 "limit": 15
             ])
-        firstly {
-            when(fulfilled: fetchPopularTitles, fetchLatest, fetchSeasonal, fetchRecentlyAdded)
-        }.done { popularCollection, updatesCollection, seasonalListModel, recentCollection in
+            let (popularCollection, updatesCollection, seasonalListModel, recentCollection) =
+                try await (popularRequest, updatesRequest, seasonalRequest, recentRequest)
+            
             self.popularTitles = popularCollection.data
             self.recentTitles = recentCollection.data
             self.latestChapters = updatesCollection.data
@@ -237,22 +238,19 @@ class BrowseMangaViewController: BaseViewController {
                                  toSection: .updates)
             snapshot.appendItems(self.recentTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .added)
-            Requests.Manga
+            
+            let seasonalCollection = try await Requests.Manga
                 .query(params: ["ids[]": seasonalListModel.mangaIds])
-                .done { seasonalCollection in
-                    self.seasonalTitles = seasonalCollection.data
-                    snapshot.appendItems(
-                        self.seasonalTitles.map({ mangaModel in mangaModel.id }),
-                        toSection: .seasonal)
-                    self.dataSource.apply(snapshot, animatingDifferences: true)
-                    self.collectionHeaderView.setRefreshing(false)
-                }
-                .catch { error in
-                    self.collectionHeaderView.setRefreshing(false)
-                }
-        }.catch { error in
+            self.seasonalTitles = seasonalCollection.data
+            snapshot.appendItems(
+                self.seasonalTitles.map { $0.id },
+                toSection: .seasonal
+            )
+            await self.dataSource.apply(snapshot, animatingDifferences: true)
+        } catch {
             ProgressHUD.failed()
         }
+        self.collectionHeaderView.setRefreshing(false)
     }
 }
 

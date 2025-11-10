@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PromiseKit
 import SwiftyJSON
 import YYModel
 import Combine
@@ -18,6 +17,17 @@ extension Requests {
             case desc = "desc"
         }
         
+        /// Get list of chapters for a specific manga.
+        ///
+        /// API defination available at:
+        /// [Mangadex API](https://api.mangadex.org/docs/docs/manga/#manga-feed)
+        ///
+        /// - Parameters:
+        ///   - mangaId: id of manga to retrieve
+        ///   - offset: offset of the list
+        ///   - locale: filter by a specific language
+        ///   - order: chapter order, either ascending or descending
+        /// - Returns: ChapterCollection
         static func getMangaFeed(
             mangaID: String,
             offset: Int = 0,
@@ -36,158 +46,70 @@ extension Requests {
             return model
         }
         
-        /// Get list of chapters for a specific manga.
-        ///
-        /// API defination available at:
-        /// [Mangadex API](https://api.mangadex.org/docs/docs/manga/#manga-feed)
-        ///
-        /// - Parameters:
-        ///   - mangaId: id of manga to retrieve
-        ///   - offset: offset of the list
-        ///   - locale: filter by a specific language
-        ///   - order: chapter order, either ascending or descending
-        /// - Returns: Promise fulfilled by MangaChapterList
-        static func getMangaFeed(
-            mangaId: String,
-            offset: Int,
-            order: Order = .desc
-        ) -> Promise<ChapterCollection> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/manga/\(mangaId)/feed", host: .main, params: [
-                        "offset": offset,
-                        "includes[]": [ "scanlation_group", "user", "manga" ],
-                        "translatedLanguage[]": MDLocale.chapterLanguages,
-                        "order[chapter]": order.rawValue
-                    ])
-                }
-                    .done { json in
-                        guard let model = ChapterCollection.yy_model(withJSON: json) else {
-                            seal.reject(Errors.IllegalData)
-                            return
-                        }
-                        seal.fulfill(model)
-                    }
-                    .catch { error in
-                        seal.reject(error)
-                    }
-            }
-        }
-        
-        static func query(params: [String: Any] = [:]) -> Promise<ChapterCollection> {
+        static func query(params: [String: Any] = [:]) async throws -> ChapterCollection {
             let defaultParams: [String: Any] = [
                 "includes[]": ["scanlation_group", "manga", "user"],
                 "translatedLanguage[]": MDLocale.chapterLanguages,
                 "contentRating[]": SettingsManager.contentFilter
             ]
-            return Promise { seal in
-                firstly {
-                    Requests.get(path: "/chapter", params: defaultParams + params)
-                }.done { json in
-                    guard let collection = ChapterCollection.yy_model(withJSON: json) else {
-                        seal.reject(Errors.IllegalData)
-                        return
-                    }
-                    seal.fulfill(collection)
-                }.catch { error in
-                    seal.reject(error)
-                }
+            let res = try await Requests.get(url: .mainHost("/chapter"), params: defaultParams + params)
+            guard let collection = ChapterCollection.yy_model(withJSON: res) else {
+                throw Errors.IllegalData
             }
+            return collection
         }
         
-        static func get(id: String) -> Promise<ChapterModel> {
-            Promise { seal in
-                firstly {
-                    Requests.get(
-                        path: "/chapter/\(id)",
-                        params: [
-                            "includes[]": ["scanlation_group", "manga", "user"]
-                        ]
-                    )
-                }.done { json in
-                    if json.contains("data"), let model = ChapterModel.yy_model(withJSON: json["data"]!) {
-                        seal.fulfill(model)
-                    } else {
-                        seal.reject(Errors.IllegalData)
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func get(id: String) async throws -> ChapterModel {
+            let res = try await Requests.get(
+                url: .mainHost("/chapter/\(id)"),
+                params: [
+                    "includes[]": ["scanlation_group", "manga", "user"]
+                ]
+            )
+            guard
+                res.contains("data"),
+                let model = ChapterModel.yy_model(withJSON: res["data"]!)
+            else {
+                throw Errors.IllegalData
             }
+            return model
         }
         
-        static func getStatistics(id: String) -> Promise<ChapterStatisticsModel> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/statistics/chapter/\(id)")
-                }.done { json in
-                    let json = JSON(json)
-                    if let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
-                       let model = ChapterStatisticsModel.yy_model(withJSON: dict) {
-                        seal.fulfill(model)
-                    } else {
-                        seal.reject(Errors.IllegalData)
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func getStatistics(id: String) async throws -> ChapterStatisticsModel {
+            let res = try await Requests.get(url: .mainHost("/statistics/chapter/\(id)"))
+            let json = JSON(res)
+            guard
+                let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
+                let model = ChapterStatisticsModel.yy_model(withJSON: dict)
+            else {
+                throw Errors.IllegalData
             }
+            return model
         }
         
-        static func getPageData(chapterId: String) -> Promise<ChapterPagesModel> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/at-home/server/\(chapterId)")
-                }
-                    .done { result in
-                        let json = JSON(result)
-                        if let data = ChapterPagesModel.yy_model(withJSON: json.rawValue) {
-                            seal.fulfill(data)
-                        } else {
-                            seal.reject(Errors.IllegalData)
-                        }
-                    }
-                    .catch { error in
-                        seal.reject(error)
-                    }
+        static func getPageData(chapterId: String) async throws -> ChapterPagesModel {
+            let raw = try await Requests.get(url: .mainHost("/at-home/server/\(chapterId)"))
+            let json = JSON(raw)
+            guard let model = ChapterPagesModel.yy_model(withJSON: json.rawValue) else {
+                throw Errors.IllegalData
             }
+            return model
         }
         
-        static func getPages(chapterId: String) -> Future<ChapterPagesModel, Error> {
-            Future() { promise in
-                Requests
-                    .get(path: "/at-home/server/\(chapterId)")
-                    .done { result in
-                        let json = JSON(result)
-                        if let data = ChapterPagesModel.yy_model(withJSON: json.rawValue) {
-                            promise(.success(data))
-                        } else {
-                            promise(.failure(Errors.IllegalData))
-                        }
-                    }
-                    .catch { error in
-                        promise(.failure(error))
-                    }
-            }
-        }
-        
-        static func createForumThread(chapterId: String) -> Promise<ChapterStatisticsModel> {
-            Promise { seal in
-                Requests.post(
-                    path: "/forums/thread",
-                    data: ["type": "chapter", "id": chapterId],
-                    requireAuth: true
-                ).done { result in
-                    let data = JSON(result)["data"]
-                    if let id = data["id"].int,
-                       let repliesCount = data["attributes"]["repliesCount"].int {
-                        seal.fulfill(ChapterStatisticsModel(threadId: id, repliesCount: repliesCount))
-                    } else {
-                        seal.reject(Errors.IllegalData)
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func createForumThread(chapterId: String) async throws -> ChapterStatisticsModel {
+            let res = try await Requests.post(
+                url: .mainHost("/forums/thread"),
+                data: ["type": "chapter", "id": chapterId],
+                authenticated: true
+            )
+            let data = JSON(res)["data"]
+            if
+                let id = data["id"].int,
+                let repliesCount = data["attributes"]["repliesCount"].int
+            {
+                return ChapterStatisticsModel(threadId: id, repliesCount: repliesCount)
+            } else {
+                throw Errors.IllegalData
             }
         }
         

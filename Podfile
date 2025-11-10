@@ -17,8 +17,6 @@ target "Mangadex" do
   pod 'SwiftTheme'
   pod 'SwiftEntryKit', '2.0.0'
   pod 'FlagKit'
-  pod "PromiseKit", "~> 8"
-  pod "AsyncPlus", "~> 1.1"
   pod 'MJRefresh', :git => 'https://github.com/Sokiraon/MJRefresh.git'
   pod 'FirebaseAnalytics'
   pod 'FirebaseCrashlytics'

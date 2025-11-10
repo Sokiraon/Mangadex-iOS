@@ -6,43 +6,28 @@
 //
 
 import Foundation
-import PromiseKit
 import SwiftyJSON
 
 extension Requests {
     enum Author {
-        static func get(id: String) -> Promise<AuthorModel> {
-            Promise { seal in
-                firstly {
-                    Requests.get(path: "/author/\(id)")
-                }.done { json in
-                    let json = JSON(json)
-                    if let model = AuthorModel.yy_model(withJSON: json["data"].rawValue) {
-                        seal.fulfill(model)
-                    } else {
-                        seal.reject(Errors.IllegalData)
-                    }
-                }.catch { error in
-                    seal.reject(error)
-                }
+        static func get(id: String) async throws -> AuthorModel {
+            let res = try await Requests.get(url: .mainHost("/author/\(id)"))
+            let json = JSON(res)
+            if let model = AuthorModel.yy_model(withJSON: json["data"].rawValue) {
+                return model
+            } else {
+                throw Errors.IllegalData
             }
         }
         
-        static func query(params: [String: Any] = [:]) -> Promise<AuthorCollection> {
+        static func query(params: [String: Any] = [:]) async throws -> AuthorCollection {
             let defaultParams: [String: Any] = [ "limit": 20 ]
             let params = defaultParams + params
-            return Promise { seal in
-                firstly {
-                    Requests.get(path: "/author", params: params)
-                }.done { json in
-                    guard let model = AuthorCollection.yy_model(withJSON: json) else {
-                        seal.reject(Errors.IllegalData)
-                        return
-                    }
-                    seal.fulfill(model)
-                }.catch { error in
-                    seal.reject(error)
-                }
+            let res = try await Requests.get(url: .mainHost("/author"), params: params)
+            if let model = AuthorCollection.yy_model(withJSON: res) {
+                return model
+            } else {
+                throw Errors.IllegalData
             }
         }
     }

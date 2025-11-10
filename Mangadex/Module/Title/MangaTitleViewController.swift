@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import SnapKit
-import PromiseKit
 import ProgressHUD
 import Agrume
 import SwiftEntryKit
@@ -136,7 +135,7 @@ class MangaTitleViewController: BaseViewController {
                                       primaryAction: UIAction { [unowned self] _ in self.changeFollowStatus() })
         followButton.configurationUpdateHandler = { [weak self] button in
             guard let self else { return }
-            if self.readingStatus == .null {
+            if self.readingStatus == .none {
                 button.configuration = self.followButtonConfigDefault
             } else {
                 button.configuration = self.followButtonConfigActive
@@ -198,27 +197,29 @@ class MangaTitleViewController: BaseViewController {
         rateView.onSubmit = { [unowned self] rating in
             updateRating(to: rating)
         }
-        
-        fetchData()
     }
     
-    func fetchData() {
-        followButton.isLoading = true
-        _ = Requests.Manga.getReadingStatus(mangaId: mangaModel.id)
-            .done { status in
-                self.readingStatus = status
-            }
-            .ensure {
-                self.followButton.isLoading = false
-            }
+    override func didSetupUI() {
+        Task {
+            await fetchData()
+        }
+    }
+    
+    func fetchData() async {
         rateButton.isLoading = true
-        _ = Requests.User.getMangaRating(for: mangaModel.id)
-            .done { rating in
-                self.rating = rating
-            }
-            .ensure {
-                self.rateButton.isLoading = false
-            }
+        followButton.isLoading = true
+        let mangaId = mangaModel.id!
+        do {
+            async let ratingRequest = Requests.User.getMangaRating(for: mangaId)
+            async let readingStatusRequest = Requests.Manga.getReadingStatus(mangaId: mangaId)
+            let (rating, readingStatus) = try await (ratingRequest, readingStatusRequest)
+            self.rating = rating
+            self.readingStatus = readingStatus
+        } catch {
+            
+        }
+        rateButton.isLoading = false
+        followButton.isLoading = false
     }
     
     var parentScrollViewHasReachedMax = false
@@ -238,37 +239,34 @@ class MangaTitleViewController: BaseViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    var readingStatus: MangaReadingStatus = .null {
+    var readingStatus: MangaReadingStatus? {
         didSet {
             followButton.setNeedsUpdateConfiguration()
-            if readingStatus == .null {
+            if readingStatus == .none {
                 followButton.spinner.color = .darkerGray565656
             } else {
                 followButton.spinner.color = .white
             }
         }
     }
+    
     func changeFollowStatus() {
-        var newStatus: MangaReadingStatus
-        var request: Promise<Bool>
-        if readingStatus == .null {
-            newStatus = .reading
-            request = Requests.Manga.follow(mangaId: mangaModel.id)
-        } else {
-            newStatus = .null
-            request = Requests.Manga.unFollow(mangaId: mangaModel.id)
-        }
-        followButton.isLoading = true
-        request
-            .done { success in
-                self.readingStatus = newStatus
-            }
-            .catch { error in
+        let mangaId = mangaModel.id!
+        Task {
+            followButton.isLoading = true
+            do {
+                if readingStatus == .none {
+                    _ = try await Requests.Manga.follow(mangaId: mangaId)
+                    readingStatus = .reading
+                } else {
+                    _ = try await Requests.Manga.unFollow(mangaId: mangaId)
+                    readingStatus = .none
+                }
+            } catch {
                 ProgressHUD.failed()
             }
-            .finally {
-                self.followButton.isLoading = false
-            }
+            followButton.isLoading = false
+        }
     }
     
     func retrieveMangaProgress() {
@@ -296,13 +294,12 @@ class MangaTitleViewController: BaseViewController {
     
     func updateRating(to value: Int) {
         rateButton.isLoading = true
-        _ = Requests.User.setMangaRating(for: mangaModel.id, to: value)
-            .done { success in
-                self.rating = value
-            }
-            .ensure {
-                self.rateButton.isLoading = false
-            }
+        let mangaId = mangaModel.id!
+        Task {
+            _ = await Requests.User.setMangaRating(for: mangaId, to: value)
+            self.rating = value
+            self.rateButton.isLoading = false
+        }
     }
     
     func showRatingView() {

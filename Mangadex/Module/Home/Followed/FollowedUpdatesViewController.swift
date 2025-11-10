@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import PromiseKit
 import MJRefresh
 import ProgressHUD
 import OSLog

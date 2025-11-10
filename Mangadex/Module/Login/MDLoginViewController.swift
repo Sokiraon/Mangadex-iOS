@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 import ProgressHUD
 import Loaf
-import PromiseKit
 
 fileprivate let queue = DispatchQueue(label: "serial")
 
@@ -108,62 +107,57 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
         let username = fieldUsername.text!
         let password = fieldPassword.text!
         
-        firstly {
-            UserManager.shared.login(username: username, password: password)
-        }
-            .done { res in
-                UserManager.logOutAsGuest()
-                DispatchQueue.main.async {
-                    let vc = HomeTabViewController()
-                    ProgressHUD.dismiss()
-                    self.view.isUserInteractionEnabled = true
-                    if (!self.shouldAutoLogin) {
-                        let vc = UIAlertController(
-                            title: "kKeychainSaveTitle".localized(),
-                            message: "kKeychainSaveMessage".localized(),
-                            preferredStyle: .actionSheet
-                        )
-                        vc.addAction(
-                            UIAlertAction(title: "kOk".localized(), style: .default) { action in
-                                MDKeychain.add(username: username, password: password, onSuccess: {
-                                    Loaf(
-                                        "kSaveSuccess".localized(),
-                                        state: .success,
-                                        sender: self
-                                    ).show(.short) { reason in
-                                        self.navigationController?
-                                            .pushViewController(vc, animated: true)
-                                    }
-                                }, onError: { error in
-                                    Loaf(
-                                        "kKeychainSaveError".localized(),
-                                        state: .info,
-                                        sender: self
-                                    ).show(.short) { reason in
-                                        self.navigationController?
-                                            .pushViewController(vc, animated: true)
-                                    }
-                                })
-                            }
-                        )
-                        vc.addAction(
-                            UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
-                                self.navigationController?.pushViewController(vc, animated: true)
-                            }
-                        )
-                        self.present(vc, animated: true)
-                    } else {
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
+        Task {
+            do {
+                try await UserManager.shared.login(username: username, password: password)
+                UserManager.logoutAsGuest()
+                let homeVC = HomeTabViewController()
+                ProgressHUD.dismiss()
+                self.view.isUserInteractionEnabled = true
+                if (!self.shouldAutoLogin) {
+                    let vc = UIAlertController(
+                        title: "kKeychainSaveTitle".localized(),
+                        message: "kKeychainSaveMessage".localized(),
+                        preferredStyle: .actionSheet
+                    )
+                    vc.addAction(
+                        UIAlertAction(title: "kOk".localized(), style: .default) { action in
+                            MDKeychain.add(username: username, password: password, onSuccess: {
+                                Loaf(
+                                    "kSaveSuccess".localized(),
+                                    state: .success,
+                                    sender: self
+                                ).show(.short) { reason in
+                                    self.navigationController?
+                                        .pushViewController(homeVC, animated: true)
+                                }
+                            }, onError: { error in
+                                Loaf(
+                                    "kKeychainSaveError".localized(),
+                                    state: .info,
+                                    sender: self
+                                ).show(.short) { reason in
+                                    self.navigationController?
+                                        .pushViewController(homeVC, animated: true)
+                                }
+                            })
+                        }
+                    )
+                    vc.addAction(
+                        UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
+                            self.navigationController?.pushViewController(homeVC, animated: true)
+                        }
+                    )
+                    self.present(vc, animated: true)
+                } else {
+                    self.navigationController?.pushViewController(homeVC, animated: true)
                 }
-            }
-            .catch { error in
+            } catch {
                 self.shouldAutoLogin = false
-                DispatchQueue.main.async {
-                    ProgressHUD.failed()
-                    self.view.isUserInteractionEnabled = true
-                }
+                ProgressHUD.failed()
+                self.view.isUserInteractionEnabled = true
             }
+        }
     }
     
     @objc func didTapGuest() {

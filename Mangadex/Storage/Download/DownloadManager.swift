@@ -11,6 +11,7 @@ import YYModel
 import os
 import SwiftData
 
+@MainActor
 class DownloadManager: NSObject {
     // MARK: - Initialization
     static let shared = DownloadManager()
@@ -41,11 +42,8 @@ class DownloadManager: NSObject {
         if !fileManager.fileExists(atPath: mangaDir.path()) {
             try? fileManager.createDirectory(at: mangaDir, withIntermediateDirectories: true)
         }
-        
-        Task { @MainActor in
-            context = container.mainContext
-            restoreDownloads()
-        }
+        context = container.mainContext
+        restoreDownloads()
     }
     
     // MARK: - Storage related
@@ -308,13 +306,16 @@ class DownloadManager: NSObject {
         NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
     }
     
-    private func retryDownload(for url: URL, in chapterDownload: ChapterDownload) {
+    private func retryDownload(for url: URL, in chapterDownload: ChapterDownload) async {
         guard let retryCount = chapterDownload.retryCount[url], retryCount < chapterDownload.maxRetries else {
             markFailedChapterDownload(chapterDownload)
             return
         }
         chapterDownload.retryCount[url] = retryCount + 1
-        print("Retrying download for \(url) (Attempt \(retryCount + 1)/\(chapterDownload.maxRetries)")
+        print("Retrying download for \(url) (Attempt \(retryCount + 1)/\(chapterDownload.maxRetries))")
+        let base: Double = 0.5
+        let delay = min(5.0, base * pow(2.0, Double(retryCount)))
+        try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
         startDownload(for: url, in: chapterDownload)
     }
     
@@ -329,10 +330,14 @@ class DownloadManager: NSObject {
         activeDownloads.removeValue(forKey: chapterDownload.id)
         deleteFromStorage(chapterID: chapterDownload.id)
         chapterDownload.status = .succeeded
+        NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
     }
     
     private func saveDownloadedFile(from location: URL, to destination: URL) {
         do {
+            if FileManager.default.fileExists(atPath: destination.path()) {
+                try? FileManager.default.removeItem(at: destination)
+            }
             try FileManager.default.moveItem(at: location, to: destination)
             print("Saved to: \(destination.path())")
         } catch {
@@ -343,7 +348,7 @@ class DownloadManager: NSObject {
 
 
 // MARK: - URLSessionDownloadDelegate
-extension DownloadManager: URLSessionDownloadDelegate {
+extension DownloadManager: @preconcurrency URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard
             let chapterDownload = activeDownloads.first(where: { $0.value.tasks.contains(downloadTask) })?.value,
@@ -371,7 +376,8 @@ extension DownloadManager: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
         guard
             let url = task.originalRequest?.url,
-            let chapterDownload = activeDownloads.first(where: { $0.value.tasks.contains(task as! URLSessionDownloadTask) })?.value
+            let downloadTask = task as? URLSessionDownloadTask,
+            let chapterDownload = activeDownloads.first(where: { $0.value.tasks.contains(downloadTask) })?.value
         else {
             return
         }
@@ -382,7 +388,7 @@ extension DownloadManager: URLSessionDownloadDelegate {
         
         if let error {
             print("Download failed for \(url): \(error.localizedDescription)")
-            retryDownload(for: url, in: chapterDownload)
+            Task { await self.retryDownload(for: url, in: chapterDownload) }
         }
     }
 }

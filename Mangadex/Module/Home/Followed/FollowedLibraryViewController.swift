@@ -10,39 +10,35 @@ import UIKit
 
 class FollowedLibraryViewController: MangaListViewController {
     
-    override func didSetupUI() {
-        super.didSetupUI()
-        if !UserManager.shared.userIsLoggedIn {
-            refreshHeader.endRefreshing()
-            alertForLogin()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task { @MainActor in
+            let isLoggedIn = await UserManager.shared.userIsLoggedIn
+            if !isLoggedIn {
+                await refreshHeader.endRefreshing()
+                alertForLogin()
+            }
         }
     }
     
-    override func fetchData() {
-        Requests.User.getFollowedMangas()
-            .done { model in
-                self.setData(with: model)
-            }
-            .catch { error in
-                DispatchQueue.main.async {
-                    self.alertForLogin()
-                }
-            }
-            .finally {
-                self.vCollection.mj_header?.endRefreshing()
-            }
+    override func fetchData() async {
+        do {
+            let model = try await Requests.User.getFollowedMangas()
+            self.setData(with: model)
+        } catch {
+            self.alertForLogin()
+        }
+        await self.vCollection.mj_header?.endRefreshing()
     }
     
-    override func loadMoreData() {
-        Requests.User.getFollowedMangas(params: ["offset": self.mangaList.count])
-            .done { model in
-                self.updateData(with: model)
-            }
-            .catch { error in
-                DispatchQueue.main.async {
-                    self.alertForLogin()
-                }
-            }
+    override func loadMoreData() async {
+        do {
+            let model = try await Requests.User
+                .getFollowedMangas(params: ["offset": self.mangaList.count])
+            self.updateData(with: model)
+        } catch {
+            self.alertForLogin()
+        }
     }
     
     private func alertForLogin() {

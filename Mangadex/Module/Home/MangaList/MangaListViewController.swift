@@ -27,17 +27,19 @@ class MangaListViewController: BaseViewController {
     }
     
     internal lazy var refreshHeader = MJRefreshNormalHeader {
-        self.fetchData()
+        Task { @MainActor in
+            await self.fetchData()
+        }
     }
     
     /// Called when user pulls the refresh header.
     /// Must be overrideen by sub-classes to request initial data from the source.
-    internal func fetchData() {
+    internal func fetchData() async {
         fatalError()
     }
     /// Called when the loader view enters screen.
     /// Must be overridden by sub-classes to request following data from the source to achieve infinite scrolling.
-    internal func loadMoreData() {
+    internal func loadMoreData() async {
         fatalError()
     }
     
@@ -56,7 +58,7 @@ class MangaListViewController: BaseViewController {
     
     // MARK: - Actions
     
-    private var dataSource: UICollectionViewDiffableDataSource<CollectionSection, MangaModel>!
+    private var dataSource: UICollectionViewDiffableDataSource<CollectionSection, String>!
     
     private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource(
@@ -66,15 +68,15 @@ class MangaListViewController: BaseViewController {
         }
     }
     
-    private let loaderModel = MangaModel()
+    private let loaderIdentifer = "loader"
     
     internal func setData(with model: MangaCollection) {
         mangaList = model.data
-        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, MangaModel>()
+        var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
         snapshot.appendSections([.mangaList, .loader])
-        snapshot.appendItems(model.data, toSection: .mangaList)
+        snapshot.appendItems(model.data.map { $0.id }, toSection: .mangaList)
         if model.data.count < model.total {
-            snapshot.appendItems([loaderModel], toSection: .loader)
+            snapshot.appendItems([loaderIdentifer], toSection: .loader)
         }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
@@ -82,9 +84,9 @@ class MangaListViewController: BaseViewController {
     internal func updateData(with model: MangaCollection) {
         mangaList.append(contentsOf: model.data)
         var snapshot = self.dataSource.snapshot()
-        snapshot.appendItems(model.data, toSection: .mangaList)
+        snapshot.appendItems(model.data.map { $0.id }, toSection: .mangaList)
         if model.data.count == model.total {
-            snapshot.deleteItems([loaderModel])
+            snapshot.deleteItems([loaderIdentifer])
         }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
@@ -155,8 +157,9 @@ extension MangaListViewController: UICollectionViewDelegate, UICollectionViewDel
             return
         }
         if section == .loader {
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { timer in
-                self.loadMoreData()
+            Task { @MainActor in
+                try await Task.sleep(for: .seconds(1))
+                await self.loadMoreData()
             }
         }
     }

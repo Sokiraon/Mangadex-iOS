@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 import MJRefresh
-import PromiseKit
 
 class MangaTitleChaptersViewController: BaseViewController {
     
@@ -94,9 +93,10 @@ class MangaTitleChaptersViewController: BaseViewController {
     let loadingCellIdentifier = UUID().uuidString
     
     func fetchChapters() {
+        let mangaId = mangaModel.id!
         Task {
-            async let request1 = Requests.Chapter.getMangaFeed(mangaID: mangaModel.id)
-            async let request2 = Requests.Manga.getReadChapters(mangaID: mangaModel.id)
+            async let request1 = Requests.Chapter.getMangaFeed(mangaID: mangaId)
+            async let request2 = Requests.Manga.getReadChapters(mangaID: mangaId)
             let (chapterCollection, readChapters) = try await (request1, request2)
             
             self.chapterModels = chapterCollection.data
