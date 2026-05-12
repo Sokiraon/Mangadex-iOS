@@ -31,11 +31,7 @@ class DateHelper {
         isoFormatter.date(from: string)
     }
     
-    /// Returns a string to represent the timeDelta from the given dateString to now.
-    static func dateStringFromNow(isoDateString string: String) -> String {
-        guard let date = date(fromISODateString: string) else {
-            return "N/A"
-        }
+    static func dateStringFromNow(date: Date) -> String {
         let timeDelta = Int(abs(Date.now.timeIntervalSince(date)))
         let minuteLength = 60
         let hourLength = 60 * minuteLength
@@ -80,6 +76,14 @@ class DateHelper {
         } else {
             return "kTimeDeltaLatest".localized()
         }
+    }
+    
+    /// Returns a string to represent the timeDelta from the given dateString to now.
+    static func dateStringFromNow(isoDateString string: String) -> String {
+        guard let date = date(fromISODateString: string) else {
+            return "N/A"
+        }
+        return dateStringFromNow(date: date)
     }
     
     static func dateStringFromNow(year: Int = 0, month: Int = 0, day: Int = 0) -> String {

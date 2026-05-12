@@ -122,7 +122,20 @@ class DownloadManager: NSObject {
         }
         return mangaModels
     }
-    
+
+    func retrieveChapter(
+        mangaID: String,
+        chapterID: String
+    ) -> (manga: LocalMangaModel, chapter: LocalChapterModel)? {
+        guard
+            let mangaModel = retrieveChapters()?.first(where: { $0.info.id == mangaID }),
+            let chapterModel = mangaModel.chapters.first(where: { $0.info.id == chapterID })
+        else {
+            return nil
+        }
+        return (mangaModel, chapterModel)
+    }
+
     func deleteAllChapters() {
         let enumerator = FileManager.default.enumerator(
             at: mangaDir, includingPropertiesForKeys: nil
@@ -132,8 +145,11 @@ class DownloadManager: NSObject {
         }
     }
     
-    var sizeUsed: UInt64? {
-        return try? FileManager.default.allocatedSizeOfDirectory(at: baseDir)
+    func calculateSizeUsed() async -> UInt64? {
+        await Task.detached(priority: .utility) {
+            try? await FileManager.default
+                .allocatedSizeOfDirectory(at: self.baseDir)
+        }.value
     }
     
     // MARK: - SwiftData
@@ -148,9 +164,16 @@ class DownloadManager: NSObject {
         guard let savedDownloads = try? context.fetch(fetchDescriptor) else { return }
         
         for data in savedDownloads {
-            if let mangaModel = findManga(by: data.mangaID),
-               let chapterModel = findChapter(for: data.mangaID, by: data.chapterID) {
-                let download = ChapterDownload.fromPersistentData(data, mangaModel: mangaModel, chapterModel: chapterModel, session: session)
+            if let mangaModel = findManga(by: data.mangaID), let chapterModel = findChapter(
+                for: data.mangaID,
+                by: data.chapterID
+            ) {
+                let download = ChapterDownload.fromPersistentData(
+                    data,
+                    mangaModel: mangaModel,
+                    chapterModel: chapterModel,
+                    session: session
+                )
                 activeDownloads[data.chapterID] = download
             }
         }
@@ -164,7 +187,9 @@ class DownloadManager: NSObject {
     }
     
     private func fetchDownloadData(chapterID: String) -> ChapterDownloadData? {
-        let descriptor = FetchDescriptor<ChapterDownloadData>(predicate: #Predicate { $0.chapterID == chapterID })
+        let descriptor = FetchDescriptor<ChapterDownloadData>(
+            predicate: #Predicate { $0.chapterID == chapterID
+            })
         return try? context.fetch(descriptor).first
     }
     
@@ -201,7 +226,12 @@ class DownloadManager: NSObject {
         pageURLs: [URL] = [],
         progressHandler: ((Double) -> Void)? = nil
     ) async {
-        let chapterDownload = ChapterDownload(mangaModel: mangaModel, chapterModel: chapterModel, pageURLs: pageURLs, progressHandler: progressHandler)
+        let chapterDownload = ChapterDownload(
+            mangaModel: mangaModel,
+            chapterModel: chapterModel,
+            pageURLs: pageURLs,
+            progressHandler: progressHandler
+        )
         
         await MainActor.run {
             activeDownloads[chapterDownload.id] = chapterDownload

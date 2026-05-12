@@ -36,6 +36,14 @@ class ChapterAttributes: NSObject {
         }
     }
     
+    /// "Ch. X" (en) or "第 X 话" (zh)
+    var simpleChapterName: String {
+        if !chapter.isBlank {
+            return "kMangaChapterNameSimple".localizedFormat(chapter!)
+        }
+        return "kMangaChapterNameNull".localized()
+    }
+    
     var fullChapterName: String {
         if !chapter.isBlank && !title.isBlank {
             return "kMangaChapterNameDetailed".localizedFormat(chapter!, title!)

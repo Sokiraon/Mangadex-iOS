@@ -71,16 +71,15 @@ class AppBar: UIView {
         addSubview(btnBack)
         btnBack.snp.makeConstraints { make in
             make.width.height.equalTo(24)
-            make.left.equalToSuperview().inset(20)
+            make.left.equalToSuperview().inset(16)
             make.bottom.equalToSuperview().inset(10)
         }
         
         addSubview(lblTitle)
         lblTitle.textAlignment = .center
         lblTitle.snp.makeConstraints { make in
-            make.left.equalTo(self.btnBack.snp.right).offset(24)
-            make.centerY.equalTo(self.btnBack)
-            make.centerX.equalTo(self)
+            make.horizontalEdges.equalToSuperview().inset(64)
+            make.centerY.equalTo(btnBack)
         }
     }
     

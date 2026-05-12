@@ -16,19 +16,19 @@ class BaseViewController: UIViewController {
     ///
     /// Should be used for preparing data that is needed by UI components.
     /// However, do notice that this will only be called once in the lifecycle (compared to initOnAppear).
-    internal func willSetupUI() {}
+    func willSetupUI() {}
     
     ///
     /// Called at viewDidLoad, after willSetupUI().
     ///
     /// Should be used for adding subviews and configuring their layout.
-    internal func setupUI() {}
+    func setupUI() {}
     
     ///
     /// Called at viewDidLoad, after setupUI().
-    internal func didSetupUI() {}
+    func didSetupUI() {}
     
-    internal var statusBarStyle = UIStatusBarStyle.default {
+    var statusBarStyle = UIStatusBarStyle.default {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
         }
@@ -37,7 +37,7 @@ class BaseViewController: UIViewController {
         statusBarStyle
     }
     
-    internal var isStatusBarHidden = false {
+    var isStatusBarHidden = false {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
         }
@@ -46,16 +46,16 @@ class BaseViewController: UIViewController {
         isStatusBarHidden
     }
     
-    internal lazy var AppBarHeight = MDLayout.safeInsetTop + 44
+    lazy var AppBarHeight = MDLayout.safeInsetTop + 44
     
     /// Default AppBar of the viewController. Loaded on-demand.
-    internal lazy var appBar = AppBar().apply { _ in
+    lazy var appBar = AppBar().apply { _ in
         self.statusBarStyle = .lightContent
     }
     
     ///
     /// Used for setting up top navigation bar.
-    internal func setupNavBar(title: String? = nil,
+    func setupNavBar(title: String? = nil,
                               backgroundColor: UIColor = .themePrimary,
                               style: AppBar.Style = .filled) {
         if title != nil {

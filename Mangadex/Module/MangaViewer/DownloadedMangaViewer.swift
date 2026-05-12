@@ -22,6 +22,7 @@ class DownloadedMangaViewer: MangaViewer {
         self.chapterModel = chapterModel
         self.pageURLs = self.chapterModel.pageURLs
         self.vSlider.maximumValue = Float(self.pageURLs.count - 1)
+        self.readingContext = self
     }
     
     override func setupUI() {
@@ -53,6 +54,7 @@ class DownloadedMangaViewer: MangaViewer {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         toggleControlArea()
+        restoreReadingProgressIfNeeded()
     }
     
     // MARK: - Properties
@@ -80,6 +82,24 @@ class DownloadedMangaViewer: MangaViewer {
         }
         return DownloadedMangaViewer(
             mangaModel: mangaModel, chapterModel: nextChapterModel
+        )
+    }
+}
+
+extension DownloadedMangaViewer: MangaReadingContext {
+    func getReadingContext() -> (
+        mangaId: String,
+        mangaTitle: String,
+        coverURL: URL?,
+        chapterId: String,
+        chapterTitle: String
+    ) {
+        return (
+            mangaModel.info.id,
+            mangaModel.info.attributes.localizedTitle,
+            mangaModel.coverURL,
+            chapterModel.info.id,
+            chapterModel.info.attributes.simpleChapterName
         )
     }
 }

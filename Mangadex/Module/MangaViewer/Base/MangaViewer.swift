@@ -15,6 +15,16 @@ protocol MangaViewerRepresentable: AnyObject {
     func getNextViewController() -> MangaViewer?
 }
 
+protocol MangaReadingContext: AnyObject {
+    func getReadingContext() -> (
+        mangaId: String,
+        mangaTitle: String,
+        coverURL: URL?,
+        chapterId: String,
+        chapterTitle: String
+    )
+}
+
 class MangaViewer: BaseViewController,
                    UIGestureRecognizerDelegate,
                    UICollectionViewDelegate,
@@ -84,6 +94,14 @@ class MangaViewer: BaseViewController,
         }
     )
     
+    weak var readingContext: MangaReadingContext?
+    private var lastReadingIndex = 0
+    
+    private let readingHistoryActor = ReadingHistoryModelActor(
+        modelContainer: AppDataContainer.shared.container
+    )
+    private let progressDebouncer = Debouncer()
+    
     override func setupUI() {
         view.backgroundColor = .black
         setupNavBar(backgroundColor: .black)
@@ -98,6 +116,11 @@ class MangaViewer: BaseViewController,
         vBottomControl.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveReadingProgress(pageIndex: lastReadingIndex)
     }
     
     // MARK: - Chapter List
@@ -249,7 +272,63 @@ class MangaViewer: BaseViewController,
         self.present(alert, animated: true)
     }
     
+    private func saveReadingProgress(pageIndex: Int) {
+        guard let context = readingContext?.getReadingContext() else { return }
+        
+        progressDebouncer.call { @MainActor in
+            try? await self.readingHistoryActor
+                .upsert(
+                    data: ReadingHistoryDTO(
+                        mangaId: context.mangaId,
+                        mangaTitle: context.mangaTitle,
+                        coverURL: context.coverURL,
+                        chapterId: context.chapterId,
+                        chapterTitle: context.chapterTitle,
+                        pageIndex: pageIndex,
+                        updatedAt: .now
+                    )
+                )
+        }
+    }
+    
+    /// Retrieve reading progress of this chapter from persistent storage,
+    /// and scroll the collectionView to the corresponding page.
+    ///
+    /// This method should only be called when `pageURLs` has been set.
+    func restoreReadingProgressIfNeeded() {
+        guard let context = readingContext?.getReadingContext() else { return }
+        
+        Task { @MainActor in
+            guard
+                let history = try await self.readingHistoryActor.history(
+                    for: context.mangaId
+                ),
+                history.chapterId == context.chapterId
+            else { return }
+            
+            self.vPages.reloadData()
+            self.vPages.layoutIfNeeded()
+            self.vPages
+                .scrollToItem(
+                    at: IndexPath(item: history.pageIndex, section: 0),
+                    at: .centeredHorizontally,
+                    animated: false
+                )
+            self.vSlider.value = Float(history.pageIndex)
+        }
+    }
+    
     // MARK: - Delegate Methods
+    
+    public func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if collectionView == vPages {
+            lastReadingIndex = indexPath.row
+        }
+    }
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView == vPages {

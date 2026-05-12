@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import SwiftData
 import FirebaseCore
 
 @main
@@ -94,3 +95,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+@MainActor
+final class AppDataContainer {
+    static let shared = AppDataContainer()
+    
+    let container: ModelContainer
+    
+    private init() {
+        do {
+            let schema = Schema([ReadingHistory.self])
+            let storeURL = FileManager.default
+                .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+                .appending(path: "reading-history.store")
+            let config = ModelConfiguration(
+                "ReadingHistory",
+                schema: schema,
+                url: storeURL
+            )
+            container = try ModelContainer(
+                for: schema,
+                configurations: [config]
+            )
+        } catch {
+            fatalError("SwiftData init failed: \(error)")
+        }
+    }
+}

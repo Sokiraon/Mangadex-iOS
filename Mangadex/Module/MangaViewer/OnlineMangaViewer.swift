@@ -68,6 +68,7 @@ class OnlineMangaViewer: MangaViewer {
         self.init()
         self.mangaModel = mangaModel
         self.chapterId = chapterId
+        self.readingContext = self
     }
     
     convenience init(
@@ -79,6 +80,7 @@ class OnlineMangaViewer: MangaViewer {
         self.mangaModel = mangaModel
         self.chapterId = chapterId
         self.aggregatedModel = aggregatedModel
+        self.readingContext = self
     }
     
     override func setupUI() {
@@ -134,6 +136,7 @@ class OnlineMangaViewer: MangaViewer {
     override func didSetupUI() {
         Task {
             await fetchData(withAggregate: aggregatedModel == nil)
+            restoreReadingProgressIfNeeded()
         }
     }
     
@@ -350,5 +353,23 @@ extension OnlineMangaViewer {
                 mangaModel: mangaModel, chapterId: chapter.id, aggregatedModel: aggregatedModel)
             navigationController?.replaceTopViewController(with: vc, animated: true)
         }
+    }
+}
+
+extension OnlineMangaViewer: MangaReadingContext {
+    func getReadingContext() -> (
+        mangaId: String,
+        mangaTitle: String,
+        coverURL: URL?,
+        chapterId: String,
+        chapterTitle: String
+    ) {
+        return (
+            mangaModel.id,
+            mangaModel.attributes.localizedTitle,
+            mangaModel.coverURL,
+            chapterModel.id,
+            chapterModel.attributes.simpleChapterName
+        )
     }
 }
