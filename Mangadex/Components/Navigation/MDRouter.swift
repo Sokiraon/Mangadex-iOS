@@ -50,4 +50,11 @@ class MDRouter {
         }
         navigationController?.setViewControllers([vc], animated: true)
     }
+
+    static func goToHome() {
+        navigationController?.setViewControllers(
+            [HomeTabViewController()],
+            animated: true
+        )
+    }
 }

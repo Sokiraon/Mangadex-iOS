@@ -58,6 +58,7 @@ actor UserManager {
         self.session = token.session
         self.refresh = token.refresh
         self.username = username
+        Self.logoutAsGuest()
     }
     
     var userIsLoggedIn: Bool {
@@ -96,5 +97,6 @@ actor UserManager {
         session = ""
         refresh = ""
         username = ""
+        Self.logoutAsGuest()
     }
 }

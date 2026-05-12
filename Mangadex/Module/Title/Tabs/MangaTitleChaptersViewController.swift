@@ -8,14 +8,9 @@
 import Foundation
 import UIKit
 import SnapKit
-import MJRefresh
 
 class MangaTitleChaptersViewController: BaseViewController {
-    
-    lazy var refreshHeader = MJRefreshNormalHeader { [unowned self] in
-        self.fetchChapters()
-    }
-    
+
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                               heightDimension: .fractionalHeight(1))
@@ -33,6 +28,54 @@ class MangaTitleChaptersViewController: BaseViewController {
     
     lazy var collectionView = ChildCollectionView(
         frame: .zero, collectionViewLayout: createCompositionalLayout())
+
+    private lazy var errorStateView = UIView().apply { view in
+        view.isHidden = true
+    }
+
+    private let errorImageView = UIImageView().apply { imageView in
+        imageView.image = UIImage(systemName: "exclamationmark.triangle")
+        imageView.tintColor = .secondaryText
+        imageView.contentMode = .scaleAspectFit
+    }
+
+    private let errorTitleLabel = UILabel(
+        fontSize: 17,
+        fontWeight: .medium,
+        color: .primaryText,
+        alignment: .center
+    ).apply { label in
+        label.text = String(localized: "Couldn't load chapters")
+    }
+
+    private let errorMessageLabel = UILabel(
+        fontSize: 14,
+        color: .secondaryText,
+        alignment: .center,
+        numberOfLines: 0
+    )
+
+    private lazy var retryButton = UIButton(
+        configuration: retryButtonConfiguration,
+        primaryAction: UIAction { [weak self] _ in
+            self?.fetchChapters()
+        }
+    )
+
+    private var retryButtonConfiguration: UIButton.Configuration {
+        var config = UIButton.Configuration.filled()
+        config.title = String(localized: "Retry")
+        config.baseForegroundColor = .white
+        config.baseBackgroundColor = .themePrimary
+        config.cornerStyle = .small
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 18,
+            bottom: 8,
+            trailing: 18
+        )
+        return config
+    }
     
     override func setupUI() {
         collectionView.contentInsetAdjustmentBehavior = .never
@@ -43,6 +86,32 @@ class MangaTitleChaptersViewController: BaseViewController {
             make.top.equalToSuperview().inset(50)
             make.left.right.bottom.equalToSuperview()
             make.width.equalTo(MDLayout.screenWidth)
+        }
+
+        let errorStack = UIStackView(arrangedSubviews: [
+            errorImageView,
+            errorTitleLabel,
+            errorMessageLabel,
+            retryButton
+        ])
+        errorStack.axis = .vertical
+        errorStack.alignment = .center
+        errorStack.spacing = 10
+
+        view.addSubview(errorStateView)
+        errorStateView.snp.makeConstraints { make in
+            make.top.equalTo(collectionView).offset(40)
+            make.left.right.bottom.equalTo(collectionView)
+        }
+
+        errorStateView.addSubview(errorStack)
+        errorStack.snp.makeConstraints { make in
+            make.centerY.equalToSuperview().offset(-30)
+            make.left.right.equalToSuperview().inset(32)
+        }
+
+        errorImageView.snp.makeConstraints { make in
+            make.size.equalTo(36)
         }
         
         setupDataSource()
@@ -95,23 +164,44 @@ class MangaTitleChaptersViewController: BaseViewController {
     func fetchChapters() {
         let mangaId = mangaModel.id!
         Task {
-            async let request1 = Requests.Chapter.getMangaFeed(mangaID: mangaId)
-            async let request2 = Requests.Manga.getReadChapters(mangaID: mangaId)
-            let (chapterCollection, readChapters) = try await (request1, request2)
-            
-            self.chapterModels = chapterCollection.data
-            self.totalChapters = chapterCollection.total
-            self.readChapters = readChapters
-            
-            var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
-            snapshot.appendSections([.chapters, .loader])
-            snapshot.appendItems(chapterCollection.data.map { $0.id }, toSection: .chapters)
-            if chapterCollection.data.count < chapterCollection.total {
-                snapshot.appendItems([self.loadingCellIdentifier],
-                                     toSection: .loader)
+            do {
+                await MainActor.run {
+                    self.setErrorStateVisible(false)
+                }
+
+                let chapterCollection = try await Requests.Chapter
+                    .getMangaFeed(mangaID: mangaId)
+                let readChapters = (try? await Requests.Manga
+                    .getReadChapters(mangaID: mangaId)) ?? []
+
+                self.chapterModels = chapterCollection.data
+                self.totalChapters = chapterCollection.total
+                self.readChapters = readChapters
+
+                var snapshot = NSDiffableDataSourceSnapshot<CollectionSection, String>()
+                snapshot.appendSections([.chapters, .loader])
+                snapshot.appendItems(chapterCollection.data.map { $0.id }, toSection: .chapters)
+                if chapterCollection.data.count < chapterCollection.total {
+                    snapshot.appendItems([self.loadingCellIdentifier],
+                                         toSection: .loader)
+                }
+                await self.dataSource.apply(snapshot)
+            } catch {
+                await MainActor.run {
+                    self.showFetchError(error)
+                }
             }
-            await self.dataSource.apply(snapshot)
         }
+    }
+
+    private func showFetchError(_ error: Error) {
+        errorMessageLabel.text = error.localizedDescription
+        setErrorStateVisible(true)
+    }
+
+    private func setErrorStateVisible(_ isVisible: Bool) {
+        errorStateView.isHidden = !isVisible
+        collectionView.isHidden = isVisible
     }
     
     func loadMoreChapters() {
@@ -131,9 +221,14 @@ class MangaTitleChaptersViewController: BaseViewController {
     
     private func updateReadChapters() {
         Task {
-            let readChapters = try await Requests.Manga.getReadChapters(mangaID: mangaModel.id)
+            guard let readChapters = try? await Requests.Manga
+                .getReadChapters(mangaID: mangaModel.id)
+            else {
+                return
+            }
             self.readChapters = readChapters
-            await self.dataSource.applySnapshotUsingReloadData(self.dataSource.snapshot())
+            await self.dataSource
+                .applySnapshotUsingReloadData(self.dataSource.snapshot())
         }
     }
     

@@ -14,42 +14,109 @@ fileprivate let queue = DispatchQueue(label: "serial")
 
 class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     
+    private let formView = CardView()
+
+    private let usernameLabel = UILabel(
+        fontSize: 14,
+        fontWeight: .medium,
+        color: .primaryText
+    ).apply { label in
+        label.text = "login.usernameOrEmail".localized()
+    }
+    
     lazy var fieldUsername = MDTextField().apply { field in
         field.placeholder = "kLoginUsername".localized()
         field.textContentType = .username
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.spellCheckingType = .no
+        field.keyboardType = .emailAddress
+        field.returnKeyType = .next
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clearButtonMode = .whileEditing
         field.backgroundColor = .white
         
         field.layer.borderWidth = 2
-        field.layer.cornerRadius = 4
-        field.layer.theme_borderColor = UIColor.themePrimaryCgPicker
+        field.layer.cornerRadius = 8
+        field.layer.borderColor = UIColor.grayDFDFDF.cgColor
+    }
+
+    private let passwordLabel = UILabel(
+        fontSize: 14,
+        fontWeight: .medium,
+        color: .primaryText
+    ).apply { label in
+        label.text = "kLoginPassword".localized()
     }
     
     lazy var fieldPassword = MDTextField().apply { field in
         field.placeholder = "kLoginPassword".localized()
         field.textContentType = .password
+        field.returnKeyType = .go
+        field.enablesReturnKeyAutomatically = true
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clearButtonMode = .whileEditing
         field.isSecureTextEntry = true
         field.backgroundColor = .white
         
         field.layer.borderWidth = 2
-        field.layer.cornerRadius = 4
-        field.layer.theme_borderColor = UIColor.themePrimaryCgPicker
+        field.layer.cornerRadius = 8
+        field.layer.borderColor = UIColor.grayDFDFDF.cgColor
     }
     
-    private lazy var btnLogin = MDButton(variant: .contained).apply { button in
-        button.setTitle("kLoginUser".localized(), for: .normal)
-        button.addTarget(self, action: #selector(didTapLogin), for: .touchUpInside)
-    }
+    private lazy var btnLogin = UIButton(
+        configuration: loginButtonConfiguration,
+        primaryAction: UIAction { [weak self] _ in
+            self?.didTapLogin()
+        }
+    )
     
-    private lazy var btnGuest = MDButton(variant: .outlined).apply { button in
-        button.setTitle("kLoginGuest".localized(), for: .normal)
-        button.addTarget(self, action: #selector(didTapGuest), for: .touchUpInside)
+    private lazy var btnGuest = UIButton(
+        configuration: guestButtonConfiguration,
+        primaryAction: UIAction { [weak self] _ in
+            self?.didTapGuest()
+        }
+    )
+
+    private var loginButtonConfiguration: UIButton.Configuration {
+        var config = UIButton.Configuration.filled()
+        config.title = "kLoginUser".localized()
+        config.baseForegroundColor = .white
+        config.baseBackgroundColor = .themePrimary
+        config.cornerStyle = .capsule
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = .systemFont(ofSize: 18)
+            return outgoing
+        }
+        return config
+    }
+
+    private var guestButtonConfiguration: UIButton.Configuration {
+        var config = UIButton.Configuration.plain()
+        config.title = "kLoginGuest".localized()
+        config.baseForegroundColor = .themeDark
+        config.cornerStyle = .capsule
+        config.background.backgroundColor = .white
+        config.background.strokeColor = .themePrimary
+        config.background.strokeWidth = 2
+        config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+            var outgoing = incoming
+            outgoing.font = .systemFont(ofSize: 18)
+            return outgoing
+        }
+        return config
     }
     
     private var shouldAutoLogin = false
+
+    private var usernameInput: String {
+        fieldUsername.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+    }
+
+    private var passwordInput: String {
+        fieldPassword.text ?? ""
+    }
     
     convenience init(credential: Credential) {
         self.init()
@@ -59,36 +126,85 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     override func setupUI() {
-        view.addSubview(fieldUsername)
-        fieldUsername.snp.makeConstraints { (make) -> Void in
-            make.centerY.equalTo(view).offset(-100)
-            make.left.equalTo(view).offset(20)
-            make.right.equalTo(view).offset(-20)
+        view.addSubview(formView)
+        formView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        formView.addSubview(usernameLabel)
+        usernameLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(24)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+
+        formView.addSubview(fieldUsername)
+        fieldUsername.snp.makeConstraints { make in
+            make.top.equalTo(usernameLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(usernameLabel)
         }
         fieldUsername.delegate = self
         fieldUsername.tag = 0
+        fieldUsername.addTarget(
+            self,
+            action: #selector(updateLoginButtonState),
+            for: .editingChanged
+        )
+        fieldUsername.addTarget(
+            self,
+            action: #selector(didBeginEditingTextField(_:)),
+            for: .editingDidBegin
+        )
+        fieldUsername.addTarget(
+            self,
+            action: #selector(didEndEditingTextField(_:)),
+            for: .editingDidEnd
+        )
         
-        view.addSubview(fieldPassword)
-        fieldPassword.snp.makeConstraints { (make) -> Void in
+        formView.addSubview(passwordLabel)
+        passwordLabel.snp.makeConstraints { make in
             make.top.equalTo(fieldUsername.snp.bottom).offset(16)
-            make.left.equalTo(view).offset(20)
-            make.right.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(fieldUsername)
+        }
+
+        formView.addSubview(fieldPassword)
+        fieldPassword.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(passwordLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(fieldUsername)
         }
         fieldPassword.delegate = self
         fieldPassword.tag = 1
+        fieldPassword.addTarget(
+            self,
+            action: #selector(updateLoginButtonState),
+            for: .editingChanged
+        )
+        fieldPassword.addTarget(
+            self,
+            action: #selector(didBeginEditingTextField(_:)),
+            for: .editingDidBegin
+        )
+        fieldPassword.addTarget(
+            self,
+            action: #selector(didEndEditingTextField(_:)),
+            for: .editingDidEnd
+        )
         
-        view.addSubview(btnLogin)
+        formView.addSubview(btnLogin)
         btnLogin.snp.makeConstraints { make in
-            make.top.equalTo(fieldPassword.snp.bottom).offset(20)
-            make.left.right.equalToSuperview().inset(20)
-            make.height.equalTo(52)
+            make.top.equalTo(fieldPassword.snp.bottom).offset(32)
+            make.leading.trailing.equalTo(fieldUsername)
+            make.height.equalTo(48)
         }
         
-        view.addSubview(btnGuest)
+        formView.addSubview(btnGuest)
         btnGuest.snp.makeConstraints { make in
             make.top.equalTo(btnLogin.snp.bottom).offset(16)
-            make.left.right.height.equalTo(btnLogin)
+            make.leading.trailing.height.equalTo(btnLogin)
+            make.bottom.equalToSuperview().inset(24)
         }
+
+        updateLoginButtonState()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -99,71 +215,101 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @objc func didTapLogin() {
+        guard !usernameInput.isEmpty, !passwordInput.isEmpty else {
+            Loaf(
+                "kLoginMissingFields".localized(),
+                state: .info,
+                sender: self
+            ).show(.short)
+            return
+        }
+
         view.isUserInteractionEnabled = false
         DispatchQueue.main.async {
             ProgressHUD.animate()
         }
         
-        let username = fieldUsername.text!
-        let password = fieldPassword.text!
+        let username = usernameInput
+        let password = passwordInput
         
         Task {
             do {
                 try await UserManager.shared.login(username: username, password: password)
-                UserManager.logoutAsGuest()
-                let homeVC = HomeTabViewController()
-                ProgressHUD.dismiss()
-                self.view.isUserInteractionEnabled = true
-                if (!self.shouldAutoLogin) {
-                    let vc = UIAlertController(
-                        title: "kKeychainSaveTitle".localized(),
-                        message: "kKeychainSaveMessage".localized(),
-                        preferredStyle: .actionSheet
-                    )
-                    vc.addAction(
-                        UIAlertAction(title: "kOk".localized(), style: .default) { action in
-                            MDKeychain.add(username: username, password: password, onSuccess: {
-                                Loaf(
-                                    "kSaveSuccess".localized(),
-                                    state: .success,
-                                    sender: self
-                                ).show(.short) { reason in
-                                    self.navigationController?
-                                        .pushViewController(homeVC, animated: true)
+                await MainActor.run {
+                    ProgressHUD.dismiss()
+                    self.view.isUserInteractionEnabled = true
+                }
+                if !self.shouldAutoLogin {
+                    await MainActor.run {
+                        let vc = UIAlertController(
+                            title: "kKeychainSaveTitle".localized(),
+                            message: "kKeychainSaveMessage".localized(),
+                            preferredStyle: .actionSheet
+                        )
+                        vc.addAction(
+                            UIAlertAction(title: "kOk".localized(), style: .default) { action in
+                                MDKeychain.add(username: username, password: password, onSuccess: {
+                                    Loaf(
+                                        "kSaveSuccess".localized(),
+                                        state: .success,
+                                        sender: self
+                                    ).show(.short) { reason in
+                                        Task { @MainActor in
+                                            MDRouter.goToHome()
+                                        }
+                                    }
+                                }, onError: { error in
+                                    Loaf(
+                                        "kKeychainSaveError".localized(),
+                                        state: .info,
+                                        sender: self
+                                    ).show(.short) { reason in
+                                        Task { @MainActor in
+                                            MDRouter.goToHome()
+                                        }
+                                    }
+                                })
+                            }
+                        )
+                        vc.addAction(
+                            UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
+                                Task { @MainActor in
+                                    MDRouter.goToHome()
                                 }
-                            }, onError: { error in
-                                Loaf(
-                                    "kKeychainSaveError".localized(),
-                                    state: .info,
-                                    sender: self
-                                ).show(.short) { reason in
-                                    self.navigationController?
-                                        .pushViewController(homeVC, animated: true)
-                                }
-                            })
-                        }
-                    )
-                    vc.addAction(
-                        UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
-                            self.navigationController?.pushViewController(homeVC, animated: true)
-                        }
-                    )
-                    self.present(vc, animated: true)
+                            }
+                        )
+                        self.present(vc, animated: true)
+                    }
                 } else {
-                    self.navigationController?.pushViewController(homeVC, animated: true)
+                    MDRouter.goToHome()
                 }
             } catch {
-                self.shouldAutoLogin = false
-                ProgressHUD.failed()
-                self.view.isUserInteractionEnabled = true
+                await MainActor.run {
+                    self.shouldAutoLogin = false
+                    ProgressHUD.failed()
+                    self.view.isUserInteractionEnabled = true
+                }
             }
         }
     }
     
     @objc func didTapGuest() {
-        UserManager.shared.loginAsGuest()
-        let vc = HomeTabViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        Task { @MainActor in
+            await UserManager.shared.loginAsGuest()
+            MDRouter.goToHome()
+        }
+    }
+
+    @objc private func updateLoginButtonState() {
+        btnLogin.isEnabled = !usernameInput.isEmpty && !passwordInput.isEmpty
+    }
+
+    @objc private func didBeginEditingTextField(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.themePrimary.cgColor
+    }
+
+    @objc private func didEndEditingTextField(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.grayDFDFDF.cgColor
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -171,8 +317,10 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
             nextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
+            if btnLogin.isEnabled {
+                didTapLogin()
+            }
         }
         return false
     }
 }
-

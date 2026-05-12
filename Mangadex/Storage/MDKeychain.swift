@@ -26,17 +26,28 @@ class MDKeychain {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: username,
-            kSecAttrServer as String: server,
+            kSecAttrServer as String: server
+        ]
+        let attributes: [String: Any] = [
             kSecValueData as String: passwordData
         ]
+        let addQuery = query + attributes
 
-        let status = SecItemAdd(query as CFDictionary, nil)
-        if (status == errSecSuccess) {
+        let status = SecItemAdd(addQuery as CFDictionary, nil)
+        if status == errSecSuccess {
             success()
-        } else {
-            if (error != nil) {
-                error!(KeychainError.unhandledError(status: status))
+        } else if status == errSecDuplicateItem {
+            let updateStatus = SecItemUpdate(
+                query as CFDictionary,
+                attributes as CFDictionary
+            )
+            if updateStatus == errSecSuccess {
+                success()
+            } else if let error {
+                error(KeychainError.unhandledError(status: updateStatus))
             }
+        } else if let error {
+            error(KeychainError.unhandledError(status: status))
         }
     }
 
@@ -53,12 +64,15 @@ class MDKeychain {
         let status = SecItemCopyMatching(query as CFDictionary, &items)
         guard status == errSecSuccess else { return [] }
 
-        let result = items as? Array<Dictionary<String, Any>>
+        guard let result = items as? Array<Dictionary<String, Any>> else {
+            return []
+        }
         var values = [Credential]()
-        for item in result! {
+        for item in result {
             if let username = item[kSecAttrAccount as String] as? String,
-               let passwordData = item[kSecValueData as String] as? Data {
-                values.append(Credential(username: username, password: String(data: passwordData, encoding: .utf8)!))
+               let passwordData = item[kSecValueData as String] as? Data,
+               let password = String(data: passwordData, encoding: .utf8) {
+                values.append(Credential(username: username, password: password))
             }
         }
         return values
