@@ -14,20 +14,67 @@ import FlagKit
 
 class AccountViewController: BaseViewController {
     
-    private lazy var vTopArea = UIView()
+    private lazy var vTopArea = CardView().apply { view in
+        view.cornerRadius = 16
+        view.shadowCornerRadius = 16
+    }
     private lazy var ivAvatar = UIImageView(named: "icon_avatar_round")
-    private lazy var lblUsername = UILabel(fontSize: 20, fontWeight: .semibold, color: .white,
+    private lazy var lblUsername = UILabel(fontSize: 20, fontWeight: .semibold, color: .primaryText,
                                            numberOfLines: 2, scalable: true)
-    private lazy var btnLogout: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "icon_logout"), for: .normal)
-        button.tintColor = .white
-        button.addAction(UIAction { [weak self] _ in
-            self?.didTapLogout()
-        }, for: .touchUpInside)
+    private lazy var vAccountAction = UIStackView().apply { stack in
+        stack.axis = .horizontal
+        stack.alignment = .fill
+        stack.distribution = .fill
+    }
+    private lazy var btnLogin = UIButton(
+        configuration: loginButtonConfiguration,
+        primaryAction: UIAction { [weak self] _ in
+            self?.didTapLogin()
+        }
+    ).apply { button in
         button.isHidden = true
-        return button
-    }()
+    }
+    private lazy var btnLogout = UIButton(
+        configuration: logoutButtonConfiguration,
+        primaryAction: UIAction { [weak self] _ in
+            self?.didTapLogout()
+        }
+    ).apply { button in
+        button.isHidden = true
+    }
+
+    private var loginButtonConfiguration: UIButton.Configuration {
+        var config = UIButton.Configuration.filled()
+        config.title = "kLoginUser".localized()
+        config.baseForegroundColor = .white
+        config.baseBackgroundColor = .themePrimary
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 14,
+            bottom: 8,
+            trailing: 14
+        )
+        return config
+    }
+
+    private var logoutButtonConfiguration: UIButton.Configuration {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(named: "icon_logout")
+        config.imagePlacement = .leading
+        config.imagePadding = 6
+        config.title = "kLogout".localized()
+        config.baseForegroundColor = .themeDark
+        config.baseBackgroundColor = .themeLightest
+        config.cornerStyle = .capsule
+        config.contentInsets = NSDirectionalEdgeInsets(
+            top: 8,
+            leading: 14,
+            bottom: 8,
+            trailing: 14
+        )
+        return config
+    }
     
     private lazy var cellDataSaving = AccountSettingsSwitchCell(key: .isDataSaving).apply { cell in
         cell.icon = .init(named: "icon_signal_cellular")
@@ -102,6 +149,12 @@ class AccountViewController: BaseViewController {
         cell.viewControllerClass = DownloadsViewController.self
     }
     
+    private lazy var cellHistory = AccountSettingsPushCell().apply { cell in
+        cell.icon = .init(named: "icon_history")
+        cell.title = String(localized: "Reading History")
+        cell.viewControllerClass = ReadingHistoryViewController.self
+    }
+    
     private lazy var cellDeleteDownloads = AccountSettingsActionCell().apply { cell in
         cell.icon = .init(named: "icon_delete")
         cell.title = "kSettingsDeleteDownloads".localized()
@@ -120,10 +173,18 @@ class AccountViewController: BaseViewController {
     }
     
     private lazy var settingsView = AccountSettingsView(
-        sections:
-                .init(cells: cellDataSaving),
-                .init(cells: cellDownloading, cellDownloads, cellColorSelector, cellLangSelector, cellContentSelector),
-                .init(cells: cellDeleteDownloads)
+        sections: .init(
+            cells: cellHistory,
+            cellDownloading,
+            cellDownloads
+        ),
+        .init(
+            cells: cellDataSaving,
+            cellColorSelector,
+            cellLangSelector,
+            cellContentSelector
+        ),
+        .init(cells: cellDeleteDownloads)
     )
     
     override func setupUI() {
@@ -131,36 +192,39 @@ class AccountViewController: BaseViewController {
         
         view.addSubview(vTopArea)
         vTopArea.snp.makeConstraints { make in
-            make.top.left.right.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.left.right.equalToSuperview().inset(16)
         }
-        vTopArea.theme_backgroundColor = UIColor.themePrimaryPicker
         
         vTopArea.addSubview(ivAvatar)
         ivAvatar.snp.makeConstraints { make in
             make.width.height.equalTo(72)
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop + 30)
-            make.left.equalToSuperview().inset(30)
-            make.bottom.equalToSuperview().inset(35)
+            make.top.bottom.equalToSuperview().inset(20)
+            make.left.equalToSuperview().inset(20)
         }
         
-        vTopArea.addSubview(btnLogout)
-        btnLogout.snp.makeConstraints { make in
+        vTopArea.addSubview(vAccountAction)
+        vAccountAction.snp.makeConstraints { make in
             make.centerY.equalTo(ivAvatar)
-            make.right.equalToSuperview().inset(55)
+            make.right.equalToSuperview().inset(20)
+            make.height.equalTo(40)
         }
+
+        vAccountAction.addArrangedSubview(btnLogin)
+        vAccountAction.addArrangedSubview(btnLogout)
         
         vTopArea.addSubview(lblUsername)
         lblUsername.snp.makeConstraints { make in
             make.centerY.equalTo(ivAvatar)
             make.left.equalTo(ivAvatar.snp.right).offset(20)
-            make.right.equalTo(btnLogout.snp.left).offset(-20)
+            make.right.equalTo(vAccountAction.snp.left).offset(-20)
         }
         lblUsername.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(didTapUsername)))
         
         view.addSubview(settingsView)
         settingsView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(15)
-            make.top.equalTo(vTopArea.snp.bottom).offset(15)
+            make.left.right.equalToSuperview().inset(16)
+            make.top.equalTo(vTopArea.snp.bottom).offset(16)
         }
     }
     
@@ -180,12 +244,19 @@ class AccountViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateDownloadsSize()
         syncUserManagerStates()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        Task {
+            await updateDownloadsSize()
+        }
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        .lightContent
+        .darkContent
     }
     
     // MARK: - actions
@@ -195,6 +266,10 @@ class AccountViewController: BaseViewController {
             await UserManager.shared.logout()
             MDRouter.goToLogin()
         }
+    }
+
+    private func didTapLogin() {
+        MDRouter.goToLogin()
     }
     
     @objc private func didTapUsername() {
@@ -213,8 +288,9 @@ class AccountViewController: BaseViewController {
             let isLoggedIn = await UserManager.shared.userIsLoggedIn
             let username = await UserManager.shared.username
             self.btnLogout.isHidden = !isLoggedIn
+            self.btnLogin.isHidden = isLoggedIn
             self.lblUsername.text = username
-            self.lblUsername.isUserInteractionEnabled = !isLoggedIn
+            self.lblUsername.isUserInteractionEnabled = false
         }
     }
     
@@ -222,20 +298,32 @@ class AccountViewController: BaseViewController {
         ProgressHUD.animate()
         DownloadManager.shared.deleteAllChapters()
         ProgressHUD.succeed()
-        updateDownloadsSize()
+        
+        Task {
+            await updateDownloadsSize()
+        }
     }
     
-    private func updateDownloadsSize() {
-        if let downloadsSize = DownloadManager.shared.sizeUsed {
+    private func updateDownloadsSize() async {
+        cellDeleteDownloads.isEnabled = false
+        guard let size = await DownloadManager.shared.calculateSizeUsed() else {
+            return
+        }
+        
+        await MainActor.run {
             // The smallest value required to be shown as "1 MB"
-            if downloadsSize < 950000 {
+            if size < 950000 {
                 cellDeleteDownloads.isEnabled = false
-                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeZero".localized()
+                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeZero"
+                    .localized()
             } else {
                 cellDeleteDownloads.isEnabled = true
-                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeCurrent".localizedFormat(
-                    fileSizeFormatter.string(fromByteCount: Int64(downloadsSize))
-                )
+                cellDeleteDownloads.subTitle = "kSettingsDownloadsSizeCurrent"
+                    .localizedFormat(
+                        fileSizeFormatter.string(
+                            fromByteCount: Int64(size)
+                        )
+                    )
             }
         }
     }

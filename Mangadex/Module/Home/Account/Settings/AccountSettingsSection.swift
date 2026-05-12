@@ -5,13 +5,14 @@
 //  Created by John Rion on 2021/8/14.
 //
 
-import Foundation
 import UIKit
+import SnapKit
 
-class AccountSettingsSection: UIView {
+class AccountSettingsSection: CardView {
+    private let vStack = UIStackView()
     
     convenience init(cells: UIView...) {
-        self.init()
+        self.init(frame: .zero)
         
         for (index, cell) in cells.enumerated() {
             if index > 0 {
@@ -20,26 +21,33 @@ class AccountSettingsSection: UIView {
             }
             vStack.addArrangedSubview(cell)
         }
-        
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         setupUI()
     }
     
-    private let vStack = UIStackView()
-    
     private func setupUI() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.5
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowRadius = 1
-        
         vStack.axis = .vertical
         vStack.clipsToBounds = true
-        vStack.layer.cornerRadius = 4
-        vStack.backgroundColor = .white
-        
+        vStack.layer.cornerRadius = cornerRadius
+        vStack.backgroundColor = .clear
+        guard vStack.superview == nil else { return }
+
         addSubview(vStack)
         vStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        vStack.layer.cornerRadius = cornerRadius
     }
 }

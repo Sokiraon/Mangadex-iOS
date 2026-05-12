@@ -32,10 +32,14 @@ class AccountSettingsCell: UIView {
         
         backgroundColor = .white
         
+        self.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(48)
+        }
+        
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(15)
-            make.top.bottom.equalToSuperview().inset(10)
+            make.left.right.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
         }
         
         contentView.addSubview(ivIcon)
@@ -47,7 +51,7 @@ class AccountSettingsCell: UIView {
         contentView.addSubview(vTextStack)
         vTextStack.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(24)
-            make.left.equalTo(ivIcon.snp.right).offset(10)
+            make.left.equalTo(ivIcon.snp.right).offset(12)
             make.top.bottom.equalToSuperview()
         }
         
