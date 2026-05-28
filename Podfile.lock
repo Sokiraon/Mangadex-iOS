@@ -146,7 +146,6 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - Pageboy (4.2.0)
   - ProgressHUD (14.1.1)
   - PromisesObjC (2.4.0)
   - PromisesSwift (2.4.0):
@@ -157,8 +156,6 @@ PODS:
   - SwiftTheme (0.6.4)
   - SwiftyGif (5.4.5)
   - SwiftyJSON (5.0.2)
-  - Tabman (3.2.0):
-    - Pageboy (~> 4.2.0)
   - TTTAttributedLabel (2.0.0)
   - YYModel (1.0.4)
 
@@ -182,7 +179,6 @@ DEPENDENCIES:
   - SwiftEntryKit (= 2.0.0)
   - SwiftTheme
   - SwiftyJSON (~> 5.0.2)
-  - Tabman
   - TTTAttributedLabel
   - YYModel
 
@@ -213,7 +209,6 @@ SPEC REPOS:
     - Localize-Swift
     - MarkdownKit
     - nanopb
-    - Pageboy
     - ProgressHUD
     - PromisesObjC
     - PromisesSwift
@@ -223,7 +218,6 @@ SPEC REPOS:
     - SwiftTheme
     - SwiftyGif
     - SwiftyJSON
-    - Tabman
     - TTTAttributedLabel
     - YYModel
 
@@ -263,7 +257,6 @@ SPEC CHECKSUMS:
   MarkdownKit: 0b15195c63cf3e39387949c4bdeccde0055e252a
   MJRefresh: fdf5e979eb406a0341468932d1dfc8b7f9fce961
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  Pageboy: 7f7886f61c76633df635861bf7839caf2cabdb3e
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
@@ -273,10 +266,9 @@ SPEC CHECKSUMS:
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
   SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
-  Tabman: 49f9181a2bfe5c29d002864dac2de8e0b7ea9180
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: ccc3b4405957e7f60121ec53b12518b5864e2a4b
+PODFILE CHECKSUM: cb353fd0a66697b3fedf30c4023688d625c8c69a
 
 COCOAPODS: 1.16.2

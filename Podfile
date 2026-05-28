@@ -24,7 +24,6 @@ target "Mangadex" do
   pod 'TTTAttributedLabel'
   pod "MarkdownKit"
   pod 'SkeletonView'
-  pod 'Tabman'
   pod "Agrume"
   pod 'Cosmos', '~> 23.0'
   

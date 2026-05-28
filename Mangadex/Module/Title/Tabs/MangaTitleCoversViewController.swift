@@ -12,6 +12,7 @@ import Agrume
 class MangaTitleCoversViewController: BaseViewController {
     
     let cellWidth = (MDLayout.screenWidth - 16 * 3) / 2
+    private let coverActionHelper = AgrumeCoverActionHelper()
     
     func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(cellWidth),
@@ -24,6 +25,7 @@ class MangaTitleCoversViewController: BaseViewController {
         group.interItemSpacing = .fixed(16)
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 16
+        section.contentInsets = .horizontal(16)
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
@@ -39,10 +41,8 @@ class MangaTitleCoversViewController: BaseViewController {
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(50)
-            make.left.right.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview()
-            make.width.equalTo(MDLayout.screenWidth)
+            make.top.equalToSuperview().inset(64)
+            make.left.right.bottom.equalToSuperview()
         }
     }
     
@@ -89,6 +89,7 @@ class MangaTitleCoversViewController: BaseViewController {
 extension MangaTitleCoversViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let agrume = Agrume(urls: coverURLs, startIndex: indexPath.row)
+        agrume.onLongPress = coverActionHelper.makeLongPressHandler
         agrume.didScroll = { [unowned self] index in
             self.collectionView.scrollToItem(
                 at: IndexPath(row: index, section: 0),

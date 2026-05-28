@@ -103,8 +103,7 @@ class MangaDownloadViewController: BaseViewController {
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 12
-                section.contentInsets = NSDirectionalEdgeInsets(
-                    top: 12, leading: 20, bottom: 16, trailing: 20)
+                section.contentInsets = .cssStyle(12, 20, 16)
                 return section
             case .loader:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),

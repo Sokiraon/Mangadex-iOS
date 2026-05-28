@@ -83,8 +83,6 @@ Selected UI and feature dependencies currently include:
 
 - `Kingfisher`
 - `MJRefresh`
-- `Tabman`
-- `Pageboy`
 - `SwiftTheme`
 - `SwiftEntryKit`
 - `SkeletonView`

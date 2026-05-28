@@ -19,7 +19,6 @@ class MangaChapterCollectionCell: UICollectionViewCell {
         super.init(frame: frame)
         
         contentView.snp.makeConstraints { make in
-            make.width.equalTo(MDLayout.screenWidth)
             make.edges.equalToSuperview()
         }
         

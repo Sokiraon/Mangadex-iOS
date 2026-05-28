@@ -10,45 +10,85 @@ import UIKit
 import Kingfisher
 import Agrume
 
-class MangaTitleCoverCell: UICollectionViewCell {
-    
-    let imageView = UIImageView()
-    let bottomView = UIView()
-    let bottomGradient = CAGradientLayer().apply { layer in
-        layer.startPoint = .init(x: 0, y: 0)
-        layer.endPoint = .init(x: 0, y: 1)
-        layer.colors = [
-            UIColor.clear,
+private class MangaTitleCoverGradientView: UIView {
+    override class var layerClass: AnyClass {
+        CAGradientLayer.self
+    }
+
+    private var gradientLayer: CAGradientLayer {
+        layer as! CAGradientLayer
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+
+    private func setupUI() {
+        gradientLayer.startPoint = .init(x: 0, y: 0)
+        gradientLayer.endPoint = .init(x: 0, y: 1)
+        gradientLayer.colors = [
+            UIColor.clear.cgColor,
             UIColor.black.withAlphaComponent(0.8).cgColor
         ]
     }
-    let title = UILabel(fontSize: 18, fontWeight: .medium, color: .white)
+}
+
+class MangaTitleCoverCell: UICollectionViewCell {
+
+    private let cardView = CardView()
+    private let imageContainerView = UIView()
+    private let imageView = UIImageView()
+    private let bottomView = MangaTitleCoverGradientView()
+    private let title = UILabel(fontSize: 18, fontWeight: .medium, color: .white)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        layer.cornerRadius = 8
-        layer.masksToBounds = true
-        
-        addSubview(imageView)
+        setupUI()
+    }
+
+    private func setupUI() {
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+
+        cardView.cornerRadius = 16
+        cardView.shadowCornerRadius = 16
+        cardView.shadowOpacity = 0.14
+        cardView.shadowOffset = CGSize(width: 0, height: 2)
+        cardView.shadowRadius = 6
+        cardView.shadowPathInset = .zero
+        contentView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        cardView.addSubview(imageContainerView)
+        imageContainerView.clipsToBounds = true
+        imageContainerView.layer.cornerRadius = 16
+        imageContainerView.layer.cornerCurve = .continuous
+        imageContainerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        imageContainerView.addSubview(imageView)
         imageView.contentMode = .scaleAspectFill
         imageView.isUserInteractionEnabled = true
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        addSubview(bottomView)
+        imageContainerView.addSubview(bottomView)
         bottomView.snp.makeConstraints { make in
             make.left.right.bottom.equalToSuperview()
             make.height.equalTo(48)
         }
         
-        layoutIfNeeded()
-        bottomGradient.frame = .init(origin: .zero,
-                                     size: bottomView.frame.size)
-        bottomView.layer.addSublayer(bottomGradient)
-        
-        addSubview(title)
+        imageContainerView.addSubview(title)
         title.snp.makeConstraints { make in
             make.left.right.bottom.equalTo(bottomView).inset(12)
         }
@@ -66,5 +106,6 @@ class MangaTitleCoverCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        setupUI()
     }
 }

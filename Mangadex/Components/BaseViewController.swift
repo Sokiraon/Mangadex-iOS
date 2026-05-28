@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class BaseViewController: UIViewController {
-    
+
     ///
     /// Called at viewDidLoad, before setupUI().
     ///
@@ -42,11 +42,14 @@ class BaseViewController: UIViewController {
             setNeedsStatusBarAppearanceUpdate()
         }
     }
+
     override var prefersStatusBarHidden: Bool {
         isStatusBarHidden
     }
     
-    lazy var AppBarHeight = MDLayout.safeInsetTop + 44
+    var AppBarHeight: CGFloat {
+        MDLayout.safeInsetTop + (navigationController?.navigationBar.frame.height ?? 44)
+    }
     
     /// Default AppBar of the viewController. Loaded on-demand.
     lazy var appBar = AppBar().apply { _ in
@@ -55,9 +58,11 @@ class BaseViewController: UIViewController {
     
     ///
     /// Used for setting up top navigation bar.
-    func setupNavBar(title: String? = nil,
-                              backgroundColor: UIColor = .themePrimary,
-                              style: AppBar.Style = .filled) {
+    func setupNavBar(
+        title: String? = nil,
+        backgroundColor: UIColor = .themePrimary,
+        style: AppBar.Style = .filled
+    ) {
         if title != nil {
             appBar.title = title
         }
@@ -75,7 +80,7 @@ class BaseViewController: UIViewController {
             appBar.backgroundColor = backgroundColor
             statusBarStyle = .lightContent
         }
-        
+
         view.addSubview(appBar)
         appBar.snp.makeConstraints { make in
             make.top.left.right.equalTo(view)
@@ -112,9 +117,12 @@ class BaseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = true
+
+        if parent == nil {
+            navigationController?.isNavigationBarHidden = true
+        }
         
         willSetupUI()
         setupUI()
