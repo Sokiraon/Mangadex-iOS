@@ -15,7 +15,7 @@ class MangaViewerChapterListHeaderView: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = .black
+        backgroundColor = .clear
         
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in

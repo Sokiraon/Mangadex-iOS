@@ -15,6 +15,13 @@ import MJRefresh
 import SafariServices
 
 class OnlineMangaViewer: MangaViewer {
+
+    private let chapterListMargin: CGFloat = 12
+    private let chapterListWidth: CGFloat = 160
+
+    override var chapterListTrailingMargin: CGFloat {
+        8
+    }
     
     private func bottomButtonBuilder(
         image: UIImage?, titleKey: String, action: UIAction
@@ -115,22 +122,52 @@ class OnlineMangaViewer: MangaViewer {
         
         var listConfig = UICollectionLayoutListConfiguration(appearance: .plain)
         listConfig.showsSeparators = true
-        listConfig.separatorConfiguration.color = .darkerGray565656
+        listConfig.separatorConfiguration.color = UIColor.white.withAlphaComponent(0.12)
         listConfig.headerMode = .supplementary
         listConfig.headerTopPadding = 0
-        listConfig.backgroundColor = .fromHex("1c1c1e")
+        listConfig.backgroundColor = .clear
         let layout = UICollectionViewCompositionalLayout.list(using: listConfig)
         chapterListView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         chapterListView.delegate = self
-        
-        view.addSubview(chapterListView)
+        chapterListView.backgroundColor = .clear
+
+        let chapterListContainerView = makeChapterListContainerView()
+        self.chapterListContainerView = chapterListContainerView
+        view.addSubview(chapterListContainerView)
+        chapterListContainerView.contentView.addSubview(chapterListView)
         view.layoutIfNeeded()
-        chapterListView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(appBar.frame.height)
-            make.bottom.equalToSuperview().inset(vBottomControl.frame.height)
+        chapterListContainerView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(appBar.frame.height + chapterListMargin)
+            make.bottom.equalToSuperview().inset(vBottomControl.frame.height + chapterListMargin)
             make.left.equalTo(view.snp.right)
-            make.width.equalTo(240)
+            make.width.equalTo(chapterListWidth)
         }
+        chapterListView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(4)
+        }
+    }
+
+    private func makeChapterListContainerView() -> UIVisualEffectView {
+        let effectView: UIVisualEffectView
+        if #available(iOS 26.0, *) {
+            let effect = UIGlassEffect(style: .clear)
+            effect.isInteractive = true
+            effect.tintColor = UIColor.black.withAlphaComponent(0.58)
+            effectView = UIVisualEffectView(effect: effect)
+        } else {
+            effectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
+        }
+        let dimmingView = UIView()
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.48)
+        dimmingView.isUserInteractionEnabled = false
+        effectView.contentView.addSubview(dimmingView)
+        dimmingView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        effectView.clipsToBounds = true
+        effectView.layer.cornerRadius = 24
+        effectView.layer.cornerCurve = .continuous
+        return effectView
     }
     
     override func didSetupUI() {
@@ -272,7 +309,46 @@ class OnlineMangaViewer: MangaViewer {
             snapshot.appendItems(aggregatedModel.volumes[volume]!.sortedChapters,
                                  toSection: volume)
         }
-        chapterListDataSource.apply(snapshot)
+        chapterListDataSource.apply(snapshot, animatingDifferences: false) { [weak self] in
+            self?.scrollChapterListToCurrentChapter(animated: false)
+        }
+    }
+
+    override func chapterListWillShow() {
+        super.chapterListWillShow()
+        scrollChapterListToCurrentChapter(animated: false)
+    }
+
+    private var currentChapterListIndexPath: IndexPath? {
+        guard let aggregatedModel else {
+            return nil
+        }
+        for (section, volumeName) in aggregatedModel.volumeNames.enumerated() {
+            guard let chapters = aggregatedModel.volumes[volumeName]?.sortedChapters,
+                  let item = chapters.firstIndex(where: { $0.id == chapterId })
+            else {
+                continue
+            }
+            return IndexPath(item: item, section: section)
+        }
+        return nil
+    }
+
+    private func scrollChapterListToCurrentChapter(animated: Bool) {
+        guard let indexPath = currentChapterListIndexPath else {
+            return
+        }
+        guard chapterListView.numberOfSections > indexPath.section,
+              chapterListView.numberOfItems(inSection: indexPath.section) > indexPath.item
+        else {
+            return
+        }
+        chapterListView.layoutIfNeeded()
+        chapterListView.scrollToItem(
+            at: indexPath,
+            at: .centeredVertically,
+            animated: animated
+        )
     }
     
     // MARK: - Actions

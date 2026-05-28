@@ -71,6 +71,8 @@ class MangaViewer: BaseViewController,
         view.backgroundColor = .black
     }
     internal lazy var vSlider = UISlider().apply { slider in
+        slider.minimumTrackTintColor = UIColor.themeDark
+        slider.maximumTrackTintColor = UIColor.darkGray
         slider.addTarget(self, action: #selector(handleSliderChange(_:)), for: .valueChanged)
     }
     internal lazy var btnPrev = UIButton(
@@ -126,23 +128,33 @@ class MangaViewer: BaseViewController,
     // MARK: - Chapter List
     
     internal var chapterListView: UICollectionView!
+    internal var chapterListContainerView: UIView?
     internal var chapterListDataSource: UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>!
+    internal var chapterListTrailingMargin: CGFloat {
+        0
+    }
     
     private var showsChapterList = false
     internal func showHideChapterList() {
+        view.layoutIfNeeded()
+        let presentationView = chapterListContainerView ?? chapterListView!
+        let translationDistance = presentationView.frame.width + chapterListTrailingMargin
         if showsChapterList {
             UIView.animate(withDuration: 0.25) {
-                self.chapterListView.transform = self.chapterListView.transform
-                    .translatedBy(x: self.chapterListView.frame.width, y: 0)
+                presentationView.transform = presentationView.transform
+                    .translatedBy(x: translationDistance, y: 0)
             }
         } else {
+            chapterListWillShow()
             UIView.animate(withDuration: 0.25) {
-                self.chapterListView.transform = self.chapterListView.transform
-                    .translatedBy(x: -self.chapterListView.frame.width, y: 0)
+                presentationView.transform = presentationView.transform
+                    .translatedBy(x: -translationDistance, y: 0)
             }
         }
         self.showsChapterList = !self.showsChapterList
     }
+
+    internal func chapterListWillShow() {}
     
     // MARK: - Properties
     
