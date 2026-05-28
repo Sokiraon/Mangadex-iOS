@@ -35,6 +35,8 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clearButtonMode = .whileEditing
         field.backgroundColor = .white
+        field.leftView = Self.makeTextFieldIconView(systemName: "person")
+        field.leftViewMode = .always
         
         field.layer.borderWidth = 2
         field.layer.cornerRadius = 8
@@ -58,6 +60,8 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
         field.clearButtonMode = .whileEditing
         field.isSecureTextEntry = true
         field.backgroundColor = .white
+        field.leftView = Self.makeTextFieldIconView(systemName: "lock")
+        field.leftViewMode = .always
         
         field.layer.borderWidth = 2
         field.layer.cornerRadius = 8
@@ -108,8 +112,6 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
         return config
     }
     
-    private var shouldAutoLogin = false
-
     private var usernameInput: String {
         fieldUsername.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
     }
@@ -117,12 +119,22 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
     private var passwordInput: String {
         fieldPassword.text ?? ""
     }
-    
-    convenience init(credential: Credential) {
-        self.init()
-        fieldUsername.text = credential.username
-        fieldPassword.text = credential.password
-        shouldAutoLogin = true
+
+    private static func makeTextFieldIconView(systemName: String) -> UIView {
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 24))
+        let image = UIImage(
+            systemName: systemName,
+            withConfiguration: UIImage.SymbolConfiguration(
+                pointSize: 17,
+                weight: .medium
+            )
+        )
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .darkGray808080
+        imageView.frame = CGRect(x: 16, y: 2, width: 20, height: 20)
+        container.addSubview(imageView)
+        return container
     }
     
     override func setupUI() {
@@ -207,13 +219,6 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
         updateLoginButtonState()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if shouldAutoLogin {
-            didTapLogin()
-        }
-    }
-    
     @objc func didTapLogin() {
         guard !usernameInput.isEmpty, !passwordInput.isEmpty else {
             Loaf(
@@ -238,54 +243,10 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
                 await MainActor.run {
                     ProgressHUD.dismiss()
                     self.view.isUserInteractionEnabled = true
-                }
-                if !self.shouldAutoLogin {
-                    await MainActor.run {
-                        let vc = UIAlertController(
-                            title: "kKeychainSaveTitle".localized(),
-                            message: "kKeychainSaveMessage".localized(),
-                            preferredStyle: .actionSheet
-                        )
-                        vc.addAction(
-                            UIAlertAction(title: "kOk".localized(), style: .default) { action in
-                                MDKeychain.add(username: username, password: password, onSuccess: {
-                                    Loaf(
-                                        "kSaveSuccess".localized(),
-                                        state: .success,
-                                        sender: self
-                                    ).show(.short) { reason in
-                                        Task { @MainActor in
-                                            MDRouter.goToHome()
-                                        }
-                                    }
-                                }, onError: { error in
-                                    Loaf(
-                                        "kKeychainSaveError".localized(),
-                                        state: .info,
-                                        sender: self
-                                    ).show(.short) { reason in
-                                        Task { @MainActor in
-                                            MDRouter.goToHome()
-                                        }
-                                    }
-                                })
-                            }
-                        )
-                        vc.addAction(
-                            UIAlertAction(title: "kNo".localized(), style: .cancel) { action in
-                                Task { @MainActor in
-                                    MDRouter.goToHome()
-                                }
-                            }
-                        )
-                        self.present(vc, animated: true)
-                    }
-                } else {
                     MDRouter.goToHome()
                 }
             } catch {
                 await MainActor.run {
-                    self.shouldAutoLogin = false
                     ProgressHUD.failed()
                     self.view.isUserInteractionEnabled = true
                 }
@@ -306,10 +267,22 @@ class MDLoginViewController: BaseViewController, UITextFieldDelegate {
 
     @objc private func didBeginEditingTextField(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.themePrimary.cgColor
+        updateTextFieldIconColor(textField, color: .themePrimary)
     }
 
     @objc private func didEndEditingTextField(_ textField: UITextField) {
         textField.layer.borderColor = UIColor.grayDFDFDF.cgColor
+        updateTextFieldIconColor(textField, color: .darkGray808080)
+    }
+
+    private func updateTextFieldIconColor(
+        _ textField: UITextField,
+        color: UIColor
+    ) {
+        let iconView = textField.leftView?.subviews.first { view in
+            view is UIImageView
+        } as? UIImageView
+        iconView?.tintColor = color
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

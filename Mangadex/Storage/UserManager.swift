@@ -55,9 +55,36 @@ actor UserManager {
     
     func login(username: String, password: String) async throws {
         let token = try await Requests.Auth.login(username: username, password: password)
-        self.session = token.session
-        self.refresh = token.refresh
-        self.username = username
+        setSession(token, username: username)
+        try? MDKeychain.save(
+            username: username,
+            session: token.session,
+            refresh: token.refresh
+        )
+        Self.logoutAsGuest()
+    }
+
+    func login(with credential: Credential) async throws {
+        let isValid = try? await Requests.Auth.verifyToken(token: credential.session)
+        if isValid == true {
+            setSession(
+                Requests.Auth.Token(
+                    session: credential.session,
+                    refresh: credential.refresh
+                ),
+                username: credential.username
+            )
+            Self.logoutAsGuest()
+            return
+        }
+
+        let token = try await Requests.Auth.refreshToken(refresh: credential.refresh)
+        setSession(token, username: credential.username)
+        try? MDKeychain.save(
+            username: credential.username,
+            session: token.session,
+            refresh: token.refresh
+        )
         Self.logoutAsGuest()
     }
     
@@ -88,8 +115,12 @@ actor UserManager {
             return self.session
         }
         let newToken = try await Requests.Auth.refreshToken(refresh: self.refresh)
-        self.session = newToken.session
-        self.refresh = newToken.refresh
+        setSession(newToken, username: username)
+        try? MDKeychain.save(
+            username: username,
+            session: newToken.session,
+            refresh: newToken.refresh
+        )
         return newToken.session
     }
     
@@ -98,5 +129,11 @@ actor UserManager {
         refresh = ""
         username = ""
         Self.logoutAsGuest()
+    }
+
+    private func setSession(_ token: Requests.Auth.Token, username: String) {
+        self.session = token.session
+        self.refresh = token.refresh
+        self.username = username
     }
 }

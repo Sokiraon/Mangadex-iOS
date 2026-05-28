@@ -4,50 +4,68 @@
 
 import Foundation
 
-struct Credential {
+struct Credential: Codable, Sendable {
     var username: String
-    var password: String
+    var session: String
+    var refresh: String
 }
 
 enum KeychainError: Error {
-    case noPassword
-    case unexpectedPasswordData
     case unhandledError(status: OSStatus)
 }
 
 class MDKeychain {
     private static let server = "mangadex.org"
 
-    static func add(username: String,
-                    password: String,
-                    onSuccess success: () -> Void,
-                    onError error: ((_ error: KeychainError) -> Void)?) {
-        let passwordData = password.data(using: String.Encoding.utf8)!
+    static func save(
+        username: String,
+        session: String,
+        refresh: String
+    ) throws {
+        let credential = Credential(
+            username: username,
+            session: session,
+            refresh: refresh
+        )
+        let data = try JSONEncoder().encode(credential)
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
             kSecAttrAccount as String: username,
             kSecAttrServer as String: server
         ]
         let attributes: [String: Any] = [
-            kSecValueData as String: passwordData
+            kSecValueData as String: data
         ]
         let addQuery = query + attributes
 
         let status = SecItemAdd(addQuery as CFDictionary, nil)
         if status == errSecSuccess {
-            success()
-        } else if status == errSecDuplicateItem {
+            return
+        }
+
+        if status == errSecDuplicateItem {
             let updateStatus = SecItemUpdate(
                 query as CFDictionary,
                 attributes as CFDictionary
             )
-            if updateStatus == errSecSuccess {
-                success()
-            } else if let error {
-                error(KeychainError.unhandledError(status: updateStatus))
+            guard updateStatus == errSecSuccess else {
+                throw KeychainError.unhandledError(status: updateStatus)
             }
-        } else if let error {
-            error(KeychainError.unhandledError(status: status))
+            return
+        }
+
+        throw KeychainError.unhandledError(status: status)
+    }
+
+    static func delete(username: String) throws {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassInternetPassword,
+            kSecAttrAccount as String: username,
+            kSecAttrServer as String: server
+        ]
+        let status = SecItemDelete(query as CFDictionary)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw KeychainError.unhandledError(status: status)
         }
     }
 
@@ -63,18 +81,21 @@ class MDKeychain {
         var items: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &items)
         guard status == errSecSuccess else { return [] }
-
         guard let result = items as? Array<Dictionary<String, Any>> else {
             return []
         }
-        var values = [Credential]()
-        for item in result {
-            if let username = item[kSecAttrAccount as String] as? String,
-               let passwordData = item[kSecValueData as String] as? Data,
-               let password = String(data: passwordData, encoding: .utf8) {
-                values.append(Credential(username: username, password: password))
+
+        return result.compactMap { item in
+            guard
+                let data = item[kSecValueData as String] as? Data
+            else {
+                return nil
             }
+            if let credential = try? JSONDecoder().decode(Credential.self, from: data) {
+                return credential
+            }
+
+            return nil
         }
-        return values
     }
 }

@@ -5,6 +5,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import ProgressHUD
 
 class MDPreLoginAccountView: UICollectionViewCell {
     private var ivAvatar = UIImageView(named: "icon_avatar_round")
@@ -147,7 +148,23 @@ extension MDPreLoginViewController: UICollectionViewDelegate, UICollectionViewDa
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let vc = MDLoginViewController(credential: credentials[indexPath.row])
-        navigationController?.pushViewController(vc, animated: true)
+        let credential = credentials[indexPath.row]
+        collectionView.isUserInteractionEnabled = false
+        ProgressHUD.animate()
+
+        Task {
+            do {
+                try await UserManager.shared.login(with: credential)
+                await MainActor.run {
+                    ProgressHUD.dismiss()
+                    MDRouter.goToHome()
+                }
+            } catch {
+                await MainActor.run {
+                    ProgressHUD.failed()
+                    collectionView.isUserInteractionEnabled = true
+                }
+            }
+        }
     }
 }

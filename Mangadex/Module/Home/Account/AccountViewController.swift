@@ -49,12 +49,7 @@ class AccountViewController: BaseViewController {
         config.baseForegroundColor = .white
         config.baseBackgroundColor = .themePrimary
         config.cornerStyle = .capsule
-        config.contentInsets = NSDirectionalEdgeInsets(
-            top: 8,
-            leading: 14,
-            bottom: 8,
-            trailing: 14
-        )
+        config.contentInsets = .cssStyle(8, 14)
         return config
     }
 
@@ -67,12 +62,7 @@ class AccountViewController: BaseViewController {
         config.baseForegroundColor = .themeDark
         config.baseBackgroundColor = .themeLightest
         config.cornerStyle = .capsule
-        config.contentInsets = NSDirectionalEdgeInsets(
-            top: 8,
-            leading: 14,
-            bottom: 8,
-            trailing: 14
-        )
+        config.contentInsets = .cssStyle(8, 14)
         return config
     }
     
