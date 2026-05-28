@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 class FollowedLibraryViewController: MangaListViewController {
+    override var usesSystemNavigationBar: Bool {
+        false
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

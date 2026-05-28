@@ -49,6 +49,8 @@ class FollowedUpdatesChapterView: UIView {
 }
 
 class FollowedUpdatesCollectionCell: UICollectionViewCell {
+
+    private let cardView = CardView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -69,17 +71,26 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
     private let chapterStack = UIStackView()
     
     private func setupUI() {
-        layer.cornerRadius = 4
-        backgroundColor = .lightestGrayF5F5F5
-        
-        contentView.snp.makeConstraints { make in
+        cardView.cornerRadius = 8
+        cardView.shadowCornerRadius = 8
+        cardView.shadowOpacity = 0.14
+        cardView.shadowOffset = .zero
+        cardView.shadowRadius = 6
+        cardView.shadowPathInset = UIEdgeInsets(
+            top: 3,
+            left: 3,
+            bottom: 3,
+            right: 3
+        )
+        contentView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-            make.width.equalTo(MDLayout.screenWidth - 20)
         }
         
-        contentView.addSubview(ivCover)
+        cardView.addSubview(ivCover)
         ivCover.clipsToBounds = true
-        ivCover.layer.cornerRadius = 4
+        ivCover.layer.cornerRadius = 8
+        ivCover.contentMode = .scaleAspectFill
         ivCover.snp.makeConstraints { make in
             make.width.equalTo(64)
             make.height.equalTo(96)
@@ -87,25 +98,52 @@ class FollowedUpdatesCollectionCell: UICollectionViewCell {
             make.bottom.lessThanOrEqualToSuperview().inset(8)
         }
         
-        contentView.addSubview(lblTitle)
+        cardView.addSubview(lblTitle)
         lblTitle.snp.makeConstraints { make in
             make.top.right.equalToSuperview().inset(8)
             make.left.equalTo(ivCover.snp.right).offset(8)
         }
         
-        contentView.addSubview(divider)
+        cardView.addSubview(divider)
         divider.snp.makeConstraints { make in
             make.left.right.equalTo(lblTitle)
             make.top.equalTo(lblTitle.snp.bottom).offset(4)
         }
         
-        contentView.addSubview(chapterStack)
+        cardView.addSubview(chapterStack)
         chapterStack.axis = .vertical
         chapterStack.snp.makeConstraints { make in
             make.left.right.equalTo(lblTitle)
             make.top.equalTo(divider.snp.bottom)
-            make.bottom.lessThanOrEqualToSuperview().inset(8)
+            make.bottom.equalToSuperview().inset(8)
         }
+    }
+
+    override func preferredLayoutAttributesFitting(
+        _ layoutAttributes: UICollectionViewLayoutAttributes
+    ) -> UICollectionViewLayoutAttributes {
+        let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+        guard let collectionView = superview as? UICollectionView else {
+            return attributes
+        }
+
+        let horizontalInset = collectionView.adjustedContentInset.left
+            + collectionView.adjustedContentInset.right
+        let targetWidth = collectionView.bounds.width - horizontalInset
+        guard targetWidth > 0 else {
+            return attributes
+        }
+        let targetSize = CGSize(
+            width: targetWidth,
+            height: UIView.layoutFittingCompressedSize.height
+        )
+        let fittedSize = contentView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        attributes.size = CGSize(width: targetWidth, height: ceil(fittedSize.height))
+        return attributes
     }
     
     private var mangaModel: MangaModel!

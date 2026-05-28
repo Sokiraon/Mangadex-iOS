@@ -14,15 +14,33 @@ import SnapKit
 class MangaListViewController: BaseViewController {
     
     internal var mangaList = [MangaModel]()
+
+    internal var usesSystemNavigationBar: Bool {
+        true
+    }
+
+    internal var navigationBarTitle: String? {
+        nil
+    }
+
+    private lazy var collectionLayout = UICollectionViewFlowLayout().apply { layout in
+        layout.estimatedItemSize = CGSize(
+            width: MDLayout.screenWidth - 32,
+            height: 105
+        )
+        layout.itemSize = UICollectionViewFlowLayout.automaticSize
+        layout.minimumLineSpacing = 12
+    }
     
     internal lazy var vCollection = UICollectionView(
         frame: .zero,
-        collectionViewLayout: UICollectionViewFlowLayout()
+        collectionViewLayout: collectionLayout
     ).apply { view in
         view.delegate = self
         view.register(MangaListCollectionCell.self, forCellWithReuseIdentifier: "mangaCell")
         view.register(CollectionLoaderCell.self, forCellWithReuseIdentifier: "loader")
-        view.contentInset = .cssStyle(5, 10, 10)
+        view.contentInset = .cssStyle(16)
+        refreshHeader.ignoredScrollViewContentInsetTop = 16
         view.mj_header = refreshHeader
     }
     
@@ -44,11 +62,33 @@ class MangaListViewController: BaseViewController {
     }
     
     override func setupUI() {
+        if usesSystemNavigationBar {
+            makeNavigationBar(title: navigationBarTitle)
+        }
+
         view.addSubview(vCollection)
         vCollection.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
+            if usesSystemNavigationBar {
+                make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            } else {
+                make.top.equalToSuperview()
+            }
             make.left.right.bottom.equalToSuperview()
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(
+            !usesSystemNavigationBar,
+            animated: animated
+        )
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard usesSystemNavigationBar else { return }
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func didSetupUI() {
@@ -85,7 +125,7 @@ class MangaListViewController: BaseViewController {
         mangaList.append(contentsOf: model.data)
         var snapshot = self.dataSource.snapshot()
         snapshot.appendItems(model.data.map { $0.id }, toSection: .mangaList)
-        if model.data.count == model.total {
+        if mangaList.count == model.total {
             snapshot.deleteItems([loaderIdentifer])
         }
         dataSource.apply(snapshot, animatingDifferences: true)
@@ -129,25 +169,8 @@ class MangaListViewController: BaseViewController {
 
 
 // MARK: - UICollectionViewDelegate
-extension MangaListViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        10
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let section = CollectionSection(rawValue: indexPath.section) else {
-            fatalError()
-        }
-        let cellWidth = MDLayout.screenWidth - 2 * 10
-        switch section {
-        case .mangaList:
-            return .init(width: cellWidth, height: 105)
-        case .loader:
-            return .init(width: cellWidth, height: 50)
-        }
-    }
-    
+extension MangaListViewController: UICollectionViewDelegate {
+
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,

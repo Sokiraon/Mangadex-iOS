@@ -47,7 +47,9 @@ class MangaListCellInfoItem: UIView {
 }
 
 class MangaListCollectionCell: UICollectionViewCell {
-    
+
+    private let cardView = CardView()
+
     private let ivCover = UIImageView()
     private let lblTitle = UILabel(
         fontSize: 18,
@@ -80,72 +82,102 @@ class MangaListCollectionCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        layer.theme_shadowColor = UIColor.themePrimaryCgPicker
-        layer.shadowOffset = CGSize(width: 0, height: 1)
-        layer.shadowOpacity = 0.5
-        layer.shadowRadius = 1
-        layer.shouldRasterize = true
-        layer.rasterizationScale = MDLayout.scale
-        
-        contentView.clipsToBounds = true
-        contentView.layer.cornerRadius = 8
-        contentView.theme_backgroundColor = UIColor.themeLightestPicker
-        
-        contentView.snp.makeConstraints { make in
-            make.width.equalTo(MDLayout.screenWidth - 2 * 10)
-            make.height.equalTo(105)
+        cardView.cornerRadius = 8
+        cardView.shadowCornerRadius = 8
+        cardView.shadowOpacity = 0.14
+        cardView.shadowOffset = .zero
+        cardView.shadowRadius = 6
+        cardView.shadowPathInset = UIEdgeInsets(
+            top: 3,
+            left: 3,
+            bottom: 3,
+            right: 3
+        )
+        contentView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.height.greaterThanOrEqualTo(105)
         }
-        contentView.translatesAutoresizingMaskIntoConstraints = true
-        
-        contentView.addSubview(ivCover)
+
+        cardView.addSubview(ivCover)
         ivCover.clipsToBounds = true
+        ivCover.layer.cornerRadius = 8
+        ivCover.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
         ivCover.contentMode = .scaleAspectFill
         ivCover.isSkeletonable = true
         ivCover.snp.makeConstraints { make in
             make.left.top.bottom.equalToSuperview()
-            make.width.equalTo(105 * 2 / 3)
+            make.height.equalTo(105)
+            make.width.equalTo(ivCover.snp.height).multipliedBy(2.0 / 3.0)
         }
         
-        contentView.addSubview(lblTitle)
+        cardView.addSubview(lblTitle)
         lblTitle.snp.makeConstraints { make in
-            make.left.equalTo(ivCover.snp.right).offset(15)
-            make.top.equalToSuperview().inset(10)
-            make.right.equalToSuperview().inset(15)
+            make.left.equalTo(ivCover.snp.right).offset(16)
+            make.top.equalToSuperview().inset(12)
+            make.right.equalToSuperview().inset(16)
         }
         
-        contentView.addSubview(infoRate)
+        cardView.addSubview(infoRate)
         infoRate.isSkeletonable = true
         infoRate.snp.makeConstraints { make in
             make.leading.equalTo(lblTitle)
-            make.bottom.equalToSuperview().inset(10)
+            make.bottom.equalToSuperview().inset(12)
         }
         
-        contentView.addSubview(infoFollow)
+        cardView.addSubview(infoFollow)
         infoFollow.isSkeletonable = true
         infoFollow.snp.makeConstraints { make in
             make.leading.equalTo(infoRate.snp.trailing).offset(16)
             make.centerY.equalTo(infoRate)
         }
         
-        contentView.addSubview(infoAuthor)
+        cardView.addSubview(infoAuthor)
         infoAuthor.snp.makeConstraints { make in
             make.leading.equalTo(lblTitle)
             make.bottom.equalTo(infoRate.snp.top).offset(-8)
         }
         
-        contentView.addSubview(statusLabel)
+        cardView.addSubview(statusLabel)
         statusLabel.snp.makeConstraints { make in
             make.trailing.equalTo(lblTitle)
             make.centerY.equalTo(infoFollow)
         }
         
-        contentView.addSubview(statusView)
+        cardView.addSubview(statusView)
         statusView.layer.cornerRadius = 4
         statusView.snp.makeConstraints { make in
             make.size.equalTo(8)
             make.centerY.equalTo(statusLabel)
             make.trailing.equalTo(statusLabel.snp.leading).offset(-8)
         }
+    }
+
+    override func preferredLayoutAttributesFitting(
+        _ layoutAttributes: UICollectionViewLayoutAttributes
+    ) -> UICollectionViewLayoutAttributes {
+        let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+        guard let collectionView = superview as? UICollectionView else {
+            return attributes
+        }
+
+        let horizontalInset = collectionView.adjustedContentInset.left
+            + collectionView.adjustedContentInset.right
+        let targetWidth = collectionView.bounds.width - horizontalInset
+        guard targetWidth > 0 else {
+            return attributes
+        }
+        let targetSize = CGSize(
+            width: targetWidth,
+            height: UIView.layoutFittingCompressedSize.height
+        )
+        let fittedSize = contentView.systemLayoutSizeFitting(
+            targetSize,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        attributes.size = CGSize(width: targetWidth, height: ceil(fittedSize.height))
+        return attributes
     }
     
     func setContent(mangaModel model: MangaModel) {

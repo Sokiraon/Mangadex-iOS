@@ -18,19 +18,20 @@ class FollowedUpdatesViewController: BaseViewController {
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 10
+        layout.minimumLineSpacing = 12
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.delegate = self
         view.register(FollowedUpdatesCollectionCell.self, forCellWithReuseIdentifier: "cell")
-        view.contentInset = .cssStyle(5, 10, 10)
+        view.contentInset = .cssStyle(16)
+        refreshHeader.ignoredScrollViewContentInsetTop = 16
         view.mj_header = refreshHeader
         return view
     }()
     
-    private lazy var refreshHeader = MJRefreshNormalHeader { [unowned self] in
-        Task {
+    private lazy var refreshHeader = MJRefreshNormalHeader {
+        Task { @MainActor in
             await self.fetchData()
         }
     }
@@ -38,8 +39,7 @@ class FollowedUpdatesViewController: BaseViewController {
     override func setupUI() {
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(MDLayout.safeInsetTop)
-            make.left.right.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
     

@@ -12,6 +12,8 @@ import Kingfisher
 import SkeletonView
 
 class BrowseMangaPopularCell: UICollectionViewCell {
+
+    private let cardView = CardView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -29,11 +31,23 @@ class BrowseMangaPopularCell: UICollectionViewCell {
                                      numberOfLines: 0)
     
     private func setupUI() {
-        clipsToBounds = true
-        layer.cornerRadius = 8
-        backgroundColor = .lightestGrayF5F5F5
-        
-        contentView.addSubview(coverImageView)
+        cardView.cornerRadius = 8
+        cardView.shadowCornerRadius = 8
+        cardView.shadowOpacity = 0.14
+        cardView.shadowOffset = .zero
+        cardView.shadowRadius = 6
+        cardView.shadowPathInset = UIEdgeInsets(
+            top: 3,
+            left: 3,
+            bottom: 3,
+            right: 3
+        )
+        contentView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        cardView.addSubview(coverImageView)
         coverImageView.clipsToBounds = true
         coverImageView.layer.cornerRadius = 8
         coverImageView.contentMode = .scaleAspectFill
@@ -44,14 +58,14 @@ class BrowseMangaPopularCell: UICollectionViewCell {
             make.height.equalTo(144)
         }
         
-        contentView.addSubview(titleLabel)
+        cardView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(8)
             make.left.equalTo(coverImageView.snp.right).offset(8)
             make.right.equalToSuperview().inset(8)
         }
         
-        contentView.addSubview(descrLabel)
+        cardView.addSubview(descrLabel)
         descrLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(8)
             make.left.equalTo(coverImageView.snp.right).offset(8)

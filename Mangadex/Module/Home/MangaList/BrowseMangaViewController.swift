@@ -9,11 +9,6 @@ import Foundation
 import UIKit
 import ProgressHUD
 import SnapKit
-import SafariServices
-
-extension UICollectionView {
-    public static let elementKindBackground = "background-element-kind"
-}
 
 class BrowseMangaViewController: BaseViewController {
     
@@ -52,26 +47,18 @@ class BrowseMangaViewController: BaseViewController {
                 return section
             case .updates:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                                      heightDimension: .absolute(96))
+                                                      heightDimension: .fractionalHeight(1))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(MDLayout.screenWidth - 24),
                                                        heightDimension: .absolute(328))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize,
-                                                             repeatingSubitem: item,
-                                                             count: 3)
-                group.interItemSpacing = .fixed(12)
-                group.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
+                                                               subitems: [item])
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.interGroupSpacing = 12
                 section.contentInsets = .init(top: 8, leading: 12, bottom: 8, trailing: 12)
                 section.orthogonalScrollingBehavior = .groupPaging
                 section.boundarySupplementaryItems = [sectionHeader]
-                
-                let sectionBackground = NSCollectionLayoutDecorationItem.background(
-                    elementKind: UICollectionView.elementKindBackground)
-                sectionBackground.contentInsets = .init(top: 44 + 8, leading: 12, bottom: 8, trailing: 12)
-                section.decorationItems = [sectionBackground]
                 return section
             case .seasonal, .added:
                 let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
@@ -90,9 +77,6 @@ class BrowseMangaViewController: BaseViewController {
                 return section
             }
         }
-        layout.register(BackgroundDecorationView.self,
-                        forDecorationViewOfKind: UICollectionView.elementKindBackground)
-        
         return layout
     }
     
@@ -139,6 +123,11 @@ class BrowseMangaViewController: BaseViewController {
     private var seasonalTitles = [MangaModel]()
     private var recentTitles = [MangaModel]()
     private var latestChapters = [ChapterModel]()
+    private var latestChapterGroups: [[ChapterModel]] {
+        stride(from: 0, to: latestChapters.count, by: 3).map { startIndex in
+            Array(latestChapters[startIndex..<min(startIndex + 3, latestChapters.count)])
+        }
+    }
     
     private func configureDataSource() {
         let popularCellRegistration = UICollectionView.CellRegistration<BrowseMangaPopularCell, String>
@@ -148,7 +137,7 @@ class BrowseMangaViewController: BaseViewController {
         
         let updatesCellRegistration = UICollectionView.CellRegistration<BrowseMangaUpdatesCell, String>
         { cell, indexPath, identifier in
-            cell.setContent(with: self.latestChapters[indexPath.item])
+            cell.setContent(with: self.latestChapterGroups[indexPath.item])
         }
         
         let seasonalCellRegistration = UICollectionView.CellRegistration<BrowseMangaMinimalCell, String>
@@ -234,8 +223,12 @@ class BrowseMangaViewController: BaseViewController {
             snapshot.appendSections([.popular, .updates, .seasonal, .added])
             snapshot.appendItems(self.popularTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .popular)
-            snapshot.appendItems(self.latestChapters.map({ chapterModel in chapterModel.id }),
-                                 toSection: .updates)
+            snapshot.appendItems(
+                self.latestChapterGroups.enumerated().map { index, chapters in
+                    "updates-\(index)-\(chapters.map { $0.id }.joined(separator: "-"))"
+                },
+                toSection: .updates
+            )
             snapshot.appendItems(self.recentTitles.map({ mangaModel in mangaModel.id }),
                                  toSection: .added)
             
@@ -263,16 +256,6 @@ extension BrowseMangaViewController: UICollectionViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
             break
         case .updates:
-            let chapterModel = latestChapters[indexPath.item]
-            if let externUrl = chapterModel.attributes.externalUrl,
-               let url = URL(string: externUrl) {
-                let vc = SFSafariViewController(url: url)
-                present(vc, animated: true)
-            }
-            else if let mangaModel = chapterModel.mangaModel {
-                let vc = OnlineMangaViewer(mangaModel: mangaModel, chapterId: chapterModel.id)
-                navigationController?.pushViewController(vc, animated: true)
-            }
             break
         case .seasonal:
             let mangaModel = seasonalTitles[indexPath.item]
