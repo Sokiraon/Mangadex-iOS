@@ -255,7 +255,10 @@ extension SearchViewController: UISearchBarDelegate {
     }
 }
 
-fileprivate let collectionCellWidth = MDLayout.screenWidth - 2 * 12
+@MainActor
+fileprivate var collectionCellWidth: CGFloat {
+    MDLayout.screenWidth - 2 * 12
+}
 
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

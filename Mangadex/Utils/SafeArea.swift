@@ -8,6 +8,7 @@
 import Foundation
 
 extension CGFloat {
+    @MainActor
     static func rectScreenOnly(_ value: Self) -> Self {
         MDLayout.isNotchScreen ? 0 : value
     }

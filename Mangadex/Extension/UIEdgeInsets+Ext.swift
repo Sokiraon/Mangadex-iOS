@@ -53,3 +53,57 @@ extension UIEdgeInsets {
         }
     }
 }
+
+extension NSDirectionalEdgeInsets {
+
+    static func all(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: value, leading: value, bottom: value, trailing: value)
+    }
+
+    static func horizontal(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: 0, leading: value, bottom: 0, trailing: value)
+    }
+
+    static func vertical(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: value, leading: 0, bottom: value, trailing: 0)
+    }
+
+    static func top(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: value, leading: 0, bottom: 0, trailing: 0)
+    }
+
+    static func leading(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: 0, leading: value, bottom: 0, trailing: 0)
+    }
+
+    static func left(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .leading(value)
+    }
+
+    static func bottom(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: 0, leading: 0, bottom: value, trailing: 0)
+    }
+
+    static func trailing(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .init(top: 0, leading: 0, bottom: 0, trailing: value)
+    }
+
+    static func right(_ value: CGFloat) -> NSDirectionalEdgeInsets {
+        .trailing(value)
+    }
+
+    static func cssStyle(_ values: CGFloat...) -> NSDirectionalEdgeInsets {
+        switch values.count {
+        case 0:
+            return .all(0)
+        case 1:
+            return .all(values[0])
+        case 2:
+            return .init(top: values[0], leading: values[1], bottom: values[0], trailing: values[1])
+        case 3:
+            return .init(top: values[0], leading: values[1], bottom: values[2], trailing: values[1])
+        default:
+            return .init(top: values[0], leading: values[3], bottom: values[2], trailing: values[1])
+        }
+    }
+}
