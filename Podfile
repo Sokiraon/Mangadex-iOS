@@ -6,7 +6,6 @@ target "Mangadex" do
   use_frameworks!
   
   pod 'SnapKit', '~> 5.7.1'
-  pod 'Just'
   pod 'Alamofire'
   pod 'SwiftyJSON', '~> 5.0.2'
   pod 'ProgressHUD'

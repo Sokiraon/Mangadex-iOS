@@ -130,7 +130,6 @@ PODS:
   - GoogleUtilities/UserDefaults (7.13.3):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - Just (0.8.0)
   - Kingfisher (8.3.1)
   - Loaf (0.7.0)
   - Localize-Swift (3.2.0):
@@ -167,7 +166,6 @@ DEPENDENCIES:
   - FirebaseCrashlytics
   - FirebasePerformance
   - FlagKit
-  - Just
   - Kingfisher (~> 8.3.1)
   - Loaf
   - Localize-Swift (~> 3.2)
@@ -203,7 +201,6 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
-    - Just
     - Kingfisher
     - Loaf
     - Localize-Swift
@@ -250,7 +247,6 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: f65fc137531af9ad647f1c0a42f3b6a4d3a98049
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
-  Just: aef5105fb2c7069b65aa6f21aec8f429057f9c19
   Kingfisher: 3204d23de16b5ea53541c44ca5a8efb55741dec3
   Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   Localize-Swift: 6f4475136bdb0d7b2882ea3d4ea919d70142b232
@@ -269,6 +265,6 @@ SPEC CHECKSUMS:
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: cb353fd0a66697b3fedf30c4023688d625c8c69a
+PODFILE CHECKSUM: 94cf607625c706b6de4bb850a599836c8b09ada8
 
 COCOAPODS: 1.16.2
