@@ -29,6 +29,10 @@ class MangaTitleTabViewController: MDPagerViewController {
         false
     }
 
+    override var tabBarTopSpacing: CGFloat {
+        8
+    }
+
     override var overlaysTabBarOnPageContent: Bool {
         true
     }

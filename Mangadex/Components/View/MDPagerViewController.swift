@@ -40,6 +40,10 @@ class MDPagerViewController: UIViewController {
         48
     }
 
+    var tabBarTopSpacing: CGFloat {
+        0
+    }
+
     var tabBarContentInsets: NSDirectionalEdgeInsets {
         .all(4)
     }
@@ -113,11 +117,7 @@ class MDPagerViewController: UIViewController {
 
         view.addSubview(tabBar)
         tabBar.snp.makeConstraints { make in
-            if view.safeAreaInsets.top > 0 {
-                make.top.equalTo(view.safeAreaLayoutGuide)
-            } else {
-                make.top.equalToSuperview().inset(8)
-            }
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(tabBarTopSpacing)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(tabBarHeight)
         }
