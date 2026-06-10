@@ -6,58 +6,50 @@
 //
 
 import Foundation
-import YYModel
 
-class GroupCollection: NSObject, YYModel {
-    @objc var limit = 0
-    @objc var offset = 0
-    @objc var total = 0
-    @objc var data: [GroupModel]!
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": GroupModel.self ]
-    }
+struct GroupAttributes: Codable {
+    let name: String
+    let website: String?
+    let discord: String?
+    let contactEmail: String?
+    let description: String?
+    let twitter: String?
+    let focusedLanguages: [String]?
+    let createdAt: String
+    let updatedAt: String
+    var locked: Bool = false
+    var official: Bool = false
+    var inactive: Bool = false
 }
 
-class GroupModelEssential: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: GroupAttributes!
+protocol GroupRepresentable: Codable {
+    var id: String { get }
+    var type: String { get }
+    var attributes: GroupAttributes { get }
 }
 
-class GroupModel: GroupModelEssential, YYModel {
-    @objc var relationships: [UserModelEssential] = []
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": UserModelEssential.self ]
-    }
+struct GroupReference: GroupRepresentable {
+    let id: String
+    let type: String
+    let attributes: GroupAttributes
+}
+
+struct GroupModel: GroupRepresentable {
+    let id: String
+    let type: String
+    let attributes: GroupAttributes
+    var relationships = [UserModelEssential]()
     
     var leader: UserModelEssential? {
-        relationships.first { model in
-            model.type == "leader"
+        relationships.first {
+            $0.type == "leader"
         }
     }
 }
 
-class GroupAttributes: NSObject, YYModel {
-    @objc var name: String!
-    @objc var website: String?
-    @objc var discord: String?
-    @objc var contactEmail: String?
-    @objc var descr: String?
-    @objc var twitter: String?
-    @objc var focusedLanguages: [String]?
-    @objc var createdAt: String!
-    @objc var updatedAt: String!
-    @objc var locked: Bool = false
-    @objc var official: Bool = false
-    @objc var inactive: Bool = false
-    
-    static func modelCustomPropertyMapper() -> [String : Any]? {
-        [ "descr": "description" ]
-    }
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "focusedLanguages": String.self ]
-    }
+struct GroupCollection: Codable {
+    var limit = 0
+    var offset = 0
+    var total = 0
+    var data = [GroupModel]()
 }

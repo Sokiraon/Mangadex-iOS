@@ -6,54 +6,54 @@
 //
 
 import Foundation
-import YYModel
 
-class AuthorAttributes: NSObject, YYModel {
-    @objc var name: String!
-    @objc var imageUrl: String?
-    @objc var createdAt: String!
-    @objc var updatedAt: String!
-    @objc var twitter: String?
-    @objc var pixiv: String?
-    @objc var melonBook: String?
-    @objc var fanBox: String?
-    @objc var booth: String?
-    @objc var nicoVideo: String?
-    @objc var skeb: String?
-    @objc var fantia: String?
-    @objc var tumblr: String?
-    @objc var youtube: String?
-    @objc var weibo: String?
-    @objc var naver: String?
-    @objc var website: String?
+struct AuthorAttributes: Codable {
+    var name: String
+    var imageUrl: String?
+    var createdAt: String
+    var updatedAt: String
+    var twitter: String?
+    var pixiv: String?
+    var melonBook: String?
+    var fanBox: String?
+    var booth: String?
+    var nicoVideo: String?
+    var skeb: String?
+    var fantia: String?
+    var tumblr: String?
+    var youtube: String?
+    var weibo: String?
+    var naver: String?
+    var website: String?
 }
 
-class AuthorRelationship: NSObject {
-    @objc var id: String!
-    @objc var type: String!
+struct AuthorRelationship: Codable {
+    var id: String
+    var type: String
 }
 
-class AuthorModelEssential: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: AuthorAttributes!
+protocol AuthorRepresentable {
+    var id: String { get }
+    var type: String { get }
+    var attributes: AuthorAttributes { get }
 }
 
-class AuthorModel: AuthorModelEssential, YYModel {
-    @objc var relationships: [AuthorRelationship] = []
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": AuthorRelationship.self ]
-    }
+struct AuthorReference: Codable, AuthorRepresentable {
+    let id: String
+    let type: String
+    let attributes: AuthorAttributes
 }
 
-class AuthorCollection: NSObject, YYModel {
-    @objc var limit = 0
-    @objc var offset = 0
-    @objc var total = 0
-    @objc var data: [AuthorModel]!
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": AuthorModel.self ]
-    }
+struct AuthorModel: Codable, AuthorRepresentable {
+    let id: String
+    let type: String
+    let attributes: AuthorAttributes
+    let relationships: [AuthorRelationship]
+}
+
+struct AuthorCollection: Codable {
+    var limit = 0
+    var offset = 0
+    var total = 0
+    var data: [AuthorModel]
 }

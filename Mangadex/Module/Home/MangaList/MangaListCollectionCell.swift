@@ -14,7 +14,7 @@ import SkeletonView
 class MangaListCellInfoItem: UIView {
     private let ivIcon = UIImageView()
     private let lblInfo = UILabel(fontSize: 15)
-    
+
     convenience init(icon: UIImage?, defaultText: String = "N/A") {
         self.init()
         isSkeletonable = true
@@ -22,13 +22,13 @@ class MangaListCellInfoItem: UIView {
         ivIcon.tintColor = .black2D2E2F
         lblInfo.text = defaultText
         lblInfo.isSkeletonable = true
-        
+
         addSubview(ivIcon)
         ivIcon.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.width.height.equalTo(18)
         }
-        
+
         addSubview(lblInfo)
         lblInfo.snp.makeConstraints { make in
             make.trailing.top.bottom.equalToSuperview()
@@ -37,7 +37,7 @@ class MangaListCellInfoItem: UIView {
             make.width.greaterThanOrEqualTo(40)
         }
     }
-    
+
     var text: String? {
         didSet {
             hideSkeleton()
@@ -62,7 +62,7 @@ class MangaListCollectionCell: UICollectionViewCell {
     )
     private let infoRate = MangaListCellInfoItem(icon: .init(named: "icon_grade"))
     private let infoFollow = MangaListCellInfoItem(icon: .init(named: "icon_bookmark_border"))
-    
+
     private let statusView = UIView().apply { view in
         view.backgroundColor = .fromHex("219653")
     }
@@ -71,16 +71,16 @@ class MangaListCollectionCell: UICollectionViewCell {
     ).apply { label in
         label.text = "kMangaOngoing".localized()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
     }
-    
+
     private func setupUI() {
         cardView.cornerRadius = 8
         cardView.shadowCornerRadius = 8
@@ -110,40 +110,40 @@ class MangaListCollectionCell: UICollectionViewCell {
             make.height.equalTo(105)
             make.width.equalTo(ivCover.snp.height).multipliedBy(2.0 / 3.0)
         }
-        
+
         cardView.addSubview(lblTitle)
         lblTitle.snp.makeConstraints { make in
             make.left.equalTo(ivCover.snp.right).offset(16)
             make.top.equalToSuperview().inset(12)
             make.right.equalToSuperview().inset(16)
         }
-        
+
         cardView.addSubview(infoRate)
         infoRate.isSkeletonable = true
         infoRate.snp.makeConstraints { make in
             make.leading.equalTo(lblTitle)
             make.bottom.equalToSuperview().inset(12)
         }
-        
+
         cardView.addSubview(infoFollow)
         infoFollow.isSkeletonable = true
         infoFollow.snp.makeConstraints { make in
             make.leading.equalTo(infoRate.snp.trailing).offset(16)
             make.centerY.equalTo(infoRate)
         }
-        
+
         cardView.addSubview(infoAuthor)
         infoAuthor.snp.makeConstraints { make in
             make.leading.equalTo(lblTitle)
             make.bottom.equalTo(infoRate.snp.top).offset(-8)
         }
-        
+
         cardView.addSubview(statusLabel)
         statusLabel.snp.makeConstraints { make in
             make.trailing.equalTo(lblTitle)
             make.centerY.equalTo(infoFollow)
         }
-        
+
         cardView.addSubview(statusView)
         statusView.layer.cornerRadius = 4
         statusView.snp.makeConstraints { make in
@@ -179,8 +179,11 @@ class MangaListCollectionCell: UICollectionViewCell {
         attributes.size = CGSize(width: targetWidth, height: ceil(fittedSize.height))
         return attributes
     }
-    
+
+    private var representedMangaID: String?
+
     func setContent(mangaModel model: MangaModel) {
+        representedMangaID = model.id
         lblTitle.text = model.attributes.localizedTitle
         if model.attributes.status == "completed" {
             statusView.backgroundColor = .fromHex("eb5757")
@@ -194,16 +197,17 @@ class MangaListCollectionCell: UICollectionViewCell {
             self.ivCover.hideSkeleton()
         }
         infoAuthor.text = model.primaryAuthorName
-        
+
         if let statistics = model.statistics {
             infoFollow.text = statistics.followsString
             infoRate.text = statistics.ratingString
         } else {
             infoRate.showAnimatedSkeleton()
             infoFollow.showAnimatedSkeleton()
+
             Task { @MainActor in
                 let data = try await Requests.Manga.getStatistics(mangaId: model.id)
-                model.statistics = data
+                guard self.representedMangaID == model.id else { return }
                 self.infoFollow.text = data.followsString
                 self.infoRate.text = data.ratingString
             }

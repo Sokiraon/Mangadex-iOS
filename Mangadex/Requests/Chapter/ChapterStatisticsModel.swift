@@ -6,20 +6,19 @@
 //
 
 import Foundation
-import YYModel
 
-class ChapterStatisticsComment: NSObject {
-    @objc var threadId: Int = 0
-    @objc var repliesCount: Int = 0
+struct ChapterStatisticsComment: Codable {
+    var threadId: Int = 0
+    var repliesCount: Int = 0
 }
 
-class ChapterStatisticsModel: NSObject, YYModel {
-    @objc var comments: ChapterStatisticsComment?
+struct ChapterStatisticsModel: Codable {
+    var comments: ChapterStatisticsComment?
     
-    convenience init(threadId: Int, repliesCount: Int) {
-        self.init()
-        self.comments = ChapterStatisticsComment()
-        self.comments?.threadId = threadId
-        self.comments?.repliesCount = repliesCount
+    init(threadId: Int, repliesCount: Int) {
+        self.comments = ChapterStatisticsComment(
+            threadId: threadId,
+            repliesCount: repliesCount
+        )
     }
 }

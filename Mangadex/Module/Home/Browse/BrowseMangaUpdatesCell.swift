@@ -82,7 +82,8 @@ private class BrowseMangaUpdateRowView: UIView {
         } else {
             Task { @MainActor in
                 let mangaModel = try await Requests.Manga.get(id: model.mangaId ?? "")
-                model.mangaModel = mangaModel
+                guard self.chapterModel.id == model.id else { return }
+                self.chapterModel.mangaModel = mangaModel
                 self.updateContent(with: mangaModel)
             }
         }

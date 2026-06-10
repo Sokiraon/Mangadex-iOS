@@ -75,7 +75,7 @@ This works, but it is also one of the main areas that would benefit from consoli
 - SnapKit
 - Swift Concurrency (`async/await`, actors)
 - CocoaPods
-- Just + SwiftyJSON + YYModel for networking/model parsing
+- Alamofire + native Codable models for networking and JSON parsing
 - SwiftData and Core Data
 - Firebase Analytics / Crashlytics / Performance
 

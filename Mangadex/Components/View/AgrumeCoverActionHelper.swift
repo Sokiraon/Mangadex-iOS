@@ -8,6 +8,7 @@
 import UIKit
 import ProgressHUD
 
+@MainActor
 final class AgrumeCoverActionHelper: NSObject {
 
     func makeLongPressHandler(for image: UIImage?, viewController: UIViewController) {

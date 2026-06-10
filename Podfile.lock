@@ -154,9 +154,7 @@ PODS:
   - SwiftEntryKit (2.0.0)
   - SwiftTheme (0.6.4)
   - SwiftyGif (5.4.5)
-  - SwiftyJSON (5.0.2)
   - TTTAttributedLabel (2.0.0)
-  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - Agrume
@@ -176,9 +174,7 @@ DEPENDENCIES:
   - SnapKit (~> 5.7.1)
   - SwiftEntryKit (= 2.0.0)
   - SwiftTheme
-  - SwiftyJSON (~> 5.0.2)
   - TTTAttributedLabel
-  - YYModel
 
 SPEC REPOS:
   trunk:
@@ -214,9 +210,7 @@ SPEC REPOS:
     - SwiftEntryKit
     - SwiftTheme
     - SwiftyGif
-    - SwiftyJSON
     - TTTAttributedLabel
-    - YYModel
 
 EXTERNAL SOURCES:
   MJRefresh:
@@ -261,10 +255,8 @@ SPEC CHECKSUMS:
   SwiftEntryKit: 61b5fa36f34a97dd8013e48a7345bc4c4720be9a
   SwiftTheme: 007cbaf1f9e171caf6448a4657533e54c682b285
   SwiftyGif: 706c60cf65fa2bc5ee0313beece843c8eb8194d4
-  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
-  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 94cf607625c706b6de4bb850a599836c8b09ada8
+PODFILE CHECKSUM: 583c597770cc0a41353c3a7a7a30efce0b5e071b
 
 COCOAPODS: 1.16.2

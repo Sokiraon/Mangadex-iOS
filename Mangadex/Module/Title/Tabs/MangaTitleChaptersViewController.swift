@@ -247,7 +247,7 @@ class MangaTitleChaptersViewController: BaseViewController {
     let loadingCellIdentifier = UUID().uuidString
     
     func fetchChapters() {
-        let mangaId = mangaModel.id!
+        let mangaId = mangaModel.id
         let requestedOrder = chapterSortOrder
         Task {
             do {

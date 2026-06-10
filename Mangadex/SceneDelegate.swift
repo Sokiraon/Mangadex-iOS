@@ -18,15 +18,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         SettingsManager.initData()
         
-        var rootVC: UIViewController
-        if !UserManager.shared.shouldDisplayLoginAtLaunch {
-            rootVC = HomeTabViewController()
-        } else if MDKeychain.read().isEmpty {
-            rootVC = MDLoginViewController()
-        } else {
-            rootVC = MDPreLoginViewController()
+        Task { @MainActor in
+            let shouldDisplayLoginAtLaunch = await UserManager.shared.shouldDisplayLoginAtLaunch
+            var rootVC: UIViewController
+            if !shouldDisplayLoginAtLaunch {
+                rootVC = HomeTabViewController()
+            } else if MDKeychain.read().isEmpty {
+                rootVC = MDLoginViewController()
+            } else {
+                rootVC = MDPreLoginViewController()
+            }
+            window?.rootViewController = MDNavigationController(rootViewController: rootVC)
         }
-        window?.rootViewController = MDNavigationController(rootViewController: rootVC)
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
@@ -63,4 +66,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-

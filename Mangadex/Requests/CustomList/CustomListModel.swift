@@ -6,28 +6,23 @@
 //
 
 import Foundation
-import YYModel
 
-class CustomListAttributes: NSObject {
-    @objc var name: String!
-    @objc var visibility: String!
-    @objc var version = 1
+struct CustomListAttributes: Codable {
+    let name: String
+    let visibility: String
+    var version = 1
 }
 
-class CustomListRelationship: NSObject {
-    @objc var id: String!
-    @objc var type: String!
+struct CustomListRelationship: Codable {
+    let id: String
+    let type: String
 }
 
-class CustomListModel: NSObject, YYModel {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: CustomListAttributes!
-    @objc var relationships = [CustomListRelationship]()
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": CustomListRelationship.self ]
-    }
+struct CustomListModel: Codable {
+    let id: String
+    let type: String
+    let attributes: CustomListAttributes
+    var relationships = [CustomListRelationship]()
     
     var mangaIds: [String] {
         relationships.filter { relationship in

@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import SwiftyJSON
-import YYModel
 import Combine
 
 extension Requests {
@@ -16,7 +14,7 @@ extension Requests {
             case asc = "asc"
             case desc = "desc"
         }
-        
+
         /// Get list of chapters for a specific manga.
         ///
         /// API defination available at:
@@ -39,84 +37,88 @@ extension Requests {
                 "translatedLanguage[]": MDLocale.chapterLanguages,
                 "order[chapter]": order.rawValue
             ]
-            let rawJson = try await Requests.get(url: .mainHost("/manga/\(mangaID)/feed"), params: params)
-            guard let model = ChapterCollection.yy_model(withJSON: rawJson) else {
-                throw Errors.IllegalData
-            }
+            let model = try await Requests.get(
+                url: .mainHost("/manga/\(mangaID)/feed"),
+                params: params,
+                as: ChapterCollection.self
+            )
             return model
         }
-        
+
         static func query(params: [String: Any] = [:]) async throws -> ChapterCollection {
             let defaultParams: [String: Any] = [
                 "includes[]": ["scanlation_group", "manga", "user"],
                 "translatedLanguage[]": MDLocale.chapterLanguages,
                 "contentRating[]": SettingsManager.contentFilter
             ]
-            let res = try await Requests.get(url: .mainHost("/chapter"), params: defaultParams + params)
-            guard let collection = ChapterCollection.yy_model(withJSON: res) else {
-                throw Errors.IllegalData
-            }
-            return collection
+            let model = try await Requests.get(
+                url: .mainHost("/chapter"),
+                params: defaultParams + params,
+                as: ChapterCollection.self
+            )
+            return model
         }
-        
+
         static func get(id: String) async throws -> ChapterModel {
             let res = try await Requests.get(
                 url: .mainHost("/chapter/\(id)"),
                 params: [
                     "includes[]": ["scanlation_group", "manga", "user"]
-                ]
+                ],
+                as: DataResponse<ChapterModel>.self
             )
-            guard
-                res.contains("data"),
-                let model = ChapterModel.yy_model(withJSON: res["data"]!)
-            else {
-                throw Errors.IllegalData
-            }
-            return model
+            return res.data
         }
-        
+
         static func getStatistics(id: String) async throws -> ChapterStatisticsModel {
-            let res = try await Requests.get(url: .mainHost("/statistics/chapter/\(id)"))
-            let json = JSON(res)
-            guard
-                let dict = json["statistics"].dictionary?[id]?.dictionaryObject,
-                let model = ChapterStatisticsModel.yy_model(withJSON: dict)
-            else {
+            let res = try await Requests.get(
+                url: .mainHost("/statistics/chapter/\(id)"),
+                as: StatisticsResponse<ChapterStatisticsModel>.self
+            )
+
+            guard let model = res.statistics[id] else {
                 throw Errors.IllegalData
             }
             return model
         }
-        
+
         static func getPageData(chapterId: String) async throws -> ChapterPagesModel {
-            let raw = try await Requests.get(url: .mainHost("/at-home/server/\(chapterId)"))
-            let json = JSON(raw)
-            guard let model = ChapterPagesModel.yy_model(withJSON: json.rawValue) else {
-                throw Errors.IllegalData
-            }
+            let model = try await Requests.get(
+                url: .mainHost("/at-home/server/\(chapterId)"),
+                as: ChapterPagesModel.self
+            )
             return model
         }
-        
+
+        private struct ForumAttributes: Decodable, Sendable {
+            let repliesCount: Int
+        }
+
+        private struct ForumThreadResponse: Decodable, Sendable {
+            let type: String
+            let id: Int
+            let attributes: ForumAttributes
+        }
+
         static func createForumThread(chapterId: String) async throws -> ChapterStatisticsModel {
             let res = try await Requests.post(
                 url: .mainHost("/forums/thread"),
                 data: ["type": "chapter", "id": chapterId],
-                authenticated: true
+                authenticated: true,
+                as: DataResponse<ForumThreadResponse>.self
             )
-            let data = JSON(res)["data"]
-            if
-                let id = data["id"].int,
-                let repliesCount = data["attributes"]["repliesCount"].int
-            {
-                return ChapterStatisticsModel(threadId: id, repliesCount: repliesCount)
-            } else {
-                throw Errors.IllegalData
-            }
+            let data = res.data
+            return ChapterStatisticsModel(
+                threadId: data.id,
+                repliesCount: data.attributes.repliesCount
+            )
         }
-        
+
         static func markAsRead(mangaID: String, chapterID: String) async throws {
-            try await Requests.post(
+            try await Requests.request(
                 url: .mainHost("/manga/\(mangaID)/read"),
-                data: ["chapterIdsRead": [chapterID]],
+                method: .post,
+                payload: .json(["chapterIdsRead": [chapterID]]),
                 authenticated: true
             )
         }

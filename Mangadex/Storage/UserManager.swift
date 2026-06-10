@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 actor UserManager {
     static let shared = UserManager()
@@ -64,7 +63,7 @@ actor UserManager {
     }
 
     func login(with credential: Credential) async throws {
-        let isValid = try? await Requests.Auth.verifyToken(token: credential.session)
+        let isValid = try? await Requests.Auth.checkToken(token: credential.session)
         if isValid == true {
             setSession(
                 Requests.Auth.Token(
@@ -109,7 +108,7 @@ actor UserManager {
     }
     
     func getVerifiedToken() async throws -> String {
-        let isValid = try? await Requests.Auth.verifyToken(token: self.session)
+        let isValid = try? await Requests.Auth.checkToken(token: self.session)
         if isValid == true {
             return self.session
         }

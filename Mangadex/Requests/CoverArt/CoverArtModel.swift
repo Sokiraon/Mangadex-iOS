@@ -6,45 +6,45 @@
 //
 
 import Foundation
-import YYModel
 
-class CoverArtAttributes: NSObject {
-    @objc var fileName: String!
-    @objc var createdAt: String!
-    @objc var updatedAt: String!
-    @objc var volume: String?
-    @objc var locale: String!
+struct CoverArtAttributes: Codable {
+    let fileName: String
+    let createdAt: String
+    let updatedAt: String
+    let volume: String?
+    let locale: String
 }
 
-class CoverArtModelEssential: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: CoverArtAttributes!
+protocol CoverArtRepresentable: Codable {
+    var id: String { get }
+    var type: String { get }
+    var attributes: CoverArtAttributes { get }
 }
 
-class CoverArtModel: CoverArtModelEssential, YYModel {
-    @objc var relationships = [RelationshipModel]()
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "relationships": RelationshipModel.self ]
-    }
+struct CoverArtReference: CoverArtRepresentable {
+    let id: String
+    let type: String
+    let attributes: CoverArtAttributes
+}
+
+struct CoverArtModel: CoverArtRepresentable {
+    let id: String
+    let type: String
+    let attributes: CoverArtAttributes
+    var relationships = [RelationshipModel]()
     
     func getHDUrl(mangaId: String) -> URL? {
-        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName!).512.jpg")
+        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName).512.jpg")
     }
     
     func getOriginalUrl(mangaId: String) -> URL? {
-        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName!)")
+        URL(string: "\(HostUrl.uploads.rawValue)/covers/\(mangaId)/\(attributes.fileName)")
     }
 }
 
-class CoverArtCollection: NSObject, YYModel {
-    @objc var data = [CoverArtModel]()
-    @objc var limit = 0
-    @objc var offset = 0
-    @objc var total = 0
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "data": CoverArtModel.self ]
-    }
+struct CoverArtCollection: Codable {
+    var data = [CoverArtModel]()
+    var limit = 0
+    var offset = 0
+    var total = 0
 }

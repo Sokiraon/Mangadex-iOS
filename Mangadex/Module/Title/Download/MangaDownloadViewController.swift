@@ -69,10 +69,10 @@ class MangaDownloadViewController: BaseViewController {
         setupDataSource()
         fetchChapters()
         
-        $checkedChapterModels
-            .sink { [weak self] models in
+        $checkedChapterIDs
+            .sink { [weak self] ids in
                 guard let self else { return }
-                downloadButton.isEnabled = !models.isEmpty
+                downloadButton.isEnabled = !ids.isEmpty
             }
             .store(in: &cancellables)
     }
@@ -127,7 +127,7 @@ class MangaDownloadViewController: BaseViewController {
         { cell, indexPath, itemIdentifier in
             let chapterModel = self.chapterModels[indexPath.item]
             cell.setTitle(chapterModel.attributes.chapter ?? "")
-            cell.setChecked(self.checkedChapterModels.contains(chapterModel), animated: false)
+            cell.setChecked(self.checkedChapterIDs.contains(chapterModel.id), animated: false)
             cell.setIsDownloading(DownloadManager.shared.hasActiveDownload(for: chapterModel.id))
             cell.setHasDownloaded(DownloadManager.shared.hasDownloaded(chapterID: chapterModel.id, for: self.mangaModel.id))
         }
@@ -163,7 +163,7 @@ class MangaDownloadViewController: BaseViewController {
     private var chapterModels = [ChapterModel]()
     private var chaptersCount = 0
     
-    @Published private var checkedChapterModels = Set<ChapterModel>()
+    @Published private var checkedChapterIDs = Set<String>()
     
     private let loaderID = UUID().uuidString
     
@@ -201,7 +201,8 @@ class MangaDownloadViewController: BaseViewController {
     
     // MARK: - Actions
     func startDownload() {
-        DownloadManager.shared.downloadManga(mangaModel: mangaModel, chapterModels: Array(checkedChapterModels))
+        let selectedChapterModels = chapterModels.filter { checkedChapterIDs.contains($0.id) }
+        DownloadManager.shared.downloadManga(mangaModel: mangaModel, chapterModels: selectedChapterModels)
         let vc = DownloadingViewController()
         self.navigationController?.replaceTopViewController(with: vc, animated: true)
     }
@@ -216,12 +217,13 @@ extension MangaDownloadViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? MangaDownloadChapterCell else { return }
+        let chapterID = chapterModels[indexPath.item].id
         if cell.checked {
             cell.setChecked(false, animated: true)
-            checkedChapterModels.remove(chapterModels[indexPath.item])
+            checkedChapterIDs.remove(chapterID)
         } else {
             cell.setChecked(true, animated: true)
-            checkedChapterModels.insert(chapterModels[indexPath.item])
+            checkedChapterIDs.insert(chapterID)
         }
     }
 }

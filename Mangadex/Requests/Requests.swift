@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import SwiftyJSON
 
 enum HostUrl: String {
     case main = "https://api.mangadex.org"
@@ -60,19 +59,87 @@ enum Requests {
         return data.mapValues { $0 ?? NSNull() }
     }
 
-    @discardableResult
-    static func get(
+    struct DataResponse<T: Decodable & Sendable>: Decodable, Sendable {
+        let data: T
+    }
+
+    /// Used for Manga.getStatistics and Chapter.getStatistics
+    struct StatisticsResponse<T: Decodable & Sendable>: Decodable, Sendable {
+        let statistics: [String: T]
+    }
+
+    enum RequestPayload {
+        case none
+        case query([String: Any])
+        case json([String: Any?])
+    }
+
+    static func request(
         url: URL,
-        params: [String: Any] = [:],
+        method: HTTPMethod = .get,
+        payload: RequestPayload = .none,
         headers: HTTPHeaders = [:],
         authenticated: Bool = false
-    ) async throws -> [String: Any] {
+    ) async throws {
         var headers = headers
         if authenticated {
             let token = try await UserManager.shared.getVerifiedToken()
-            headers["Authorization"] = "Bearer \(token)"
+            headers.add(name: "Authorization", value: "Bearer \(token)")
         }
-        
+
+        let parameters: Parameters?
+        let encoding: ParameterEncoding
+
+        switch payload {
+        case .none:
+            parameters = nil
+            encoding = URLEncoding.default
+        case .query(let params):
+            parameters = params
+            encoding = URLEncoding(
+                destination: .queryString,
+                arrayEncoding: .noBrackets,
+                boolEncoding: .literal
+            )
+        case .json(let body):
+            parameters = jsonParameters(from: body)
+            encoding = JSONEncoding.default
+        }
+
+        try await withCheckedThrowingContinuation { continuation in
+            AF.request(
+                url,
+                method: method,
+                parameters: parameters,
+                encoding: encoding,
+                headers: headers
+            )
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success:
+                    continuation.resume()
+                case .failure:
+                    continuation.resume(throwing: Errors.Default)
+                }
+            }
+        }
+    }
+
+    @discardableResult
+    static func get<T: Decodable & Sendable>(
+        url: URL,
+        params: [String: Any] = [:],
+        headers: HTTPHeaders = [:],
+        authenticated: Bool = false,
+        as type: T.Type = T.self
+    ) async throws -> T {
+        var headers = headers
+        if authenticated {
+            let token = try await UserManager.shared.getVerifiedToken()
+            headers.add(name: "Authorization", value: "Bearer \(token)")
+        }
+
         let encoding = URLEncoding(
             destination: .methodDependent,
             arrayEncoding: .noBrackets,
@@ -88,14 +155,10 @@ enum Requests {
                     headers: headers
                 )
                 .validate()
-                .responseData { response in
+                .responseDecodable(of: T.self) { response in
                     switch response.result {
                     case .success(let data):
-                        guard let json = try? JSON(data: data).dictionaryObject else {
-                            continuation.resume(throwing: Errors.IllegalData)
-                            return
-                        }
-                        continuation.resume(returning: json)
+                        continuation.resume(returning: data)
                     case .failure:
                         continuation.resume(throwing: Errors.Default)
                     }
@@ -104,15 +167,16 @@ enum Requests {
     }
 
     @discardableResult
-    static func post(
+    static func post<T: Decodable & Sendable>(
         url: URL,
         data: [String: Any?]? = nil,
-        authenticated: Bool = false
-    ) async throws -> [String: Any] {
+        authenticated: Bool = false,
+        as type: T.Type = T.self
+    ) async throws -> T {
         var headers: HTTPHeaders = [:]
         if authenticated {
             let token = try await UserManager.shared.getVerifiedToken()
-            headers["Authorization"] = "Bearer \(token)"
+            headers.add(name: "Authorization", value: "Bearer \(token)")
         }
 
         return try await withCheckedThrowingContinuation { continuation in
@@ -125,49 +189,10 @@ enum Requests {
                     headers: headers
                 )
                 .validate()
-                .responseData { response in
+                .responseDecodable(of: T.self) { response in
                     switch response.result {
                     case .success(let data):
-                        guard let json = try? JSON(data: data).dictionaryObject else {
-                            continuation.resume(throwing: Errors.IllegalData)
-                            return
-                        }
-                        continuation.resume(returning: json)
-                    case .failure:
-                        continuation.resume(throwing: Errors.Default)
-                    }
-                }
-        }
-    }
-
-    @discardableResult
-    static func delete(
-        url: URL,
-        authenticated: Bool = false
-    ) async throws -> [String: Any] {
-        var headers: HTTPHeaders = [:]
-        if authenticated {
-            let token = try await UserManager.shared.getVerifiedToken()
-            headers["Authorization"] = "Bearer \(token)"
-        }
-
-        return try await withCheckedThrowingContinuation { continuation in
-            AF
-                .request(
-                    url,
-                    method: .delete,
-                    encoding: JSONEncoding.default,
-                    headers: headers
-                )
-                .validate()
-                .responseData { response in
-                    switch response.result {
-                    case .success(let data):
-                        guard let json = try? JSON(data: data).dictionaryObject else {
-                            continuation.resume(throwing: Errors.IllegalData)
-                            return
-                        }
-                        continuation.resume(returning: json)
+                        continuation.resume(returning: data)
                     case .failure:
                         continuation.resume(throwing: Errors.Default)
                     }

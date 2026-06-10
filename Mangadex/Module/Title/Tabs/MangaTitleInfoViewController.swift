@@ -312,7 +312,7 @@ class MangaTitleInfoViewController: BaseViewController {
                 cell.setContent(title: tagModel.localizedName()) { [weak self] in
                     let vc = TaggedMangaViewController(
                         title: tagModel.localizedName(),
-                        queryOptions: ["includedTags[]": tagModel.id!])
+                        queryOptions: ["includedTags[]": tagModel.id])
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
             }

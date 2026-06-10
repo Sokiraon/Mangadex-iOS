@@ -275,21 +275,17 @@ class MangaTitleViewController: BaseViewController {
     func fetchData() async {
         rateButton.isLoading = true
         followButton.isLoading = true
-        let mangaId = mangaModel.id!
-        do {
+        let mangaId = mangaModel.id
+        async let statisticsRequest = fetchStatisticsIfNeeded(mangaId: mangaId)
+        let isLoggedIn = await UserManager.shared.userIsLoggedIn
+        let statistics = await statisticsRequest
+        self.statistics = statistics
+        if isLoggedIn {
             async let ratingRequest = Requests.User.getMangaRating(for: mangaId)
             async let readingStatusRequest = Requests.Manga.getReadingStatus(mangaId: mangaId)
-            async let statisticsRequest = fetchStatisticsIfNeeded(mangaId: mangaId)
-            let (rating, readingStatus, statistics) = try await (
-                ratingRequest,
-                readingStatusRequest,
-                statisticsRequest
-            )
+            let (rating, readingStatus) = await (ratingRequest, readingStatusRequest)
             self.rating = rating
             self.readingStatus = readingStatus
-            self.statistics = statistics
-        } catch {
-            
         }
         rateButton.isLoading = false
         followButton.isLoading = false
@@ -304,7 +300,6 @@ class MangaTitleViewController: BaseViewController {
 
         do {
             let statistics = try await Requests.Manga.getStatistics(mangaId: mangaId)
-            mangaModel.statistics = statistics
             return statistics
         } catch {
             return nil
@@ -351,7 +346,7 @@ class MangaTitleViewController: BaseViewController {
     }
     
     func changeFollowStatus() {
-        let mangaId = mangaModel.id!
+        let mangaId = mangaModel.id
         Task {
             followButton.isLoading = true
             do {
@@ -392,7 +387,7 @@ class MangaTitleViewController: BaseViewController {
     
     func updateRating(to value: Int) {
         rateButton.isLoading = true
-        let mangaId = mangaModel.id!
+        let mangaId = mangaModel.id
         Task {
             _ = await Requests.User.setMangaRating(for: mangaId, to: value)
             self.rating = value

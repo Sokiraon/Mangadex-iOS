@@ -7,10 +7,8 @@ target "Mangadex" do
   
   pod 'SnapKit', '~> 5.7.1'
   pod 'Alamofire'
-  pod 'SwiftyJSON', '~> 5.0.2'
   pod 'ProgressHUD'
   pod 'Kingfisher', '~> 8.3.1'
-  pod 'YYModel'
   pod 'Localize-Swift', '~> 3.2'
   pod 'Loaf'
   pod 'SwiftTheme'

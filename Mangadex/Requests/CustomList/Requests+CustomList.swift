@@ -10,12 +10,11 @@ import Foundation
 extension Requests {
     enum CustomList {
         static func get(id: String) async throws -> CustomListModel {
-            let json = try await Requests.get(url: .mainHost("/list/\(id)"))
-            guard let data = json["data"],
-                  let model = CustomListModel.yy_model(withJSON: data) else {
-                throw Errors.IllegalData
-            }
-            return model
+            let response = try await Requests.get(
+                url: .mainHost("/list/\(id)"),
+                as: DataResponse<CustomListModel>.self
+            )
+            return response.data
         }
     }
 }

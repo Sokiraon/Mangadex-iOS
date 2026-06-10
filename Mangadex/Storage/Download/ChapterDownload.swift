@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 class ChapterDownload {
     enum Status: Int, Codable {
         case waiting = 0

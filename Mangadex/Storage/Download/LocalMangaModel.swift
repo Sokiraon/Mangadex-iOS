@@ -10,15 +10,22 @@ import Foundation
 class LocalChapterModel: Equatable {
     let info: ChapterModel
     var pageURLs: [URL] = []
-    
+
     init?(baseURL: URL) {
         let infoURL = baseURL.appending(path: "info.json")
-        let infoData = FileManager.default.contents(atPath: infoURL.path)
-        self.info = ChapterModel.yy_model(withJSON: infoData!)!
-        
+
+        guard
+            let infoData = FileManager.default.contents(atPath: infoURL.path),
+            let chapterModel = try? JSONDecoder().decode(
+                ChapterModel.self,
+                from: infoData
+            )
+        else { return nil}
+        self.info = chapterModel
+
         let pagesDir = baseURL.appending(path: "data")
         let pagesDirAlt = baseURL.appending(path: "data-saver")
-        
+
         if FileManager.default.fileExists(atPath: pagesDir.path) {
             let enumerator = FileManager.default.enumerator(
                 at: pagesDir,
@@ -36,14 +43,14 @@ class LocalChapterModel: Equatable {
                 pageURLs.append(fileURL)
             }
         }
-        
+
         guard !pageURLs.isEmpty else { return nil }
-        
+
         pageURLs.sort { url1, url2 in
             url1.lastPathComponent.localizedStandardCompare(url2.lastPathComponent) == .orderedAscending
         }
     }
-    
+
     static func == (lhs: LocalChapterModel, rhs: LocalChapterModel) -> Bool {
         lhs.info.id == rhs.info.id
     }
@@ -54,14 +61,14 @@ class LocalMangaModel {
     let coverURL: URL
     let chapterURLs: [URL]
     let info: MangaModel
-    
+
     init(baseURL: URL, coverURL: URL, chapterURLs: [URL], info: MangaModel) {
         self.baseURL = baseURL
         self.coverURL = coverURL
         self.chapterURLs = chapterURLs
         self.info = info
     }
-    
+
     var chapters: [LocalChapterModel] {
         var models = chapterURLs.compactMap { chapterURL in
             LocalChapterModel(baseURL: chapterURL)

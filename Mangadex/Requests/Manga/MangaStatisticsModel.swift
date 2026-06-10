@@ -3,24 +3,17 @@
 //
 
 import Foundation
-import YYModel
 
-class MangaRatingModel: NSObject, YYModel {
-    @objc var average: NSNumber?
-    @objc var bayesian: NSNumber?
+struct MangaRatingModel: Codable {
+    let average: Double?
+    let bayesian: Double?
 }
 
-class MangaStatisticsModel: NSObject, YYModel {
-    @objc var follows: Int = 0
-    @objc var rating: MangaRatingModel?
+struct MangaStatisticsModel: Codable {
+    var follows: Int = 0
+    var rating: MangaRatingModel?
     
-    class func modelContainerPropertyGenericClass() -> [String: Any]? {
-        [
-            "rating": MangaRatingModel.classForCoder()
-        ]
-    }
-    
-    lazy var followsString: String = {
+    var followsString: String {
         if follows > 1000000 {
             return "\(follows / 1000000)M"
         } else if follows > 1000 {
@@ -28,7 +21,7 @@ class MangaStatisticsModel: NSObject, YYModel {
         } else {
             return "\(follows)"
         }
-    }()
+    }
     
     private static let formatter = NumberFormatter().apply { formatter in
         formatter.numberStyle = .decimal
@@ -36,12 +29,14 @@ class MangaStatisticsModel: NSObject, YYModel {
         formatter.maximumFractionDigits = 2
     }
     
-    lazy var ratingString: String? = {
-        if rating?.bayesian != nil {
-            return Self.formatter.string(from: rating!.bayesian!)
-        } else if rating?.average != nil {
-            return Self.formatter.string(from: rating!.average!)
+    var ratingString: String {
+        if let bayesian = rating?.bayesian {
+            return Self.formatter
+                .string(from: NSNumber(value: bayesian)) ?? "N/A"
+        } else if let average = rating?.average {
+            return Self.formatter
+                .string(from: NSNumber(value: average)) ?? "N/A"
         }
         return "N/A"
-    }()
+    }
 }

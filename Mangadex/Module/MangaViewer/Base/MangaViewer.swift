@@ -129,7 +129,7 @@ class MangaViewer: BaseViewController,
     
     internal var chapterListView: UICollectionView!
     internal var chapterListContainerView: UIView?
-    internal var chapterListDataSource: UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>!
+    internal var chapterListDataSource: UICollectionViewDiffableDataSource<String, String>!
     internal var chapterListTrailingMargin: CGFloat {
         0
     }

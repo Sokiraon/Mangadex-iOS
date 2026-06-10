@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import YYModel
 import os
 import SwiftData
 
@@ -14,26 +13,29 @@ import SwiftData
 class DownloadManager: NSObject {
     // MARK: - Initialization
     static let shared = DownloadManager()
-    
+
     private var fileManager: FileManager!
-    
+
     private var container: ModelContainer!
     private var context: ModelContext!
-    
+
     private var session: URLSession!
     private var baseDir: URL!
     private var mangaDir: URL!
-    
+
+    private let encoder = JSONEncoder()
+    private let decoder = JSONDecoder()
+
     private override init() {
         super.init()
-        
+
         let schema = Schema([ChapterDownloadData.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         container = try! ModelContainer(for: schema, configurations: [config])
-        
+
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: "com.sokiraon.Mangadex.mangadownload")
         session = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: .main)
-        
+
         fileManager = FileManager.default
         let documentDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
         baseDir = documentDir.appending(path: "downloads")
@@ -44,33 +46,33 @@ class DownloadManager: NSObject {
         context = container.mainContext
         restoreDownloads()
     }
-    
+
     // MARK: - Storage related
     func findManga(by mangaID: String) -> MangaModel? {
         let mangaModelPath = mangaDir.appending(components: mangaID, "info.json").path()
         guard
             fileManager.fileExists(atPath: mangaModelPath),
             let data = fileManager.contents(atPath: mangaModelPath),
-            let model = MangaModel.yy_model(withJSON: data)
+            let model = try? decoder.decode(MangaModel.self, from: data)
         else { return nil }
         return model
     }
-    
+
     func findChapter(for mangaID: String, by chapterID: String) -> ChapterModel? {
         let chapterModelPath = mangaDir.appending(components: mangaID, chapterID, "info.json").path()
         guard
             fileManager.fileExists(atPath: chapterModelPath),
             let data = fileManager.contents(atPath: chapterModelPath),
-            let model = ChapterModel.yy_model(withJSON: data)
+            let model = try? decoder.decode(ChapterModel.self, from: data)
         else { return nil }
         return model
     }
-    
+
     func hasDownloaded(chapterID: String, for mangaID: String) -> Bool {
         let chapterPath = mangaDir.appending(components: mangaID, chapterID).path()
         return fileManager.fileExists(atPath: chapterPath)
     }
-    
+
     func retrieveChapters() -> [LocalMangaModel]? {
         guard FileManager.default.fileExists(atPath: mangaDir.path) else {
             return nil
@@ -91,8 +93,12 @@ class DownloadManager: NSObject {
             }
             let coverURL = fileURL.appending(path: "cover.jpg")
             let infoURL = fileURL.appending(path: "info.json")
-            guard let infoData = FileManager.default.contents(atPath: infoURL.path),
-                  let infoModel = MangaModel.yy_model(withJSON: infoData)
+            guard
+                let infoData = FileManager.default.contents(atPath: infoURL.path),
+                let infoModel = try? decoder.decode(
+                    MangaModel.self,
+                    from: infoData
+                )
             else {
                 continue
             }
@@ -143,25 +149,25 @@ class DownloadManager: NSObject {
             try? FileManager.default.removeItem(at: fileURL)
         }
     }
-    
+
     func calculateSizeUsed() async -> UInt64? {
         await Task.detached(priority: .utility) {
             try? await FileManager.default
                 .allocatedSizeOfDirectory(at: self.baseDir)
         }.value
     }
-    
+
     // MARK: - SwiftData
     private func saveDownload(_ chapterDownload: ChapterDownload) {
         let persistentData = chapterDownload.toPersistentData()
         context.insert(persistentData)
         saveContext()
     }
-    
+
     private func restoreDownloads() {
         let fetchDescriptor = FetchDescriptor<ChapterDownloadData>()
         guard let savedDownloads = try? context.fetch(fetchDescriptor) else { return }
-        
+
         for data in savedDownloads {
             if let mangaModel = findManga(by: data.mangaID), let chapterModel = findChapter(
                 for: data.mangaID,
@@ -177,21 +183,21 @@ class DownloadManager: NSObject {
             }
         }
     }
-    
+
     private func deleteFromStorage(chapterID: String) {
         if let downloadData = fetchDownloadData(chapterID: chapterID) {
             context.delete(downloadData)
         }
         saveContext()
     }
-    
+
     private func fetchDownloadData(chapterID: String) -> ChapterDownloadData? {
         let descriptor = FetchDescriptor<ChapterDownloadData>(
             predicate: #Predicate { $0.chapterID == chapterID
             })
         return try? context.fetch(descriptor).first
     }
-    
+
     private func saveContext() {
         do {
             try context.save()
@@ -199,18 +205,18 @@ class DownloadManager: NSObject {
             print("Failed to save context: \(error)")
         }
     }
-    
+
     // MARK: - Download methods
     private var activeDownloads: [String: ChapterDownload] = [:]
-    
+
     func getActiveDownloads() -> [ChapterDownload] {
         return Array(activeDownloads.values)
     }
-    
+
     func hasActiveDownload(for chapterID: String) -> Bool {
         return activeDownloads.values.contains { $0.id == chapterID }
     }
-    
+
     func downloadManga(mangaModel: MangaModel, chapterModels: [ChapterModel]) {
         for chapterModel in chapterModels {
             Task {
@@ -218,7 +224,7 @@ class DownloadManager: NSObject {
             }
         }
     }
-    
+
     func downloadChapter(
         mangaModel: MangaModel,
         chapterModel: ChapterModel,
@@ -231,41 +237,39 @@ class DownloadManager: NSObject {
             pageURLs: pageURLs,
             progressHandler: progressHandler
         )
-        
-        await MainActor.run {
-            activeDownloads[chapterDownload.id] = chapterDownload
-            saveDownload(chapterDownload)
-            // Notify UI to update
-            NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
-        }
-        
+
+        activeDownloads[chapterDownload.id] = chapterDownload
+        saveDownload(chapterDownload)
+        // Notify UI to update
+        NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
+
         await prepareChapterDownload(chapterDownload)
         startChapterDownload(chapterDownload)
     }
-    
+
     private func prepareChapterDownload(_ chapterDownload: ChapterDownload) async {
         chapterDownload.status = .preparing
         let fileManager = FileManager.default
         let mangaModel = chapterDownload.mangaModel
         let chapterModel = chapterDownload.chapterModel
-        
+
         let mangaFolder = mangaDir.appending(path: mangaModel.id)
         let chapterFolder = mangaFolder.appending(path: chapterModel.id)
         let pagesFolder = chapterFolder.appending(
             path: SettingsManager.isDataSavingMode ? "data-saver" : "data")
         try? fileManager.createDirectory(at: pagesFolder, withIntermediateDirectories: true)
-        
+
         // Serialize and store manga info
-        if let mangaData = mangaModel.yy_modelToJSONData() {
+        if let mangaData = try? encoder.encode(mangaModel) {
             let mangaInfoURL = mangaFolder.appending(path: "info.json")
             try? mangaData.write(to: mangaInfoURL)
         }
         // Serialize and store chapter info
-        if let chapterData = chapterModel.yy_modelToJSONData() {
+        if let chapterData = try? encoder.encode(chapterModel) {
             let chapterInfoURL = chapterFolder.appending(path: "info.json")
             try? chapterData.write(to: chapterInfoURL)
         }
-        
+
         // Download manga cover
         if let coverURL = mangaModel.coverURL {
             let dest = mangaFolder.appending(path: "cover.jpg")
@@ -278,10 +282,10 @@ class DownloadManager: NSObject {
                 }
             }
         }
-        
+
         await chapterDownload.fetchPageUrlsIfNeeded()
     }
-    
+
     private func startChapterDownload(_ chapterDownload: ChapterDownload) {
         chapterDownload.status = .running
         for url in chapterDownload.pageURLs {
@@ -290,26 +294,29 @@ class DownloadManager: NSObject {
         }
         saveDownload(chapterDownload)
     }
-    
+
     private func startDownload(for url: URL, in chapterDownload: ChapterDownload) {
         let task = session.downloadTask(with: url)
         chapterDownload.tasks.append(task)
         task.resume()
     }
-    
+
     func pauseChapterDownload(chapterID: String) {
         guard let chapterDownload = activeDownloads[chapterID] else { return }
         for (index, task) in chapterDownload.tasks.enumerated() {
             task.cancel { resumeData in
                 if let resumeData {
-                    chapterDownload.tasks[index] = self.session.downloadTask(withResumeData: resumeData)
+                    Task { @MainActor in
+                        chapterDownload.tasks[index] = self.session
+                            .downloadTask(withResumeData: resumeData)
+                    }
                 }
             }
         }
         chapterDownload.status = .paused
         saveDownload(chapterDownload)
     }
-    
+
     func resumeChapterDownload(chapterID: String) {
         guard let chapterDownload = activeDownloads[chapterID] else { return }
         for task in chapterDownload.tasks {
@@ -318,7 +325,7 @@ class DownloadManager: NSObject {
         chapterDownload.status = .running
         saveDownload(chapterDownload)
     }
-    
+
     func retryChapterDownload(chapterID: String) {
         guard let chapterDownload = activeDownloads[chapterID] else { return }
         chapterDownload.retryCount = [:]
@@ -326,7 +333,7 @@ class DownloadManager: NSObject {
         chapterDownload.tasks = []
         startChapterDownload(chapterDownload)
     }
-    
+
     func cancelChapterDownload(chapterID: String) {
         activeDownloads[chapterID]?.cancel(mangaDir: mangaDir)
         activeDownloads.removeValue(forKey: chapterID)
@@ -334,7 +341,7 @@ class DownloadManager: NSObject {
         // Notify UI to update
         NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
     }
-    
+
     private func retryDownload(for url: URL, in chapterDownload: ChapterDownload) async {
         guard let retryCount = chapterDownload.retryCount[url], retryCount < chapterDownload.maxRetries else {
             markFailedChapterDownload(chapterDownload)
@@ -347,21 +354,21 @@ class DownloadManager: NSObject {
         try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
         startDownload(for: url, in: chapterDownload)
     }
-    
+
     private func markFailedChapterDownload(_ chapterDownload: ChapterDownload) {
         chapterDownload.tasks.forEach { $0.cancel() }
         chapterDownload.tasks = []
         chapterDownload.status = .failed
         saveDownload(chapterDownload)
     }
-    
+
     private func finishChapterDownload(_ chapterDownload: ChapterDownload) {
         activeDownloads.removeValue(forKey: chapterDownload.id)
         deleteFromStorage(chapterID: chapterDownload.id)
         chapterDownload.status = .succeeded
         NotificationCenter.default.post(name: .downloadStatusChanged, object: nil)
     }
-    
+
     private func saveDownloadedFile(from location: URL, to destination: URL) {
         do {
             if FileManager.default.fileExists(atPath: destination.path()) {
@@ -389,19 +396,19 @@ extension DownloadManager: @preconcurrency URLSessionDownloadDelegate {
             components: chapterDownload.mangaModel.id, chapterDownload.id, chapterDownload.pageQuality)
         let destination = pagesFolder.appending(path: "\(pageIndex+1).\(url.pathExtension)")
         saveDownloadedFile(from: location, to: destination)
-        
+
         chapterDownload.completedPages += 1
         let progress = Double(chapterDownload.completedPages) / Double(chapterDownload.totalPages)
         chapterDownload.progress = progress
         chapterDownload.progressHandler?(progress)
-        
+
         chapterDownload.tasks.remove(at: taskIndex)
         saveDownload(chapterDownload)
         if chapterDownload.completedPages == chapterDownload.totalPages {
             finishChapterDownload(chapterDownload)
         }
     }
-    
+
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
         guard
             let url = task.originalRequest?.url,
@@ -410,14 +417,18 @@ extension DownloadManager: @preconcurrency URLSessionDownloadDelegate {
         else {
             return
         }
-        
+
         if let error = error as? URLError, error.code == .cancelled {
             return
         }
-        
+
         if let error {
             print("Download failed for \(url): \(error.localizedDescription)")
-            Task { await self.retryDownload(for: url, in: chapterDownload) }
+            let chapterID = chapterDownload.id
+            Task { @MainActor in
+                guard let chapterDownload = self.activeDownloads[chapterID] else { return }
+                await self.retryDownload(for: url, in: chapterDownload)
+            }
         }
     }
 }

@@ -6,34 +6,25 @@
 //
 
 import Foundation
-import YYModel
 
-class ChapterPages: NSObject, YYModel {
-    @objc var chapterHash: String!
-    @objc var data: [String]!
-    @objc var dataSaver: [String]!
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        ["data": String.self, "dataSaver": String.self]
-    }
-    
-    static func modelCustomPropertyMapper() -> [String : Any]? {
-        ["chapterHash": "hash"]
-    }
+struct ChapterPages: Codable {
+    let hash: String
+    let data: [String]
+    let dataSaver: [String]
 }
 
-class ChapterPagesModel: NSObject {
-    @objc private var baseUrl: String!
-    @objc private var chapter: ChapterPages!
+struct ChapterPagesModel: Codable {
+    let baseUrl: String
+    let chapter: ChapterPages
     
     var pageURLs: [URL] {
         if SettingsManager.isDataSavingMode {
             return chapter.dataSaver.map { fileName in
-                URL(string: "\(baseUrl!)/data-saver/\(chapter.chapterHash!)/\(fileName)")!
+                URL(string: "\(baseUrl)/data-saver/\(chapter.hash)/\(fileName)")!
             }
         } else {
             return chapter.data.map { fileName in
-                URL(string: "\(baseUrl!)/data/\(chapter.chapterHash!)/\(fileName)")!
+                URL(string: "\(baseUrl)/data/\(chapter.hash)/\(fileName)")!
             }
         }
     }

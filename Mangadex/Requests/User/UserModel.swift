@@ -6,19 +6,14 @@
 //
 
 import Foundation
-import YYModel
 
-class UserAttributes: NSObject, YYModel {
-    @objc var username: String!
-    @objc var roles = [String]()
-    
-    static func modelContainerPropertyGenericClass() -> [String : Any]? {
-        [ "roles": String.self ]
-    }
+struct UserAttributes: Codable {
+    let username: String
+    var roles = [String]()
 }
 
-class UserModelEssential: NSObject {
-    @objc var id: String!
-    @objc var type: String!
-    @objc var attributes: UserAttributes?
+struct UserModelEssential: Codable {
+    let id: String
+    let type: String
+    let attributes: UserAttributes?
 }

@@ -3,23 +3,22 @@
 //
 
 import Foundation
-import YYModel
 
-class MDMangaTagAttributes: NSObject {
-    @objc var name: MangaMultiLanguageObject!
-    @objc var group: String!
+struct MangaTagAttributes: Codable {
+    let name: MangaMultiLangObj
+    let group: String
 }
 
-class MangaTagModel: NSObject {
-    @objc var id: String!
-    @objc var attributes: MDMangaTagAttributes!
+struct MangaTagModel: Codable {
+    let id: String
+    let attributes: MangaTagAttributes
     
     func localizedName() -> String? {
         return attributes.name.en?.localized()
     }
 }
 
-extension Array where Element: MangaTagModel {
+extension Array where Element == MangaTagModel {
     var genres: Self {
         filter { tagModel in
             tagModel.attributes.group == "genre"

@@ -6,54 +6,50 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 extension Requests {
     enum Auth {
-        struct Token {
+        struct Token: Decodable, Sendable {
             let session: String
             let refresh: String
         }
-        
+
+        private struct TokenResponse: Decodable, Sendable {
+            let token: Token
+        }
+
         static func login(username: String, password: String) async throws -> Token {
             let res = try await Requests.post(
                 url: .mainHost("/auth/login"),
                 data: [
                     "username": username,
                     "password": password
-                ]
+                ],
+                as: TokenResponse.self
             )
-            let json = JSON(res)
-            if let session = json["token"]["session"].string,
-               let refresh = json["token"]["refresh"].string {
-                return Token(session: session, refresh: refresh)
-            } else {
-                throw Errors.IllegalData
-            }
+            return res.token
         }
-        
-        static func verifyToken(token: String) async throws -> Bool {
-            let rawJson = try await get(
+
+        private struct CheckTokenResponse: Decodable, Sendable {
+            let isAuthenticated: Bool
+        }
+
+        static func checkToken(token: String) async throws -> Bool {
+            let res = try await get(
                 url: .mainHost("/auth/check"),
-                headers: ["Authorization": "Bearer \(token)"]
+                headers: ["Authorization": "Bearer \(token)"],
+                as: CheckTokenResponse.self
             )
-            let json = JSON(rawJson)
-            return json["isAuthenticated"].boolValue
+            return res.isAuthenticated
         }
-        
+
         static func refreshToken(refresh: String) async throws -> Token {
-            let rawJson = try await Requests.post(
+            let res = try await Requests.post(
                 url: .mainHost("/auth/refresh"),
-                data: ["token": refresh]
+                data: ["token": refresh],
+                as: TokenResponse.self
             )
-            let token = JSON(rawJson)["token"]
-            
-            guard let session = token["session"].string,
-                  let refresh = token["refresh"].string else {
-                throw Errors.IllegalData
-            }
-            
-            return Token(session: session, refresh: refresh)
+            return res.token
         }
     }
 }

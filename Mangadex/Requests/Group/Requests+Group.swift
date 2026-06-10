@@ -15,10 +15,11 @@ extension Requests {
                 "includes[]": "leader"
             ]
             let params = defaultParams + params
-            let json = try await Requests.get(url: .mainHost("/group"), params: params)
-            guard let model = GroupCollection.yy_model(withJSON: json) else {
-                throw Errors.IllegalData
-            }
+            let model = try await Requests.get(
+                url: .mainHost("/group"),
+                params: params,
+                as: GroupCollection.self
+            )
             return model
         }
     }

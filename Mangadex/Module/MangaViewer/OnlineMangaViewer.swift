@@ -81,7 +81,7 @@ class OnlineMangaViewer: MangaViewer {
     convenience init(
         mangaModel: MangaModel,
         chapterId: String,
-        aggregatedModel: MDMangaAggregatedModel
+        aggregatedModel: MangaAggregatedModel
     ) {
         self.init()
         self.mangaModel = mangaModel
@@ -185,10 +185,12 @@ class OnlineMangaViewer: MangaViewer {
     private var chapterModel: ChapterModel!
     private var statistics: ChapterStatisticsModel!
     
-    private var aggregatedModel: MDMangaAggregatedModel!
-    private var chaptersInfo: [MDMangaAggregatedChapter] {
-        aggregatedModel.chapters
+    private var aggregatedModel: MangaAggregatedModel! {
+        didSet {
+            chaptersInfo = aggregatedModel.getOrderedChapters()
+        }
     }
+    private var chaptersInfo = [MangaAggregatedChapter]()
     
     private lazy var currentIndex: Int = {
         chaptersInfo.firstIndex { chapterInfo in
@@ -211,7 +213,7 @@ class OnlineMangaViewer: MangaViewer {
             
             // 2) Fetch page data and aggregated chapters concurrently depending on withAggregate
             async let pagesTask = Requests.Chapter.getPageData(chapterId: chapterModel.id)
-            let aggregated: MDMangaAggregatedModel
+            let aggregated: MangaAggregatedModel
             if withAggregate {
                 let agg = try await Requests.Manga.getAggregatedChapters(
                     mangaId: chapterModel.mangaId!,
@@ -271,12 +273,19 @@ class OnlineMangaViewer: MangaViewer {
     }
     
     private func setupChapterList() {
-        let cellRegistration = UICollectionView.CellRegistration<MangaViewerChapterListCell, MDMangaAggregatedVolumeChapter>
-        { [weak self] cell, indexPath, itemIdentifier in
-            guard let self else { return }
+        let cellRegistration = UICollectionView.CellRegistration<
+            MangaViewerChapterListCell, String
+        > { [weak self] cell, indexPath, itemIdentifier in
+            guard
+                let self,
+                let chapterInfo = chaptersInfo.first(
+                    where: { $0.id == itemIdentifier
+                    })
+            else { return }
             cell.setContent(
-                title: "mangaViewer.chapterList.chapterName".localizedFormat(itemIdentifier.chapter),
-                isCurrent: itemIdentifier.id == self.chapterId)
+                title: "mangaViewer.chapterList.chapterName"
+                    .localizedFormat(chapterInfo.chapter),
+                isCurrent: itemIdentifier == self.chapterId)
         }
         
         let headerRegistration = UICollectionView.SupplementaryRegistration<MangaViewerChapterListHeaderView>(
@@ -292,7 +301,7 @@ class OnlineMangaViewer: MangaViewer {
             supplementaryView.setTitle(title)
         }
         
-        chapterListDataSource = UICollectionViewDiffableDataSource<String, MDMangaAggregatedVolumeChapter>(
+        chapterListDataSource = UICollectionViewDiffableDataSource<String, String>(
             collectionView: chapterListView) { collectionView, indexPath, itemIdentifier in
             collectionView.dequeueConfiguredReusableCell(
                 using: cellRegistration, for: indexPath, item: itemIdentifier)
@@ -303,11 +312,16 @@ class OnlineMangaViewer: MangaViewer {
                 using: headerRegistration, for: indexPath)
         }
         
-        var snapshot = NSDiffableDataSourceSnapshot<String, MDMangaAggregatedVolumeChapter>()
+        var snapshot = NSDiffableDataSourceSnapshot<String, String>()
         snapshot.appendSections(aggregatedModel.volumeNames)
         for volume in aggregatedModel.volumeNames {
-            snapshot.appendItems(aggregatedModel.volumes[volume]!.sortedChapters,
-                                 toSection: volume)
+            snapshot
+                .appendItems(
+                    aggregatedModel
+                        .volumes[volume]!.sortedChapters
+                        .map { $0.id },
+                    toSection: volume
+                )
         }
         chapterListDataSource.apply(snapshot, animatingDifferences: false) { [weak self] in
             self?.scrollChapterListToCurrentChapter(animated: false)

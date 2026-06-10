@@ -108,11 +108,6 @@ class BaseViewController: UIViewController {
         
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationBar.tintColor = .darkerGray565656
-        
-        let backImage = UIImage(named: "icon_arrow_back")?.withRenderingMode(.alwaysTemplate)
-        let backButton = UIBarButtonItem(image: backImage, style: .plain, target: self, action: #selector(didTapBack))
-        backButton.tintColor = .darkerGray565656
-        navigationItem.leftBarButtonItem = backButton
     }
     
     override func viewDidLoad() {
