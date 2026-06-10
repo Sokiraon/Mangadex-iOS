@@ -10,3 +10,5 @@ Mangadex.xcodeproj/xcshareddata/xcschemes/Mangadex.xcscheme
 *.DS_Store
 .idea/
 
+DerivedData/
+
